@@ -1,19 +1,38 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import { ArrowRight, LockKeyhole } from "lucide-vue-next";
+import { LockKeyhole } from "lucide-vue-next";
 import { useSession } from "../stores/session";
+import ShieldScene from "../components/ShieldScene.vue";
 const s = useSession(),
   router = useRouter();
 const username = ref(""),
   password = ref(""),
   error = ref(""),
-  busy = ref(false);
+  busy = ref(false),
+  done = ref(false);
+// 입력이 채워질수록 자물쇠 걸쇠가 내려오고, 로그인에 성공하면 잠깁니다.
+const progress = computed(
+  () =>
+    (username.value ? 0.35 : 0) +
+    Math.min(password.value.length / 8, 1) * 0.65,
+);
+const lockState = computed(() =>
+  done.value
+    ? "locked"
+    : busy.value
+      ? "scanning"
+      : error.value && !password.value
+        ? "error"
+        : "idle",
+);
 async function submit() {
   busy.value = true;
   error.value = "";
   try {
     await s.login(username.value, password.value);
+    done.value = true;
+    await new Promise((r) => setTimeout(r, 750));
     router.push("/");
   } catch (e: any) {
     error.value = e.message;
@@ -26,27 +45,23 @@ async function submit() {
 <template>
   <main class="login">
     <section class="login-story">
-      <img
-        src="/csi.png"
-        alt="CSI — Cyber Security Inspector"
-        class="login-brand"
-      />
-      <div class="eyebrow">CONTINUOUS SECURITY. VERIFIED EVIDENCE.</div>
-      <h1>코드가 바뀌는 순간,<br />보안의 기준을 확인하세요.</h1>
-      <p>
-        코드와 정책 사이의 간극을 발견하고,<br />검증 가능한 근거로 다음 결정을
-        내립니다.
+      <h1 class="wordmark">CSI</h1>
+      <p class="wordmark-sub">
+        CYBER SECURITY <span>INSPECTOR</span>
       </p>
-      <div class="pipeline">
-        <span>CODE</span><i /><span>POLICY</span><i /><span>INSIGHT</span>
+      <p class="team">5조 : 노은서, 박지훈, 윤명진, 이기현, 장하은, 최현우</p>
+      <p class="lede">
+        코드가 바뀔 때마다 사내 개인정보 보호 정책을 근거로 위험을 찾고,<br />
+        정적 분석 증거와 정책 조항을 함께 보여주는 보안 진단 콘솔입니다.
+      </p>
+      <div class="story-rule">
+        <span>SKALA 4기 캡스톤</span><span>로컬 데모 환경</span>
       </div>
-      <small>CSI / SECURITY OPERATIONS PLATFORM</small>
     </section>
-    <section class="login-form">
+    <section class="login-panel">
+      <ShieldScene class="login-shield" :progress="progress" :state="lockState" />
       <form @submit.prevent="submit">
-        <img src="/logo.png" class="shield" alt="CSI 보안 심벌" />
         <h2>워크스페이스 로그인</h2>
-        <p>보안 진단 콘솔에 접속합니다.</p>
         <label
           >계정<input
             v-model="username"
@@ -61,14 +76,14 @@ async function submit() {
             minlength="8"
             type="password"
             autocomplete="current-password"
-            placeholder="비밀번호를 입력하세요"
+            placeholder="8자 이상"
         /></label>
         <div v-if="error" role="alert" class="error">{{ error }}</div>
-        <button class="primary" :disabled="busy">
-          {{ busy ? "인증 중…" : "로그인" }}<ArrowRight :size="17" />
+        <button class="primary" :disabled="busy || done">
+          {{ done ? "잠금 완료" : busy ? "인증 중…" : "로그인" }}
         </button>
         <p class="secure-note">
-          <LockKeyhole :size="14" /> 승인된 사용자만 접근할 수 있습니다.
+          <LockKeyhole :size="14" />승인된 사용자만 접근할 수 있습니다.
         </p>
       </form>
     </section>

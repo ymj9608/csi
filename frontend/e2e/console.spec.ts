@@ -22,7 +22,7 @@ test("login, API-backed screens, findings, mobile and logout", async ({
     .fill(env.CSI_ADMIN_PASSWORD);
   await page.getByRole("button", { name: "로그인", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Security overview" }),
+    page.getByRole("heading", { name: "보안 현황" }),
   ).toBeVisible();
   await expect(page.locator(".metrics")).toBeVisible();
   await expect(page.locator(".connection")).toHaveText("실시간 연결");
@@ -56,7 +56,7 @@ test("login, API-backed screens, findings, mobile and logout", async ({
       page.getByRole("heading", { name: "정적 분석 근거" }),
     ).toBeVisible();
     await page
-      .getByRole("button", { name: "Security References", exact: true })
+      .getByRole("tab", { name: "보안 근거", exact: true })
       .click();
     await expect(page.locator(".reference").first()).toBeVisible();
   }
