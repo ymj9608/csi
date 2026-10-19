@@ -13,10 +13,10 @@ const emit = defineEmits<{ toggle: [] }>();
       <Menu :size="20" />
     </button>
     <div class="breadcrumb">
-      Workspace <ChevronRight :size="13" /><strong>{{ heading }}</strong>
+      워크스페이스 <ChevronRight :size="13" /><strong>{{ heading }}</strong>
     </div>
     <span class="connection" :class="{ live: streamState === '실시간 연결' }"
       ><i />{{ streamState }}</span
-    ><span class="env">LOCAL WORKSPACE</span>
+    ><span class="env">로컬 데모</span>
   </header>
 </template>

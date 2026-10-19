@@ -5,6 +5,7 @@ import App from "./App.vue";
 import Login from "./views/Login.vue";
 import Console from "./views/Console.vue";
 import { useSession } from "./stores/session";
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./style.css";
 const pinia = createPinia();
 const router = createRouter({

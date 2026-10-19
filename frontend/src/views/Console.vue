@@ -27,23 +27,41 @@ import { api, date } from "../lib/api";
 import { useSession } from "../stores/session";
 import Badge from "../components/Badge.vue";
 import Chart from "../components/Chart.vue";
+import ShieldScene from "../components/ShieldScene.vue";
+import { label } from "../components/labels";
 const route = useRoute(),
   router = useRouter(),
   session = useSession();
 const nav = [
-  ["/", "Overview", "보안 현황", LayoutDashboard],
-  ["/projects", "Projects", "프로젝트", FolderGit2],
-  ["/scans", "Scan history", "검사 이력", ScanLine],
-  ["/findings", "Findings", "위험 항목", ShieldAlert],
-  ["/logs", "Execution logs", "실행 로그", ScrollText],
-  ["/policies", "Security policies", "보안 정책", BookOpen],
-  ["/approvals", "Approval queue", "승인 관리", ClipboardCheck],
+  ["/", "보안 현황", LayoutDashboard],
+  ["/projects", "프로젝트", FolderGit2],
+  ["/scans", "검사 이력", ScanLine],
+  ["/findings", "위험 항목", ShieldAlert],
+  ["/logs", "실행 로그", ScrollText],
+  ["/policies", "보안 정책", BookOpen],
+  ["/approvals", "승인 관리", ClipboardCheck],
 ] as const;
 const page = computed(() => route.path.split("/")[1] || "overview"),
   id = computed(() => route.path.split("/")[2]);
 const heading = computed(
-  () => nav.find((n) => n[0] === "/" + page.value)?.[1] || "Security overview",
+  () => nav.find((n) => n[0] === "/" + page.value)?.[1] || "보안 현황",
 );
+const intro: Record<string, string> = {
+  projects: "검사 대상 저장소와 마지막 검사 결과입니다.",
+  scans: "커밋별 검사 진행 상황과 진단 근거를 추적합니다.",
+  findings: "검사에서 발견된 위험 항목을 위험도와 상태로 걸러 봅니다.",
+  logs: "Agent와 검사 파이프라인의 실행 기록입니다.",
+  policies: "진단 근거로 쓰이는 사내 보안 정책 조항입니다.",
+  approvals: "Agent가 요청한 조치를 검토하고 승인하거나 거절합니다.",
+};
+const tabs: Record<string, string> = {
+  Overview: "개요",
+  "Code Evidence": "코드 근거",
+  "AI Analysis": "AI 분석",
+  Remediation: "개선 권고",
+  "Security References": "보안 근거",
+  Activity: "활동",
+};
 const data = ref<any>({}),
   items = ref<any[]>([]),
   loading = ref(false),
@@ -111,56 +129,61 @@ const metrics = computed(() => [
   ["등록 프로젝트", data.value.projects, FolderGit2],
   ["완료된 검사", data.value.completedScans, ScanLine],
   ["미해결 위험 항목", data.value.openFindings, ShieldAlert],
-  ["Critical / High", data.value.criticalHigh, Activity],
+  ["치명 / 높음", data.value.criticalHigh, Activity],
   ["검토 대기", data.value.pendingApprovals, ClipboardCheck],
 ]);
 const profiles = [
   {
     id: "T1",
     name: "오프라인 비밀번호 추측",
-    rules: "SEC-01 · SEC-02 · SEC-04",
-    detail: "평문 · 빠른 해시 · bcrypt 비용",
+    rules: ["SEC-01", "SEC-02", "SEC-04"],
+    detail: "평문 저장, 빠른 해시, 낮은 bcrypt 비용",
   },
   {
     id: "T2",
     name: "사전 계산 결과 재사용",
-    rules: "SEC-03",
-    detail: "고정 Salt · 사용자별 고유성",
+    rules: ["SEC-03"],
+    detail: "고정 Salt, 사용자별 고유성 부족",
   },
   {
     id: "T3",
     name: "로그를 통한 비밀정보 유출",
-    rules: "SEC-05",
-    detail: "비밀번호 · 인증 토큰 · 개인정보",
+    rules: ["SEC-05"],
+    detail: "비밀번호, 인증 토큰, 개인정보의 로그 출력",
   },
   {
     id: "T4",
     name: "미승인 개인정보 처리",
-    rules: "POL-01",
-    detail: "승인 항목 · 신규 필드 · 처리 경로",
+    rules: ["POL-01"],
+    detail: "승인되지 않은 항목, 신규 필드, 처리 경로",
   },
 ];
-const palette = ["#fb7185", "#fb923c", "#fbbf24", "#52c5d5"];
+const palette = ["#C8264F", "#E0701F", "#D9A400", "#7F99FA"];
+const chartFont = {
+  fontFamily: "'Pretendard Variable', Pretendard, sans-serif",
+};
 const donut = computed(() => ({
   animation: false,
+  textStyle: chartFont,
   color: palette,
   tooltip: { trigger: "item" },
   series: [
     {
       type: "pie",
-      radius: ["64%", "83%"],
-      center: ["50%", "48%"],
+      radius: ["62%", "80%"],
+      center: ["50%", "46%"],
       label: { show: false },
+      itemStyle: { borderColor: "#fff", borderWidth: 3, borderRadius: 4 },
       data: (data.value.distribution || []).map((x: any) => ({
-        name: x.severity,
+        name: label(x.severity),
         value: x.count,
         itemStyle: {
           color: (
             {
-              CRITICAL: "#fb7185",
-              HIGH: "#fb923c",
-              MEDIUM: "#fbbf24",
-              LOW: "#52c5d5",
+              CRITICAL: "#C8264F",
+              HIGH: "#E0701F",
+              MEDIUM: "#D9A400",
+              LOW: "#7F99FA",
             } as Record<string, string>
           )[x.severity],
         },
@@ -169,34 +192,50 @@ const donut = computed(() => ({
   ],
   legend: {
     bottom: 0,
-    textStyle: { color: "#94a3b8" },
+    icon: "circle",
+    textStyle: { color: "#545B80", ...chartFont },
     itemWidth: 8,
     itemHeight: 8,
   },
 }));
 const trend = computed(() => ({
   animation: false,
-  color: ["#51c7d8"],
+  textStyle: chartFont,
+  color: ["#3F5EE8"],
   tooltip: { trigger: "axis" },
   grid: { left: 40, right: 20, top: 25, bottom: 30 },
   xAxis: {
     type: "category",
     data: (data.value.trend || []).map((x: any) => x.day),
-    axisLine: { lineStyle: { color: "#29445e" } },
-    axisLabel: { color: "#94a3b8" },
+    axisLine: { lineStyle: { color: "#CBD4EE" } },
+    axisTick: { show: false },
+    axisLabel: { color: "#6B7296" },
   },
   yAxis: {
     type: "value",
     minInterval: 1,
-    splitLine: { lineStyle: { color: "#203750" } },
-    axisLabel: { color: "#94a3b8" },
+    splitLine: { lineStyle: { color: "#E6EAF6" } },
+    axisLabel: { color: "#6B7296" },
   },
   series: [
     {
       type: "line",
       smooth: false,
       data: (data.value.trend || []).map((x: any) => x.count),
-      areaStyle: { color: "rgba(81,199,216,.09)" },
+      lineStyle: { width: 2.5 },
+      areaStyle: {
+        color: {
+          type: "linear",
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [
+            { offset: 0, color: "rgba(63,94,232,.22)" },
+            { offset: 1, color: "rgba(63,94,232,0)" },
+          ],
+        },
+      },
       symbolSize: 7,
     },
   ],
@@ -328,6 +367,7 @@ async function logout() {
 <template>
   <div class="console">
     <Sidebar :mobile="mobile" :page="page" @logout="logout" />
+    <div v-if="mobile" class="scrim" @click="mobile = false" />
     <main class="main">
       <HeaderBar
         :heading="heading"
@@ -335,22 +375,39 @@ async function logout() {
         @toggle="mobile = !mobile"
       />
       <div class="content">
-        <div class="page-heading">
+        <div class="page-heading" :class="{ 'with-shield': page === 'overview' }">
+          <ShieldScene
+            v-if="page === 'overview'"
+            compact
+            class="heading-shield"
+            :progress="loading ? 0 : 1"
+            :state="
+              loading || error ? 'idle' : data.criticalHigh > 0 ? 'alert' : 'locked'
+            "
+          />
           <div>
-            <div class="eyebrow">CYBER SECURITY INSPECTOR</div>
-            <h1>
-              {{ id ? data.repository || data.title || heading : heading
-              }}<span v-if="page === 'overview'" class="heading-dot" />
-            </h1>
-            <p>
-              {{
-                page === "overview"
-                  ? "코드의 변화부터 정책의 근거까지, 보안 현황을 한눈에 확인하세요."
-                  : page === "scans"
-                    ? "커밋별 검사 진행 상황과 진단 근거를 추적합니다."
-                    : "확인 가능한 근거를 바탕으로 보안 업무를 관리합니다."
-              }}
+            <h1>{{ id ? data.repository || data.title || heading : heading }}</h1>
+            <p v-if="page === 'overview'">
+              <template v-if="loading">최신 검사 결과를 불러오는 중입니다.</template>
+              <template v-else-if="data.criticalHigh > 0"
+                >미해결 위험 항목 {{ data.openFindings ?? 0 }}건 중
+                <strong class="hot">치명·높음 {{ data.criticalHigh }}건</strong>을
+                먼저 검토하세요.</template
+              >
+              <template v-else-if="data.openFindings > 0"
+                >미해결 위험 항목 {{ data.openFindings }}건이 있습니다. 치명·높음
+                등급은 없습니다.</template
+              >
+              <template v-else
+                >미해결 위험 항목이 없습니다. 검사 범위 밖의 안전까지 보증하지는
+                않습니다.</template
+              >
             </p>
+            <p v-else-if="page === 'findings' && id">
+              정적 분석 근거와 정책 대조 결과를 함께 검토합니다.
+            </p>
+            <p v-else-if="page === 'projects' && id">이 저장소의 검사 이력입니다.</p>
+            <p v-else>{{ intro[page] }}</p>
           </div>
           <div class="heading-actions">
             <button @click="load()" :disabled="loading">
@@ -374,25 +431,26 @@ async function logout() {
           ><template v-if="page === 'overview'"
             ><div class="metrics">
               <article
-                v-for="[label, value, icon] in metrics"
-                :key="String(label)"
+                v-for="([name, value, icon], i) in metrics"
+                :key="String(name)"
+                :class="{ hot: (i === 2 || i === 3) && Number(value) > 0 }"
               >
-                <div>{{ label }}<component :is="icon" :size="18" /></div>
-                <strong>{{ value ?? 0 }}</strong
-                ><small>현재 워크스페이스 기준</small>
+                <span><component :is="icon" :size="16" />{{ name }}</span>
+                <strong>{{ value ?? 0 }}</strong>
               </article>
             </div>
-            <section class="threat-section">
+            <section class="panel threat-section">
               <div class="panel-title">
-                <h2>고정 진단 범위 · 4개 위협 유형</h2>
-                <span>정적 증거 + MCP 정책 검증</span>
+                <h2>진단 범위</h2>
+                <span>4개 위협 유형을 정적 근거와 MCP 정책 검증으로 확인합니다</span>
               </div>
               <div class="threat-grid">
                 <article v-for="p in profiles" :key="p.id">
-                  <span class="eyebrow">{{ p.id }} / DEFENSE REVIEW</span>
                   <h3>{{ p.name }}</h3>
                   <p>{{ p.detail }}</p>
-                  <code>{{ p.rules }}</code>
+                  <div class="chips">
+                    <code v-for="r in p.rules" :key="r">{{ r }}</code>
+                  </div>
                 </article>
               </div>
             </section>
@@ -400,11 +458,11 @@ async function logout() {
               <section class="panel">
                 <div class="panel-title">
                   <h2>위험 항목 발견 추이</h2>
-                  <span>최근 14일 · KST</span>
+                  <span>최근 14일, KST</span>
                 </div>
                 <Chart v-if="data.trend?.length" :option="trend" />
                 <div v-else class="empty chart-empty">
-                  <Activity :size="28" /><strong
+                  <Activity :size="26" /><strong
                     >아직 검사 이력이 없습니다</strong
                   ><span>첫 검사가 완료되면 일별 추이가 표시됩니다.</span>
                 </div>
@@ -416,10 +474,9 @@ async function logout() {
                 </div>
                 <Chart v-if="data.distribution?.length" :option="donut" />
                 <div v-else class="empty chart-empty">
-                  <div class="empty-ring">
-                    <strong>0</strong><small>FINDINGS</small>
-                  </div>
-                  <span>집계할 위험 항목이 없습니다.</span>
+                  <ShieldCheck :size="26" /><strong
+                    >집계할 위험 항목이 없습니다</strong
+                  ><span>미해결 항목이 생기면 위험도별로 나눠 보여줍니다.</span>
                 </div>
               </section>
             </div></template
@@ -433,23 +490,25 @@ async function logout() {
             ><section class="panel">
               <div class="panel-title">
                 <h2>
-                  {{ page === "overview" ? "최근 검사 현황" : "검사 이력" }}
+                  {{ page === "overview" ? "최근 검사" : "검사 이력" }}
                 </h2>
                 <RouterLink v-if="page === 'overview'" to="/scans"
                   >전체 이력 <ArrowUpRight :size="14" /></RouterLink
-                ><span v-else>{{ filtered.length }} scans</span>
+                ><span v-else>{{ filtered.length }}건</span>
               </div>
               <div v-if="page !== 'overview'" class="filters">
                 <label class="search"
                   ><Search :size="16" /><input
                     v-model="search"
-                    placeholder="Repository · Commit 검색" /></label
+                    aria-label="검색"
+                    placeholder="저장소 또는 커밋 검색" /></label
                 ><select v-model="status" aria-label="검사 상태">
                   <option value="">모든 상태</option>
                   <option
                     v-for="s in ['QUEUED', 'RUNNING', 'COMPLETED', 'FAILED']"
+                    :value="s"
                   >
-                    {{ s }}
+                    {{ label(s) }}
                   </option></select
                 ><input
                   v-model="branch"
@@ -465,8 +524,11 @@ async function logout() {
                   aria-label="종료 날짜"
                 /><select v-model="severity" aria-label="위험도">
                   <option value="">모든 위험도</option>
-                  <option v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']">
-                    {{ s }}
+                  <option
+                    v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']"
+                    :value="s"
+                  >
+                    {{ label(s) }}
                   </option>
                 </select>
               </div>
@@ -474,13 +536,13 @@ async function logout() {
                 <table>
                   <thead>
                     <tr>
-                      <th>REPOSITORY / SCAN</th>
-                      <th>BRANCH / COMMIT</th>
-                      <th>STATUS</th>
-                      <th>FINDINGS</th>
-                      <th>REQUESTED / FINISHED</th>
-                      <th>TRIGGER</th>
-                      <th />
+                      <th>저장소</th>
+                      <th>브랜치와 커밋</th>
+                      <th>상태</th>
+                      <th class="num">위험 항목</th>
+                      <th>요청 / 완료</th>
+                      <th>실행 방식</th>
+                      <th><span class="sr-only">상세</span></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -488,7 +550,7 @@ async function logout() {
                       <td>
                         <RouterLink :to="'/scans/' + s.id"
                           ><strong>{{ s.repository }}</strong
-                          ><small>{{ s.id.slice(0, 8) }}</small></RouterLink
+                          ><small class="mono">{{ s.id.slice(0, 8) }}</small></RouterLink
                         >
                       </td>
                       <td>
@@ -499,26 +561,27 @@ async function logout() {
                         }}</small>
                       </td>
                       <td><Badge :value="s.status" /></td>
-                      <td>{{ s.findingCount }}</td>
+                      <td class="num">{{ s.findingCount }}</td>
                       <td>
                         {{ date(s.createdAt)
                         }}<small>{{ date(s.finishedAt) }}</small>
                       </td>
                       <td>
-                        <span class="badge">{{ s.triggerType }}</span>
+                        <span class="tag">{{ s.triggerType }}</span>
                       </td>
                       <td>
                         <RouterLink
+                          class="row-link"
                           :to="'/scans/' + s.id"
                           aria-label="검사 상세"
-                          ><ArrowUpRight :size="16"
+                          ><ChevronRight :size="16"
                         /></RouterLink>
                       </td>
                     </tr>
                   </tbody>
                 </table>
                 <div v-if="!scanRows.length" class="empty">
-                  <ScanLine :size="30" /><strong>표시할 검사가 없습니다</strong
+                  <ScanLine :size="28" /><strong>표시할 검사가 없습니다</strong
                   ><span
                     >프로젝트를 등록하고 서명된 검사 결과를 전송해
                     시작하세요.</span
@@ -529,18 +592,36 @@ async function logout() {
               </div></section
           ></template>
           <template v-if="page === 'overview'"
-            ><div class="bottom-grid">
+            ><section v-if="data.topFindings?.length" class="panel priority">
+              <div class="panel-title">
+                <h2>먼저 검토할 항목</h2>
+                <RouterLink to="/findings"
+                  >전체 위험 항목 <ArrowUpRight :size="14"
+                /></RouterLink>
+              </div>
+              <RouterLink
+                v-for="f in data.topFindings"
+                :to="'/findings/' + f.id"
+                class="list-row"
+                ><Badge :value="f.severity" /><span class="grow"
+                  >{{ f.title
+                  }}<small class="mono">{{ f.filePath }}:{{ f.startLine }}</small></span
+                ><ChevronRight :size="16"
+              /></RouterLink>
+            </section>
+            <div class="bottom-grid">
               <section class="panel">
                 <div class="panel-title">
-                  <h2>Repository별 위험 항목</h2>
-                  <FolderGit2 :size="17" />
+                  <h2>저장소별 위험 항목</h2>
                 </div>
-                <div v-for="p in data.repositoryRisk" class="list-row">
-                  <RouterLink :to="'/projects/' + p.id">{{
-                    p.repository
-                  }}</RouterLink
-                  ><strong>{{ p.count }}</strong>
-                </div>
+                <RouterLink
+                  v-for="p in data.repositoryRisk"
+                  :to="'/projects/' + p.id"
+                  class="list-row"
+                  ><span class="grow"
+                    ><FolderGit2 :size="15" /> {{ p.repository }}</span
+                  ><strong class="count">{{ p.count }}</strong>
+                </RouterLink>
                 <p v-if="!data.repositoryRisk?.length" class="empty">
                   등록된 프로젝트가 없습니다.
                 </p>
@@ -553,10 +634,10 @@ async function logout() {
                   /></RouterLink>
                 </div>
                 <div v-for="l in data.recentLogs" class="list-row">
-                  <span
+                  <span class="grow"
                     ><strong>{{ l.eventType }}</strong
                     ><small>{{ l.message }}</small></span
-                  ><small>{{ date(l.timestamp) }}</small>
+                  ><small class="time">{{ date(l.timestamp) }}</small>
                 </div>
                 <p v-if="!data.recentLogs?.length" class="empty">
                   아직 실행 이벤트가 없습니다.
@@ -564,24 +645,13 @@ async function logout() {
               </section>
             </div>
             <section class="panel" v-if="data.failures?.length">
-              <div class="panel-title"><h2>최근 실패 검사</h2></div>
+              <div class="panel-title"><h2>최근 실패한 검사</h2></div>
               <RouterLink
                 v-for="s in data.failures"
                 :to="'/scans/' + s.id"
                 class="list-row"
-                >{{ s.repository }}<Badge :value="s.status"
-              /></RouterLink>
-            </section>
-            <section v-if="data.topFindings?.length" class="panel">
-              <div class="panel-title"><h2>우선 검토 항목</h2></div>
-              <RouterLink
-                v-for="f in data.topFindings"
-                :to="'/findings/' + f.id"
-                class="list-row"
-                ><span
-                  >{{ f.title
-                  }}<small>{{ f.filePath }}:{{ f.startLine }}</small></span
-                ><Badge :value="f.severity"
+                ><span class="grow">{{ s.repository }}</span
+                ><Badge :value="s.status"
               /></RouterLink>
             </section>
             <div class="evidence-note">
@@ -591,11 +661,12 @@ async function logout() {
             </div></template
           >
           <template v-if="page === 'projects' && !id"
-            ><div class="filters">
+            ><div class="filters bare">
               <label class="search"
                 ><Search :size="16" /><input
                   v-model="search"
-                  placeholder="Repository 검색"
+                  aria-label="저장소 검색"
+                  placeholder="저장소 검색"
               /></label>
             </div>
             <div class="project-grid">
@@ -605,29 +676,38 @@ async function logout() {
                 :to="'/projects/' + p.id"
                 class="panel project-card"
                 ><div class="project-top">
-                  <FolderGit2 :size="24" /><ArrowUpRight :size="18" />
+                  <FolderGit2 :size="20" /><Badge
+                    :value="p.latestStatus || 'NOT_SCANNED'"
+                  />
                 </div>
                 <h2>{{ p.repository }}</h2>
                 <p class="mono">github.com/{{ p.repository }}</p>
-                <div class="list-row">
-                  <span><GitBranch :size="13" /> {{ p.defaultBranch }}</span
-                  ><Badge :value="p.latestStatus || 'NOT_SCANNED'" />
-                </div>
-                <div class="project-meta">
-                  <span
-                    >마지막 검사<small>{{ date(p.lastScanAt) }}</small></span
-                  ><span
-                    >위험 항목<small>{{ p.findingCount || 0 }}</small></span
-                  >
-                </div>
-                <p>정책 {{ p.policyVersion }}</p></RouterLink
+                <dl class="project-meta">
+                  <div>
+                    <dt>기본 브랜치</dt>
+                    <dd><GitBranch :size="13" /> {{ p.defaultBranch }}</dd>
+                  </div>
+                  <div>
+                    <dt>위험 항목</dt>
+                    <dd class="num">{{ p.findingCount || 0 }}</dd>
+                  </div>
+                  <div>
+                    <dt>마지막 검사</dt>
+                    <dd>{{ date(p.lastScanAt) }}</dd>
+                  </div>
+                  <div>
+                    <dt>정책 버전</dt>
+                    <dd>{{ p.policyVersion }}</dd>
+                  </div>
+                </dl></RouterLink
               >
             </div>
             <div v-if="!visible.length" class="panel empty">
-              <FolderGit2 :size="32" /><strong
+              <FolderGit2 :size="30" /><strong
                 >첫 번째 프로젝트를 연결하세요</strong
               ><span
-                >서버의 Repository Allowlist에 포함된 저장소를 등록합니다.</span
+                >서버의 저장소 허용 목록(Allowlist)에 포함된 저장소를
+                등록합니다.</span
               ><button class="primary" @click="projectModal = true">
                 프로젝트 등록
               </button>
@@ -635,52 +715,67 @@ async function logout() {
           >
           <template v-if="page === 'scans' && id"
             ><section class="panel scan-summary">
-              <Badge :value="data.status" /><span
-                ><GitBranch :size="14" /> {{ data.branch }}</span
-              ><code>{{ data.commitSha }}</code
-              ><a
-                v-if="data.runUrl"
-                :href="data.runUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                >GitHub Actions <ArrowUpRight :size="14"
-              /></a>
-              <div class="summary-grid">
-                <span
-                  >요청 시각<strong>{{ date(data.createdAt) }}</strong></span
-                ><span
-                  >완료 시각<strong>{{ date(data.finishedAt) }}</strong></span
-                ><span>정적 분석<strong>완료 · Semgrep</strong></span
-                ><span
-                  >Agent 분석<strong>{{
-                    data.status === "COMPLETED" ? "완료" : data.status
-                  }}</strong></span
-                ><span
-                  >정책 버전<strong>{{ data.policyVersion }}</strong></span
-                ><span
-                  >분석 모드<strong>{{
-                    data.analysisMode || "대기 중"
-                  }}</strong></span
-                >
+              <div class="scan-id">
+                <Badge :value="data.status" /><span class="branch"
+                  ><GitBranch :size="14" /> {{ data.branch }}</span
+                ><code>{{ data.commitSha }}</code
+                ><a
+                  v-if="data.runUrl"
+                  :href="data.runUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >GitHub Actions 실행 보기 <ArrowUpRight :size="14"
+                /></a>
               </div>
+              <dl class="summary-grid">
+                <div>
+                  <dt>요청 시각</dt>
+                  <dd>{{ date(data.createdAt) }}</dd>
+                </div>
+                <div>
+                  <dt>완료 시각</dt>
+                  <dd>{{ date(data.finishedAt) }}</dd>
+                </div>
+                <div>
+                  <dt>정적 분석</dt>
+                  <dd>Semgrep 완료</dd>
+                </div>
+                <div>
+                  <dt>Agent 분석</dt>
+                  <dd>{{ label(data.status) }}</dd>
+                </div>
+                <div>
+                  <dt>정책 버전</dt>
+                  <dd>{{ data.policyVersion }}</dd>
+                </div>
+                <div>
+                  <dt>분석 모드</dt>
+                  <dd>{{ data.analysisMode || "대기 중" }}</dd>
+                </div>
+              </dl>
             </section>
             <div v-if="data.comparison" class="comparison">
-              <span>이전 동일 브랜치 검사 대비</span
-              ><strong>신규 {{ data.comparison.added }}</strong
+              <span>같은 브랜치의 이전 검사와 비교</span
+              ><strong class="added">신규 {{ data.comparison.added }}</strong
               ><strong>미탐지 {{ data.comparison.removed }}</strong
               ><span>유지 {{ data.comparison.unchanged }}</span
               ><small
-                >미탐지는 수정 완료의 자동 확정을 의미하지 않습니다.</small
+                >미탐지는 수정 완료를 자동으로 확정하지 않습니다.</small
               >
             </div>
             <section class="panel">
               <div class="panel-title">
-                <h2>탐지 결과 · 코드 위치별 후보</h2>
-                <span>{{ data.findings?.length || 0 }} findings</span>
+                <h2>탐지 결과</h2>
+                <span>코드 위치별 후보 {{ data.findings?.length || 0 }}건</span>
               </div>
               <div v-if="reviewGroups.length" class="review-groups">
-                <strong>정책 필드 {{ reviewGroups.length }}종 · 관련 위치는 아래에서 각각 확인</strong>
-                <span v-for="[field, count] in reviewGroups" :key="field">{{ field }} · {{ count }}곳</span>
+                <strong
+                  >정책 필드 {{ reviewGroups.length }}종이 탐지되었습니다. 관련
+                  위치는 아래에서 각각 확인하세요.</strong
+                >
+                <span v-for="[field, count] in reviewGroups" :key="field"
+                  ><code>{{ field }}</code> {{ count }}곳</span
+                >
               </div>
               <RouterLink
                 class="finding-row"
@@ -690,7 +785,9 @@ async function logout() {
                 <div>
                   <strong>{{ f.title }}</strong
                   ><small class="mono"
-                    >{{ f.ruleId }} · {{ f.filePath }}:{{ f.startLine }}</small
+                    ><code>{{ f.ruleId }}</code>{{ f.filePath }}:{{
+                      f.startLine
+                    }}</small
                   >
                 </div>
                 <Badge :value="f.evidenceStatus" /><ChevronRight :size="16"
@@ -701,11 +798,14 @@ async function logout() {
             </section>
             <section class="panel">
               <div class="panel-title"><h2>실행 타임라인</h2></div>
-              <div class="list-row" v-for="l in data.logs">
-                <span
-                  >{{ l.eventType }}<small>{{ l.message }}</small></span
-                ><span>{{ date(l.timestamp) }}</span>
-              </div>
+              <ol class="timeline">
+                <li v-for="l in data.logs">
+                  <span class="grow"
+                    ><strong>{{ l.eventType }}</strong
+                    ><small>{{ l.message }}</small></span
+                  ><small class="time">{{ date(l.timestamp) }}</small>
+                </li>
+              </ol>
             </section></template
           >
           <template v-if="page === 'findings' && id"
@@ -713,42 +813,39 @@ async function logout() {
               <Badge :value="data.severity" /><Badge
                 :value="data.evidenceStatus"
               /><Badge :value="data.status" /><code>{{ data.ruleId }}</code
-              ><select
-                :value="data.status"
-                @change="review(($event.target as HTMLSelectElement).value)"
-                aria-label="검토 상태 변경"
+              ><label class="inline-select"
+                >검토 상태<select
+                  :value="data.status"
+                  @change="review(($event.target as HTMLSelectElement).value)"
+                  aria-label="검토 상태 변경"
+                >
+                  <option v-for="s in ['OPEN', 'REVIEWING', 'RESOLVED']" :value="s">
+                    {{ label(s) }}
+                  </option>
+                </select></label
               >
-                <option>OPEN</option>
-                <option>REVIEWING</option>
-                <option>RESOLVED</option>
-              </select>
             </div>
-            <div class="tabs">
+            <div class="tabs" role="tablist">
               <button
-                v-for="t in [
-                  'Overview',
-                  'Code Evidence',
-                  'AI Analysis',
-                  'Remediation',
-                  'Security References',
-                  'Activity',
-                ]"
+                v-for="(name, t) in tabs"
+                role="tab"
+                :aria-selected="tab === t"
                 @click="tab = t"
                 :class="{ selected: tab === t }"
               >
-                {{ t }}
+                {{ name }}
               </button>
             </div>
             <div class="detail-grid">
               <section class="panel detail-panel">
                 <h2>정적 분석 근거</h2>
-                <p class="mono">
+                <p class="mono file-path">
                   {{ data.filePath }}:{{ data.startLine }}–{{ data.endLine }}
                 </p>
                 <pre>{{ data.maskedCodeEvidence || "코드 원문 미제공" }}</pre>
                 <dl>
                   <dt>증거 수준</dt>
-                  <dd>{{ data.evidenceStatus }}</dd>
+                  <dd>{{ label(data.evidenceStatus) }}</dd>
                   <dt>신뢰 수준</dt>
                   <dd>{{ data.confidence }}<small v-if="data.analysis?.confidenceBasis">{{ data.analysis.confidenceBasis }}</small></dd>
                   <dt>정책</dt>
@@ -759,29 +856,32 @@ async function logout() {
                 <section v-if="data.analysis?.facts?.length" class="review-evidence">
                   <h3>확인된 정적 근거</h3>
                   <article v-for="fact in data.analysis.facts" :key="fact.id">
-                    <strong>{{ fact.id }} <small v-if="data.analysis.citedFactIds?.includes(fact.id)">리뷰에 인용됨</small></strong>
+                    <strong>{{ fact.id }} <span v-if="data.analysis.citedFactIds?.includes(fact.id)" class="tag">리뷰에 인용됨</span></strong>
                     <p>{{ fact.text }}</p>
                     <small v-if="fact.filePath" class="mono">{{ fact.filePath }}:{{ fact.line }}</small>
-                    <small v-if="fact.section">{{ fact.section }} · p.{{ fact.page }}</small>
+                    <small v-if="fact.section">{{ fact.section }}, {{ fact.page }}쪽</small>
                   </article>
                 </section>
-                <RouterLink :to="'/scans/' + data.scanId"
+                <RouterLink class="text-link" :to="'/scans/' + data.scanId"
                   >검사 상세로 이동 <ArrowUpRight :size="14"
                 /></RouterLink>
               </section>
               <section class="panel detail-panel">
                 <template v-if="tab === 'Overview' || tab === 'AI Analysis'"
                   ><div v-if="data.analysis?.policyComparison" class="review-policy">
-                    <strong>{{ data.analysis.policyComparison.entity }}.{{ data.analysis.policyComparison.field }}</strong>
+                    <strong class="mono">{{ data.analysis.policyComparison.entity }}.{{ data.analysis.policyComparison.field }}</strong>
                     <p>정책 대조: {{ policyLabels[data.analysis.policyComparison.inventoryStatus] }}</p>
-                    <small>별도 승인 기록 미확인 · 런타임 검증 미수행</small>
-                  </div><span class="eyebrow">RED ANALYSIS</span>
-                  <h2>잠재 위험</h2>
-                  <p class="threat-name">{{ data.analysis?.threatProfile }}</p>
-                  <p>{{ data.analysis?.red || "분석 결과 대기 중" }}</p>
-                  <span class="eyebrow blue">BLUE VERIFICATION</span>
-                  <h2>근거 검토와 불확실성</h2>
-                  <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
+                    <small>별도 승인 기록 미확인, 런타임 검증 미수행</small>
+                  </div>
+                  <div class="verdict red">
+                    <h2><ShieldAlert :size="18" />잠재 위험</h2>
+                    <p class="threat-name">{{ data.analysis?.threatProfile }}</p>
+                    <p>{{ data.analysis?.red || "분석 결과 대기 중" }}</p>
+                  </div>
+                  <div class="verdict blue">
+                    <h2><ShieldCheck :size="18" />근거 검토와 불확실성</h2>
+                    <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
+                  </div>
                   <section v-if="data.analysis?.orchestration" class="review-evidence">
                     <h3>Agent 도구 선택</h3>
                     <p>{{ data.analysis.orchestration.selectionMode }} · {{ data.analysis.orchestration.turns }}턴</p>
@@ -795,7 +895,7 @@ async function logout() {
                     <ul><li v-for="item in data.analysis.unknowns" :key="item">{{ item }}</li></ul>
                   </section>
                   <small
-                    >분석 모드: {{ data.analysis?.mode || "대기" }}<span v-if="data.analysis?.model"> · {{ data.analysis.model }}</span></small
+                    >분석 모드: {{ data.analysis?.mode || "대기" }}<span v-if="data.analysis?.model"> ({{ data.analysis.model }})</span></small
                   ></template
                 ><template v-if="tab === 'Code Evidence'"
                   ><h2>코드 근거 처리</h2>
@@ -825,12 +925,13 @@ async function logout() {
                     class="reference"
                     v-for="r in data.analysis?.references"
                   >
-                    <Badge :value="r.documentType" />
-                    <h3>{{ r.sectionId }} · {{ r.sectionTitle }}</h3><small>{{ data.analysis?.citedReferenceIds?.includes(r.chunkId) ? "LLM이 인용한 근거" : "검색된 참고 근거" }}</small>
+                    <div class="reference-head">
+                      <Badge :value="r.documentType" /><span class="tag">{{ data.analysis?.citedReferenceIds?.includes(r.chunkId) ? "LLM이 인용한 근거" : "검색된 참고 근거" }}</span>
+                    </div>
+                    <h3><code>{{ r.sectionId }}</code> {{ r.sectionTitle }}</h3>
                     <small
-                      >{{ r.documentId }} @{{ r.documentVersion }} · p.{{
-                        r.pageNumber
-                      }}</small
+                      >{{ r.documentId }} @{{ r.documentVersion }},
+                      {{ r.pageNumber }}쪽</small
                     >
                     <p>{{ r.content }}</p>
                     <small>{{ r.source }}</small>
@@ -841,19 +942,20 @@ async function logout() {
                 ><template v-if="tab === 'Activity'"
                   ><h2>활동 기록</h2>
                   <div class="list-row" v-for="a in data.activity">
-                    <span>{{ a.message }}</span
-                    ><small>{{ date(a.timestamp) }}</small>
+                    <span class="grow">{{ a.message }}</span
+                    ><small class="time">{{ date(a.timestamp) }}</small>
                   </div></template
                 >
               </section>
             </div></template
           >
           <template v-if="page === 'policies'"
-            ><div class="filters">
+            ><div class="filters bare">
               <label class="search"
                 ><Search :size="16" /><input
                   v-model="search"
-                  placeholder="문서 · 조항 · 원문 검색"
+                  aria-label="정책 검색"
+                  placeholder="문서, 조항, 원문 검색"
               /></label>
             </div>
             <div class="policy-grid">
@@ -862,13 +964,14 @@ async function logout() {
                 class="panel policy-card"
                 @click="drawer = p"
               >
-                <Badge :value="p.documentType" />
-                <h2>{{ p.sectionId }} · {{ p.sectionTitle }}</h2>
+                <span class="policy-head"
+                  ><code>{{ p.sectionId }}</code><Badge :value="p.documentType"
+                /></span>
+                <h2>{{ p.sectionTitle }}</h2>
                 <p>{{ p.content?.slice(0, 180) }}…</p>
                 <small
-                  >{{ p.documentId }} · v{{ p.documentVersion }} · p.{{
-                    p.pageNumber
-                  }}</small
+                  >{{ p.documentId }} v{{ p.documentVersion }},
+                  {{ p.pageNumber }}쪽</small
                 ><span class="text-link"
                   >조항 보기 <ArrowUpRight :size="14"
                 /></span>
@@ -885,6 +988,7 @@ async function logout() {
                 <label class="search"
                   ><Search :size="16" /><input
                     v-model="search"
+                    aria-label="검색"
                     placeholder="검색어를 입력하세요" /></label
                 ><select
                   v-if="page !== 'logs'"
@@ -896,8 +1000,9 @@ async function logout() {
                     v-for="s in page === 'approvals'
                       ? ['PENDING', 'APPROVED', 'REJECTED', 'EXECUTED']
                       : ['OPEN', 'REVIEWING', 'RESOLVED']"
+                    :value="s"
                   >
-                    {{ s }}
+                    {{ label(s) }}
                   </option></select
                 ><select
                   v-if="page === 'findings'"
@@ -905,8 +1010,11 @@ async function logout() {
                   aria-label="위험도"
                 >
                   <option value="">모든 위험도</option>
-                  <option v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']">
-                    {{ s }}
+                  <option
+                    v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']"
+                    :value="s"
+                  >
+                    {{ label(s) }}
                   </option></select
                 ><template v-if="page === 'logs'"
                   ><select v-model="logLevel" aria-label="로그 레벨">
@@ -935,10 +1043,11 @@ async function logout() {
                   ><Badge :value="f.severity" />
                   <div>
                     <strong>{{ f.title }}</strong
-                    ><small
-                      >{{ f.repository }} · {{ f.filePath }}:{{
-                        f.startLine
-                      }}</small
+                    ><small class="meta"
+                      ><span>{{ f.repository }}</span
+                      ><span class="mono"
+                        >{{ f.filePath }}:{{ f.startLine }}</span
+                      ></small
                     >
                   </div>
                   <Badge :value="f.status" /><ChevronRight :size="16"
@@ -948,23 +1057,23 @@ async function logout() {
                 <table>
                   <thead>
                     <tr>
-                      <th>TIMESTAMP {{ oldestFirst ? "↑" : "↓" }}</th>
-                      <th>EVENT / COMPONENT</th>
-                      <th>LEVEL</th>
-                      <th>MESSAGE</th>
-                      <th>SCAN / TRACE</th>
+                      <th>시각 {{ oldestFirst ? "↑" : "↓" }}</th>
+                      <th>이벤트 / 컴포넌트</th>
+                      <th>레벨</th>
+                      <th>메시지</th>
+                      <th>검사 / 추적 ID</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="l in visible">
                       <td>{{ date(l.timestamp) }}</td>
                       <td>
-                        {{ l.eventType }}<small>{{ l.component }}</small>
+                        <strong>{{ l.eventType }}</strong><small>{{ l.component }}</small>
                       </td>
                       <td><Badge :value="l.level" /></td>
-                      <td>{{ l.message }}</td>
+                      <td class="message">{{ l.message }}</td>
                       <td>
-                        <RouterLink :to="'/scans/' + l.scanId">{{
+                        <RouterLink class="mono" :to="'/scans/' + l.scanId">{{
                           l.scanId?.slice(0, 8)
                         }}</RouterLink
                         ><small class="mono">{{
@@ -981,107 +1090,120 @@ async function logout() {
                   class="list-row approval-row"
                   @click="drawer = a"
                 >
-                  <ClipboardCheck :size="20" /><span
+                  <ClipboardCheck :size="18" /><span class="grow"
                     ><strong>{{ a.action }}</strong
-                    ><small
-                      >{{ a.repository }} · {{ a.commitSha?.slice(0, 8) }} ·
-                      {{ date(a.createdAt) }}</small
+                    ><small class="meta"
+                      ><span>{{ a.repository }}</span
+                      ><span class="mono">{{ a.commitSha?.slice(0, 8) }}</span
+                      ><span>{{ date(a.createdAt) }}</span></small
                     ></span
                   ><Badge :value="a.status" /><ChevronRight :size="16" />
                 </button>
               </div>
               <div v-if="!visible.length" class="empty">
-                <ShieldCheck :size="30" /><strong>표시할 항목이 없습니다</strong
+                <ShieldCheck :size="28" /><strong>표시할 항목이 없습니다</strong
                 ><span>검사 결과가 저장되면 이곳에서 확인할 수 있습니다.</span>
               </div>
             </section></template
           >
           <div v-if="page !== 'overview' && !id" class="pagination">
             <span
-              >{{ filtered.length }}개 항목 · 페이지 {{ current }} /
-              {{ pages }}</span
+              >{{ filtered.length }}개 항목, {{ current }} / {{ pages }}
+              페이지</span
             ><button :disabled="current <= 1" @click="current--">이전</button
             ><button :disabled="current >= pages" @click="current++">
               다음
             </button>
           </div></template
         >
-        <footer>
-          CSI <span>CYBER SECURITY INSPECTOR</span
-          ><small>정적 분석 증거와 검색된 정책에 기반한 진단</small>
-        </footer>
+        <footer>정적 분석 증거와 검색된 정책 조항에 기반한 진단입니다.</footer>
       </div>
     </main>
-    <div v-if="drawer" class="overlay" @click.self="drawer = null">
-      <section
-        class="drawer"
-        role="dialog"
-        aria-modal="true"
-        aria-label="상세 정보"
-      >
-        <button class="close" @click="drawer = null" aria-label="닫기">
-          <X :size="20" />
-        </button>
-        <h2>{{ drawer.sectionId || "승인 요청" }}</h2>
-        <template v-if="page === 'policies'"
-          ><Badge :value="drawer.documentType" />
-          <h3>{{ drawer.sectionTitle }}</h3>
-          <p class="preserve">{{ drawer.content }}</p>
-          <small>{{ drawer.source }} · p.{{ drawer.pageNumber }}</small>
-          <h3>관련 위험 항목</h3>
-          <RouterLink :to="'/findings'" @click="drawer = null"
-            >위험 항목에서 정책 근거 확인</RouterLink
-          ></template
-        ><template v-else
-          ><Badge :value="drawer.status" />
-          <h3>{{ drawer.action }}</h3>
-          <p>{{ drawer.repository }}</p>
-          <code>{{ drawer.commitSha }}</code>
-          <p>정책 {{ drawer.policyVersion }}</p>
-          <RouterLink :to="'/scans/' + drawer.scanId" @click="drawer = null"
-            >관련 검사 및 근거 확인</RouterLink
+    <Transition name="drawer">
+      <div v-if="drawer" class="overlay" @click.self="drawer = null">
+        <section
+          class="drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="상세 정보"
+        >
+          <button class="close" @click="drawer = null" aria-label="닫기">
+            <X :size="20" />
+          </button>
+          <template v-if="page === 'policies'"
+            ><span class="policy-head"
+              ><code>{{ drawer.sectionId }}</code
+              ><Badge :value="drawer.documentType"
+            /></span>
+            <h2>{{ drawer.sectionTitle }}</h2>
+            <p class="preserve">{{ drawer.content }}</p>
+            <small>{{ drawer.source }}, {{ drawer.pageNumber }}쪽</small>
+            <h3>관련 위험 항목</h3>
+            <RouterLink class="text-link" :to="'/findings'" @click="drawer = null"
+              >위험 항목에서 정책 근거 확인 <ArrowUpRight :size="14"
+            /></RouterLink></template
+          ><template v-else
+            ><h2>승인 요청</h2>
+            <Badge :value="drawer.status" />
+            <h3>{{ drawer.action }}</h3>
+            <dl>
+              <dt>저장소</dt>
+              <dd>{{ drawer.repository }}</dd>
+              <dt>커밋</dt>
+              <dd class="mono">{{ drawer.commitSha }}</dd>
+              <dt>정책</dt>
+              <dd>{{ drawer.policyVersion }}</dd>
+            </dl>
+            <RouterLink
+              class="text-link"
+              :to="'/scans/' + drawer.scanId"
+              @click="drawer = null"
+              >관련 검사와 근거 확인 <ArrowUpRight :size="14"
+            /></RouterLink>
+            <p class="note">
+              승인하면 CSI 내부 보안 검토 이슈가 생성됩니다. 코드 수정이나 운영
+              배포는 수행하지 않습니다.
+            </p>
+            <div v-if="drawer.status === 'PENDING'" class="drawer-actions">
+              <button @click="decide(drawer, 'REJECTED')">거절</button
+              ><button class="primary" @click="decide(drawer, 'APPROVED')">
+                승인
+              </button>
+            </div>
+            <p v-else>
+              처리자 {{ drawer.decidedBy || "—" }}, {{ date(drawer.decidedAt) }}
+            </p></template
           >
-          <p>
-            승인은 CSI 내부 보안 검토 이슈를 생성합니다. 코드 수정이나 운영
-            배포는 수행하지 않습니다.
-          </p>
-          <div v-if="drawer.status === 'PENDING'" class="heading-actions">
-            <button @click="decide(drawer, 'REJECTED')">거절</button
-            ><button class="primary" @click="decide(drawer, 'APPROVED')">
-              승인
-            </button>
-          </div>
-          <p v-else>
-            처리자: {{ drawer.decidedBy || "—" }} · {{ date(drawer.decidedAt) }}
-          </p></template
-        >
-      </section>
-    </div>
-    <div v-if="projectModal" class="overlay" @click.self="projectModal = false">
-      <form class="modal" @submit.prevent="addProject">
-        <button
-          type="button"
-          class="close"
-          @click="projectModal = false"
-          aria-label="닫기"
-        >
-          <X :size="20" />
-        </button>
-        <h2>프로젝트 등록</h2>
-        <p>허용된 GitHub Repository를 연결합니다.</p>
-        <label
-          >Repository<input
-            v-model="repo"
-            required
-            pattern="[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+"
-            placeholder="organization/repository" /></label
-        ><label
-          >기본 브랜치<input
-            v-model="defaultBranch"
-            required
-            placeholder="develop" /></label
-        ><button class="primary">등록</button>
-      </form>
-    </div>
+        </section>
+      </div>
+    </Transition>
+    <Transition name="fade">
+      <div v-if="projectModal" class="overlay center" @click.self="projectModal = false">
+        <form class="modal" @submit.prevent="addProject">
+          <button
+            type="button"
+            class="close"
+            @click="projectModal = false"
+            aria-label="닫기"
+          >
+            <X :size="20" />
+          </button>
+          <h2>프로젝트 등록</h2>
+          <p>허용 목록에 있는 GitHub 저장소를 연결합니다.</p>
+          <label
+            >저장소<input
+              v-model="repo"
+              required
+              pattern="[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+"
+              placeholder="organization/repository" /></label
+          ><label
+            >기본 브랜치<input
+              v-model="defaultBranch"
+              required
+              placeholder="develop" /></label
+          ><button class="primary">프로젝트 등록</button>
+        </form>
+      </div>
+    </Transition>
   </div>
 </template>

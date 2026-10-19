@@ -80,3 +80,9 @@ docker compose up -d --no-deps backend business-mcp rag-mcp agent frontend
 2026-10-19 로컬 적용 후 Lichu 검사 `3e963769-b666-4d74-be45-5dee03b54769`가 COMPLETED / LLM으로 완료되었습니다. gpt-4.1-mini가 정책 조회 → 필드 비교 → 사내 검색 → 외부 검색 → 종료를 5턴에 걸쳐 선택했습니다. POL-01 후보 5건 모두 LLM 리뷰이며 도구 선택 5회 + 리뷰 배치 2회, API usage 합계 11,338 tokens, 예약 예산 65,866, 최대 요청 입력 상한 13,173입니다. 실제 API에서 사실·문서 인용 ID와 이벤트 저장을 확인하고 Chrome에서 선택 trace·예산·인용 표시를 검증했습니다. 이 기록은 LOCAL_DEMO이며 새로운 GitHub Push 검증이 아닙니다.
 
 Python 전체 테스트 31개 통과 후 6개 규칙이 12턴/도구별 3회 내에 처리되는 테스트를 추가해 Agent 테스트 12개가 통과했습니다. Spring 테스트 5개와 Vue 타입 검사·빌드도 통과했습니다. 원본 PDF 4개는 페이지를 읽을 수 있음을 확인했고 이동 전후 SHA-256이 동일합니다.
+
+### dev 프론트엔드 병합 검증
+
+2026-10-19 팀원 UI 변경 `dd8afee`를 병합했습니다. 취약점 상세 충돌은 새 verdict 디자인·한국어 탭을 보존하고 Agent 선택 trace·예산·fallback 표시를 추가하는 방식으로 해결했습니다. Python 전체 32개 테스트와 Vue 타입 검사·프로덕션 빌드가 통과했습니다. Chrome E2E는 실제 API의 주요 화면, SSE 연결 표시, 로그인/로그아웃, 모델 선택 trace·인용, 390px 모바일의 가로 넘침을 검증합니다. 테스트 전 LLM LOCAL_DEMO 보고서가 최소 1건 필요합니다.
+
+병합된 로컬 서버에서 새 Lichu 검사 `844ec39c-fa38-4ee8-a059-f97ddc48bc42`가 COMPLETED / LLM(gpt-4.1-mini), 후보 5건으로 완료됐습니다. 실제 모델 선택 5턴과 MCP 호출·인용 ID를 확인했습니다. 이는 LOCAL_DEMO 검증이며 GitHub Actions Push 검증으로 기록하지 않습니다.
