@@ -48,7 +48,7 @@ uv pip install --python .scanner-venv/bin/python -r rules/requirements.txt
 
 `demo.py`는 Java 샘플을 실행하지 않습니다. 실제 Semgrep 분석 → 문자열/주석 마스킹 → HMAC 서명 → API 접수 → Kafka → Agent → MCP → 결과 저장을 실행합니다. 같은 Payload를 두 번 전송하여 멱등성을 함께 확인합니다. 취약 샘플은 8건, 수정 샘플은 0건이 예상됩니다. SHA-256 파일 체크섬은 비밀번호 해시 규칙에서 제외됩니다. Commit SHA는 로컬 합성 소스의 SHA-1 식별자이며 실제 GitHub commit이라는 의미가 아닙니다.
 
-격리된 scanner를 별도로 실행할 수도 있습니다.
+정적 분석 도구를 실행하는 격리 컨테이너를 별도로 사용할 수도 있습니다. 대상 애플리케이션이나 대상 테스트를 실행하는 Sandbox는 아닙니다.
 
 ```sh
 mkdir -p .runtime
@@ -72,25 +72,35 @@ T4는 개별 공격 기법이 아니라 개인정보 처리 정책 이탈 위험
 
 ```mermaid
 flowchart LR
-  Push[GitHub Push / Local fixture] --> Scanner[읽기 전용 Semgrep]
-  Scanner -->|HMAC + timestamp| API[Spring Boot]
-  API --> DB[(PostgreSQL)]
-  DB --> Outbox[Transactional Outbox]
-  Outbox --> Kafka[Kafka KRaft]
-  Kafka --> Agent[FastAPI + LangGraph]
-  Agent --> Business[business-mcp]
+  Push[GitHub Push / 수동 실행] --> Actions[GitHub Actions 정적 스캐너]
+  Local[로컬 CLI / 선택적 격리 스캐너] --> Submit[정규화 결과 + HMAC 서명]
+  Actions --> Submit
+  Submit -->|인증된 HTTP POST| API[Spring Boot]
+  API -->|검사와 Outbox 트랜잭션| DB[(업무 PostgreSQL)]
+  DB --> Outbox[Outbox 발행기]
+  Outbox --> Request[Kafka scan.request]
+  Request -->|SCAN_REQUESTED / APPROVAL_DECIDED| Agent[FastAPI + LangGraph]
+  Agent <-->|동일 scanId 상태 저장 / 재개| Checkpoint[(Postgres Checkpointer)]
+  Agent <-->|도구 선택 / 리뷰| LLM[설정된 LLM API]
+  Agent --> Business[business-mcp 읽기 / 검토 요청 / 승인 후 내부 이슈]
   Business -->|인증된 internal API| API
   Agent --> RAG[rag-mcp]
-  RAG --> Q[(Qdrant)]
-  PDF[제공된 PDF 2종] --> Index[조항·페이지 추출 + 로컬 벡터화]
+  RAG --> Q[(Qdrant PG-POL / PG-REF)]
+  PDF[제공 PDF 2종] --> Index[조항 추출 / 벡터화 47청크]
   Index --> Q
-  Agent -->|progress / result / log| Kafka
-  Kafka --> API
-  API -->|REST + SSE| Vue[Vue Console]
-  Agent --> Checkpoint[(Postgres Checkpointer)]
-  Vue -->|승인 / 거절| API
-  API -->|approval event via outbox| Kafka
+  Agent --> Results[Kafka scan.progress / scan.result / scan.log]
+  Results --> Consumer[Spring Kafka Consumer]
+  Consumer --> DB
+  Consumer -->|상태 변경 SSE 알림| Vue[Vue Console]
+  API -->|REST 조회| Vue
+  Vue -->|승인 / 거절과 관리 요청| API
+  Agent -->|실행 재시도 소진| DLQ[scan.dlq]
+  Consumer -->|소비 재시도 소진| DLT[scan.progress.DLT / scan.result.DLT / scan.log.DLT]
 ```
+
+승인/거절도 `APPROVAL_DECIDED` 이벤트로 **같은 `scan.request` 토픽**을 사용합니다. Agent는 Backend의 승인 상태를 다시 읽고 같은 `thread_id=scanId`에서 `Command(resume=...)`로 `interrupt()`를 재개합니다. DLQ/DLT 자동 재처리 기능은 없습니다. 상세 시퀀스와 구현 범위는 [실제 구현 기준 아키텍처](docs/ARCHITECTURE.md)를 참고하세요.
+
+대상 코드 실행 Sandbox, MCP 코드 패치 도구, Vue 파일 업로드, OWASP 원문 직접 색인은 구현되어 있지 않습니다. 스캔 접수는 GitHub webhook이 아니라 Actions/로컬 CLI의 서명된 HTTP POST입니다. Vue는 조회·승인 외에 프로젝트 등록과 Finding 검토 상태 변경을 지원합니다.
 
 `scan.request`, `scan.progress`, `scan.result`, `scan.log`, `scan.dlq`와 Backend DLT를 사용합니다. Backend는 접수 트랜잭션에 검사와 Outbox를 함께 저장한 뒤 202를 반환합니다. Broker 전송은 최대 3회, Agent 실행은 최대 2회, 단일 실행 180초, graph recursion 60, 모델 도구 선택 12턴, MCP 호출당 15초, 동일 도구 이름당 3회 제한입니다. 모델 호출의 시간·입력·출력·누적 예산은 [Agent Harness](docs/AGENT_HARNESS.md)를 참고하세요. 10분 이상 미완료 작업은 FAILED 처리됩니다. Kafka 실패나 분석 실패를 완료로 바꾸지 않습니다.
 

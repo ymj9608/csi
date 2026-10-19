@@ -15,10 +15,19 @@ flowchart TD
   R --> W[보고서 저장]
   S -->|아니오| W
   W --> A[후속 검토 요청 / HITL 중단]
-  A -->|승인| I[Backend 승인 검증 후 내부 이슈 생성]
+  A --> C[(Postgres checkpoint)]
+  U[Vue 승인 / 거절] --> B[Backend 승인 상태 + Outbox 저장]
+  B --> K[scan.request / APPROVAL_DECIDED]
+  K --> G[Agent가 Backend 승인 상태 재조회]
+  C --> G
+  G --> M[동일 scanId의 Command resume]
+  M -->|승인| I[Backend 승인 검증 후 내부 이슈 생성]
+  M -->|거절| F[쓰기 없이 종료]
 ```
 
 Finding이 없는 경우 승인 요청 없이 종료합니다. 모델에는 `get_privacy_policy`, `compare_policy_with_findings`, `get_scan_history`, `get_guideline_details`, 두 종류의 검색과 `finish_analysis`만 제공합니다. 함수 스키마는 `planner.py`의 명시적인 MCP 어댑터에서 관리합니다. MCP 서버의 모든 도구를 동적으로 노출하지 않습니다.
+
+`scan.request`는 신규 검사와 승인 재개가 공유하는 토픽입니다. 위 그림의 승인은 코드를 수정하는 승인이 아니라 **CSI 내부 보안 검토 이슈 생성 승인**입니다. 전체 진입점·실패 경로·미구현 기능은 [실제 구현 기준 아키텍처](ARCHITECTURE.md)를 참고하세요.
 
 모델은 실제 함수 호출 응답을 내며, Harness가 이를 검사하고 FastMCP로 실행합니다. 최근 도구 관측·오류는 다음 요청의 `tool` 메시지로 전달하고 과거 호출은 요약합니다. 정책 snapshot, POL-01 필드 비교, 각 규칙의 사내/외부 근거가 없으면 종료를 거절합니다. 모델의 입력으로 전달된 코드 유래 정보와 문서 발췌는 명령이 아닌 데이터입니다.
 

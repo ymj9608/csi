@@ -57,7 +57,9 @@
       "network": "none",
       "source": "read-only",
       "user": "65532",
-      "findings": 8
+      "findings": 8,
+      "executionMode": "STATIC_SCANNER_ONLY",
+      "targetApplicationExecuted": false
     }
   },
   "scans": [
@@ -114,5 +116,10 @@
     "Single organization, SECURITY_REVIEWER workspace scope; no multi-tenant/developer ACL",
     "List APIs currently return up to 1000 rows for client-side pagination",
     "Security issues are CSI internal records, not external GitHub issues"
+  ],
+  "recordScope": "Historical verification snapshot; notVerified describes this original run, not the current project status.",
+  "followUpEvidence": [
+    "AGENT_HARNESS.md",
+    "ARCHITECTURE.md"
   ]
 }
