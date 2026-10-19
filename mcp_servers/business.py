@@ -3,6 +3,7 @@ from uuid import UUID
 import httpx
 from fastmcp import FastMCP
 from .common import ServiceTokenVerifier
+from .policy_review import compare_findings
 mcp=FastMCP('CSI business-mcp',auth=ServiceTokenVerifier())
 async def request(path,method='GET'):
     async with httpx.AsyncClient(base_url=os.environ.get('CSI_BACKEND_URL','http://127.0.0.1:8080'),timeout=12,headers={'Authorization':'Bearer '+os.environ['CSI_INTERNAL_TOKEN']}) as client:
@@ -27,7 +28,7 @@ async def get_scan_history(scan_id:str)->list:
 async def compare_policy_with_findings(scan_id:str)->dict:
     """Compare supported rule candidates with the actual project policy. Does not assert legal violations."""
     policy=await get_privacy_policy.fn(scan_id);findings=await get_scan_findings.fn(scan_id)
-    return {'policyVersion':policy['version'],'bcryptMinCost':policy['bcryptMinCost'],'approvedFields':policy['approvedFields'],'candidateCount':len(findings),'requiresHumanReview':bool(findings),'limitations':['Field existence does not prove collection','No runtime persistence proof','Fictional internal policy, not legal advice']}
+    return compare_findings(findings, policy)
 @mcp.tool()
 async def request_security_review(scan_id:str)->dict:
     """Create an idempotent approval request. This does not execute any remediation."""

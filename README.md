@@ -2,19 +2,19 @@
 
 Vue 3 보안 콘솔과 Spring Boot → Kafka → LangGraph → business-mcp / rag-mcp → PostgreSQL 파이프라인을 구현한 Capstone 프로젝트입니다. **Local Demo가 기본**이며, 정적 분석 결과와 합성 시연 데이터의 출처를 `LOCAL_DEMO`로 표시합니다. 탐지 없는 검사는 전체 시스템의 안전 보증이 아닙니다.
 
-## Lichu 기반 website 연결
+## Lichu 연결
 
-`../website/`는 `ymj9608/website`로 연결할 별도 앱입니다. 기존 Java 규칙에 Python/FastAPI 규칙을 추가했습니다. `.py` 파일도 읽기 전용 스냅샷, 문자열·주석 마스킹, HMAC 접수, 같은 Kafka/MCP/RAG 경로를 사용합니다. 예시 수정 코드도 파일 언어에 맞춰 제공합니다. Python 규칙 역시 이름·구문 기반이며 전체 데이터 흐름을 증명하지 않습니다.
+`../Lichu/`는 `ymj9608/Lichu`의 회원가입 검사 대상 앱입니다. 기존 Java 규칙에 Python/FastAPI 규칙을 추가했습니다. `.py` 파일도 읽기 전용 스냅샷, 문자열·주석 마스킹, HMAC 접수, 같은 Kafka/MCP/RAG 경로를 사용합니다. 예시 수정 코드도 파일 언어에 맞춰 제공합니다. Python 규칙 역시 이름·구문 기반이며 전체 데이터 흐름을 증명하지 않습니다.
 
-로컬 실습 실행 및 GitHub Actions의 실제 설정은 `../website/docs/csi/GITHUB_ACTIONS_SETUP.md`에 있습니다. 사내 문서의 기준을 Python 코드에 적용하지만 문서 원문 자체를 Python 지침으로 바꿔 인용하지 않습니다.
+로컬 실습 실행 및 GitHub Actions의 실제 설정은 `../Lichu/docs/csi/GITHUB_ACTIONS_SETUP.md`에 있습니다. 사내 문서의 기준을 Python 코드에 적용하지만 문서 원문 자체를 Python 지침으로 바꿔 인용하지 않습니다.
 
 ```sh
-.venv/bin/python scripts/scan_repository.py ../website --repository ymj9608/website
+.venv/bin/python scripts/scan_repository.py ../Lichu --repository ymj9608/Lichu
 ```
 
-이 명령은 현재 Java/Python 파일 내용의 합성 SHA와 `LOCAL_DEMO`를 사용합니다. GitHub Push 검증으로 표시하지 않습니다. `CSI_REPOSITORY_ALLOWLIST`에 `ymj9608/website`를 먼저 추가하고 백엔드를 재생성해야 합니다.
+이 명령은 현재 Java/Python 파일 내용의 합성 SHA와 `LOCAL_DEMO`를 사용합니다. GitHub Push 검증으로 표시하지 않습니다. `CSI_REPOSITORY_ALLOWLIST`에 `ymj9608/Lichu`를 먼저 추가하고 백엔드를 재생성해야 합니다.
 
-`csi` 저장소 자체의 스캔 워크플로는 `CSI_SCAN_THIS_REPOSITORY=true`일 때만 실행됩니다. 웹사이트의 자동 검사는 `website/.github/workflows/csi-security-scan.yml`이 담당합니다. `CSI_SCANNER_REF`는 이 Python 지원 변경이 포함된, GitHub에 Push한 CSI 커밋의 전체 SHA로 지정하세요.
+`csi` 저장소 자체의 스캔 워크플로는 `CSI_SCAN_THIS_REPOSITORY=true`일 때만 실행됩니다. 웹사이트의 자동 검사는 `Lichu/.github/workflows/csi-security-scan.yml`이 담당합니다. `CSI_SCANNER_REF`는 이 Python 지원 변경이 포함된, GitHub에 Push한 CSI 커밋의 전체 SHA로 지정하세요.
 
 ## 실행
 
@@ -135,7 +135,7 @@ LLM_API_KEY=replace-locally
 LLM_MODEL=your-model
 ```
 
-외부 LLM에는 코드 원문, 경로·변수 이름, 비밀값, PDF 전체 원문을 전송하지 않습니다. 규칙과 제한된 후보 설명, 검색된 조항 메타데이터만 전송합니다. 출력은 Pydantic으로 검증하고, 기존 Finding ID 집합과 인용 ID를 강제합니다. timeout·키 누락·잘못된 출력·허위 인용 시 RULE_BASED 내용으로 돌아가며 **LLM_FALLBACK**을 표시합니다. 이 경로는 단위 테스트로 검증했으며 실제 외부 LLM 성공 호출은 키 제공 전에는 미검증입니다. LLM의 자연어 서술 전체의 사실성을 자동 증명하는 기능은 없습니다.
+외부 LLM에는 코드 원문, 파일 경로, 비밀값, 개인정보 값, PDF 전체 원문을 전송하지 않습니다. 지원된 필드·클래스 이름, 구조화된 정적 사실, 실제 증거 수준, 관련 정책 조항 발췌를 전달합니다. 이 전송 범위를 승인한 환경에서만 LLM을 활성화하세요. 출력은 Pydantic으로 검증하고 기존 Finding ID, 사실 ID, 검색된 문서 ID와 필수 인용을 검증합니다. timeout·키 누락·잘못된 출력·허위 인용 시 규칙 기반 내용으로 돌아가며 **LLM_FALLBACK**을 표시합니다. 단위 테스트와 Lichu LOCAL_DEMO에서 실제 OpenAI 호출을 검증했습니다. 자연어 서술 전체의 사실성을 자동 증명하지는 않습니다. 구현 범위와 검증 방법은 [근거 기반 정책 리뷰](docs/REVIEW_QUALITY.md)를 참고하세요.
 
 ## GitHub Push Integration Mode
 

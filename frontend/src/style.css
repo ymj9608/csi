@@ -1276,3 +1276,12 @@ dd {
     margin-top: 8px;
   }
 }
+
+.review-evidence { margin: 22px 0; border-top: 1px solid var(--border, #29445e); padding-top: 16px; }
+.review-evidence article { margin: 14px 0; }
+.review-evidence p { margin: 8px 0; }
+.review-evidence small, .detail-panel dd small { display: block; line-height: 1.6; }
+.review-evidence ul { padding-left: 20px; line-height: 1.8; }
+.review-policy { padding: 16px; margin-bottom: 24px; background: #102b49; border-radius: 10px; }
+.review-groups { display: flex; flex-wrap: wrap; gap: 12px; padding: 16px; color: #94a3b8; }
+.review-groups strong { width: 100%; }

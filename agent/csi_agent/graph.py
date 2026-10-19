@@ -60,7 +60,7 @@ def build_graph(checkpointer,emit):
         history=await tool(s,'business','get_scan_history',{'scan_id':s['event']['scanId']}) if 'POL-01' in s['rules'] else []
         return {'references':refs,'history':history}
     async def red(s):
-        await log(s,'red_risk_analysis');return {'report':base_report(s['findings'],s['references'],s['policy'])}
+        await log(s,'red_risk_analysis');return {'report':base_report(s['findings'],s['references'],s['policy'],s.get('comparison'))}
     async def blue(s):
         await log(s,'blue_defense_verification');report,mode=await enrich(s['report'],s['findings'])
         if mode=='LLM_FALLBACK':await log(s,'llm_fallback')

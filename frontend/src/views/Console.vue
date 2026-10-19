@@ -62,6 +62,16 @@ const data = ref<any>({}),
   projectModal = ref(false),
   repo = ref(""),
   defaultBranch = ref("develop");
+const reviewGroups = computed(() => {
+  const groups: Record<string, number> = {};
+  for (const f of data.value.findings || []) {
+    if (f.ruleId !== 'POL-01' || !f.analysis?.policyComparison?.field) continue;
+    const key = f.analysis.policyComparison.field;
+    groups[key] = (groups[key] || 0) + 1;
+  }
+  return Object.entries(groups);
+});
+const policyLabels: Record<string, string> = {LISTED: '승인 목록에 포함', NOT_LISTED: '승인 목록에 없음', RESTRICTED: '제한 항목', UNKNOWN: '판단 보류'};
 let es: EventSource | undefined;
 let refreshTimer: ReturnType<typeof setTimeout>;
 let request = 0;
@@ -665,8 +675,12 @@ async function logout() {
             </div>
             <section class="panel">
               <div class="panel-title">
-                <h2>탐지 결과</h2>
+                <h2>탐지 결과 · 코드 위치별 후보</h2>
                 <span>{{ data.findings?.length || 0 }} findings</span>
+              </div>
+              <div v-if="reviewGroups.length" class="review-groups">
+                <strong>정책 필드 {{ reviewGroups.length }}종 · 관련 위치는 아래에서 각각 확인</strong>
+                <span v-for="[field, count] in reviewGroups" :key="field">{{ field }} · {{ count }}곳</span>
               </div>
               <RouterLink
                 class="finding-row"
@@ -736,27 +750,44 @@ async function logout() {
                   <dt>증거 수준</dt>
                   <dd>{{ data.evidenceStatus }}</dd>
                   <dt>신뢰 수준</dt>
-                  <dd>{{ data.confidence }}</dd>
+                  <dd>{{ data.confidence }}<small v-if="data.analysis?.confidenceBasis">{{ data.analysis.confidenceBasis }}</small></dd>
                   <dt>정책</dt>
                   <dd>{{ data.policyVersion }}</dd>
                   <dt>커밋</dt>
                   <dd class="mono">{{ data.commitSha }}</dd>
                 </dl>
+                <section v-if="data.analysis?.facts?.length" class="review-evidence">
+                  <h3>확인된 정적 근거</h3>
+                  <article v-for="fact in data.analysis.facts" :key="fact.id">
+                    <strong>{{ fact.id }} <small v-if="data.analysis.citedFactIds?.includes(fact.id)">리뷰에 인용됨</small></strong>
+                    <p>{{ fact.text }}</p>
+                    <small v-if="fact.filePath" class="mono">{{ fact.filePath }}:{{ fact.line }}</small>
+                    <small v-if="fact.section">{{ fact.section }} · p.{{ fact.page }}</small>
+                  </article>
+                </section>
                 <RouterLink :to="'/scans/' + data.scanId"
                   >검사 상세로 이동 <ArrowUpRight :size="14"
                 /></RouterLink>
               </section>
               <section class="panel detail-panel">
                 <template v-if="tab === 'Overview' || tab === 'AI Analysis'"
-                  ><span class="eyebrow">RED ANALYSIS</span>
+                  ><div v-if="data.analysis?.policyComparison" class="review-policy">
+                    <strong>{{ data.analysis.policyComparison.entity }}.{{ data.analysis.policyComparison.field }}</strong>
+                    <p>정책 대조: {{ policyLabels[data.analysis.policyComparison.inventoryStatus] }}</p>
+                    <small>별도 승인 기록 미확인 · 런타임 검증 미수행</small>
+                  </div><span class="eyebrow">RED ANALYSIS</span>
                   <h2>잠재 위험</h2>
                   <p class="threat-name">{{ data.analysis?.threatProfile }}</p>
                   <p>{{ data.analysis?.red || "분석 결과 대기 중" }}</p>
                   <span class="eyebrow blue">BLUE VERIFICATION</span>
                   <h2>근거 검토와 불확실성</h2>
                   <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
+                  <section v-if="data.analysis?.unknowns?.length" class="review-evidence">
+                    <h3>추가 확인이 필요한 사항</h3>
+                    <ul><li v-for="item in data.analysis.unknowns" :key="item">{{ item }}</li></ul>
+                  </section>
                   <small
-                    >분석 모드: {{ data.analysis?.mode || "대기" }}</small
+                    >분석 모드: {{ data.analysis?.mode || "대기" }}<span v-if="data.analysis?.model"> · {{ data.analysis.model }}</span></small
                   ></template
                 ><template v-if="tab === 'Code Evidence'"
                   ><h2>코드 근거 처리</h2>
@@ -787,7 +818,7 @@ async function logout() {
                     v-for="r in data.analysis?.references"
                   >
                     <Badge :value="r.documentType" />
-                    <h3>{{ r.sectionId }} · {{ r.sectionTitle }}</h3>
+                    <h3>{{ r.sectionId }} · {{ r.sectionTitle }}</h3><small>{{ data.analysis?.citedReferenceIds?.includes(r.chunkId) ? "LLM이 인용한 근거" : "검색된 참고 근거" }}</small>
                     <small
                       >{{ r.documentId }} @{{ r.documentVersion }} · p.{{
                         r.pageNumber
