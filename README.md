@@ -110,7 +110,7 @@ flowchart LR
 
 validate_scan에서 business-mcp로 커밋·Repository·영속 상태를 검증하며 이미 FAILED인 검사에 늦게 도착한 요청은 분석 없이 종료합니다.
 
-validate_scan → load_findings → select_analysis_tools에서 분기합니다. Finding이 없으면 보고서 생성으로 이동합니다. Finding이 있으면 모델의 도구 선택 → MCP 실행 → 근거 점검을 반복합니다. 정책·규칙별 사내/외부 근거와 필요한 필드 비교가 확보되어야 모델의 종료 요청을 수락합니다. 검색 순서와 개별/통합 검색, 선택적 이력 조회는 모델이 결정합니다. 모델이 비활성화되거나 실패하면 명시적으로 RULE_BASED / LLM_FALLBACK을 표시하는 결정적 경로를 사용합니다. 근거 확보 후 Red → Blue → 보고서 저장으로 진행합니다.
+validate_scan → load_findings → select_analysis_tools에서 분기합니다. 현재·기준 Finding과 변경 파일이 모두 없으면 보고서 생성으로 이동합니다. 변경 근거가 있으면 business-mcp의 `get_scan_changes`로 먼저 수집하고, 조사 대상이 있으면 모델의 도구 선택 → MCP 실행 → 근거 점검을 반복합니다. 정책·규칙별 사내/외부 근거와 필요한 필드 비교가 확보되어야 모델의 종료 요청을 수락합니다. 검색 순서와 개별/통합 검색, 선택적 이력 조회는 모델이 결정합니다. 모델이 비활성화되거나 실패하면 명시적으로 RULE_BASED / LLM_FALLBACK을 표시하는 결정적 경로를 사용합니다. 근거 확보 후 Red → Blue → 보고서 저장으로 진행합니다.
 
 분석 보고서는 승인 전에 저장합니다. 후속 조치가 필요하면 승인 카드를 만들고 `interrupt()`로 중단합니다. PostgreSQL Checkpointer의 동일 `thread_id = scanId`에서 `Command(resume=...)`로 재개합니다. Backend가 APPROVED를 확인한 경우에만 business-mcp가 CSI 내부 보안 검토 이슈를 만들 수 있습니다. 거절하면 쓰기 도구를 호출하지 않습니다. 외부 GitHub 이슈 전송 기능은 없으며 UI에도 내부 이슈로 표시합니다.
 
@@ -190,6 +190,8 @@ Playwright는 로컬 Chrome과 실행 중인 5173 포트를 사용합니다. 테
 
 ## 현재 범위
 
-단일 조직의 SECURITY_REVIEWER 계정이 허용 Repository를 관리하는 MVP입니다. 조직별 멀티테넌시·DEVELOPER 프로젝트 ACL·CPO 정책 변경 승인은 아직 구현 범위 밖이며 관련 기능을 제공하지 않습니다. 규칙은 이름/구문 기반으로 명시된 Java 패턴만 지원하며, 전체 프로그램 데이터 흐름·동적 설정·리플렉션·실제 DB 암호화·모든 개인정보 필드를 검증하지 않습니다. 목록은 최근 최대 1,000건을 가져와 클라이언트 필터·페이지 나누기를 적용합니다. 결과 비교는 같은 프로젝트·브랜치의 이전 완료 검사 기준입니다.
+단일 조직의 SECURITY_REVIEWER 계정이 허용 Repository를 관리하는 MVP입니다. 조직별 멀티테넌시·DEVELOPER 프로젝트 ACL·CPO 정책 변경 승인은 아직 구현 범위 밖이며 관련 기능을 제공하지 않습니다. 규칙은 이름/구문 기반으로 명시된 Java 패턴만 지원하며, 전체 프로그램 데이터 흐름·동적 설정·리플렉션·실제 DB 암호화·모든 개인정보 필드를 검증하지 않습니다. 목록은 최근 최대 1,000건을 가져와 클라이언트 필터·페이지 나누기를 적용합니다. 기존 건수 비교는 같은 프로젝트·브랜치의 이전 완료 검사 기준입니다. 별도로 [커밋 변경 리뷰](docs/CHANGE_REVIEWS.md)는 두 Git SHA의 마스킹된 diff·선언 변화·연결된 보안 리뷰를 제공합니다.
 
 UI 구조는 [GitHub Code Scanning](https://docs.github.com/en/code-security/concepts/code-scanning/code-scanning-alerts), [Semgrep finding triage](https://docs.semgrep.dev/for-developers/resolve-findings-through-app), [SonarQube Security Hotspots](https://docs.sonarsource.com/sonarqube-cloud/managing-your-projects/issues/reviewing-security-hotspots), [Snyk Reports](https://docs.snyk.io/manage-risk/reporting/getting-started-with-snyk-reports)의 공식 문서 기능을 참고했습니다. 각 제품 실제 UI를 직접 조작하거나 복제하지 않았습니다.
+
+코드 변경 비교의 설정·지원 범위와 MCP/Agent 구성은 [커밋 변경 비교와 보안 리뷰](docs/CHANGE_REVIEWS.md)를 참고하세요.

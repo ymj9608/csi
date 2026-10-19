@@ -125,8 +125,11 @@ def apply_review(message, batch):
         available={x['chunkId'] for x in a['references']}
         if not set(update.citationIds).issubset(available) or (available and not update.citationIds):
             raise ValueError('Missing or invented citation')
-        if not set(update.factIds).issubset({x['id'] for x in a['facts']}):
+        facts = {x['id'] for x in a['facts']}
+        if not set(update.factIds).issubset(facts):
             raise ValueError('Invented fact')
+        if 'C1' in facts and 'C1' not in update.factIds:
+            raise ValueError('Missing change evidence citation')
     for r in batch:
         update=updates[r['id']]
         r['analysis'].update(red=update.red,blue=update.blue,remediation=update.remediation,mode='LLM',

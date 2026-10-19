@@ -1,7 +1,7 @@
 name: CSI Security Scan
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, dev]
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: target
+          fetch-depth: 0
           persist-credentials: false
       - name: Validate approved scanner revision
         env:
@@ -38,10 +39,12 @@ jobs:
       - name: Install scanner only
         run: pip install -r scanner/rules/requirements.txt
       - name: Read-only analysis and masking
-        run: python scanner/scripts/scan.py target --output findings.json
+        env:
+          CSI_BASE_SHA: ${{ github.event.before }}
+        run: python scanner/scripts/scan_changes.py target --output scan.json
       - name: Send authenticated result
         env:
           CSI_BACKEND_URL: ${{ secrets.CSI_BACKEND_URL }}
           CSI_INTEGRATION_SECRET: ${{ secrets.CSI_INTEGRATION_SECRET }}
-          CSI_FINDINGS_FILE: findings.json
+          CSI_SCAN_FILE: scan.json
         run: python scanner/scripts/submit.py

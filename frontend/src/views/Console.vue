@@ -27,6 +27,7 @@ import { api, date } from "../lib/api";
 import { useSession } from "../stores/session";
 import Badge from "../components/Badge.vue";
 import Chart from "../components/Chart.vue";
+import ChangeReview from "../components/ChangeReview.vue";
 import ShieldScene from "../components/ShieldScene.vue";
 import { label } from "../components/labels";
 const route = useRoute(),
@@ -254,13 +255,14 @@ async function load(quiet = false) {
     data.value = Array.isArray(result) ? {} : result;
     items.value = Array.isArray(result) ? result : result.items || [];
     if (id.value && page.value === "scans") {
-      const [findings, logs, comparison] = await Promise.all([
+      const [findings, logs, comparison, changes] = await Promise.all([
         api(path + "/findings"),
         api(path + "/logs"),
         api(path + "/comparison"),
+        api(path + "/changes"),
       ]);
       if (key === request)
-        data.value = { ...result, findings, logs, comparison };
+        data.value = { ...result, findings, logs, comparison, changes };
     }
     if (id.value && page.value === "projects") {
       items.value = await api("/scans?projectId=" + id.value);
@@ -763,6 +765,7 @@ async function logout() {
                 >미탐지는 수정 완료를 자동으로 확정하지 않습니다.</small
               >
             </div>
+            <ChangeReview :changes="data.changes" :findings="data.findings || []" :scan-status="data.status" />
             <section class="panel">
               <div class="panel-title">
                 <h2>탐지 결과</h2>

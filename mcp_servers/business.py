@@ -17,6 +17,10 @@ async def get_scan_findings(scan_id:str)->list:
     """Read immutable masked static evidence for one scan."""
     return await request(f'/scans/{UUID(scan_id)}/findings')
 @mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False})
+async def get_scan_changes(scan_id:str)->dict:
+    """Read authenticated masked before/after Git evidence. Does not fetch or execute code."""
+    return await request(f'/scans/{UUID(scan_id)}/changes')
+@mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False})
 async def get_privacy_policy(scan_id:str)->dict:
     """Read the policy version snapshotted at scan intake, not the latest policy."""
     return await request(f'/scans/{UUID(scan_id)}/policy')

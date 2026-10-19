@@ -16,7 +16,7 @@ INTERNAL={'chunkId':'i','sectionId':'POL-02','sectionTitle':'Inventory','documen
 EXTERNAL=dict(INTERNAL,chunkId='e',documentType='EXTERNAL_REFERENCE')
 
 
-def setup_graph(monkeypatch, choices, fail_first_lookup=False):
+def setup_graph(monkeypatch, choices, fail_first_lookup=False, changes=None, findings=None):
     from mcp_servers.policy_review import compare_findings
     monkeypatch.setenv('CSI_INTERNAL_TOKEN','test-token')
     monkeypatch.setenv('LLM_MODE','enabled')
@@ -27,8 +27,9 @@ def setup_graph(monkeypatch, choices, fail_first_lookup=False):
         async def __aexit__(self,*args):pass
         async def call_tool(self,name,args):
             calls.append((name,args))
-            if name=='get_scan_context':v=dict(EVENT,status='QUEUED')
-            elif name=='get_scan_findings':v=[FINDING]
+            if name=='get_scan_context':v=dict(EVENT,status='QUEUED',hasChanges=changes is not None)
+            elif name=='get_scan_findings':v=[FINDING] if findings is None else findings
+            elif name=='get_scan_changes':v=changes
             elif name=='get_privacy_policy':v=POLICY
             elif name=='compare_policy_with_findings':v=compare_findings([FINDING],POLICY)
             elif name=='get_guideline_details':
@@ -226,3 +227,42 @@ async def test_transient_retry_is_bounded_and_charged(monkeypatch):
     monkeypatch.setattr(harness.httpx,'AsyncClient',Client);monkeypatch.setattr(harness.asyncio,'sleep',no_wait)
     ledger=Ledger();assert (await harness.completion([],ledger))['content']=='ok'
     assert ledger.data['calls']==3 and ledger.data['actualTokens']==7
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize('has_current',[True,False])
+async def test_change_context_flows_through_mcp_graph_and_result(monkeypatch,has_current):
+    current=dict(FINDING,filePath='a.py',startLine=3,endLine=3,fingerprint='new')
+    changes={'status':'AVAILABLE','baseSha':'b'*40,'headSha':EVENT['commitSha'],'truncated':False,
+             'files':[{'changeId':'change1','filePath':'a.py','truncated':False,'rows':[{'kind':'ADDED','newLine':3}]}],
+             'baselineFindings':[{'fingerprint':'old','filePath':'a.py','ruleId':'POL-01'}]}
+    choices=[('get_privacy_policy',{}),('compare_policy_with_findings',{}),
+             ('get_guideline_details',{'rule_id':'POL-01'}),('finish_analysis',{})]
+    graph,calls,events,_=setup_graph(monkeypatch,choices,changes=changes,findings=[current] if has_current else [])
+    config={'configurable':{'thread_id':'changes'},'recursion_limit':60}
+    await graph.ainvoke({'event':EVENT},config)
+    assert [n for n,_ in calls].count('get_scan_changes')==1
+    result=next(v for t,v in events if t=='SCAN_RESULT')
+    review=result['changeReview']['files'][0]
+    assert review['removedFingerprints']==['old']
+    assert review['currentFindingIds']==(['a'] if has_current else [])
+    assert result['changeReview']['references']
+    if has_current:
+        analysis=result['findings'][0]['analysis']
+        assert analysis['changeContext']['relation']=='CHANGED_LINES'
+        assert 'C1' in {f['id'] for f in analysis['facts']}
+    else:
+        assert result['findings']==[] and result['analysisMode']=='RULE_BASED'
+        assert not (await graph.aget_state(config)).next
+
+
+@pytest.mark.asyncio
+async def test_exhausted_tools_are_removed_and_cannot_be_selected(monkeypatch):
+    s={'rules':['POL-01','SEC-02'],'findings':[], 'toolCounts':{'search_security_guidelines':3}}
+    async def fake(messages,ledger,**kwargs):
+        names={t['function']['name'] for t in kwargs['tools']}
+        assert 'search_security_guidelines' not in names and 'get_guideline_details' in names
+        return {'tool_calls':[{'type':'function','function':{'name':'search_security_guidelines','arguments':'{"rule_id":"POL-01","query":"privacy"}'}}]}
+    monkeypatch.setattr(planner,'completion',fake)
+    with pytest.raises(ValueError,match='TOOL_EXHAUSTED'):
+        await planner.choose_action(s,Ledger())

@@ -5,9 +5,13 @@ from fastmcp.client.auth import BearerAuth
 from langgraph.graph import StateGraph,START,END
 from langgraph.types import interrupt
 from .analysis import RULES,base_report,enrich
+from .changes import attach_change_facts, review_changes
 from .harness import Ledger, MAX_TURNS, MAX_TOOL_REPEATS
 from .planner import READ_TOOLS, choose_action, fallback_action, missing_requirements, observation, validate_action
 class State(TypedDict,total=False):
+    hasChanges:bool
+    changes:dict
+    changeReview:dict
     event:dict
     skip:bool
     findings:list
@@ -47,14 +51,15 @@ def build_graph(checkpointer,emit):
         context=await tool(s,'business','get_scan_context',{'scan_id':s['event']['scanId']})
         if context['commitSha']!=s['event']['commitSha'] or context['repository']!=s['event']['repository']:raise ValueError('Scan context mismatch')
         if context['status']=='FAILED':return {'skip':True}
-        await emit('scan.progress',s['event'],'SCAN_PROGRESS');return {'skip':False,'toolCounts':s.get('toolCounts',{}),'budget':Ledger(s.get('budget')).data}
+        await emit('scan.progress',s['event'],'SCAN_PROGRESS');return {'skip':False,'hasChanges':bool(context.get('hasChanges')),'toolCounts':s.get('toolCounts',{}),'budget':Ledger(s.get('budget')).data}
     async def load(s):
         await log(s,'load_findings');f=await tool(s,'business','get_scan_findings',{'scan_id':s['event']['scanId']})
         if len(f)>300 or any(x['ruleId'] not in RULES for x in f):raise ValueError('Unsupported evidence')
-        return {'findings':f,'toolCounts':s.get('toolCounts',{})}
+        changes=await tool(s,'business','get_scan_changes',{'scan_id':s['event']['scanId']}) if s.get('hasChanges') else {}
+        return {'findings':f,'changes':changes,'toolCounts':s.get('toolCounts',{})}
     async def select(s):
         await log(s,'select_analysis_tools')
-        return {'rules':sorted({f['ruleId'] for f in s['findings']}),'references':{},'turn':0,
+        return {'rules':sorted({f['ruleId'] for f in s['findings']+s.get('changes',{}).get('baselineFindings',[])}),'references':{},'turn':0,
                 'trace':[],'observation':{},'planningDone':False,
                 'selectorMode':'LLM' if os.environ.get('LLM_MODE')=='enabled' else 'RULE_BASED'}
     async def plan(s):
@@ -102,9 +107,9 @@ def build_graph(checkpointer,emit):
         await log(s,'assess_evidence',turn=s['turn'])
         return {}
     async def red(s):
-        await log(s,'red_risk_analysis');return {'report':base_report(s['findings'],s['references'],s['policy'],s.get('comparison'))}
+        await log(s,'red_risk_analysis');return {'report':attach_change_facts(base_report(s['findings'],s['references'],s['policy'],s.get('comparison')),s['findings'],s.get('changes',{}))}
     async def blue(s):
-        await log(s,'blue_defense_verification');ledger=Ledger(s.get('budget'));report,mode=await enrich(s['report'],s['findings'],ledger)
+        await log(s,'blue_defense_verification');ledger=Ledger(s.get('budget'));report,mode=await enrich(s['report'],s['findings'],ledger) if s['findings'] else ([], 'RULE_BASED')
         if s.get('selectorMode')=='LLM_FALLBACK':mode='LLM_FALLBACK'
         await log(s,'context_budget',turn=s.get('turn',0),reservedTokens=ledger.data['reservedTokens'],actualTokens=ledger.data['actualTokens'])
         if mode=='LLM_FALLBACK':await log(s,'llm_fallback')
@@ -114,9 +119,9 @@ def build_graph(checkpointer,emit):
             r['analysis']['orchestration']={'selectionMode':s.get('selectorMode'),'turns':s.get('turn',0),'trace':s.get('trace',[])}
         return {'report':report,'mode':mode,'budget':ledger.data}
     async def generate(s):
-        await log(s,'generate_security_report');return {'mode':s.get('mode','RULE_BASED'),'report':s.get('report',[])}
+        await log(s,'generate_security_report');return {'mode':s.get('mode','RULE_BASED'),'report':s.get('report',[]),'changeReview':review_changes(s.get('changes',{}),s['findings'],s.get('references',{}))}
     async def persist(s):
-        await log(s,'persist_result');await emit('scan.result',s['event'],'SCAN_RESULT',status='COMPLETED',analysisMode=s['mode'],findings=s['report']);return {}
+        await log(s,'persist_result');await emit('scan.result',s['event'],'SCAN_RESULT',status='COMPLETED',analysisMode=s['mode'],findings=s['report'],changeReview=s.get('changeReview'));return {}
     async def request_review(s):return {'approval':await tool(s,'business','request_security_review',{'scan_id':s['event']['scanId']})}
     async def approval(s):
         await log(s,'approval_interrupt');decision=interrupt({'approvalId':s['approval']['id'],'scanId':s['event']['scanId'],'action':'CREATE_SECURITY_REVIEW_ISSUE'})
@@ -135,7 +140,7 @@ def build_graph(checkpointer,emit):
     g.add_edge(START,'validate_scan')
     g.add_conditional_edges('validate_scan',lambda s:END if s.get('skip') else 'load_findings')
     g.add_edge('load_findings','select_analysis_tools')
-    g.add_conditional_edges('select_analysis_tools',lambda s:'plan_analysis' if s['rules'] else 'generate_security_report')
+    g.add_conditional_edges('select_analysis_tools',lambda s:'plan_analysis' if s['rules'] or s.get('changes',{}).get('files') else 'generate_security_report')
     g.add_edge('plan_analysis','execute_analysis_tool');g.add_edge('execute_analysis_tool','assess_evidence')
     g.add_conditional_edges('assess_evidence',lambda s:'red_risk_analysis' if s.get('planningDone') else 'plan_analysis')
     g.add_edge('red_risk_analysis','blue_defense_verification');g.add_edge('blue_defense_verification','generate_security_report')

@@ -2,7 +2,7 @@ package com.csi;
 import org.springframework.web.bind.annotation.*;import org.springframework.http.*;import org.springframework.web.server.ResponseStatusException;import org.springframework.transaction.annotation.Transactional;import org.springframework.beans.factory.annotation.Value;import org.springframework.security.core.Authentication;import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;import java.util.*;
 @RestController public class ApiController {
  final Db db;final Events events;final PolicyCatalog catalog;final Set<String> allowed;
- static final String SCANS="SELECT s.*, (SELECT count(*) FROM findings f WHERE f.scan_id=s.id) finding_count, (SELECT coalesce(jsonb_agg(DISTINCT severity),'[]') FROM findings f WHERE f.scan_id=s.id) severities FROM scans s ";
+ static final String SCANS="SELECT s.*, EXISTS(SELECT 1 FROM scan_changes ch WHERE ch.scan_id=s.id) has_changes, (SELECT count(*) FROM findings f WHERE f.scan_id=s.id) finding_count, (SELECT coalesce(jsonb_agg(DISTINCT severity),'[]') FROM findings f WHERE f.scan_id=s.id) severities FROM scans s ";
  static final String FINDINGS="SELECT f.*,e.masked_code_evidence,s.repository,s.commit_sha,s.policy_version FROM findings f JOIN scans s ON s.id=f.scan_id JOIN finding_evidences e ON e.finding_id=f.id ";
  public ApiController(Db db,Events events,PolicyCatalog catalog,@Value("${csi.repository-allowlist}")String allow){this.db=db;this.events=events;this.catalog=catalog;allowed=Set.of(allow.split(","));}
  @GetMapping("/api/health") public Map<String,String> health(){return Map.of("status","UP");}
@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.*;import org.springframework.http
  @GetMapping("/api/policies") public Object policies(){return catalog.catalog;}
  @GetMapping("/internal/scans/{id}/policy") public Object policy(@PathVariable UUID id){return db.one("SELECT policy FROM scans WHERE id=?",id).get("policy");}
  @GetMapping("/internal/scans/{id}/history") public Object history(@PathVariable UUID id){return db.list(SCANS+"WHERE project_id=(SELECT project_id FROM scans WHERE id=?) ORDER BY created_at DESC LIMIT 10",id);}
+ @GetMapping({"/api/scans/{id}/changes","/internal/scans/{id}/changes"}) public Object changes(@PathVariable UUID id){
+  db.one("SELECT id FROM scans WHERE id=?",id);var rows=db.list("SELECT evidence,review FROM scan_changes WHERE scan_id=?",id);
+  if(rows.isEmpty())return Map.of("status","NOT_PROVIDED","files",List.of(),"baselineFindings",List.of());
+  var out=new LinkedHashMap<>((Map<String,Object>)rows.getFirst().get("evidence"));out.put("review",rows.getFirst().get("review"));return out;
+ }
  @GetMapping("/api/scans/{id}/comparison") public Object comparison(@PathVariable UUID id){var rows=db.list("SELECT p.id FROM scans p JOIN scans c ON p.project_id=c.project_id AND p.branch=c.branch WHERE c.id=? AND p.created_at<c.created_at AND p.status='COMPLETED' ORDER BY p.created_at DESC LIMIT 1",id);Set<String> now=new HashSet<>();db.list("SELECT fingerprint FROM findings WHERE scan_id=?",id).forEach(f->now.add((String)f.get("fingerprint")));Set<String> old=new HashSet<>();if(!rows.isEmpty())db.list("SELECT fingerprint FROM findings WHERE scan_id=?",UUID.fromString((String)rows.getFirst().get("id"))).forEach(f->old.add((String)f.get("fingerprint")));Set<String> added=new HashSet<>(now);added.removeAll(old);Set<String> removed=new HashSet<>(old);removed.removeAll(now);return Map.of("previousScanId",rows.isEmpty()?"":rows.getFirst().get("id"),"added",added.size(),"removed",removed.size(),"unchanged",now.size()-added.size());}
  @GetMapping(value="/api/scans/{id}/stream",produces=MediaType.TEXT_EVENT_STREAM_VALUE) public SseEmitter stream(@PathVariable UUID id){db.one("SELECT id FROM scans WHERE id=?",id);return events.subscribe(id.toString());}
  @GetMapping(value="/api/events/stream",produces=MediaType.TEXT_EVENT_STREAM_VALUE) public SseEmitter stream(){return events.subscribe(null);}

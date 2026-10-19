@@ -121,7 +121,7 @@ Lichu의 `BUSINESS_CONTEXT` 실행 로그 역시 현재 CSI에 자동 수집되�
 | 경로 | 책임 |
 |---|---|
 | `.github/workflows/csi-security-scan.yml` | CSI 저장소용 opt-in Actions 예시; 실제 대상 Lichu는 자체 workflow 사용 |
-| `scripts/scan.py`, `scan_repository.py`, `submit.py` | 정적 검사 / Local Demo / HMAC 전송 |
+| `scripts/scan.py`, `scan_changes.py`, `scan_repository.py`, `submit.py` | 정적 검사 / Local Demo / HMAC 전송 |
 | `compose.yml`, `rules/Dockerfile` | 선택적 격리 정적 스캐너 |
 | `backend/.../Intake.java`, `ApiController.java` | 검사 접수, 승인 결정, 같은 scan.request Outbox |
 | `backend/.../KafkaConfig.java`, `KafkaPipeline.java` | 8개 업무 토픽, DLT와 Outbox/소비/timeout 처리 |
@@ -130,3 +130,5 @@ Lichu의 `BUSINESS_CONTEXT` 실행 로그 역시 현재 CSI에 자동 수집되�
 | `frontend/src/views/Console.vue` | 조회·등록·검토·승인; 파일 업로드 없음 |
 
 2026-10-19 확인: 로컬 Qdrant point 47개와 카탈로그의 chunkId·payload 일치, 위 8개 Kafka 업무 토픽 존재, Agent 회귀 테스트 12개 통과. README·Harness·이 문서의 Mermaid 4개를 Chrome에서 SVG로 렌더링해 문법도 확인했습니다. 토픽·데이터 확인은 읽기 전용으로 수행했으며 이번 문서 수정 때문에 장애를 주입하거나 새로운 승인/LLM 작업을 실행하지 않았습니다. 과거 실행 증거는 `AGENT_HARNESS.md`와 `verification.json`의 기록 시점을 함께 확인하세요.
+
+커밋 비교 경로는 [변경 리뷰](CHANGE_REVIEWS.md)를 참고하세요. `scan_changes`에 마스킹된 전후 근거를 저장하고 business-mcp `get_scan_changes`를 통해 기존 LangGraph 리뷰에 연결합니다.

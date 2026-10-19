@@ -1,7 +1,7 @@
 """Read-only model function selection with scan-bound argument validation."""
 import json
 from collections import Counter
-from .harness import completion, prompt
+from .harness import completion, prompt, MAX_TOOL_REPEATS
 from .analysis import RULES
 
 READ_TOOLS = {
@@ -25,9 +25,12 @@ def missing_requirements(s):
     return missing
 
 
-def definitions(rules):
+def definitions(rules, counts=None):
     tools=[]
+    counts=counts or {}
     for name,(_,description) in READ_TOOLS.items():
+        if counts.get(name,0)>=MAX_TOOL_REPEATS:continue
+        if not rules and (name.startswith('search_') or name=='get_guideline_details'):continue
         props={}
         if name.startswith('search_') or name=='get_guideline_details':
             props['rule_id']={'type':'string','enum':rules}
@@ -65,6 +68,7 @@ def observation(name,result):
 
 async def choose_action(s,ledger):
     payload={'rules':s['rules'],'findingCounts':dict(Counter(f['ruleId'] for f in s['findings'])),
+             'changeContext':{'status':s.get('changes',{}).get('status','NOT_PROVIDED'),'files':len(s.get('changes',{}).get('files',[]))},
              'turn':s.get('turn',0)+1,'missingRequirements':missing_requirements(s),
              'toolCallCounts':s.get('toolCounts',{}),
              'previousActions':s.get('trace',[])[-12:],
@@ -75,10 +79,12 @@ async def choose_action(s,ledger):
         messages.append({'role':'assistant','content':None,'tool_calls':[{'id':call_id,'type':'function',
                          'function':{'name':previous['name'],'arguments':json.dumps(previous['args'])}}]})
         messages.append({'role':'tool','tool_call_id':call_id,'content':json.dumps(s['observation'],ensure_ascii=False)})
-    message=await completion(messages,ledger,tools=definitions(s['rules']),output_tokens=700)
+    offered=definitions(s['rules'],s.get('toolCounts',{}))
+    message=await completion(messages,ledger,tools=offered,output_tokens=700)
     calls=message.get('tool_calls') or []
     if len(calls)!=1 or calls[0].get('type')!='function':raise ValueError('ONE_TOOL_REQUIRED')
     fn=calls[0]['function']
+    if fn['name'] not in {tool['function']['name'] for tool in offered}:raise ValueError('TOOL_EXHAUSTED_OR_UNAVAILABLE')
     return validate_action(fn['name'],json.loads(fn['arguments']),s['rules'])
 
 
