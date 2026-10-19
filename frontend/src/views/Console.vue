@@ -782,6 +782,14 @@ async function logout() {
                   <span class="eyebrow blue">BLUE VERIFICATION</span>
                   <h2>근거 검토와 불확실성</h2>
                   <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
+                  <section v-if="data.analysis?.orchestration" class="review-evidence">
+                    <h3>Agent 도구 선택</h3>
+                    <p>{{ data.analysis.orchestration.selectionMode }} · {{ data.analysis.orchestration.turns }}턴</p>
+                    <ol><li v-for="step in data.analysis.orchestration.trace" :key="step.turn">{{ step.turn }} · {{ step.tool }} · {{ step.ruleId || '' }} · {{ step.status }} · {{ step.mode }}</li></ol>
+                    <small>LLM은 모델 선택, RULE_BASED와 LLM_FALLBACK은 코드 기반 선택입니다.</small>
+                  </section>
+                  <p v-if="data.analysis?.fallbackReason">LLM 대체 사유: {{ data.analysis.fallbackReason }}</p>
+                  <small v-if="data.analysis?.contextBudget">모델 호출 {{ data.analysis.contextBudget.calls }}회 · 입력 예산 상한 사용 {{ data.analysis.contextBudget.maxInputBound }} · 누적 예약 {{ data.analysis.contextBudget.reservedTokens }}</small>
                   <section v-if="data.analysis?.unknowns?.length" class="review-evidence">
                     <h3>추가 확인이 필요한 사항</h3>
                     <ul><li v-for="item in data.analysis.unknowns" :key="item">{{ item }}</li></ul>

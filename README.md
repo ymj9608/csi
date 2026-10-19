@@ -92,7 +92,7 @@ flowchart LR
   API -->|approval event via outbox| Kafka
 ```
 
-`scan.request`, `scan.progress`, `scan.result`, `scan.log`, `scan.dlq`와 Backend DLT를 사용합니다. Backend는 접수 트랜잭션에 검사와 Outbox를 함께 저장한 뒤 202를 반환합니다. Broker 전송은 최대 3회, Agent 실행은 최대 2회, 단일 실행 180초, graph recursion 25, MCP 호출당 15초, 동일 도구·인자 호출 3회 제한입니다. 10분 이상 미완료 작업은 FAILED 처리됩니다. Kafka 실패나 분석 실패를 완료로 바꾸지 않습니다.
+`scan.request`, `scan.progress`, `scan.result`, `scan.log`, `scan.dlq`와 Backend DLT를 사용합니다. Backend는 접수 트랜잭션에 검사와 Outbox를 함께 저장한 뒤 202를 반환합니다. Broker 전송은 최대 3회, Agent 실행은 최대 2회, 단일 실행 180초, graph recursion 60, 모델 도구 선택 12턴, MCP 호출당 15초, 동일 도구 이름당 3회 제한입니다. 모델 호출의 시간·입력·출력·누적 예산은 [Agent Harness](docs/AGENT_HARNESS.md)를 참고하세요. 10분 이상 미완료 작업은 FAILED 처리됩니다. Kafka 실패나 분석 실패를 완료로 바꾸지 않습니다.
 
 `repository + workflowRunId + runAttempt`, `scanId + fingerprint`, Kafka eventId, scan별 approval, approval별 issue에 고유 제약을 둡니다. 메시지는 at-least-once이며 결과 저장 트랜잭션이 완료되기 전에 Kafka offset을 성공 처리하지 않습니다. 다중 Backend/Worker 확장은 MVP 범위 밖입니다.
 
@@ -100,7 +100,7 @@ flowchart LR
 
 validate_scan에서 business-mcp로 커밋·Repository·영속 상태를 검증하며 이미 FAILED인 검사에 늦게 도착한 요청은 분석 없이 종료합니다.
 
-validate_scan → load_findings → select_analysis_tools → retrieve_internal_policy에서 분기합니다. finding이 없으면 보고서 생성으로 이동합니다. finding이 있으면 규칙별 사내·외부 검색 → Red → Blue → 보고서 저장으로 진행합니다. 개인정보 필드 규칙이 있을 때만 추가 이력을 조회합니다.
+validate_scan → load_findings → select_analysis_tools에서 분기합니다. Finding이 없으면 보고서 생성으로 이동합니다. Finding이 있으면 모델의 도구 선택 → MCP 실행 → 근거 점검을 반복합니다. 정책·규칙별 사내/외부 근거와 필요한 필드 비교가 확보되어야 모델의 종료 요청을 수락합니다. 검색 순서와 개별/통합 검색, 선택적 이력 조회는 모델이 결정합니다. 모델이 비활성화되거나 실패하면 명시적으로 RULE_BASED / LLM_FALLBACK을 표시하는 결정적 경로를 사용합니다. 근거 확보 후 Red → Blue → 보고서 저장으로 진행합니다.
 
 분석 보고서는 승인 전에 저장합니다. 후속 조치가 필요하면 승인 카드를 만들고 `interrupt()`로 중단합니다. PostgreSQL Checkpointer의 동일 `thread_id = scanId`에서 `Command(resume=...)`로 재개합니다. Backend가 APPROVED를 확인한 경우에만 business-mcp가 CSI 내부 보안 검토 이슈를 만들 수 있습니다. 거절하면 쓰기 도구를 호출하지 않습니다. 외부 GitHub 이슈 전송 기능은 없으며 UI에도 내부 이슈로 표시합니다.
 
@@ -122,7 +122,7 @@ validate_scan → load_findings → select_analysis_tools → retrieve_internal_
 
 문서 버전·문서 유형·조항 ID/제목·실제 페이지·원본 파일명·원문·chunkId를 보존합니다. 기본 임베딩은 1024차원 문자 n-gram hashing 벡터입니다. 외부 API 없이 재현되는 **어휘 유사도 검색**이며 의미론적 신경망 임베딩으로 주장하지 않습니다. Qdrant cosine 검색을 조항/문서 유형으로 제한합니다. 정책 또는 외부 근거 검색이 누락되면 분석을 실패 처리하고 출처를 지어내지 않습니다. `security://guidelines/{rule_id}` MCP Resource도 제공합니다.
 
-추가 제공된 개인정보 보호법 PDF와 Capstone 자료는 검토·텍스트 추출했지만 주 RAG 색인에는 넣지 않았습니다. 원본 로고 `logo.png`, `csi.png`는 변형 없이 사용합니다.
+제공된 원본 PDF 4종은 `docs/`에서 확인할 수 있습니다. 기존 `.pdf.txt` 추출본은 로컬 `.reference-materials/`에 보관합니다. Capstone PDF와 추출본은 Git 추적에서 제외합니다. 추가 개인정보 보호법 PDF와 Capstone 자료는 주 RAG 색인에 넣지 않았으며, 실행에 필요한 PrivacyGuard PDF 사본은 `rag/documents/`에 유지합니다. 원본 로고 `logo.png`, `csi.png`는 변형 없이 사용합니다.
 
 ## LLM 설정과 한계
 
@@ -139,7 +139,7 @@ LLM_MODEL=your-model
 
 ## GitHub Push Integration Mode
 
-아직 실제 Repository 및 HTTPS 주소가 지정되지 않았으므로 GitHub Push 연동 완료 상태가 아닙니다.
+현재 대상 저장소는 `ymj9608/Lichu`, 도구 저장소는 `ymj9608/csi`입니다. LOCAL_DEMO 검증과 실제 GitHub Push 검증을 구분합니다. 외부 HTTPS 주소와 Runner의 도구 SHA 설정은 아래 절차로 별도 관리합니다.
 
 1. 이 `csi/` 디렉터리를 승인된 CSI 도구 Repository의 루트로 Push합니다. 비밀 파일 `.env`, `.runtime`, 가상환경은 제외합니다.
 2. 검사 대상 Repository에 `.github/workflows/csi-security-scan.yml`을 복사합니다.
@@ -169,14 +169,14 @@ Playwright는 로컬 Chrome과 실행 중인 5173 포트를 사용합니다. 테
 
 | 요소 | 구현 위치 |
 |---|---|
-| Instructions | `agent/csi_agent/analysis.py`: 증거 기반 출력, 불확실성, 법률 위반 미확정 |
+| Instructions | `agent/prompts/planner.md`, `reviewer.md`: 버전 관리되는 선택·리뷰 지시문 |
 | Tools | `mcp_servers/business.py`, `rag.py`: 최소 도구와 인증, Resource |
-| Context | 검사 당시 정책 snapshot, 마스킹 evidence, 실제 RAG metadata |
+| Context | 검사 당시 정책 snapshot, 실제 RAG metadata, 공유 인용 사전, 배치·입력·출력·누적 예산 |
 | State & Memory | `AsyncPostgresSaver`, scan별 thread, 업무 상태 테이블 분리 |
-| Agent Loop | `graph.py` 조건 분기, 규칙별 도구 선택, 개인정보 규칙의 이력 조회 |
+| Agent Loop | `graph.py` + `planner.py`: 모델 함수 선택 → MCP 관측 → 재선택, 종료 조건 검증 |
 | Guardrails | HMAC, CSRF, allowlist, 출력 schema, ID/인용 검증, read-only scanner |
 | Recovery | Outbox, 멱등 키, 횟수 제한, DLQ, timeout, LLM fallback |
-| Observability | 네 Kafka topic, 구조화된 scan_logs, tool name/latency, SSE |
+| Observability | 네 Kafka topic, 선택 주체·턴·도구 관측·예산 로그, 보고서 실행 trace, SSE |
 
 ## 현재 범위
 
