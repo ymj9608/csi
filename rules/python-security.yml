@@ -1,0 +1,78 @@
+rules:
+  - id: SEC-01
+    languages: [python]
+    message: Raw password assigned to a persistence field candidate.
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: $U.password_hash = $P
+          - pattern: $U.password = $P
+          - pattern: $MODEL(..., password_hash=$P, ...)
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^(password|raw_password|plain_password)$'
+  - id: SEC-02
+    languages: [python]
+    message: Fast hash applied to a password candidate; verify persistence.
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5($P.encode(...))
+          - pattern: hashlib.sha1($P.encode(...))
+          - pattern: hashlib.sha256($P.encode(...))
+          - pattern: hashlib.sha512($P.encode(...))
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^(password|raw_password|plain_password)$'
+  - id: SEC-03
+    languages: [python]
+    message: Hardcoded salt candidate; verify use in password hashing.
+    severity: WARNING
+    patterns:
+      - pattern: $S = "..."
+      - metavariable-regex:
+          metavariable: $S
+          regex: '(?i)^.*salt.*$'
+  - id: SEC-04
+    languages: [python]
+    message: bcrypt cost below internal POL-04.1 minimum 12.
+    severity: WARNING
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt.gensalt(rounds=$C, ...)
+          - pattern: bcrypt.gensalt($C, ...)
+      - metavariable-comparison:
+          metavariable: $C
+          comparison: $C < 12
+  - id: SEC-05
+    languages: [python]
+    message: Sensitive variable reaches logger; verify data and masking.
+    severity: ERROR
+    patterns:
+      - pattern: $L.$M(..., $P, ...)
+      - metavariable-regex:
+          metavariable: $L
+          regex: '^(log|logger|logging)$'
+      - metavariable-regex:
+          metavariable: $M
+          regex: '^(debug|info|warning|warn|error|critical)$'
+      - metavariable-regex:
+          metavariable: $P
+          regex: '^(password|raw_password|access_token|refresh_token|email|phone_number|payload.password|payload.email)$'
+  - id: POL-01
+    languages: [python]
+    message: Personal field outside approved policy list candidate; not proof of a violation.
+    severity: INFO
+    patterns:
+      - pattern-inside: |
+          class $CLASS(...):
+            ...
+      - pattern-either:
+          - pattern: '$F: $TYPE'
+          - pattern: '$F: $TYPE = $VALUE'
+      - metavariable-regex:
+          metavariable: $CLASS
+          regex: '^(Signup|ProfileUpdate|User|CsiSignupProfile)$'
+      - metavariable-regex:
+          metavariable: $F
+          regex: '^(name|full_name|phone_number|resident_registration_no|date_of_birth|home_address)$'

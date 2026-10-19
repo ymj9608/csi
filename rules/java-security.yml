@@ -1,0 +1,95 @@
+rules:
+  - id: SEC-01
+    languages: [java]
+    message: Raw password assigned to persistence candidate; verify storage path.
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: $U.setPassword($P)
+          - pattern: $U.setPasswordHash($P)
+      - metavariable-regex:
+          metavariable: $P
+          regex: (?i)^(rawPassword|password|plainPassword|plaintextPassword)$
+  - id: SEC-02
+    languages: [java]
+    message: Fast hash applied to password candidate; persistence requires review.
+    severity: ERROR
+    pattern-either:
+      - patterns:
+          - pattern-either:
+              - pattern: DigestUtils.md5Hex($P)
+              - pattern: DigestUtils.sha1Hex($P)
+              - pattern: DigestUtils.sha256Hex($P)
+              - pattern: DigestUtils.sha512Hex($P)
+          - metavariable-regex:
+              metavariable: $P
+              regex: (?i)^(rawPassword|password|plainPassword)$
+      - patterns:
+          - pattern: MessageDigest.getInstance($A).digest($P.getBytes(...))
+          - metavariable-regex:
+              metavariable: $A
+              regex: '"(MD5|SHA-1|SHA-256|SHA-512)"'
+          - metavariable-regex:
+              metavariable: $P
+              regex: (?i)^(rawPassword|password|plainPassword)$
+      - patterns:
+          - pattern-inside: |
+              $T $M(...) {
+                ...
+                MessageDigest $D = MessageDigest.getInstance($A);
+                ...
+              }
+          - pattern: $D.digest($P.getBytes(...))
+          - metavariable-regex:
+              metavariable: $A
+              regex: '"(MD5|SHA-1|SHA-256|SHA-512)"'
+          - metavariable-regex:
+              metavariable: $P
+              regex: (?i)^(rawPassword|password|plainPassword)$
+  - id: SEC-03
+    languages: [java]
+    message: Hardcoded salt candidate; verify password hashing use.
+    severity: WARNING
+    patterns:
+      - pattern: String $S = "$V";
+      - metavariable-regex:
+          metavariable: $S
+          regex: (?i).*salt.*
+  - id: SEC-04
+    languages: [java]
+    message: bcrypt cost below internal POL-04.1 minimum 12.
+    severity: WARNING
+    pattern-either:
+      - patterns:
+          - pattern: new BCryptPasswordEncoder($C)
+          - metavariable-comparison:
+              metavariable: $C
+              comparison: $C < 12
+      - pattern: new BCryptPasswordEncoder()
+  - id: SEC-05
+    languages: [java]
+    message: Sensitive variable reaches logger; confirm masking and data flow.
+    severity: ERROR
+    patterns:
+      - pattern-either:
+          - pattern: $L.$M(..., $P, ...)
+          - pattern: $L.$M(..., $S + $P, ...)
+          - pattern: $L.$M(..., $P + $S, ...)
+      - metavariable-regex:
+          metavariable: $L
+          regex: (?i)^(log|logger)$
+      - metavariable-regex:
+          metavariable: $M
+          regex: ^(trace|debug|info|warn|error)$
+      - metavariable-regex:
+          metavariable: $P
+          regex: (?i)^(password|rawPassword|accessToken|refreshToken|authorization|email|phoneNumber|residentRegistrationNo|request)$
+  - id: POL-01
+    languages: [java]
+    message: Unapproved personal field candidate; field existence is not proof of collection.
+    severity: INFO
+    patterns:
+      - pattern: $T $F;
+      - metavariable-regex:
+          metavariable: $F
+          regex: ^(phoneNumber|residentRegistrationNo|dateOfBirth|birthDate|homeAddress|name|fullName)$

@@ -1,0 +1,47 @@
+name: CSI Security Scan
+on:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: csi-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scan:
+    # The scanner repository itself is opt-in; website has its own always-on workflow.
+    if: ${{ vars.CSI_SCAN_THIS_REPOSITORY == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout target snapshot
+        uses: actions/checkout@v4
+        with:
+          path: target
+          persist-credentials: false
+      - name: Validate approved scanner revision
+        env:
+          SCANNER_REF: ${{ vars.CSI_SCANNER_REF }}
+        run: '[[ "$SCANNER_REF" =~ ^[0-9a-f]{40}$ ]]'
+      - name: Checkout trusted CSI scanner
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.CSI_SCANNER_REPOSITORY }}
+          ref: ${{ vars.CSI_SCANNER_REF }}
+          token: ${{ secrets.CSI_SCANNER_READ_TOKEN || github.token }}
+          path: scanner
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install scanner only
+        run: pip install -r scanner/rules/requirements.txt
+      - name: Read-only analysis and masking
+        run: python scanner/scripts/scan.py target --output findings.json
+      - name: Send authenticated result
+        env:
+          CSI_BACKEND_URL: ${{ secrets.CSI_BACKEND_URL }}
+          CSI_INTEGRATION_SECRET: ${{ secrets.CSI_INTEGRATION_SECRET }}
+          CSI_FINDINGS_FILE: findings.json
+        run: python scanner/scripts/submit.py

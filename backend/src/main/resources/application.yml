@@ -1,0 +1,49 @@
+server:
+  port: 8080
+  error:
+    include-message: never
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        http-only: true
+        same-site: strict
+        secure: ${COOKIE_SECURE:false}
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/csi}
+    username: ${DATABASE_USER:csi}
+    password: ${DATABASE_PASSWORD}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 15000
+        request.timeout.ms: 5000
+        max.block.ms: 5000
+    consumer:
+      group-id: csi-backend
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      ack-mode: record
+csi:
+  integration-secret: ${CSI_INTEGRATION_SECRET}
+  internal-token: ${CSI_INTERNAL_TOKEN}
+  repository-allowlist: ${CSI_REPOSITORY_ALLOWLIST:local/csi-demo}
+  admin-username: ${CSI_ADMIN_USERNAME:reviewer}
+  admin-password: ${CSI_ADMIN_PASSWORD}
+  policy-file: ${CSI_POLICY_FILE:../rag/policy.json}
+  catalog-file: ${CSI_CATALOG_FILE:../rag/catalog.json}
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.apache.kafka: WARN

@@ -1,0 +1,29 @@
+{
+  "version": "PG-POL-2026-01@1.0",
+  "documentId": "PG-POL-2026-01",
+  "bcryptMinCost": 12,
+  "approvedFields": [
+    "account_id",
+    "accountId",
+    "email",
+    "password_hash",
+    "passwordHash"
+  ],
+  "transientOnlyFields": [
+    "password",
+    "rawPassword"
+  ],
+  "restrictedFields": [
+    "phoneNumber",
+    "residentRegistrationNo"
+  ],
+  "authOnlyFields": [
+    "accessToken",
+    "refreshToken"
+  ],
+  "sourceSection": "POL-04.1",
+  "sourcePage": 4,
+  "inventorySection": "POL-02",
+  "inventoryPage": 3,
+  "fictionalTrainingPolicy": true
+}

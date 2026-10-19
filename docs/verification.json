@@ -1,0 +1,118 @@
+{
+  "verifiedAt": "2026-10-19T15:21:39.172477+09:00",
+  "mode": "LOCAL_DEMO",
+  "source": "real Semgrep analysis of synthetic Java fixtures; no mocked API responses",
+  "runtime": "Docker Compose: Vue/Nginx, Spring Boot, Kafka KRaft, FastAPI/LangGraph, business-mcp, rag-mcp, PostgreSQL, Qdrant",
+  "builds": {
+    "vueTypecheckAndBuild": "PASS",
+    "springBootPackage": "PASS",
+    "dockerCompose": "PASS"
+  },
+  "tests": {
+    "junit": {
+      "passed": 2
+    },
+    "python": {
+      "passed": 9
+    },
+    "liveIntegration": {
+      "passed": 15,
+      "checks": [
+        "all seven list/overview API endpoints return 200",
+        "anonymous/internal access blocked",
+        "unsigned intake blocked",
+        "CSRF enforced",
+        "repository allowlist enforced",
+        "expired HMAC rejected",
+        "fixed commit comparison: 8 removed",
+        "real RAG references on every finding",
+        "HITL approved: checkpoint resumed and one internal issue created",
+        "duplicate decision rejected",
+        "Postgres checkpoints persisted",
+        "HITL rejected: no issue mutation",
+        "authenticated MCP resource returns real REF-04",
+        "MCP invalid token rejected",
+        "logout invalidates session"
+      ]
+    },
+    "browser": {
+      "passed": 1,
+      "checks": [
+        "login",
+        "all core screens",
+        "finding references",
+        "SSE connection",
+        "390px mobile no page overflow",
+        "logout"
+      ]
+    },
+    "sseLiveUpdate": "PASS",
+    "duplicateKafkaEvent": "PASS",
+    "kafkaOutage": {
+      "status": "FAILED",
+      "attempts": 3,
+      "restored": true
+    },
+    "sandbox": {
+      "network": "none",
+      "source": "read-only",
+      "user": "65532",
+      "findings": 8
+    }
+  },
+  "scans": [
+    {
+      "fixture": "vulnerable",
+      "scanId": "35bdb98e-3e61-4e00-b249-1200f3ecc9ee",
+      "staticFindings": 8,
+      "duplicateDelivery": "PASS"
+    },
+    {
+      "fixture": "fixed",
+      "scanId": "7722d159-f325-4e53-99ae-cccd40d36c4d",
+      "staticFindings": 0,
+      "duplicateDelivery": "PASS"
+    },
+    {
+      "fixture": "vulnerable",
+      "scanId": "94211b18-5cca-4f0a-915c-874c618d32b9",
+      "staticFindings": 8,
+      "duplicateDelivery": "PASS"
+    }
+  ],
+  "rag": {
+    "pdfDocuments": 2,
+    "indexedChunks": 47,
+    "embedding": "1024-dimensional lexical character n-gram hashing",
+    "vectorDatabase": "Qdrant",
+    "realPageAndClauseMetadata": true
+  },
+  "policy": {
+    "document": "PG-POL-2026-01",
+    "version": "1.0",
+    "bcryptMinCost": 12,
+    "authority": "fictional internal training policy"
+  },
+  "harness": [
+    "instructions",
+    "tools",
+    "context",
+    "state and memory",
+    "agent loop",
+    "guardrails",
+    "recovery",
+    "observability"
+  ],
+  "notVerified": [
+    "Actual GitHub-hosted runner Push to a public HTTPS Backend; no repository or endpoint supplied",
+    "Successful external LLM API invocation; no credentials supplied"
+  ],
+  "limitations": [
+    "Default RULE_BASED analysis is explicitly labeled",
+    "Static patterns do not establish complete data flow or runtime exploitability",
+    "RAG uses lexical embeddings rather than a neural semantic model",
+    "Single organization, SECURITY_REVIEWER workspace scope; no multi-tenant/developer ACL",
+    "List APIs currently return up to 1000 rows for client-side pagination",
+    "Security issues are CSI internal records, not external GitHub issues"
+  ]
+}

@@ -1,0 +1,16 @@
+CREATE TABLE users(id uuid PRIMARY KEY, username varchar(100) UNIQUE NOT NULL,password_hash text NOT NULL,role text NOT NULL);
+CREATE TABLE projects(id uuid PRIMARY KEY, repository text UNIQUE NOT NULL,default_branch text NOT NULL,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE project_policies(project_id uuid PRIMARY KEY REFERENCES projects(id),version text NOT NULL,policy jsonb NOT NULL);
+CREATE TABLE scans(id uuid PRIMARY KEY,project_id uuid NOT NULL REFERENCES projects(id),repository text NOT NULL,branch text NOT NULL,commit_sha varchar(40) NOT NULL,workflow_run_id text NOT NULL,run_attempt integer NOT NULL,run_url text,trigger_type text NOT NULL,status text NOT NULL CHECK(status IN ('QUEUED','RUNNING','COMPLETED','FAILED')),policy_version text NOT NULL,policy jsonb NOT NULL,analysis_mode text,created_at timestamptz NOT NULL DEFAULT now(),started_at timestamptz,finished_at timestamptz,UNIQUE(repository,workflow_run_id,run_attempt));
+CREATE TABLE findings(id uuid PRIMARY KEY,scan_id uuid NOT NULL REFERENCES scans(id),rule_id text NOT NULL,title text NOT NULL,category text NOT NULL,severity text NOT NULL CHECK(severity IN ('CRITICAL','HIGH','MEDIUM','LOW')),file_path text NOT NULL,start_line int NOT NULL,end_line int NOT NULL,fingerprint text NOT NULL,confidence text NOT NULL,evidence_status text NOT NULL,status text NOT NULL DEFAULT 'OPEN',analysis jsonb NOT NULL DEFAULT '{}',UNIQUE(scan_id,fingerprint));
+CREATE TABLE finding_evidences(finding_id uuid PRIMARY KEY REFERENCES findings(id),masked_code_evidence text NOT NULL);
+CREATE TABLE scan_logs(id uuid PRIMARY KEY,scan_id uuid REFERENCES scans(id),timestamp timestamptz NOT NULL DEFAULT now(),event_type text NOT NULL,component text NOT NULL,level text NOT NULL,message text NOT NULL,trace_id text NOT NULL);
+CREATE TABLE finding_activity(id uuid PRIMARY KEY,finding_id uuid NOT NULL REFERENCES findings(id),timestamp timestamptz NOT NULL DEFAULT now(),message text NOT NULL);
+CREATE TABLE approvals(id uuid PRIMARY KEY,scan_id uuid UNIQUE NOT NULL REFERENCES scans(id),action text NOT NULL,status text NOT NULL DEFAULT 'PENDING',decided_by text,decided_at timestamptz,created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE security_issues(id uuid PRIMARY KEY,approval_id uuid UNIQUE NOT NULL REFERENCES approvals(id),scan_id uuid NOT NULL REFERENCES scans(id),created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE event_outbox(id uuid PRIMARY KEY,scan_id uuid NOT NULL REFERENCES scans(id),topic text NOT NULL,payload jsonb NOT NULL,attempts int NOT NULL DEFAULT 0,sent_at timestamptz,next_attempt_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE processed_events(event_id uuid PRIMARY KEY,processed_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE agent_checkpoints(scan_id uuid PRIMARY KEY REFERENCES scans(id),thread_id text NOT NULL,state text NOT NULL,updated_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX idx_scans_history ON scans(project_id,branch,created_at DESC);
+CREATE INDEX idx_logs_scan ON scan_logs(scan_id,timestamp DESC);
+CREATE INDEX idx_findings_scan ON findings(scan_id);
