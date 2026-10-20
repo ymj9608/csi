@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import {
   LayoutDashboard,
@@ -11,13 +12,23 @@ import {
   LogOut,
 } from "lucide-vue-next";
 import { useSession } from "../stores/session";
-defineProps<{ mobile: boolean; page: string }>();
+import { scopedLink } from "../lib/project";
+defineProps<{
+  mobile: boolean;
+  page: string;
+  project: string;
+  projectName: string;
+}>();
 const emit = defineEmits<{ logout: [] }>();
 const logout = () => emit("logout");
 const route = useRoute(),
   session = useSession();
+// public/brand/ 로고 파일이 없으면 기존 SVG 방패와 텍스트로 대신 보여 줍니다.
+const BRAND = "/brand/";
+const shieldOk = ref(true),
+  wordOk = ref(true);
 const nav = [
-  ["/", "보안 현황", LayoutDashboard],
+  ["/dashboard", "보안 현황", LayoutDashboard],
   ["/projects", "프로젝트", FolderGit2],
   ["/scans", "검사 이력", ScanLine],
   ["/findings", "위험 항목", ShieldAlert],
@@ -28,17 +39,24 @@ const nav = [
 </script>
 <template>
   <aside :class="{ expanded: mobile }">
-    <RouterLink class="brand" to="/" aria-label="CSI 보안 현황으로 이동">
-      <svg viewBox="0 0 40 44" aria-hidden="true">
+    <RouterLink class="brand" to="/projects" aria-label="CSI 프로젝트 목록으로 이동">
+      <img
+        v-if="shieldOk"
+        class="brand-symbol"
+        :src="BRAND + 'csi-shield.png'"
+        alt=""
+        @error="shieldOk = false"
+      />
+      <svg v-else viewBox="0 0 40 44" aria-hidden="true">
         <defs>
           <linearGradient id="brand-face" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#9DB3FF" />
-            <stop offset="1" stop-color="#3F5EE8" />
+            <stop offset="0" stop-color="#9db3ff" />
+            <stop offset="1" stop-color="#3f5ee8" />
           </linearGradient>
         </defs>
         <path
           d="M22 4c5 3 10 4 14 4v14c0 9-6 15-14 19-8-4-14-10-14-19V8c4 0 9-1 14-4Z"
-          fill="#2E44B8"
+          fill="#2e44b8"
         />
         <path
           d="M19 2c5 3 10 4 14 4v14c0 9-6 15-14 19C11 35 5 29 5 20V6c4 0 9-1 14-4Z"
@@ -52,17 +70,29 @@ const nav = [
         />
         <rect x="12.5" y="17" width="13" height="11" rx="3" fill="#fff" />
       </svg>
-      <span>CSI<small>Cyber Security Inspector</small></span>
+      <span
+        ><img
+          v-if="wordOk"
+          class="brand-wordmark"
+          :src="BRAND + 'csi-wordmark.png'"
+          alt="CSI"
+          @error="wordOk = false" /><template v-else>CSI</template
+        ><small>Cyber Security Inspector</small></span
+      >
     </RouterLink>
+    <RouterLink
+      class="current-project"
+      :to="scopedLink('/dashboard', project)"
+      :title="projectName || '전체 프로젝트'"
+      ><small>현재 프로젝트</small
+      ><span>{{ projectName || "전체 프로젝트" }}</span></RouterLink
+    >
     <nav aria-label="주요 메뉴">
       <RouterLink
         v-for="[path, name, icon] in nav"
         :key="path"
-        :to="path"
-        :class="{
-          active:
-            path === '/' ? page === 'overview' : route.path.startsWith(path),
-        }"
+        :to="scopedLink(path, project)"
+        :class="{ active: route.path.startsWith(path) }"
         ><component :is="icon" :size="18" />{{ name }}</RouterLink
       >
     </nav>

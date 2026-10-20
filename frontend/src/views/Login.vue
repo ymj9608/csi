@@ -4,6 +4,9 @@ import { useRouter } from "vue-router";
 import { LockKeyhole } from "lucide-vue-next";
 import { useSession } from "../stores/session";
 import ShieldScene from "../components/ShieldScene.vue";
+// public/brand/ 워드마크가 없으면 기존 텍스트 제목을 보여 줍니다.
+const BRAND = "/brand/";
+const logoOk = ref(true);
 const s = useSession(),
   router = useRouter();
 const username = ref(""),
@@ -33,7 +36,7 @@ async function submit() {
     await s.login(username.value, password.value);
     done.value = true;
     await new Promise((r) => setTimeout(r, 750));
-    router.push("/");
+    router.push("/projects");
   } catch (e: any) {
     error.value = e.message;
   } finally {
@@ -45,10 +48,19 @@ async function submit() {
 <template>
   <main class="login">
     <section class="login-story">
-      <h1 class="wordmark">CSI</h1>
-      <p class="wordmark-sub">
-        CYBER SECURITY <span>INSPECTOR</span>
-      </p>
+      <h1 v-if="logoOk" class="wordmark-logo">
+        <img
+          :src="BRAND + 'csi-wordmark-full.png'"
+          alt="CSI Cyber Security Inspector"
+          @error="logoOk = false"
+        />
+      </h1>
+      <template v-else>
+        <h1 class="wordmark">CSI</h1>
+        <p class="wordmark-sub">
+          CYBER SECURITY <span>INSPECTOR</span>
+        </p>
+      </template>
       <p class="team">5조 : 노은서, 박지훈, 윤명진, 이기현, 장하은, 최현우</p>
       <p class="lede">
         코드가 바뀔 때마다 사내 개인정보 보호 정책을 근거로 위험을 찾고,<br />

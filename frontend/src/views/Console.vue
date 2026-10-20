@@ -4,7 +4,6 @@ import HeaderBar from "../components/HeaderBar.vue";
 import { ref, computed, watch, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
-  LayoutDashboard,
   FolderGit2,
   ScanLine,
   ShieldAlert,
@@ -15,6 +14,7 @@ import {
   ArrowUpRight,
   RefreshCw,
   ChevronRight,
+  ChevronLeft,
   LogOut,
   Menu,
   X,
@@ -22,6 +22,11 @@ import {
   GitBranch,
   Activity,
   ShieldCheck,
+  LayoutDashboard,
+  Bot,
+  FileText,
+  FolderOpen,
+  ChevronDown,
 } from "lucide-vue-next";
 import { api, date } from "../lib/api";
 import { useSession } from "../stores/session";
@@ -29,12 +34,16 @@ import Badge from "../components/Badge.vue";
 import Chart from "../components/Chart.vue";
 import ChangeReview from "../components/ChangeReview.vue";
 import ShieldScene from "../components/ShieldScene.vue";
-import { label } from "../components/labels";
+import { label, eventLabels, toolLabels } from "../components/labels";
+import Pager from "../components/Pager.vue";
+import { buildTimeline, elapsed } from "../lib/timeline";
+import ProjectPicker from "../components/ProjectPicker.vue";
+import { PROJECT_SCOPED, rememberProject, rememberedProject } from "../lib/project";
 const route = useRoute(),
   router = useRouter(),
   session = useSession();
 const nav = [
-  ["/", "보안 현황", LayoutDashboard],
+  ["/dashboard", "보안 현황", LayoutDashboard],
   ["/projects", "프로젝트", FolderGit2],
   ["/scans", "검사 이력", ScanLine],
   ["/findings", "위험 항목", ShieldAlert],
@@ -42,12 +51,46 @@ const nav = [
   ["/policies", "보안 정책", BookOpen],
   ["/approvals", "승인 관리", ClipboardCheck],
 ] as const;
-const page = computed(() => route.path.split("/")[1] || "overview"),
+const page = computed(() => route.path.split("/")[1] || "projects"),
   id = computed(() => route.path.split("/")[2]);
+const dash = computed(() => page.value === "dashboard");
+// 목록 화면은 선택한 프로젝트(?project=) 기준으로 조회합니다. 비어 있으면 전체 프로젝트입니다.
+const scoped = computed(
+  () => !id.value && PROJECT_SCOPED.includes(page.value),
+);
+// 위험 항목은 문제 유형 카드 → 위치 목록 → 상세 순서로 봅니다.
+// 기본은 최근 완료 검사만, ?history=1이면 이전 검사도 포함합니다. ?rule=은 펼친 유형입니다.
+const findingsPage = computed(() => page.value === "findings");
+const includeHistory = computed(() => route.query.history === "1");
+const projectId = computed(() => String(route.query.project || ""));
+const projectList = ref<any[]>([]);
+const selectedProject = computed(() =>
+  projectList.value.find((p) => p.id === projectId.value),
+);
 const heading = computed(
-  () => nav.find((n) => n[0] === "/" + page.value)?.[1] || "보안 현황",
+  () => nav.find((n) => n[0] === "/" + page.value)?.[1] || "프로젝트",
+);
+// 상세 화면처럼 쿼리가 없는 곳에서도 사이드바는 마지막 선택을 이어 줍니다.
+const sidebarProject = computed(() =>
+  route.fullPath && (projectId.value || rememberedProject()),
+);
+// 최근 완료 검사의 미해결 항목 기준. 탐지 0건이어도 안전을 보증하지는 않습니다.
+function risk(completed: number, open: number, criticalHigh: number) {
+  if (!Number(completed)) return "NOT_SCANNED";
+  if (Number(criticalHigh) > 0) return "DANGER";
+  return Number(open) > 0 ? "CAUTION" : "SAFE";
+}
+const riskTitle: Record<string, string> = {
+  NOT_SCANNED: "완료된 검사가 없습니다",
+  SAFE: "미해결 위험 항목 0건 · 검사 범위 밖의 안전은 보증하지 않습니다",
+  CAUTION: "중간·낮음 위험 항목만 남아 있습니다",
+  DANGER: "치명·높음 위험 항목이 남아 있습니다",
+};
+const dashRisk = computed(() =>
+  risk(data.value.completedScans, data.value.openFindings, data.value.criticalHigh),
 );
 const intro: Record<string, string> = {
+  dashboard: "선택한 프로젝트의 최근 완료 검사 기준 위험 현황입니다.",
   projects: "검사 대상 저장소와 마지막 검사 결과입니다.",
   scans: "커밋별 검사 진행 상황과 진단 근거를 추적합니다.",
   findings: "검사에서 발견된 위험 항목을 위험도와 상태로 걸러 봅니다.",
@@ -55,13 +98,11 @@ const intro: Record<string, string> = {
   policies: "진단 근거로 쓰이는 사내 보안 정책 조항입니다.",
   approvals: "Agent가 요청한 조치를 검토하고 승인하거나 거절합니다.",
 };
+// 코드 근거는 왼쪽 패널에 늘 보이므로 탭은 오른쪽 내용만 바꿉니다.
 const tabs: Record<string, string> = {
-  Overview: "개요",
-  "Code Evidence": "코드 근거",
   "AI Analysis": "AI 분석",
-  Remediation: "개선 권고",
+  Action: "조치",
   "Security References": "보안 근거",
-  Activity: "활동",
 };
 const data = ref<any>({}),
   items = ref<any[]>([]),
@@ -75,7 +116,7 @@ const data = ref<any>({}),
   until = ref(""),
   current = ref(1),
   mobile = ref(false),
-  tab = ref("Overview"),
+  tab = ref("AI Analysis"),
   streamState = ref("연결 대기"),
   drawer = ref<any>(null),
   projectModal = ref(false),
@@ -90,6 +131,168 @@ const reviewGroups = computed(() => {
   }
   return Object.entries(groups);
 });
+// 보안 현황의 검토 피드: 위험 항목(위험도 순)과 Agent 이벤트(최신순)를 한 목록에서 필터로 전환합니다.
+const feedFilter = ref<"all" | "findings" | "events">("findings");
+const feedFilters = computed(() => [
+  ["all", "전체", (data.value.topFindings?.length || 0) + (data.value.recentLogs?.length || 0)],
+  ["findings", "검토 필요", data.value.topFindings?.length || 0],
+  ["events", "Agent 이벤트", data.value.recentLogs?.length || 0],
+] as const);
+const feedDescriptions = {
+  all: "검토가 필요한 위험 항목을 위험도 순으로 먼저 보여 주고, 이어서 Agent 실행 기록을 최신순으로 보여 줍니다.",
+  findings:
+    "가장 최근 완료된 검사에서 아직 해결되지 않은 위험 항목입니다. 치명 → 높음 → 중간 → 낮음 순으로 정렬해 먼저 볼 항목부터 보여 주며, 누르면 코드 근거와 정책 근거를 확인할 수 있습니다.",
+  events:
+    "Agent가 검사를 분석하면서 남긴 실행 기록입니다. 분석 도구 선택, MCP 정책 조회, 근거 평가, 보고서 저장, 승인 요청 등이 최신순으로 표시되며, 누르면 해당 검사로 이동합니다.",
+};
+const feed = computed(() => [
+  ...(feedFilter.value === "events" ? [] : (data.value.topFindings || []).map((f: any) => ({ kind: "finding", item: f }))),
+  ...(feedFilter.value === "findings" ? [] : (data.value.recentLogs || []).map((l: any) => ({ kind: "event", item: l }))),
+]);
+const FEED_SIZE = 5;
+const feedPage = ref(1),
+  feedDirection = ref<"next" | "prev">("next");
+const feedPages = computed(() => Math.max(1, Math.ceil(feed.value.length / FEED_SIZE)));
+const feedVisible = computed(() =>
+  feed.value.slice((feedPage.value - 1) * FEED_SIZE, feedPage.value * FEED_SIZE),
+);
+function moveFeed(step: number) {
+  feedDirection.value = step > 0 ? "next" : "prev";
+  feedPage.value = Math.min(feedPages.value, Math.max(1, feedPage.value + step));
+}
+watch(feedFilter, () => {
+  feedDirection.value = "next";
+  feedPage.value = 1;
+});
+// 실시간 갱신으로 항목 수가 줄어도 빈 페이지에 머물지 않게 합니다.
+watch(feedPages, (n) => {
+  if (feedPage.value > n) feedPage.value = n;
+});
+// 검사 상세: 탐지 결과는 5건씩 미리 보고, 실행 로그는 단계별 타임라인으로 묶습니다.
+const SCAN_FINDING_SIZE = 5;
+const scanFindingPage = ref(1);
+const scanFindingPages = computed(() =>
+  Math.max(1, Math.ceil((data.value.findings?.length || 0) / SCAN_FINDING_SIZE)),
+);
+const scanFindingsVisible = computed(() =>
+  (data.value.findings || []).slice(
+    (scanFindingPage.value - 1) * SCAN_FINDING_SIZE,
+    scanFindingPage.value * SCAN_FINDING_SIZE,
+  ),
+);
+function moveScanFindings(step: number) {
+  scanFindingPage.value = Math.min(scanFindingPages.value, Math.max(1, scanFindingPage.value + step));
+}
+const timeline = computed(() => buildTimeline(data.value.logs || []));
+const stageList = ref<HTMLElement>();
+function jumpStage(key: string) {
+  const box = stageList.value,
+    target = box?.querySelector<HTMLElement>(`[data-stage="${key}"]`);
+  if (box && target) box.scrollTo({ top: target.offsetTop, behavior: "smooth" });
+}
+// 위험 항목 상세의 Agent 도구 선택을 정책 확인 → 규칙별 근거 수집 → 완료 흐름으로 나눕니다.
+const toolFlow = computed(() => {
+  const trace: any[] = data.value.analysis?.orchestration?.trace || [];
+  const rules: Record<string, any[]> = {};
+  for (const step of trace) if (step.ruleId) (rules[step.ruleId] ||= []).push(step);
+  return {
+    setup: trace.filter((step) => !step.ruleId && step.tool !== "finish_analysis"),
+    rules: Object.entries(rules),
+    finish: trace.filter((step) => !step.ruleId && step.tool === "finish_analysis"),
+  };
+});
+// 보안 근거: 문서별로 묶고, 규칙과 가장 관련 있는 문장 하나만 먼저 보여 줍니다.
+const RULE_KEYWORDS: Record<string, string[]> = {
+  "SEC-01": ["원문", "평문", "저장", "password"],
+  "SEC-02": ["해시", "SHA", "MD5", "빠른"],
+  "SEC-03": ["Salt", "salt", "솔트", "고정", "사전"],
+  "SEC-04": ["Work Factor", "bcrypt", "12", "비용", "Argon2"],
+  "SEC-05": ["로그", "토큰", "마스킹", "출력"],
+  "POL-01": ["승인", "필드", "수집", "목록", "최소"],
+};
+function keySentence(r: any) {
+  const lines = String(r.content || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  if (lines[0]?.startsWith(r.sectionId)) lines.shift();
+  const sentences = lines
+    .join(" ")
+    .split(/(?<=[.다])\s+|\s(?=(?:POL|REF)-\d+\.\d+\s*\|)/)
+    .map((x) => x.trim())
+    .filter((x) => x.length > 8);
+  const words = RULE_KEYWORDS[data.value.ruleId] || [];
+  const score = (x: string) => words.filter((w) => x.includes(w)).length;
+  const best = sentences.reduce((a, b) => (score(b) > score(a) ? b : a), sentences[0] || r.content || "");
+  return best.length > 180 ? best.slice(0, 180) + "…" : best;
+}
+const referenceGroups = computed(() => {
+  const groups: Record<string, { source: string; type: string; refs: any[] }> = {};
+  for (const r of data.value.analysis?.references || [])
+    (groups[r.source] ||= { source: r.source, type: r.documentType, refs: [] }).refs.push(r);
+  return Object.values(groups);
+});
+const openRefs = ref<string[]>([]);
+function toggleRef(id: string) {
+  openRefs.value = openRefs.value.includes(id)
+    ? openRefs.value.filter((x) => x !== id)
+    : [...openRefs.value, id];
+}
+const SEVERITY_RANK: Record<string, number> = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+const fieldOf = (f: any) => f.analysis?.policyComparison?.field;
+// 같은 규칙의 탐지 위치를 문제 유형 하나로 묶습니다. 위험도가 높고 위치가 많은 유형부터 정렬합니다.
+const findingGroups = computed(() => {
+  if (!findingsPage.value || id.value) return [];
+  const groups: Record<string, any> = {};
+  for (const f of filtered.value) {
+    const g = (groups[f.ruleId] ||= { ruleId: f.ruleId, title: f.title, severity: f.severity, items: [] });
+    g.items.push(f);
+    if (SEVERITY_RANK[f.severity] < SEVERITY_RANK[g.severity]) g.severity = f.severity;
+  }
+  return Object.values(groups)
+    .map((g: any) => {
+      const profile = profiles.find((p) => p.rules.includes(g.ruleId));
+      const fields = new Set(g.items.map(fieldOf).filter(Boolean));
+      return {
+        ...g,
+        profile,
+        fields: fields.size,
+        open: g.items.filter((f: any) => f.status !== "RESOLVED").length,
+      };
+    })
+    .sort(
+      (a: any, b: any) =>
+        SEVERITY_RANK[a.severity] - SEVERITY_RANK[b.severity] || b.items.length - a.items.length,
+    );
+});
+const activeRule = computed(
+  () => String(route.query.rule || "") || findingGroups.value[0]?.ruleId || "",
+);
+const activeGroup = computed(() => findingGroups.value.find((g: any) => g.ruleId === activeRule.value));
+// 개인정보 필드(POL-01)는 같은 필드가 여러 클래스에 반복되므로 필드 종류로 한 번 더 묶습니다.
+const activeLocations = computed(() => {
+  const g = activeGroup.value;
+  if (!g) return [];
+  const sorted = [...g.items].sort((a: any, b: any) =>
+    `${a.filePath}:${String(a.startLine).padStart(6, "0")}`.localeCompare(
+      `${b.filePath}:${String(b.startLine).padStart(6, "0")}`,
+    ),
+  );
+  const buckets: Record<string, any[]> = {};
+  for (const f of sorted) (buckets[fieldOf(f) || f.filePath] ||= []).push(f);
+  return Object.entries(buckets).map(([key, list]) => ({ key, isField: !!fieldOf(list[0]), items: list }));
+});
+// 위치 목록에서 파일:라인이 반복되지 않도록, 가린 코드 근거의 첫 줄을 제목으로 씁니다.
+function snippet(f: any) {
+  const line = String(f.maskedCodeEvidence || "").split("\n").map((x) => x.trim()).find(Boolean);
+  return line ? (line.length > 90 ? line.slice(0, 90) + "…" : line) : `${f.filePath}:${f.startLine}`;
+}
+function selectRule(ruleId: string) {
+  router.replace({ path: "/findings", query: { ...route.query, rule: ruleId } });
+}
+function setHistory(on: boolean) {
+  const query = { ...route.query };
+  if (on) query.history = "1";
+  else delete query.history;
+  router.replace({ path: route.path, query });
+}
 const policyLabels: Record<string, string> = {LISTED: '승인 목록에 포함', NOT_LISTED: '승인 목록에 없음', RESTRICTED: '제한 항목', UNKNOWN: '판단 보류'};
 let es: EventSource | undefined;
 let refreshTimer: ReturnType<typeof setTimeout>;
@@ -123,12 +326,9 @@ const pages = computed(() =>
 const visible = computed(() =>
   filtered.value.slice((current.value - 1) * 10, current.value * 10),
 );
-const scanRows = computed(() =>
-  page.value === "overview" ? data.value.recentScans || [] : visible.value,
-);
 const metrics = computed(() => [
-  ["등록 프로젝트", data.value.projects, FolderGit2],
-  ["완료된 검사", data.value.completedScans, ScanLine],
+  ["전체 검사", data.value.scans, ScanLine],
+  ["완료된 검사", data.value.completedScans, ShieldCheck],
   ["미해결 위험 항목", data.value.openFindings, ShieldAlert],
   ["치명 / 높음", data.value.criticalHigh, Activity],
   ["검토 대기", data.value.pendingApprovals, ClipboardCheck],
@@ -159,10 +359,28 @@ const profiles = [
     detail: "승인되지 않은 항목, 신규 필드, 처리 경로",
   },
 ];
-const palette = ["#C8264F", "#E0701F", "#D9A400", "#7F99FA"];
+const palette = ["#C8264F", "#E0701F", "#D9A400", "#7f99fa"];
 const chartFont = {
   fontFamily: "'Pretendard Variable', Pretendard, sans-serif",
 };
+const severityColors: Record<string, string> = {
+  CRITICAL: "#C8264F",
+  HIGH: "#E0701F",
+  MEDIUM: "#D9A400",
+  LOW: "#7f99fa",
+};
+// 위험도 분포 범례: 0건인 등급도 함께 보여 줘서 어떤 등급이 비어 있는지 알 수 있게 합니다.
+const severityLegend = computed(() => {
+  const counts = Object.fromEntries(
+    (data.value.distribution || []).map((x: any) => [x.severity, Number(x.count)]),
+  );
+  const total = Object.values(counts).reduce((a: number, b: any) => a + b, 0) as number;
+  return Object.keys(severityColors).map((severity) => ({
+    severity,
+    count: counts[severity] || 0,
+    percent: total ? Math.round(((counts[severity] || 0) / total) * 100) : 0,
+  }));
+});
 const donut = computed(() => ({
   animation: false,
   textStyle: chartFont,
@@ -172,51 +390,35 @@ const donut = computed(() => ({
     {
       type: "pie",
       radius: ["62%", "80%"],
-      center: ["50%", "46%"],
+      center: ["50%", "50%"],
       label: { show: false },
       itemStyle: { borderColor: "#fff", borderWidth: 3, borderRadius: 4 },
       data: (data.value.distribution || []).map((x: any) => ({
         name: label(x.severity),
         value: x.count,
-        itemStyle: {
-          color: (
-            {
-              CRITICAL: "#C8264F",
-              HIGH: "#E0701F",
-              MEDIUM: "#D9A400",
-              LOW: "#7F99FA",
-            } as Record<string, string>
-          )[x.severity],
-        },
+        itemStyle: { color: severityColors[x.severity] },
       })),
     },
   ],
-  legend: {
-    bottom: 0,
-    icon: "circle",
-    textStyle: { color: "#545B80", ...chartFont },
-    itemWidth: 8,
-    itemHeight: 8,
-  },
 }));
 const trend = computed(() => ({
   animation: false,
   textStyle: chartFont,
-  color: ["#3F5EE8"],
+  color: ["#3f5ee8"],
   tooltip: { trigger: "axis" },
   grid: { left: 40, right: 20, top: 25, bottom: 30 },
   xAxis: {
     type: "category",
     data: (data.value.trend || []).map((x: any) => x.day),
-    axisLine: { lineStyle: { color: "#CBD4EE" } },
+    axisLine: { lineStyle: { color: "#cbd4ee" } },
     axisTick: { show: false },
-    axisLabel: { color: "#6B7296" },
+    axisLabel: { color: "#6b7296" },
   },
   yAxis: {
     type: "value",
     minInterval: 1,
-    splitLine: { lineStyle: { color: "#E6EAF6" } },
-    axisLabel: { color: "#6B7296" },
+    splitLine: { lineStyle: { color: "#e6eaf6" } },
+    axisLabel: { color: "#6b7296" },
   },
   series: [
     {
@@ -246,11 +448,30 @@ async function load(quiet = false) {
   if (!quiet) loading.value = true;
   error.value = "";
   try {
-    let path =
-      page.value === "overview"
-        ? "/dashboard/overview"
-        : "/" + page.value + (id.value ? "/" + id.value : "");
-    const result = await api(path);
+    if (scoped.value || page.value === "projects")
+      api("/projects")
+        .then((list) => key === request && (projectList.value = list))
+        .catch(() => {});
+    const query = scoped.value && projectId.value ? "?projectId=" + projectId.value : "";
+    if (findingsPage.value && !id.value) {
+      const params = new URLSearchParams();
+      if (projectId.value) params.set("projectId", projectId.value);
+      if (!includeHistory.value) params.set("latest", "true");
+      const list = await api("/findings?" + params);
+      if (key !== request) return;
+      items.value = list;
+      data.value = {};
+      return;
+    }
+    if (dash.value) {
+      const overview = await api("/dashboard/overview" + query);
+      if (key !== request) return;
+      data.value = overview;
+      items.value = [];
+      return;
+    }
+    const path = "/" + page.value + (id.value ? "/" + id.value : "");
+    const result = await api(path + query);
     if (key !== request) return;
     data.value = Array.isArray(result) ? {} : result;
     items.value = Array.isArray(result) ? result : result.items || [];
@@ -263,9 +484,6 @@ async function load(quiet = false) {
       ]);
       if (key === request)
         data.value = { ...result, findings, logs, comparison, changes };
-    }
-    if (id.value && page.value === "projects") {
-      items.value = await api("/scans?projectId=" + id.value);
     }
   } catch (e: any) {
     if (key === request) error.value = e.message;
@@ -297,10 +515,28 @@ function connect() {
     refreshTimer = setTimeout(() => load(true), 400);
   });
 }
+function selectProject(value: string) {
+  rememberProject(value);
+  router.replace({ path: route.path, query: value ? { project: value } : {} });
+}
+let lastListKey = "";
 watch(
   () => route.fullPath,
   () => {
+    // 쿼리 없이 들어오면 마지막으로 고른 프로젝트를 이어서 보여줍니다.
+    const remembered = rememberedProject();
+    if (scoped.value && !route.query.project && remembered) {
+      router.replace({ path: route.path, query: { ...route.query, project: remembered } });
+      return;
+    }
+    if (scoped.value && projectId.value) rememberProject(projectId.value);
     mobile.value = false;
+    // 위험 항목에서 유형 카드만 바꾼 경우에는 검색어와 필터를 유지하고 다시 불러오지 않습니다.
+    const { rule: _rule, ...listQuery } = route.query;
+    const listKey = route.path + "?" + JSON.stringify(listQuery);
+    const sameList = findingsPage.value && !id.value && listKey === lastListKey;
+    lastListKey = listKey;
+    if (sameList) return;
     search.value = "";
     status.value = "";
     severity.value = "";
@@ -310,7 +546,11 @@ watch(
     logLevel.value = "";
     oldestFirst.value = false;
     current.value = 1;
-    tab.value = "Overview";
+    tab.value = "AI Analysis";
+    scanFindingPage.value = 1;
+    openRefs.value = [];
+    feedFilter.value = "findings";
+    feedPage.value = 1;
     load();
     connect();
   },
@@ -368,7 +608,15 @@ async function logout() {
 </script>
 <template>
   <div class="console">
-    <Sidebar :mobile="mobile" :page="page" @logout="logout" />
+    <Sidebar
+      :mobile="mobile"
+      :page="page"
+      :project="sidebarProject"
+      :project-name="
+        projectList.find((p) => p.id === sidebarProject)?.repository || ''
+      "
+      @logout="logout"
+    />
     <div v-if="mobile" class="scrim" @click="mobile = false" />
     <main class="main">
       <HeaderBar
@@ -377,9 +625,9 @@ async function logout() {
         @toggle="mobile = !mobile"
       />
       <div class="content">
-        <div class="page-heading" :class="{ 'with-shield': page === 'overview' }">
+        <div class="page-heading" :class="{ 'with-shield': dash }">
           <ShieldScene
-            v-if="page === 'overview'"
+            v-if="dash"
             compact
             class="heading-shield"
             :progress="loading ? 0 : 1"
@@ -388,9 +636,30 @@ async function logout() {
             "
           />
           <div>
-            <h1>{{ id ? data.repository || data.title || heading : heading }}</h1>
-            <p v-if="page === 'overview'">
+            <h1 v-if="dash" class="project-heading">
+              {{ data.project?.repository || "전체 프로젝트"
+              }}<Badge
+                v-if="!loading && !error"
+                :value="dashRisk"
+                :title="riskTitle[dashRisk]"
+              />
+            </h1>
+            <h1 v-else>
+              {{ id ? data.repository || data.title || heading : heading }}
+            </h1>
+            <p v-if="dash && data.project" class="project-sub">
+              <GitBranch :size="13" />{{ data.project.defaultBranch }} · 정책
+              {{ data.project.policyVersion }}
+            </p>
+            <p v-else-if="dash" class="project-sub">
+              <FolderGit2 :size="13" />등록된 프로젝트 {{ data.projects ?? 0 }}개 합산
+            </p>
+            <p v-if="dash">
               <template v-if="loading">최신 검사 결과를 불러오는 중입니다.</template>
+              <template v-else-if="!data.completedScans"
+                >아직 완료된 검사가 없습니다. 검사 결과가 들어오면 위험도를
+                판단합니다.</template
+              >
               <template v-else-if="data.criticalHigh > 0"
                 >미해결 위험 항목 {{ data.openFindings ?? 0 }}건 중
                 <strong class="hot">치명·높음 {{ data.criticalHigh }}건</strong>을
@@ -405,13 +674,18 @@ async function logout() {
                 않습니다.</template
               >
             </p>
-            <p v-else-if="page === 'findings' && id">
+            <p v-else-if="findingsPage && id">
               정적 분석 근거와 정책 대조 결과를 함께 검토합니다.
             </p>
-            <p v-else-if="page === 'projects' && id">이 저장소의 검사 이력입니다.</p>
             <p v-else>{{ intro[page] }}</p>
           </div>
           <div class="heading-actions">
+            <ProjectPicker
+              v-if="scoped"
+              :projects="projectList"
+              :model-value="projectId"
+              @update:model-value="selectProject"
+            />
             <button @click="load()" :disabled="loading">
               <RefreshCw :size="15" />새로고침</button
             ><button
@@ -430,7 +704,7 @@ async function logout() {
           <div v-for="n in 6" :key="n" class="skeleton" />
         </div>
         <template v-else-if="!error"
-          ><template v-if="page === 'overview'"
+          ><template v-if="dash"
             ><div class="metrics">
               <article
                 v-for="([name, value, icon], i) in metrics"
@@ -441,21 +715,6 @@ async function logout() {
                 <strong>{{ value ?? 0 }}</strong>
               </article>
             </div>
-            <section class="panel threat-section">
-              <div class="panel-title">
-                <h2>진단 범위</h2>
-                <span>4개 위협 유형을 정적 근거와 MCP 정책 검증으로 확인합니다</span>
-              </div>
-              <div class="threat-grid">
-                <article v-for="p in profiles" :key="p.id">
-                  <h3>{{ p.name }}</h3>
-                  <p>{{ p.detail }}</p>
-                  <div class="chips">
-                    <code v-for="r in p.rules" :key="r">{{ r }}</code>
-                  </div>
-                </article>
-              </div>
-            </section>
             <div class="charts-grid">
               <section class="panel">
                 <div class="panel-title">
@@ -474,31 +733,128 @@ async function logout() {
                   <h2>위험도 분포</h2>
                   <span>미해결 항목</span>
                 </div>
-                <Chart v-if="data.distribution?.length" :option="donut" />
+                <div v-if="data.distribution?.length" class="donut-wrap">
+                  <Chart :option="donut" />
+                  <ul class="severity-legend" aria-label="위험도 범례">
+                    <li
+                      v-for="l in severityLegend"
+                      :key="l.severity"
+                      :class="{ zero: !l.count }"
+                    >
+                      <i :style="{ background: severityColors[l.severity] }" />
+                      <span>{{ label(l.severity) }}</span>
+                      <strong>{{ l.count }}건</strong>
+                      <small>{{ l.percent }}%</small>
+                    </li>
+                  </ul>
+                </div>
                 <div v-else class="empty chart-empty">
                   <ShieldCheck :size="26" /><strong
                     >집계할 위험 항목이 없습니다</strong
                   ><span>미해결 항목이 생기면 위험도별로 나눠 보여줍니다.</span>
                 </div>
               </section>
-            </div></template
+            </div>
+            <section class="panel threat-section">
+              <div class="panel-title">
+                <h2>진단 범위</h2>
+                <span>4개 위협 유형을 정적 근거와 MCP 정책 검증으로 확인합니다</span>
+              </div>
+              <div class="threat-grid">
+                <article v-for="p in profiles" :key="p.id">
+                  <h3>{{ p.name }}</h3>
+                  <p>{{ p.detail }}</p>
+                  <div class="chips">
+                    <code v-for="r in p.rules" :key="r">{{ r }}</code>
+                  </div>
+                </article>
+              </div>
+            </section>
+          </template>
+          <template v-if="dash"
+            ><section class="panel review-feed">
+              <div class="panel-title">
+                <h2>검토 피드</h2>
+                <RouterLink
+                  :to="{
+                    path: feedFilter === 'events' ? '/logs' : '/findings',
+                    query: route.query,
+                  }"
+                  >{{ feedFilter === "events" ? "로그 보기" : "전체 위험 항목" }}
+                  <ArrowUpRight :size="14"
+                /></RouterLink>
+              </div>
+              <div class="feed-filters" role="group" aria-label="검토 피드 필터">
+                <button
+                  v-for="[key, name, count] in feedFilters"
+                  :key="key"
+                  :aria-pressed="feedFilter === key"
+                  :class="{ selected: feedFilter === key }"
+                  @click="feedFilter = key"
+                >
+                  {{ name }}<span>{{ count }}</span>
+                </button>
+              </div>
+              <p class="feed-description">{{ feedDescriptions[feedFilter] }}</p>
+              <Transition :name="'feed-slide-' + feedDirection" mode="out-in">
+                <div :key="feedFilter + feedPage" class="feed-page">
+                  <template v-for="row in feedVisible" :key="row.kind + row.item.id">
+                    <RouterLink
+                      v-if="row.kind === 'finding'"
+                      :to="'/findings/' + row.item.id"
+                      class="list-row"
+                      ><Badge :value="row.item.severity" /><span class="grow"
+                        >{{ row.item.title
+                        }}<small class="mono"
+                          ><code>{{ row.item.ruleId }}</code
+                          ><template v-if="!projectId">{{ row.item.repository }} · </template
+                          >{{ row.item.filePath }}:{{ row.item.startLine }}</small
+                        ></span
+                      ><ChevronRight :size="16"
+                    /></RouterLink>
+                    <RouterLink
+                      v-else
+                      :to="row.item.scanId ? '/scans/' + row.item.scanId : '/logs'"
+                      class="list-row"
+                      ><span class="feed-icon"><Bot :size="15" /></span
+                      ><span class="grow"
+                        ><strong
+                          >{{ eventLabels[row.item.eventType] || row.item.eventType
+                          }}<code v-if="eventLabels[row.item.eventType]">{{
+                            row.item.eventType
+                          }}</code></strong
+                        ><small>{{ row.item.message }}</small></span
+                      ><small class="time">{{ date(row.item.timestamp) }}</small></RouterLink
+                    >
+                  </template>
+                  <p v-if="!feed.length" class="empty">
+                    {{
+                      feedFilter === "events"
+                        ? "아직 실행 이벤트가 없습니다."
+                        : feedFilter === "findings"
+                          ? "미해결 위험 항목이 없습니다."
+                          : "표시할 항목이 없습니다."
+                    }}
+                  </p>
+                </div>
+              </Transition>
+              <Pager
+                v-if="feedPages > 1"
+                class="panel-pager"
+                :page="feedPage"
+                :pages="feedPages"
+                label="검토 피드"
+                @move="moveFeed"
+              />
+            </section></template
           >
-          <template
-            v-if="
-              (page === 'scans' && !id) ||
-              page === 'overview' ||
-              (page === 'projects' && id)
-            "
+          <template v-if="page === 'scans' && !id"
             ><section class="panel">
               <div class="panel-title">
-                <h2>
-                  {{ page === "overview" ? "최근 검사" : "검사 이력" }}
-                </h2>
-                <RouterLink v-if="page === 'overview'" to="/scans"
-                  >전체 이력 <ArrowUpRight :size="14" /></RouterLink
-                ><span v-else>{{ filtered.length }}건</span>
+                <h2>검사 이력</h2>
+                <span>{{ filtered.length }}건</span>
               </div>
-              <div v-if="page !== 'overview'" class="filters">
+              <div class="filters">
                 <label class="search"
                   ><Search :size="16" /><input
                     v-model="search"
@@ -548,7 +904,7 @@ async function logout() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="s in scanRows" :key="s.id">
+                    <tr v-for="s in visible" :key="s.id">
                       <td>
                         <RouterLink :to="'/scans/' + s.id"
                           ><strong>{{ s.repository }}</strong
@@ -582,7 +938,7 @@ async function logout() {
                     </tr>
                   </tbody>
                 </table>
-                <div v-if="!scanRows.length" class="empty">
+                <div v-if="!visible.length" class="empty">
                   <ScanLine :size="28" /><strong>표시할 검사가 없습니다</strong
                   ><span
                     >프로젝트를 등록하고 서명된 검사 결과를 전송해
@@ -593,75 +949,7 @@ async function logout() {
                 </div>
               </div></section
           ></template>
-          <template v-if="page === 'overview'"
-            ><section v-if="data.topFindings?.length" class="panel priority">
-              <div class="panel-title">
-                <h2>먼저 검토할 항목</h2>
-                <RouterLink to="/findings"
-                  >전체 위험 항목 <ArrowUpRight :size="14"
-                /></RouterLink>
-              </div>
-              <RouterLink
-                v-for="f in data.topFindings"
-                :to="'/findings/' + f.id"
-                class="list-row"
-                ><Badge :value="f.severity" /><span class="grow"
-                  >{{ f.title
-                  }}<small class="mono">{{ f.filePath }}:{{ f.startLine }}</small></span
-                ><ChevronRight :size="16"
-              /></RouterLink>
-            </section>
-            <div class="bottom-grid">
-              <section class="panel">
-                <div class="panel-title">
-                  <h2>저장소별 위험 항목</h2>
-                </div>
-                <RouterLink
-                  v-for="p in data.repositoryRisk"
-                  :to="'/projects/' + p.id"
-                  class="list-row"
-                  ><span class="grow"
-                    ><FolderGit2 :size="15" /> {{ p.repository }}</span
-                  ><strong class="count">{{ p.count }}</strong>
-                </RouterLink>
-                <p v-if="!data.repositoryRisk?.length" class="empty">
-                  등록된 프로젝트가 없습니다.
-                </p>
-              </section>
-              <section class="panel">
-                <div class="panel-title">
-                  <h2>최근 Agent 이벤트</h2>
-                  <RouterLink to="/logs"
-                    >로그 보기 <ArrowUpRight :size="14"
-                  /></RouterLink>
-                </div>
-                <div v-for="l in data.recentLogs" class="list-row">
-                  <span class="grow"
-                    ><strong>{{ l.eventType }}</strong
-                    ><small>{{ l.message }}</small></span
-                  ><small class="time">{{ date(l.timestamp) }}</small>
-                </div>
-                <p v-if="!data.recentLogs?.length" class="empty">
-                  아직 실행 이벤트가 없습니다.
-                </p>
-              </section>
-            </div>
-            <section class="panel" v-if="data.failures?.length">
-              <div class="panel-title"><h2>최근 실패한 검사</h2></div>
-              <RouterLink
-                v-for="s in data.failures"
-                :to="'/scans/' + s.id"
-                class="list-row"
-                ><span class="grow">{{ s.repository }}</span
-                ><Badge :value="s.status"
-              /></RouterLink>
-            </section>
-            <div class="evidence-note">
-              <ShieldCheck :size="16" />모든 지표는 저장된 검사 결과를 기준으로
-              합니다. 탐지 결과가 없더라도 전체 시스템의 안전을 보증하지
-              않습니다.
-            </div></template
-          >
+
           <template v-if="page === 'projects' && !id"
             ><div class="filters bare">
               <label class="search"
@@ -675,12 +963,20 @@ async function logout() {
               <RouterLink
                 v-for="p in visible"
                 :key="p.id"
-                :to="'/projects/' + p.id"
+                :to="{ path: '/dashboard', query: { project: p.id } }"
                 class="panel project-card"
                 ><div class="project-top">
-                  <FolderGit2 :size="20" /><Badge
-                    :value="p.latestStatus || 'NOT_SCANNED'"
-                  />
+                  <FolderGit2 :size="20" /><span class="project-badges"
+                    ><Badge
+                      v-if="['QUEUED', 'RUNNING', 'FAILED'].includes(p.latestStatus)"
+                      :value="p.latestStatus" /><Badge
+                      :value="risk(p.completedScans, p.openFindings, p.openCriticalHigh)"
+                      :title="
+                        riskTitle[
+                          risk(p.completedScans, p.openFindings, p.openCriticalHigh)
+                        ]
+                      "
+                  /></span>
                 </div>
                 <h2>{{ p.repository }}</h2>
                 <p class="mono">github.com/{{ p.repository }}</p>
@@ -690,8 +986,8 @@ async function logout() {
                     <dd><GitBranch :size="13" /> {{ p.defaultBranch }}</dd>
                   </div>
                   <div>
-                    <dt>위험 항목</dt>
-                    <dd class="num">{{ p.findingCount || 0 }}</dd>
+                    <dt>미해결 위험 항목</dt>
+                    <dd class="num">{{ p.openFindings || 0 }}</dd>
                   </div>
                   <div>
                     <dt>마지막 검사</dt>
@@ -782,7 +1078,8 @@ async function logout() {
               </div>
               <RouterLink
                 class="finding-row"
-                v-for="f in data.findings"
+                v-for="f in scanFindingsVisible"
+                :key="f.id"
                 :to="'/findings/' + f.id"
                 ><Badge :value="f.severity" />
                 <div>
@@ -798,20 +1095,188 @@ async function logout() {
               <div v-if="!data.findings?.length" class="empty">
                 탐지된 항목이 없습니다. 검사 완료 상태를 함께 확인하세요.
               </div>
+              <Pager
+                v-if="scanFindingPages > 1"
+                class="panel-pager"
+                :page="scanFindingPage"
+                :pages="scanFindingPages"
+                :total="data.findings.length"
+                label="탐지 결과"
+                @move="moveScanFindings"
+              />
             </section>
-            <section class="panel">
-              <div class="panel-title"><h2>실행 타임라인</h2></div>
-              <ol class="timeline">
-                <li v-for="l in data.logs">
-                  <span class="grow"
-                    ><strong>{{ l.eventType }}</strong
-                    ><small>{{ l.message }}</small></span
-                  ><small class="time">{{ date(l.timestamp) }}</small>
-                </li>
-              </ol>
+            <section class="panel scan-timeline">
+              <div class="panel-title">
+                <h2>실행 타임라인</h2>
+                <span v-if="timeline.groups.length"
+                  >총 {{ elapsed(timeline.total) }} · 이벤트 {{ data.logs.length }}건</span
+                >
+              </div>
+              <template v-if="timeline.groups.length">
+                <div class="stage-bar" aria-label="단계별 소요 시간">
+                  <button
+                    v-for="g in timeline.groups"
+                    :key="g.key"
+                    class="stage-seg"
+                    :style="{
+                      '--c': g.color,
+                      flex: `${Math.max(g.to - g.from, timeline.total * 0.08)} 1 0`,
+                    }"
+                    :title="`${g.name} · ${elapsed(g.to - g.from)} · ${g.events.length}건`"
+                    @click="jumpStage(g.key)"
+                  >
+                    <i /><strong>{{ g.name }}</strong
+                    ><small>{{ elapsed(g.to - g.from) }} · {{ g.events.length }}건</small>
+                  </button>
+                </div>
+                <div ref="stageList" class="stage-list">
+                  <section
+                    v-for="g in timeline.groups"
+                    :key="g.key"
+                    :data-stage="g.key"
+                    class="stage-group"
+                    :style="{ '--c': g.color }"
+                  >
+                    <header>
+                      <i /><strong>{{ g.name }}</strong
+                      ><small>시작 +{{ elapsed(g.from) }} · {{ g.events.length }}건</small>
+                    </header>
+                    <ol class="timeline">
+                      <li
+                        v-for="e in g.events"
+                        :key="e.id"
+                        :class="{ warn: e.level !== 'INFO' }"
+                      >
+                        <span class="t-offset">+{{ elapsed(e.offset) }}</span
+                        ><span class="grow"
+                          ><strong
+                            >{{ eventLabels[e.eventType] || e.eventType
+                            }}<code v-if="eventLabels[e.eventType]">{{ e.eventType }}</code></strong
+                          ><small>{{ e.message }}</small></span
+                        ><span class="tag">{{ e.component }}</span>
+                      </li>
+                    </ol>
+                  </section>
+                </div>
+              </template>
+              <p v-else class="empty">아직 실행 기록이 없습니다.</p>
             </section></template
           >
-          <template v-if="page === 'findings' && id"
+          <template v-if="findingsPage && !id"
+            ><div class="finding-toolbar">
+              <label class="search"
+                ><Search :size="16" /><input
+                  v-model="search"
+                  aria-label="위험 항목 검색"
+                  placeholder="제목, 파일, 규칙, 필드 검색"
+              /></label
+              ><select v-model="severity" aria-label="위험도">
+                <option value="">모든 위험도</option>
+                <option v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']" :value="s">
+                  {{ label(s) }}
+                </option></select
+              ><select v-model="status" aria-label="상태 필터">
+                <option value="">모든 상태</option>
+                <option v-for="s in ['OPEN', 'REVIEWING', 'RESOLVED']" :value="s">
+                  {{ label(s) }}
+                </option></select
+              ><label class="history-toggle"
+                ><input
+                  type="checkbox"
+                  :checked="includeHistory"
+                  @change="setHistory(($event.target as HTMLInputElement).checked)"
+                />이전 검사 결과 포함</label
+              >
+            </div>
+            <p class="finding-summary">
+              {{ includeHistory ? "모든 검사" : "최근 완료 검사" }} 기준으로
+              <strong>문제 유형 {{ findingGroups.length }}종</strong>, 코드 위치
+              {{ filtered.length }}곳이 발견되었습니다. 유형을 고르면 아래에 위치가 나오고, 위치를
+              누르면 근거와 AI 분석을 볼 수 있습니다.
+            </p>
+            <div v-if="findingGroups.length" class="type-grid" role="list">
+              <button
+                v-for="g in findingGroups"
+                :key="g.ruleId"
+                role="listitem"
+                class="type-card"
+                :class="['sev-' + g.severity.toLowerCase(), { selected: g.ruleId === activeRule }]"
+                :aria-pressed="g.ruleId === activeRule"
+                @click="selectRule(g.ruleId)"
+              >
+                <span class="type-top"
+                  ><Badge :value="g.severity" /><code>{{ g.ruleId }}</code></span
+                >
+                <strong>{{ g.title }}</strong>
+                <small v-if="g.profile">{{ g.profile.id }} · {{ g.profile.name }}</small>
+                <span class="type-count"
+                  ><b>{{ g.fields ? g.fields : g.items.length }}</b
+                  >{{ g.fields ? "종 필드" : "곳" }}<em v-if="g.fields"
+                    >· 위치 {{ g.items.length }}곳</em
+                  ><em v-if="g.open < g.items.length">· 미해결 {{ g.open }}</em></span
+                >
+              </button>
+            </div>
+            <section v-if="activeGroup" class="panel location-panel">
+              <div class="panel-title">
+                <div>
+                  <h2>{{ activeGroup.title }}</h2>
+                  <span v-if="activeGroup.profile">{{ activeGroup.profile.detail }}</span>
+                </div>
+                <span>{{
+                  activeGroup.fields
+                    ? `필드 ${activeGroup.fields}종 · 위치 ${activeGroup.items.length}곳`
+                    : `위치 ${activeGroup.items.length}곳`
+                }}</span>
+              </div>
+              <div
+                v-for="loc in activeLocations"
+                :key="loc.key"
+                class="location-group"
+              >
+                <h3>
+                  <code v-if="loc.isField">{{ loc.key }}</code
+                  ><span v-else class="mono">{{ loc.key }}</span
+                  ><small>{{ loc.items.length }}곳</small>
+                </h3>
+                <RouterLink
+                  v-for="f in loc.items"
+                  :key="f.id"
+                  :to="{ path: '/findings/' + f.id, query: route.query }"
+                  class="finding-row"
+                  ><div>
+                    <strong
+                      ><template v-if="f.analysis?.policyComparison"
+                        >{{ f.analysis.policyComparison.entity }}.{{
+                          f.analysis.policyComparison.field
+                        }}</template
+                      ><template v-else>{{ snippet(f) }}</template></strong
+                    ><small class="meta"
+                      ><span class="mono">{{ f.filePath }}:{{ f.startLine }}</span
+                      ><span v-if="!projectId">{{ f.repository }}</span
+                      ><span v-if="includeHistory" class="mono">{{
+                        f.commitSha?.slice(0, 8)
+                      }}</span></small
+                    >
+                  </div>
+                  <Badge :value="f.status" /><ChevronRight :size="16"
+                /></RouterLink>
+              </div>
+            </section>
+            <div v-if="!findingGroups.length" class="panel empty">
+              <ShieldCheck :size="28" /><strong>표시할 위험 항목이 없습니다</strong
+              ><span>{{
+                includeHistory
+                  ? "검사 결과가 저장되면 이곳에서 확인할 수 있습니다."
+                  : "최근 완료 검사에 해당하는 항목이 없습니다. 이전 검사 결과 포함을 켜면 지난 기록을 볼 수 있습니다."
+              }}</span>
+            </div></template
+          >
+          <template v-if="findingsPage && id"
+            ><RouterLink
+              class="back-link"
+              :to="{ path: '/findings', query: { ...route.query, rule: data.ruleId } }"
+              ><ChevronLeft :size="14" />위험 항목 목록</RouterLink
             ><div class="detail-header">
               <Badge :value="data.severity" /><Badge
                 :value="data.evidenceStatus"
@@ -841,11 +1306,16 @@ async function logout() {
             </div>
             <div class="detail-grid">
               <section class="panel detail-panel">
-                <h2>정적 분석 근거</h2>
+                <h2 class="step-title"><b>1</b>스캐너가 찾은 사실</h2>
+                <p class="step-sub">Semgrep 정적 분석이 코드에서 기계적으로 확인한 내용입니다.</p>
                 <p class="mono file-path">
                   {{ data.filePath }}:{{ data.startLine }}–{{ data.endLine }}
                 </p>
                 <pre>{{ data.maskedCodeEvidence || "코드 원문 미제공" }}</pre>
+                <p class="code-note">
+                  문자열 리터럴과 주석을 제거한 정적 분석 근거입니다. 런타임 동작과
+                  실제 저장 경로는 별도 확인이 필요할 수 있습니다.
+                </p>
                 <dl>
                   <dt>증거 수준</dt>
                   <dd>{{ label(data.evidenceStatus) }}</dd>
@@ -855,6 +1325,8 @@ async function logout() {
                   <dd>{{ data.policyVersion }}</dd>
                   <dt>커밋</dt>
                   <dd class="mono">{{ data.commitSha }}</dd>
+                  <dt>근거 지문</dt>
+                  <dd class="mono fingerprint">{{ data.fingerprint }}</dd>
                 </dl>
                 <section v-if="data.analysis?.facts?.length" class="review-evidence">
                   <h3>확인된 정적 근거</h3>
@@ -870,8 +1342,10 @@ async function logout() {
                 /></RouterLink>
               </section>
               <section class="panel detail-panel">
-                <template v-if="tab === 'Overview' || tab === 'AI Analysis'"
-                  ><div v-if="data.analysis?.policyComparison" class="review-policy">
+                <template v-if="tab === 'AI Analysis'"
+                  ><h2 class="step-title"><b>2</b>AI의 해석</h2>
+                  <p class="step-sub">Agent가 위 사실과 사내 규정을 함께 보고 판단한 내용입니다.</p>
+                  <div v-if="data.analysis?.policyComparison" class="review-policy">
                     <strong class="mono">{{ data.analysis.policyComparison.entity }}.{{ data.analysis.policyComparison.field }}</strong>
                     <p>정책 대조: {{ policyLabels[data.analysis.policyComparison.inventoryStatus] }}</p>
                     <small>별도 승인 기록 미확인, 런타임 검증 미수행</small>
@@ -885,72 +1359,188 @@ async function logout() {
                     <h2><ShieldCheck :size="18" />근거 검토와 불확실성</h2>
                     <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
                   </div>
-                  <section v-if="data.analysis?.orchestration" class="review-evidence">
-                    <h3>Agent 도구 선택</h3>
-                    <p>{{ data.analysis.orchestration.selectionMode }} · {{ data.analysis.orchestration.turns }}턴</p>
-                    <ol><li v-for="step in data.analysis.orchestration.trace" :key="step.turn">{{ step.turn }} · {{ step.tool }} · {{ step.ruleId || '' }} · {{ step.status }} · {{ step.mode }}</li></ol>
-                    <small>LLM은 모델 선택, RULE_BASED와 LLM_FALLBACK은 코드 기반 선택입니다.</small>
-                  </section>
-                  <p v-if="data.analysis?.fallbackReason">LLM 대체 사유: {{ data.analysis.fallbackReason }}</p>
-                  <small v-if="data.analysis?.contextBudget">모델 호출 {{ data.analysis.contextBudget.calls }}회 · 입력 예산 상한 사용 {{ data.analysis.contextBudget.maxInputBound }} · 누적 예약 {{ data.analysis.contextBudget.reservedTokens }}</small>
                   <section v-if="data.analysis?.unknowns?.length" class="review-evidence">
                     <h3>추가 확인이 필요한 사항</h3>
                     <ul><li v-for="item in data.analysis.unknowns" :key="item">{{ item }}</li></ul>
                   </section>
-                  <small
-                    >분석 모드: {{ data.analysis?.mode || "대기" }}<span v-if="data.analysis?.model"> ({{ data.analysis.model }})</span></small
-                  ></template
-                ><template v-if="tab === 'Code Evidence'"
-                  ><h2>코드 근거 처리</h2>
-                  <p>
-                    문자열 리터럴과 주석을 제거한 정적 분석 근거입니다. 런타임
-                    동작과 실제 저장 경로는 별도 확인이 필요할 수 있습니다.
-                  </p>
-                  <code>{{ data.fingerprint }}</code></template
-                ><template v-if="tab === 'Remediation'"
-                  ><h2>개선 권고</h2>
-                  <p>
-                    {{
-                      data.analysis?.remediation ||
-                      "검증된 개선 권고가 아직 없습니다."
-                    }}
-                  </p>
-                  <pre v-if="data.analysis?.example">{{
-                    data.analysis.example
-                  }}</pre>
-                  <small
-                    >예시는 수정 방향을 설명하며 원본 코드나 적용된 패치가
-                    아닙니다.</small
-                  ></template
+                  <p v-if="data.analysis?.fallbackReason" class="fallback-note">
+                    이 항목의 일부 판단은 LLM 대신 규칙 기반으로 대체되었습니다 (사유:
+                    {{ data.analysis.fallbackReason }}).
+                  </p></template
+                ><template v-if="tab === 'Action'"
+                  ><h2 class="step-title"><b>2</b>조치</h2>
+                  <p class="step-sub">어떻게 고칠지 확인하고, 검토 상태를 바꾸면 처리 기록이 남습니다.</p>
+                  <section class="action-block">
+                    <h3>개선 권고</h3>
+                    <p>
+                      {{
+                        data.analysis?.remediation ||
+                        "검증된 개선 권고가 아직 없습니다."
+                      }}
+                    </p>
+                    <pre v-if="data.analysis?.example">{{ data.analysis.example }}</pre>
+                    <small
+                      >예시는 수정 방향을 설명하며 원본 코드나 적용된 패치가
+                      아닙니다. CSI는 코드를 자동으로 수정하지 않습니다.</small
+                    >
+                  </section>
+                  <section class="action-block">
+                    <h3>검토 처리</h3>
+                    <div class="status-steps" role="group" aria-label="검토 상태 변경">
+                      <button
+                        v-for="(s, i) in ['OPEN', 'REVIEWING', 'RESOLVED']"
+                        :key="s"
+                        :class="{ selected: data.status === s }"
+                        :aria-pressed="data.status === s"
+                        @click="data.status !== s && review(s)"
+                      >
+                        <b>{{ i + 1 }}</b>{{ label(s) }}
+                      </button>
+                    </div>
+                  </section>
+                  <section class="action-block">
+                    <h3>처리 기록</h3>
+                    <ol v-if="data.activity?.length" class="activity-list">
+                      <li v-for="a in data.activity" :key="a.id || a.timestamp">
+                        <span class="grow">{{ a.message }}</span
+                        ><small class="time">{{ date(a.timestamp) }}</small>
+                      </li>
+                    </ol>
+                    <p v-else class="empty-inline">
+                      아직 검토 기록이 없습니다. 위에서 상태를 바꾸면 여기에 기록됩니다.
+                    </p>
+                  </section></template
                 ><template v-if="tab === 'Security References'"
                   ><h2>검색된 근거</h2>
-                  <article
-                    class="reference"
-                    v-for="r in data.analysis?.references"
-                  >
-                    <div class="reference-head">
-                      <Badge :value="r.documentType" /><span class="tag">{{ data.analysis?.citedReferenceIds?.includes(r.chunkId) ? "LLM이 인용한 근거" : "검색된 참고 근거" }}</span>
-                    </div>
-                    <h3><code>{{ r.sectionId }}</code> {{ r.sectionTitle }}</h3>
-                    <small
-                      >{{ r.documentId }} @{{ r.documentVersion }},
-                      {{ r.pageNumber }}쪽</small
+                  <p class="ref-intro">
+                    RAG 색인에서 찾은 정책 문서 조항입니다. 이 항목과 가장 관련 있는 문장을
+                    먼저 보여 주며, 원문 전체는 자세히 보기에서 확인할 수 있습니다.
+                  </p>
+                  <section v-for="g in referenceGroups" :key="g.source" class="ref-folder">
+                    <header>
+                      <FolderOpen :size="18" /><span class="grow"
+                        ><strong>{{ g.source }}</strong
+                        ><small>{{ label(g.type) }} · 조항 {{ g.refs.length }}개</small></span
+                      >
+                    </header>
+                    <article
+                      v-for="r in g.refs"
+                      :key="r.chunkId"
+                      class="reference"
+                      :class="{ cited: data.analysis?.citedReferenceIds?.includes(r.chunkId) }"
                     >
-                    <p>{{ r.content }}</p>
-                    <small>{{ r.source }}</small>
-                  </article>
+                      <div class="reference-head">
+                        <FileText :size="16" /><h3>
+                          <code>{{ r.sectionId }}</code> {{ r.sectionTitle }}
+                        </h3>
+                        <span class="tag">{{
+                          data.analysis?.citedReferenceIds?.includes(r.chunkId)
+                            ? "LLM이 인용한 근거"
+                            : "검색된 참고 근거"
+                        }}</span>
+                      </div>
+                      <blockquote>{{ keySentence(r) }}</blockquote>
+                      <div class="reference-foot">
+                        <small>{{ r.documentId }} v{{ r.documentVersion }} · {{ r.pageNumber }}쪽</small>
+                        <button
+                          class="text-button"
+                          :aria-expanded="openRefs.includes(r.chunkId)"
+                          @click="toggleRef(r.chunkId)"
+                        >
+                          {{ openRefs.includes(r.chunkId) ? "접기" : "자세히 보기"
+                          }}<ChevronDown :size="14" :class="{ flip: openRefs.includes(r.chunkId) }" />
+                        </button>
+                      </div>
+                      <p v-if="openRefs.includes(r.chunkId)" class="reference-full">{{ r.content }}</p>
+                    </article>
+                  </section>
                   <p v-if="!data.analysis?.references?.length">
                     검색된 근거가 없습니다. 출처를 추정하지 않습니다.
                   </p></template
-                ><template v-if="tab === 'Activity'"
-                  ><h2>활동 기록</h2>
-                  <div class="list-row" v-for="a in data.activity">
-                    <span class="grow">{{ a.message }}</span
-                    ><small class="time">{{ date(a.timestamp) }}</small>
-                  </div></template
-                >
+                                >
               </section>
-            </div></template
+            </div>
+            <section
+              v-if="tab === 'AI Analysis' && data.analysis?.orchestration"
+              class="panel detail-panel flow-panel"
+            >
+              <h2 class="step-title"><b>3</b>Agent가 근거를 모은 과정</h2>
+              <p class="step-sub">
+                AI의 해석에 앞서 Agent가 어떤 도구로 어떤 규정을 찾아봤는지 보여 줍니다.
+              </p>
+                  <section v-if="data.analysis?.orchestration" class="review-evidence agent-flow">
+                    <p class="flow-meta">
+                      <span class="tag">{{ data.analysis.orchestration.selectionMode }}</span>
+                      {{ data.analysis.orchestration.turns }}턴 · 이 항목의 규칙
+                      <code>{{ data.ruleId }}</code>을 강조해 표시합니다
+                    </p>
+                    <div class="flow">
+                      <div v-if="toolFlow.setup.length" class="flow-stage">
+                        <span class="flow-title"><b>1</b>정책 확인</span>
+                        <ol>
+                          <li
+                            v-for="step in toolFlow.setup"
+                            :key="step.turn"
+                            class="flow-node"
+                            :class="{ fail: step.status !== 'OK', fallback: step.mode !== 'LLM' }"
+                          >
+                            <b>{{ step.turn }}</b
+                            ><span>{{ toolLabels[step.tool] || step.tool }}<code>{{ step.tool }}</code></span>
+                          </li>
+                        </ol>
+                      </div>
+                      <div v-if="toolFlow.rules.length" class="flow-stage">
+                        <span class="flow-title"><b>2</b>규칙별 근거 수집</span>
+                        <div class="flow-rules">
+                          <div
+                            v-for="[rule, steps] in toolFlow.rules"
+                            :key="rule"
+                            class="flow-rule"
+                            :class="{ current: rule === data.ruleId }"
+                          >
+                            <code>{{ rule }}</code>
+                            <ol>
+                              <li
+                                v-for="step in steps"
+                                :key="step.turn"
+                                class="flow-node"
+                                :class="{ fail: step.status !== 'OK', fallback: step.mode !== 'LLM' }"
+                              >
+                                <b>{{ step.turn }}</b
+                                ><span>{{ toolLabels[step.tool] || step.tool }}<code>{{ step.tool }}</code></span>
+                              </li>
+                            </ol>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="toolFlow.finish.length" class="flow-stage">
+                        <span class="flow-title"><b>3</b>분석 완료</span>
+                        <ol>
+                          <li
+                            v-for="step in toolFlow.finish"
+                            :key="step.turn"
+                            class="flow-node done"
+                            :class="{ fail: step.status !== 'OK' }"
+                          >
+                            <b>{{ step.turn }}</b
+                            ><span>{{ toolLabels[step.tool] || step.tool }}<code>{{ step.tool }}</code></span>
+                          </li>
+                        </ol>
+                      </div>
+                    </div>
+                    <small>LLM은 모델 선택, RULE_BASED와 LLM_FALLBACK은 코드 기반 선택입니다.</small>
+                  </section>
+                                <small class="flow-tech"
+                >분석 모드 {{ data.analysis?.mode || "대기"
+                }}<template v-if="data.analysis?.model"> ({{ data.analysis.model }})</template
+                ><template v-if="data.analysis?.contextBudget">
+                  · 모델 호출 {{ data.analysis.contextBudget.calls }}회 · 입력 예산 상한 사용
+                  {{ data.analysis.contextBudget.maxInputBound }} · 누적 예약
+                  {{ data.analysis.contextBudget.reservedTokens }}</template
+                ></small
+              >
+            </section>
+</template
           >
           <template v-if="page === 'policies'"
             ><div class="filters bare">
@@ -985,7 +1575,7 @@ async function logout() {
             </div></template
           >
           <template
-            v-if="['findings', 'logs', 'approvals'].includes(page) && !id"
+            v-if="['logs', 'approvals'].includes(page) && !id"
             ><section class="panel">
               <div class="filters">
                 <label class="search"
@@ -1003,18 +1593,6 @@ async function logout() {
                     v-for="s in page === 'approvals'
                       ? ['PENDING', 'APPROVED', 'REJECTED', 'EXECUTED']
                       : ['OPEN', 'REVIEWING', 'RESOLVED']"
-                    :value="s"
-                  >
-                    {{ label(s) }}
-                  </option></select
-                ><select
-                  v-if="page === 'findings'"
-                  v-model="severity"
-                  aria-label="위험도"
-                >
-                  <option value="">모든 위험도</option>
-                  <option
-                    v-for="s in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']"
                     :value="s"
                   >
                     {{ label(s) }}
@@ -1037,24 +1615,6 @@ async function logout() {
                     {{ oldestFirst ? "오래된 순" : "최신순" }}
                   </button></template
                 >
-              </div>
-              <div v-if="page === 'findings'">
-                <RouterLink
-                  v-for="f in visible"
-                  :to="'/findings/' + f.id"
-                  class="finding-row"
-                  ><Badge :value="f.severity" />
-                  <div>
-                    <strong>{{ f.title }}</strong
-                    ><small class="meta"
-                      ><span>{{ f.repository }}</span
-                      ><span class="mono"
-                        >{{ f.filePath }}:{{ f.startLine }}</span
-                      ></small
-                    >
-                  </div>
-                  <Badge :value="f.status" /><ChevronRight :size="16"
-                /></RouterLink>
               </div>
               <div v-if="page === 'logs'" class="table-wrap">
                 <table>
@@ -1109,15 +1669,30 @@ async function logout() {
               </div>
             </section></template
           >
-          <div v-if="page !== 'overview' && !id" class="pagination">
-            <span
-              >{{ filtered.length }}개 항목, {{ current }} / {{ pages }}
-              페이지</span
-            ><button :disabled="current <= 1" @click="current--">이전</button
-            ><button :disabled="current >= pages" @click="current++">
-              다음
-            </button>
-          </div></template
+          <Pager
+            v-if="!id && !dash && !findingsPage && filtered.length"
+            :page="current"
+            :pages="pages"
+            :total="filtered.length"
+            @move="(step) => (current = Math.min(pages, Math.max(1, current + step)))"
+          />
+          <template v-if="dash"
+            ><section class="panel" v-if="data.failures?.length">
+              <div class="panel-title"><h2>최근 실패한 검사</h2></div>
+              <RouterLink
+                v-for="s in data.failures"
+                :to="'/scans/' + s.id"
+                class="list-row"
+                ><span class="grow">{{ s.repository }}</span
+                ><Badge :value="s.status"
+              /></RouterLink>
+            </section>
+            <div class="evidence-note">
+              <ShieldCheck :size="16" />모든 지표는 저장된 검사 결과를 기준으로
+              합니다. 탐지 결과가 없더라도 전체 시스템의 안전을 보증하지
+              않습니다.
+            </div></template
+          ></template
         >
         <footer>정적 분석 증거와 검색된 정책 조항에 기반한 진단입니다.</footer>
       </div>

@@ -13,7 +13,7 @@ test('real commit diff, linked AI review, removed candidates, legacy state and m
   await page.getByLabel('계정', { exact: true }).fill(env.CSI_ADMIN_USERNAME);
   await page.getByLabel('비밀번호', { exact: true }).fill(env.CSI_ADMIN_PASSWORD);
   await page.getByRole('button', { name: '로그인', exact: true }).click();
-  await expect(page.getByRole('heading', { name: '보안 현황' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '프로젝트', exact: true })).toBeVisible();
   const changesResponse = await page.request.get(`/api/scans/${addedScan}/changes`);
   expect(changesResponse.ok()).toBeTruthy();
   const changes = await changesResponse.json();
