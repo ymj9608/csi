@@ -25,7 +25,7 @@ python3 scripts/init_env.py
 docker compose up -d --build
 ```
 
-- 웹: http://127.0.0.1:5173
+- 웹: http://127.0.0.1:5174
 - 계정: `.env`의 `CSI_ADMIN_USERNAME`, `CSI_ADMIN_PASSWORD`. 비밀번호는 설치 시 무작위 생성되며 DB에는 bcrypt 해시만 저장합니다.
 - 확인: `docker compose ps`, `docker compose logs --tail=60 backend agent`
 - 종료: `docker compose down` (저장 데이터 유지)
@@ -173,7 +173,7 @@ CSI_TEST_COMPOSE=1 .venv/bin/python scripts/verify_integration.py
 cd frontend && npm ci && npm run build && npx playwright test
 ```
 
-Playwright는 로컬 Chrome과 실행 중인 5173 포트를 사용합니다. 테스트는 합성 프로젝트/검사/승인 이력을 생성합니다. `docs/verification.json`에 이 작업에서 실제 확인한 결과를 기록합니다. 실패 시험 이력도 숨기거나 삭제하지 않습니다.
+Playwright는 로컬 Chrome과 실행 중인 5174 포트를 사용합니다. 테스트는 합성 프로젝트/검사/승인 이력을 생성합니다. `docs/verification.json`에 이 작업에서 실제 확인한 결과를 기록합니다. 실패 시험 이력도 숨기거나 삭제하지 않습니다.
 
 ## Harness 8요소
 

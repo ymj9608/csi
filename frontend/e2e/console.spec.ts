@@ -21,10 +21,27 @@ test("login, API-backed screens, findings, mobile and logout", async ({
     .getByLabel("비밀번호", { exact: true })
     .fill(env.CSI_ADMIN_PASSWORD);
   await page.getByRole("button", { name: "로그인", exact: true }).click();
+  await expect(page).toHaveURL(/\/projects$/);
   await expect(
-    page.getByRole("heading", { name: "보안 현황" }),
+    page.getByRole("heading", { name: "프로젝트", exact: true }),
   ).toBeVisible();
+  await page.locator(".project-card").first().click();
+  await expect(page).toHaveURL(/\/dashboard\?project=[0-9a-f-]+$/);
   await expect(page.locator(".metrics")).toBeVisible();
+  const picker = page.getByLabel("프로젝트 선택");
+  const selectedRepository = await picker.locator("option:checked").textContent();
+  await expect(page.locator(".current-project")).toContainText(selectedRepository!.trim());
+  // 검토 피드: 위험 항목과 Agent 이벤트를 한 패널에서 필터로 전환합니다.
+  const feed = page.locator(".review-feed");
+  await feed.getByRole("button", { name: /Agent 이벤트/ }).click();
+  await expect(feed.getByRole("button", { name: /Agent 이벤트/ })).toHaveAttribute("aria-pressed", "true");
+  await expect(feed.locator(".feed-icon").first()).toBeVisible();
+  await feed.getByRole("button", { name: /검토 필요/ }).click();
+  await expect(feed.locator(".feed-description")).toContainText("해결되지 않은 위험 항목");
+  await expect(feed.locator(".feed-page .list-row")).toHaveCount(5);
+  await feed.getByRole("button", { name: "다음 검토 피드" }).click();
+  await expect(feed.getByRole("button", { name: "이전 검토 피드" })).toBeEnabled();
+  await expect(feed.locator(".pager-dots i").nth(1)).toHaveClass(/on/);
   await expect(page.locator(".connection")).toHaveText("실시간 연결");
   await page.screenshot({
     path: "../.runtime/overview-desktop.png",
@@ -40,20 +57,29 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   ]) {
     await Promise.all([
       page.waitForResponse(
-        (r) => r.url().endsWith("/api" + path) && r.status() === 200,
+        (r) => new URL(r.url()).pathname === "/api" + path && r.status() === 200,
       ),
       page.goto(path),
     ]);
     await expect(page.locator(".skeleton")).toHaveCount(0);
     await expect(page.locator(".error")).toHaveCount(0);
   }
+  // 선택한 프로젝트는 메뉴를 옮겨도 유지되고, 전체 프로젝트로 되돌릴 수 있습니다.
+  await page.goto("/scans");
+  await expect(page).toHaveURL(/\/scans\?project=[0-9a-f-]+$/);
+  await Promise.all([
+    page.waitForResponse((r) => new URL(r.url()).pathname === "/api/scans" && !r.url().includes("projectId")),
+    page.getByLabel("프로젝트 선택").selectOption(""),
+  ]);
+  await expect(page).toHaveURL(/\/scans$/);
+  await expect(page.locator(".current-project")).toContainText("전체 프로젝트");
   await page.goto("/findings");
   const finding = page.locator(".finding-row").first();
   await expect(finding).toBeVisible();
   {
     await finding.click();
     await expect(
-      page.getByRole("heading", { name: "정적 분석 근거" }),
+      page.getByRole("heading", { name: /스캐너가 찾은 사실/ }),
     ).toBeVisible();
     await page
       .getByRole("tab", { name: "보안 근거", exact: true })
@@ -69,13 +95,17 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   expect(agentFinding, "Run an LLM LOCAL_DEMO scan before the integration test").toBeTruthy();
   await page.goto("/findings/" + agentFinding.id);
   await page.getByRole("tab", { name: "AI 분석", exact: true }).click();
-  const investigation = page.locator(".review-evidence").filter({
-    has: page.getByRole("heading", { name: "Agent 도구 선택", exact: true }),
+  const investigation = page.locator(".flow-panel").filter({
+    has: page.getByRole("heading", { name: /Agent가 근거를 모은 과정/ }),
   });
   await expect(investigation).toBeVisible();
   await expect(investigation.locator("li")).toHaveCount(agentFinding.analysis.orchestration.trace.length);
   await expect(investigation).toContainText("finish_analysis");
   await expect(page.getByText(`모델 호출 ${agentFinding.analysis.contextBudget.calls}회`, { exact: false })).toBeVisible();
+  await page.getByRole("tab", { name: "조치", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "개선 권고" })).toBeVisible();
+  await expect(page.getByRole("group", { name: "검토 상태 변경" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "처리 기록" })).toBeVisible();
   await page.getByRole("tab", { name: "보안 근거", exact: true }).click();
   await expect(page.getByText("LLM이 인용한 근거", { exact: true }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
@@ -83,7 +113,8 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   await expect(investigation).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: "../.runtime/agent-detail-mobile.png", fullPage: true });
-  await page.goto("/");
+  await page.goto("/projects");
+  await page.locator(".project-card").first().click();
   await expect(page.locator(".metrics")).toBeVisible();
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),

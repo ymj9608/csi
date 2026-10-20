@@ -17,9 +17,56 @@ const labels: Record<string, string> = {
   REJECTED: "거절",
   EXECUTED: "실행됨",
   NOT_SCANNED: "미검사",
+  SAFE: "안정",
+  CAUTION: "주의",
+  DANGER: "위험",
   SUSPECTED: "의심",
   CONFIRMED: "확인됨",
   INTERNAL_POLICY: "사내 정책",
+  EXTERNAL_REFERENCE: "외부 레퍼런스",
+  INSUFFICIENT_EVIDENCE: "근거 부족",
+  NOT_APPLICABLE: "해당 없음",
 };
 export const label = (value?: string) =>
   (value && labels[value.toUpperCase()]) || value || "—";
+
+// Agent·백엔드 실행 이벤트 코드의 한국어 이름입니다. 원래 코드는 화면에 함께 남깁니다.
+export const eventLabels: Record<string, string> = {
+  SCAN_ACCEPTED: "검사 결과 접수",
+  KAFKA_PUBLISHED: "분석 요청 전달",
+  KAFKA_RETRY: "분석 요청 재전송",
+  DELIVERY_FAILED: "분석 요청 전달 실패",
+  SCAN_TIMEOUT: "분석 시간 초과",
+  validate_scan: "검사 데이터 검증",
+  SCAN_PROGRESS: "Agent 분석 시작",
+  load_findings: "탐지 결과 불러오기",
+  select_analysis_tools: "분석 도구 선택",
+  model_decision: "모델의 다음 단계 판단",
+  agent_fallback: "규칙 기반 판단으로 대체",
+  mcp_start: "MCP 도구 호출",
+  mcp_complete: "MCP 도구 응답",
+  tool_observation: "도구 결과 확인",
+  assess_evidence: "근거 충분성 평가",
+  red_risk_analysis: "잠재 위험 분석",
+  blue_defense_verification: "방어 근거 검증",
+  context_budget: "모델 사용량 기록",
+  llm_fallback: "LLM 분석 일부 대체",
+  generate_security_report: "보안 리포트 생성",
+  persist_result: "분석 결과 저장",
+  finalize: "분석 마무리",
+  REPORT_SAVED: "리포트 저장 완료",
+  approval_interrupt: "승인 요청 생성",
+  APPROVAL_DECIDED: "승인 결정",
+  ISSUE_CREATED: "보안 이슈 생성",
+  LOG_ACCESS: "감사 로그 열람",
+};
+
+// Agent가 고를 수 있는 MCP 도구의 한국어 이름입니다.
+export const toolLabels: Record<string, string> = {
+  get_privacy_policy: "개인정보 정책 조회",
+  compare_policy_with_findings: "탐지 결과와 정책 대조",
+  get_guideline_details: "가이드라인 상세 조회",
+  search_internal_privacy_policy: "사내 정책 검색",
+  search_security_guidelines: "보안 가이드 검색",
+  finish_analysis: "분석 완료",
+};
