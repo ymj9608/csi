@@ -22,7 +22,7 @@ test("login, API-backed screens, findings, mobile and logout", async ({
     .fill(env.CSI_ADMIN_PASSWORD);
   await page.getByRole("button", { name: "로그인", exact: true }).click();
   await expect(
-    page.getByRole("heading", { name: "Security overview" }),
+    page.getByRole("heading", { name: "보안 현황" }),
   ).toBeVisible();
   await expect(page.locator(".metrics")).toBeVisible();
   await expect(page.locator(".connection")).toHaveText("실시간 연결");
@@ -56,11 +56,33 @@ test("login, API-backed screens, findings, mobile and logout", async ({
       page.getByRole("heading", { name: "정적 분석 근거" }),
     ).toBeVisible();
     await page
-      .getByRole("button", { name: "Security References", exact: true })
+      .getByRole("tab", { name: "보안 근거", exact: true })
       .click();
     await expect(page.locator(".reference").first()).toBeVisible();
   }
+  // Verify the merged redesign still renders stored Agent evidence, not just a page shell.
+  const response = await page.request.get("/api/findings");
+  expect(response.ok()).toBeTruthy();
+  const agentFinding = (await response.json()).find(
+    (f: any) => f.analysis?.orchestration?.selectionMode === "LLM",
+  );
+  expect(agentFinding, "Run an LLM LOCAL_DEMO scan before the integration test").toBeTruthy();
+  await page.goto("/findings/" + agentFinding.id);
+  await page.getByRole("tab", { name: "AI 분석", exact: true }).click();
+  const investigation = page.locator(".review-evidence").filter({
+    has: page.getByRole("heading", { name: "Agent 도구 선택", exact: true }),
+  });
+  await expect(investigation).toBeVisible();
+  await expect(investigation.locator("li")).toHaveCount(agentFinding.analysis.orchestration.trace.length);
+  await expect(investigation).toContainText("finish_analysis");
+  await expect(page.getByText(`모델 호출 ${agentFinding.analysis.contextBudget.calls}회`, { exact: false })).toBeVisible();
+  await page.getByRole("tab", { name: "보안 근거", exact: true }).click();
+  await expect(page.getByText("LLM이 인용한 근거", { exact: true }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("tab", { name: "AI 분석", exact: true }).click();
+  await expect(investigation).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await page.screenshot({ path: "../.runtime/agent-detail-mobile.png", fullPage: true });
   await page.goto("/");
   await expect(page.locator(".metrics")).toBeVisible();
   expect(

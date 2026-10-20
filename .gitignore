@@ -10,3 +10,8 @@ __pycache__/
 *.log
 .DS_Store
 .scanner-venv/
+
+# Local teaching/evaluation source material; not application documentation.
+.reference-materials/
+/docs/AI-Agent Capstone(+MCP).pdf.txt
+/docs/AI-Agent Capstone(+MCP).pdf

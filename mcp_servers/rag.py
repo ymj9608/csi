@@ -3,15 +3,15 @@ from fastmcp import FastMCP
 from .common import ServiceTokenVerifier
 from .vector import search,RULE_SECTIONS
 mcp=FastMCP('CSI rag-mcp',auth=ServiceTokenVerifier())
-@mcp.tool()
+@mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False})
 def search_security_guidelines(rule_id:str,query:str)->list:
     """Search actual supplied external-reference PDF chunks. Returns original metadata and content."""
     return search(rule_id,False,query[:500])
-@mcp.tool()
+@mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False})
 def search_internal_privacy_policy(rule_id:str,query:str)->list:
     """Search fictional internal policy, distinguished from official legal source material."""
     return search(rule_id,True,query[:500])
-@mcp.tool()
+@mcp.tool(annotations={"readOnlyHint": True, "destructiveHint": False, "idempotentHint": True, "openWorldHint": False})
 def get_guideline_details(rule_id:str)->dict:
     """Fetch policy and reference evidence for a supported scanner rule."""
     return {'ruleId':rule_id,'internal':search(rule_id,True,rule_id),'external':search(rule_id,False,rule_id)}

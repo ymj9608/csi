@@ -27,7 +27,7 @@ async def work():
         await saver.setup();graph=build_graph(saver,emit);runtime['ready']=True
         try:
             async for record in consumer:
-                event=json.loads(record.value);config={'configurable':{'thread_id':event['scanId']},'recursion_limit':25}
+                event=json.loads(record.value);config={'configurable':{'thread_id':event['scanId']},'recursion_limit':60}
                 for attempt in range(2):
                     try:
                         snapshot=await graph.aget_state(config)

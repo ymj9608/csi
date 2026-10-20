@@ -2,6 +2,8 @@
 .venv
 .scanner-venv
 .runtime
+.reference-materials
+docs/AI-Agent Capstone(+MCP).pdf
 frontend/node_modules
 frontend/dist
 backend/target

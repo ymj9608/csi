@@ -1,6 +1,7 @@
 """Read-only Java/Python scanning. Never execute a repository's build scripts or code."""
 import argparse, hashlib, json, os, re, subprocess, tempfile
 from pathlib import Path
+from evidence_context import collect_context
 ROOT=Path(__file__).resolve().parents[1]
 def mask(code):
     code=re.sub(r'""".*?"""|\x27\x27\x27.*?\x27\x27\x27', '"[REDACTED]"',code,flags=re.S)
@@ -31,7 +32,7 @@ def scan(source):
         if run.returncode:raise RuntimeError('Semgrep execution failed; result not submitted')
         data=json.loads(run.stdout)
         if data.get('errors'):raise RuntimeError('Semgrep reported incomplete analysis')
-        findings=[];occurrences={}
+        findings=[];occurrences={};contexts=collect_context(base)
         for item in data['results']:
             rule=item['check_id'].split('.')[-1];path=Path(item['path']);start=item['start']['line'];end=item['end']['line']
             if path.is_absolute() or '..' in path.parts:raise ValueError('Invalid result path')
@@ -39,6 +40,9 @@ def scan(source):
             base_fp=rule+'|'+str(path)+'|'+re.sub(r'\s+','',code);number=occurrences.get(base_fp,0);occurrences[base_fp]=number+1
             fp=hashlib.sha256(f'{base_fp}|{number}'.encode()).hexdigest()
             findings.append(dict(findingId=fp[:24],ruleId=rule,category='POLICY_DRIFT' if rule=='POL-01' else 'SECURITY',severity={'SEC-01':'HIGH','SEC-02':'HIGH','SEC-03':'MEDIUM','SEC-04':'MEDIUM','SEC-05':'HIGH','POL-01':'LOW'}[rule],filePath=str(path),startLine=start,endLine=end,maskedCodeEvidence=code,fingerprint=fp,confidence='MEDIUM',evidenceStatus='INSUFFICIENT_EVIDENCE' if rule=='POL-01' else 'SUSPECTED'))
+        for finding in findings:
+            if finding['ruleId']=='POL-01':
+                finding['codeContext']=contexts.get((finding['filePath'],finding['startLine']),{})
         return findings
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source');p.add_argument('--output',required=True);args=p.parse_args()

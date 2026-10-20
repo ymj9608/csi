@@ -13,7 +13,10 @@ def submit(payload,url,secret):
         if response.status!=202:raise RuntimeError('Backend did not accept scan')
         return json.load(response)
 if __name__=='__main__':
-    payload=dict(repository=os.environ['GITHUB_REPOSITORY'],branch=os.environ['GITHUB_REF_NAME'],commitSha=os.environ['GITHUB_SHA'],workflowRunId=os.environ['GITHUB_RUN_ID'],runAttempt=int(os.environ['GITHUB_RUN_ATTEMPT']),triggerType='WORKFLOW_DISPATCH' if os.environ.get('GITHUB_EVENT_NAME')=='workflow_dispatch' else 'GITHUB_PUSH',scannerSuccess=True,findings=json.loads(Path(os.environ['CSI_FINDINGS_FILE']).read_text()))
+    payload=dict(repository=os.environ['GITHUB_REPOSITORY'],branch=os.environ['GITHUB_REF_NAME'],commitSha=os.environ['GITHUB_SHA'],workflowRunId=os.environ['GITHUB_RUN_ID'],runAttempt=int(os.environ['GITHUB_RUN_ATTEMPT']),triggerType='WORKFLOW_DISPATCH' if os.environ.get('GITHUB_EVENT_NAME')=='workflow_dispatch' else 'GITHUB_PUSH',scannerSuccess=True,findings=json.loads(Path(os.environ['CSI_FINDINGS_FILE']).read_text()) if os.environ.get('CSI_FINDINGS_FILE') else [])
+    if os.environ.get('CSI_SCAN_FILE'):
+        collected=json.loads(Path(os.environ['CSI_SCAN_FILE']).read_text())
+        payload['findings']=collected['findings'];payload['changeSet']=collected['changeSet']
     result=submit(payload,os.environ['CSI_BACKEND_URL'].rstrip('/'),os.environ['CSI_INTEGRATION_SECRET']);print('Accepted scan:',result['scanId'])
     if os.environ.get('GITHUB_STEP_SUMMARY'):
         from uuid import UUID
