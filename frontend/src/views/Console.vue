@@ -22,11 +22,11 @@ import {
   GitBranch,
   Activity,
   ShieldCheck,
-  LayoutDashboard,
   Bot,
   FileText,
   FolderOpen,
   ChevronDown,
+  ImagePlus,
 } from "lucide-vue-next";
 import { api, date } from "../lib/api";
 import { analysisStatus, hasAnalysisText } from "../lib/analysisStatus";
@@ -43,12 +43,13 @@ import { label, eventLabels, toolLabels } from "../components/labels";
 import Pager from "../components/Pager.vue";
 import { buildTimeline, elapsed } from "../lib/timeline";
 import ProjectPicker from "../components/ProjectPicker.vue";
+import ArchitectureUpload from "../components/ArchitectureUpload.vue";
+import { ACCEPTED_TYPES, acceptable, addFolder } from "../lib/architecture";
 import { PROJECT_SCOPED, rememberProject, rememberedProject } from "../lib/project";
 const route = useRoute(),
   router = useRouter(),
   session = useSession();
 const nav = [
-  ["/dashboard", "보안 현황", LayoutDashboard],
   ["/projects", "프로젝트", FolderGit2],
   ["/scans", "검사 이력", ScanLine],
   ["/findings", "위험 항목", ShieldAlert],
@@ -59,6 +60,15 @@ const nav = [
 const page = computed(() => route.path.split("/")[1] || "projects"),
   id = computed(() => route.path.split("/")[2]);
 const dash = computed(() => page.value === "dashboard");
+// 프로젝트 화면은 "보안 현황"과 "아키텍처" 버튼으로 아래 내용을 바꿉니다. ?view=architecture로 유지합니다.
+const dashView = computed(() =>
+  dash.value && route.query.view === "architecture" ? "architecture" : "status",
+);
+const dashStatus = computed(() => dash.value && dashView.value === "status");
+function setDashView(view: "status" | "architecture") {
+  const { view: _view, ...query } = route.query;
+  router.replace({ path: route.path, query: view === "status" ? query : { ...query, view } });
+}
 // 목록 화면은 선택한 프로젝트(?project=) 기준으로 조회합니다. 비어 있으면 전체 프로젝트입니다.
 const scoped = computed(
   () => !id.value && PROJECT_SCOPED.includes(page.value),
@@ -553,8 +563,18 @@ function connect() {
 }
 function selectProject(value: string) {
   rememberProject(value);
-  router.replace({ path: route.path, query: value ? { project: value } : {} });
+  const keep = dash.value && route.query.view ? { view: route.query.view } : {};
+  router.replace({ path: route.path, query: value ? { project: value, ...keep } : keep });
 }
+// 아키텍처는 프로젝트별로만 보므로 "전체 프로젝트" 상태라면 마지막 선택 또는 첫 프로젝트를 고릅니다.
+watch(
+  () => [dashView.value, projectId.value, projectList.value] as const,
+  ([view, project, list]) => {
+    if (view !== "architecture" || project || !list.length) return;
+    const remembered = rememberedProject();
+    selectProject(list.some((p) => p.id === remembered) ? remembered : list[0].id);
+  },
+);
 let lastListKey = "";
 watch(
   () => route.fullPath,
@@ -567,10 +587,12 @@ watch(
     }
     if (scoped.value && projectId.value) rememberProject(projectId.value);
     mobile.value = false;
-    // 위험 항목에서 유형 카드만 바꾼 경우에는 검색어와 필터를 유지하고 다시 불러오지 않습니다.
-    const { rule: _rule, ...listQuery } = route.query;
+    // 위험 항목에서 유형 카드만 바꾸거나 프로젝트 화면에서 보안 현황·아키텍처 버튼만 바꾼 경우에는
+    // 검색어와 필터를 유지하고 다시 불러오지 않습니다.
+    const { rule: _rule, view: _view, ...listQuery } = route.query;
     const listKey = route.path + "?" + JSON.stringify(listQuery);
-    const sameList = findingsPage.value && !id.value && listKey === lastListKey;
+    const sameList =
+      ((findingsPage.value && !id.value) || dash.value) && listKey === lastListKey;
     lastListKey = listKey;
     if (sameList) return;
     reportReveal.reset();
@@ -620,18 +642,48 @@ async function decide(a: any, decision: string) {
     session.notify(e.message);
   }
 }
+// 프로젝트 등록 시 아키텍처 파일은 선택 사항입니다. 넣으면 프로젝트 이름의 폴더로 저장합니다.
+const archFiles = ref<File[]>([]),
+  archInput = ref<HTMLInputElement>(),
+  registering = ref(false);
+function chooseArchFiles(files?: FileList | null) {
+  const all = Array.from(files || []);
+  const accepted = all.filter(acceptable);
+  if (archInput.value) archInput.value.value = "";
+  if (accepted.length < all.length)
+    session.notify(`형식이나 크기가 맞지 않는 ${all.length - accepted.length}개 파일은 제외했습니다.`);
+  archFiles.value = [...archFiles.value, ...accepted];
+}
+function closeProjectModal() {
+  projectModal.value = false;
+  archFiles.value = [];
+}
 async function addProject() {
+  registering.value = true;
   try {
-    await api("/projects", "POST", {
-      repository: repo.value,
+    const repository = repo.value;
+    const created = await api<{ id: string }>("/projects", "POST", {
+      repository,
       defaultBranch: defaultBranch.value,
     });
-    projectModal.value = false;
+    let message = "프로젝트를 등록했습니다.";
+    if (archFiles.value.length)
+      try {
+        await addFolder(created.id, repository, archFiles.value);
+        message = `프로젝트와 아키텍처 파일 ${archFiles.value.length}개를 등록했습니다.`;
+      } catch {
+        // 프로젝트 등록은 이미 끝났으므로 아키텍처만 다시 올리도록 안내합니다.
+        message =
+          "프로젝트는 등록했지만 아키텍처를 저장하지 못했습니다. 프로젝트 화면의 아키텍처에서 다시 올려 주세요.";
+      }
+    closeProjectModal();
     repo.value = "";
-    session.notify("프로젝트를 등록했습니다.");
+    session.notify(message);
     load();
   } catch (e: any) {
     session.notify(e.message);
+  } finally {
+    registering.value = false;
   }
 }
 async function logout() {
@@ -722,6 +774,7 @@ async function logout() {
               v-if="scoped"
               :projects="projectList"
               :model-value="projectId"
+              :allow-all="dashView !== 'architecture'"
               @update:model-value="selectProject"
             />
             <button @click="load()" :disabled="loading">
@@ -735,20 +788,37 @@ async function logout() {
             </button>
           </div>
         </div>
-        <div v-if="error" class="error" role="alert">
+        <div v-if="dash" class="tabs dash-tabs" role="tablist" aria-label="프로젝트 화면">
+          <button
+            v-for="[view, name] in ([['status', '보안 현황'], ['architecture', '아키텍처']] as const)"
+            :key="view"
+            role="tab"
+            :aria-selected="dashView === view"
+            :class="{ selected: dashView === view }"
+            @click="setDashView(view)"
+          >
+            {{ name }}
+          </button>
+        </div>
+        <ArchitectureUpload
+          v-if="dash && dashView === 'architecture'"
+          :project="projectId"
+          :project-name="data.project?.repository || selectedProject?.repository || ''"
+        />
+        <div v-if="error && !(dash && dashView === 'architecture')" class="error" role="alert">
           {{ error }} <button @click="load()">다시 시도</button>
         </div>
-        <div v-if="loading" class="skeleton-grid" aria-label="불러오는 중">
+        <div v-if="loading && !(dash && dashView === 'architecture')" class="skeleton-grid" aria-label="불러오는 중">
           <div v-for="n in 6" :key="n" class="skeleton" />
         </div>
         <template v-else-if="!error"
-          ><ReportReveal v-if="revealEnabled && (dash || tab === 'AI Analysis')"
+          ><ReportReveal v-if="revealEnabled && (dash ? dashStatus : tab === 'AI Analysis')"
               :stage="visibleStage" :total="4" :active="revealingReport" :labels="revealLabels"
               @skip="reportReveal.showAll" @replay="reportReveal.replay" />
-          <p v-if="dash && revealEnabled && showReportStage(1)" class="report-narrative report-reveal-block">
+          <p v-if="dashStatus && revealEnabled && showReportStage(1)" class="report-narrative report-reveal-block">
             <ReportText :text="dashboardNarrative" :animate="revealingReport && !reducedMotion" />
           </p>
-          <template v-if="dash"
+          <template v-if="dashStatus"
             ><div v-if="showReportStage(1)" class="metrics" :class="{'report-reveal-block':revealEnabled}" data-report-stage="1">
               <article
                 v-for="([name, value, icon], i) in metrics"
@@ -815,7 +885,7 @@ async function logout() {
               </div>
             </section>
           </template>
-          <template v-if="dash"
+          <template v-if="dashStatus"
             ><section v-if="showReportStage(4)" class="panel review-feed" :class="{'report-reveal-block':revealEnabled}" data-report-stage="4">
               <div class="panel-title">
                 <h2>검토 피드</h2>
@@ -1736,7 +1806,7 @@ async function logout() {
             :total="filtered.length"
             @move="(step) => (current = Math.min(pages, Math.max(1, current + step)))"
           />
-          <template v-if="dash && showReportStage(4)"
+          <template v-if="dashStatus && showReportStage(4)"
             ><section class="panel" v-if="data.failures?.length" :class="{'report-reveal-block':revealEnabled}">
               <div class="panel-title"><h2>최근 실패한 검사</h2></div>
               <RouterLink
@@ -1816,12 +1886,12 @@ async function logout() {
       </div>
     </Transition>
     <Transition name="fade">
-      <div v-if="projectModal" class="overlay center" @click.self="projectModal = false">
+      <div v-if="projectModal" class="overlay center" @click.self="closeProjectModal">
         <form class="modal" @submit.prevent="addProject">
           <button
             type="button"
             class="close"
-            @click="projectModal = false"
+            @click="closeProjectModal"
             aria-label="닫기"
           >
             <X :size="20" />
@@ -1839,7 +1909,41 @@ async function logout() {
               v-model="defaultBranch"
               required
               placeholder="develop" /></label
-          ><button class="primary">프로젝트 등록</button>
+          ><div class="arch-field">
+            <span class="arch-field-label">아키텍처 <small>선택 사항</small></span>
+            <button type="button" class="arch-pick" @click="archInput?.click()">
+              <ImagePlus :size="15" />아키텍처 파일 선택
+            </button>
+            <input
+              ref="archInput"
+              type="file"
+              multiple
+              hidden
+              aria-label="아키텍처 파일"
+              :accept="ACCEPTED_TYPES.join(',')"
+              @change="chooseArchFiles(($event.target as HTMLInputElement).files)"
+            />
+            <ul v-if="archFiles.length" class="arch-files">
+              <li v-for="(f, i) in archFiles" :key="i">
+                <span>{{ f.name }}</span
+                ><small>{{ (f.size / 1024 / 1024).toFixed(2) }}MB</small
+                ><button
+                  type="button"
+                  :aria-label="f.name + ' 빼기'"
+                  @click="archFiles = archFiles.filter((_, j) => j !== i)"
+                >
+                  <X :size="14" />
+                </button>
+              </li>
+            </ul>
+            <small class="arch-hint"
+              >넣지 않아도 프로젝트를 등록할 수 있습니다. 넣으면 프로젝트 이름의 폴더로 저장됩니다.
+              PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</small
+            >
+          </div
+          ><button class="primary" :disabled="registering">
+            {{ registering ? "등록 중…" : "프로젝트 등록" }}
+          </button>
         </form>
       </div>
     </Transition>
@@ -1847,6 +1951,17 @@ async function logout() {
 </template>
 
 <style scoped>
+.arch-field{display:flex;flex-direction:column;gap:8px;margin:0 0 20px}
+.arch-field-label{font-size:13px;font-weight:550;color:var(--ink-2)}
+.arch-field-label small{margin-left:4px;font-weight:500;color:var(--ink-3)}
+.arch-pick{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px;border:1px dashed var(--line-2);background:transparent;color:var(--ink-2)}
+.arch-pick:hover{border-color:var(--blue);color:var(--blue)}
+.arch-files{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.arch-files li{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 12px;border:1px solid var(--line);border-radius:var(--r-md);font-size:12px}
+.arch-files li span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.arch-files li small{color:var(--ink-3)}
+.arch-files li button{padding:4px;border:0;background:none;color:var(--ink-3)}
+.arch-hint{font-size:12px;line-height:1.5;color:var(--ink-3)}
 .analysis-status{margin-bottom:20px;padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;line-height:1.7}
 .analysis-status p{margin:6px 0}
 .analysis-status-warning{background:#fff7ed;border-color:#fdba74;color:#9a3412}
