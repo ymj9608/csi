@@ -1,0 +1,40 @@
+import { test, expect } from '@playwright/test';
+
+const scan = process.env.CSI_CODING_TEST_SCAN;
+const username = process.env.CSI_CODING_TEST_USER;
+const password = process.env.CSI_CODING_TEST_PASSWORD;
+
+test('verified coding proposal, mobile diff, reviewer approval and patch download', async ({ page }) => {
+  test.skip(!scan || !username || !password, 'Requires an isolated READY coding proposal and reviewer account; see docs/CODING_AGENT.md');
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('/login');
+  await page.getByLabel('계정', { exact: true }).fill(username!);
+  await page.getByLabel('비밀번호', { exact: true }).fill(password!);
+  await page.getByRole('button', { name: '로그인', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '프로젝트', exact: true })).toBeVisible();
+  await page.goto(`/scans/${scan}`);
+  const region = page.getByRole('region', { name: '코딩 Agent 수정안' });
+  await expect(region).toBeVisible();
+  await expect(region).toContainText('수정안 검증 완료 · 관리자 검토 대기');
+  await expect(region.locator('tr').filter({ hasText: '추가 보안 검증' })).toContainText('13 / 13');
+  await expect(region.getByRole('heading', { name: '수정 전후 개선 사항', exact: true })).toBeVisible();
+  await expect(region.getByRole('heading', { name: '아직 남아 있는 작업', exact: true })).toBeVisible();
+  await expect(region).toContainText('원본 반영 여부는 별도 확인 필요');
+  await expect(region.locator('.coding-diff')).toContainText('bcrypt');
+  await expect(region.getByRole('button', { name: '승인한 수정안 다운로드' })).toHaveCount(0);
+  await page.screenshot({ path: '../.runtime/coding-e2e/desktop.png', fullPage: true, animations: 'disabled' });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await expect(region.locator('.coding-diff')).toBeVisible();
+  await page.screenshot({ path: '../.runtime/coding-e2e/mobile.png', fullPage: true, animations: 'disabled' });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await region.getByRole('button', { name: '검토 후 승인', exact: true }).click();
+  await expect(region).toContainText('수정안 승인됨');
+  await expect(region.getByRole('button', { name: '검토 후 승인', exact: true })).toHaveCount(0);
+  const downloading = page.waitForEvent('download');
+  await region.getByRole('button', { name: '승인한 수정안 다운로드' }).click();
+  const download = await downloading;
+  expect(download.suggestedFilename()).toMatch(/^csi-.*\.patch$/);
+  expect(errors).toEqual([]);
+});
