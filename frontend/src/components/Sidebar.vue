@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import {
-  LayoutDashboard,
   FolderGit2,
   ScanLine,
   ShieldAlert,
@@ -28,7 +27,6 @@ const BRAND = "/brand/";
 const shieldOk = ref(true),
   wordOk = ref(true);
 const nav = [
-  ["/dashboard", "보안 현황", LayoutDashboard],
   ["/projects", "프로젝트", FolderGit2],
   ["/scans", "검사 이력", ScanLine],
   ["/findings", "위험 항목", ShieldAlert],
@@ -36,6 +34,10 @@ const nav = [
   ["/policies", "보안 정책", BookOpen],
   ["/approvals", "승인 관리", ClipboardCheck],
 ] as const;
+// 보안 현황은 프로젝트 카드에서 들어가는 화면이라 메뉴에 따로 두지 않고 "프로젝트"를 선택된 상태로 둡니다.
+const isActive = (path: string) =>
+  route.path.startsWith(path) ||
+  (path === "/projects" && route.path.startsWith("/dashboard"));
 </script>
 <template>
   <aside :class="{ expanded: mobile }">
@@ -92,7 +94,7 @@ const nav = [
         v-for="[path, name, icon] in nav"
         :key="path"
         :to="scopedLink(path, project)"
-        :class="{ active: route.path.startsWith(path) }"
+        :class="{ active: isActive(path) }"
         ><component :is="icon" :size="18" />{{ name }}</RouterLink
       >
     </nav>

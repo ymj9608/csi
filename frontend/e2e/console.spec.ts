@@ -27,6 +27,10 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   ).toBeVisible();
   await page.locator(".project-card").first().click();
   await expect(page).toHaveURL(/\/dashboard\?project=[0-9a-f-]+$/);
+  // 보안 현황은 메뉴에 없고, 프로젝트에서 들어온 화면이므로 "프로젝트"가 선택된 상태입니다.
+  await expect(page.locator("aside nav a", { hasText: "보안 현황" })).toHaveCount(0);
+  await expect(page.locator("aside nav a").first()).toHaveText("프로젝트");
+  await expect(page.locator("aside nav a.active")).toHaveText("프로젝트");
   await expect(page.locator(".metrics")).toBeVisible();
   const picker = page.getByLabel("프로젝트 선택");
   const selectedRepository = await picker.locator("option:checked").textContent();

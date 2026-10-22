@@ -19,6 +19,11 @@ const router = createRouter({
       path: "/projects/:id",
       redirect: (to) => ({ path: "/dashboard", query: { project: String(to.params.id) } }),
     },
+    // 아키텍처는 프로젝트 화면의 버튼으로 옮겼습니다. 예전 주소는 그 버튼이 선택된 화면으로 보냅니다.
+    {
+      path: "/architecture",
+      redirect: (to) => ({ path: "/dashboard", query: { ...to.query, view: "architecture" } }),
+    },
     { path: "/:pathMatch(.*)*", component: Console },
   ],
 });
