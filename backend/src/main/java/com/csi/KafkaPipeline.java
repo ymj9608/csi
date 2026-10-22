@@ -23,7 +23,8 @@ import com.fasterxml.jackson.databind.JsonNode;import org.springframework.stereo
  for(var ref:e.path("changeReview").path("references")){var original=catalog.catalog.stream().filter(c->c.get("chunkId").equals(ref.path("chunkId").asText())).findFirst().orElseThrow(()->new IllegalArgumentException("Invented change reference"));if(!db.json.valueToTree(original).equals(ref))throw new IllegalArgumentException("Altered change reference");}
  db.jdbc.update("UPDATE scan_changes SET review=?::jsonb WHERE scan_id=?",e.path("changeReview").toString(),scan);
  }
- db.jdbc.update("UPDATE scans SET status=?,analysis_mode=?,finished_at=now() WHERE id=?",status,mode,scan);db.log(scan,"REPORT_SAVED","backend",status.equals("FAILED")?"ERROR":"INFO",status.equals("FAILED")?"Agent failed; analysis incomplete":"Validated report persisted");}
+ db.jdbc.update("UPDATE scans SET status=?,analysis_mode=?,finished_at=now() WHERE id=?",status,mode,scan);db.log(scan,"REPORT_SAVED","backend",status.equals("FAILED")?"ERROR":"INFO",status.equals("FAILED")?"Agent failed; analysis incomplete":"Validated report persisted");
+ }
  events.publish(scan.toString());
  }
 }

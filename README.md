@@ -16,6 +16,7 @@ GitHub Actions 또는 로컬 스캐너가 Java/Python 코드를 정적으로 검
 | 보안·정책 후보 탐지 | Semgrep Java/Python 규칙, 마스킹된 코드 근거, 파일·라인·규칙·증거 수준 |
 | 근거 기반 리뷰 | 검사 당시 정책 snapshot, 사내 규정·외부 참조집 검색, 사실·문서 인용 검증, 개선 권고 |
 | 코드 변경 리뷰 | 두 Git 커밋의 마스킹된 좌우 diff, 지원하는 Python 선언의 추가·삭제 요약, 연결된 보안 후보 |
+| 로컬 코딩 Agent (선택) | Lichu 회원가입 보완 코드·근거 생성, 격리 전후 테스트, 별도 관리자 승인과 새 worktree 준비. [실행 안내](docs/CODING_AGENT.md) |
 | 콘솔 | 프로젝트별 현황, 검사 이력, 위험 항목 상세, 정책 조회, 실행 로그, 검토 상태 변경 |
 | 사람의 검토와 실행 통제 | 승인 대기, PostgreSQL checkpoint, 동일 검사 재개, 승인 후 CSI 내부 검토 이슈 생성 |
 | 비동기 처리·관측 | Outbox, Kafka, 제한된 재시도, DLQ/DLT, 모델 도구 선택 trace·예산, SSE 갱신 |
@@ -275,6 +276,20 @@ Backend는 검사와 Outbox를 한 트랜잭션에 저장한 뒤 202를 반환�
 
 콘솔 API는 Spring Security 세션 쿠키와 CSRF 검증을 사용하며 현재 역할은 `SECURITY_REVIEWER`입니다. 내부 API는 Bearer 인증, 스캐너 접수는 HMAC 인증으로 구분합니다. 로컬 HTTP 실행의 쿠키 설정과 별개로 HTTPS 운영 환경에서는 `COOKIE_SECURE=true`를 설정해야 합니다.
 
+### 품질 기준을 반영한 설계
+
+ISO/IEC 25010:2023의 9개 제품 품질 특성을 **요구사항 → 설계·코드 → 테스트·실행 기록 → 남은 검증**으로 연결했습니다. 이는 품질을 고려한 아키텍처 설계이며, ISO 인증이나 모든 품질 목표의 달성 선언은 아닙니다.
+
+| 품질 관점 | CSI의 설계 선택 | 검증 범위 |
+|---|---|---|
+| 기능 적합성·보안성 | 실제 Finding·문서 인용 검증, 인증 경계·마스킹·읽기 도구 allowlist | 샘플·경계 테스트 및 과거 인증 통합 검증. 탐지 정확도·종합 공격 대응 평가는 남음 |
+| 성능 효율성·신뢰성 | 비동기 접수, Outbox·멱등성, 호출 예산·유한 재시도·checkpoint | 예산 테스트와 과거 승인/장애 검증. p95 지연·비용·프로세스 강제 종료 후 복구는 미측정 |
+| 호환성·상호작용 능력 | 검증된 API/MCP 계약, 구버전 검사 조회, SSE·근거·불확실성 표시 | 계약 테스트와 과거 화면 E2E. 클라이언트 호환 행렬·접근성 평가는 부족 |
+| 유지보수성·유연성 | 규칙·프롬프트·서비스 분리, 회귀 테스트, Compose·환경 변수 | 로컬 테스트·배포 기록. 다중 Worker·고가용성·환경별 재현은 별도 검증 필요 |
+| 안전성 | 기존 리뷰 승인은 내부 이슈 생성. 선택적 코딩 Worker는 격리 테스트·별도 승인·커밋 검증 후 새 worktree 준비 | 승인/거절 및 제한된 Lichu 검증. 정식 위해 분석이나 안전성 보증은 아님 |
+
+[품질 요구사항과 설계 검증](docs/ARCHITECTURE.md#품질-요구사항과-설계-검증)에 QA-01–09의 코드·검증 근거, 판별 기준과 다음 측정 계획을 정리했습니다. 2011판과 2023판의 용어 차이, 테스트 대역과 실제 서비스 검증의 구분도 포함합니다.
+
 ### 주요 실행 시퀀스
 
 원 안의 번호는 그림을 읽는 순서입니다. `loop` 단계는 반복하며 `par` 영역의 경로는 독립적으로 진행하므로, 번호가 모든 이벤트의 엄격한 실행 순서를 의미하지는 않습니다.
@@ -318,7 +333,7 @@ LLM을 활성화한 경우의 도구 선택·MCP 근거 수집, 결과 발행과
 
 초기 근거 조회와 승인 요청은 Harness가 수행합니다. 모델에 제공하는 선택지는 정책·비교·이력·RAG 읽기 도구 6개와 로컬 종료 동작 `finish_analysis`입니다. 쓰기 도구는 모델의 자유 선택 목록에 포함하지 않습니다.
 
-보고서 생성과 후속 승인 상태는 별개입니다. 검사 결과를 발행한 후 승인을 기다리므로 **검사 완료와 승인 대기가 동시에 표시될 수 있습니다.** 승인 대상은 **CSI 내부 보안 검토 이슈 생성**이며, 코드 자동 수정·외부 GitHub 이슈 생성·개인정보 수집 승인 기능이 아닙니다.
+보고서 생성과 후속 승인 상태는 별개입니다. 검사 결과를 발행한 후 승인을 기다리므로 **검사 완료와 승인 대기가 동시에 표시될 수 있습니다.** 기존 LangGraph 승인 대상은 **CSI 내부 보안 검토 이슈 생성**입니다. 선택적 [코딩 Agent](docs/CODING_AGENT.md)는 위험 항목의 분석 확인 후 수정안 생성·근거 확인·승인/거절로 이어지며, 승인만으로 코드가 병합되거나 배포되지는 않습니다.
 
 ### MCP 서버
 
@@ -420,9 +435,9 @@ E2E는 빈 DB용 테스트가 아닙니다. 콘솔 테스트에는 프로젝트�
 | 테스트 통과와 별개로 오탐·미탐, 처리 지연·비용, 대규모 부하·장애의 정량 평가 부족 | 기준 데이터셋과 평가 지표, 비용·지연 측정, 부하·복구 시험 |
 | 단일 조직·단일 Worker MVP, 목록은 최근 최대 1,000건 조회 후 화면에서 필터·페이지 처리 | 조직·프로젝트별 권한, 서버 페이지 처리, 다중 Worker·백엔드 확장, DLQ 운영 절차 |
 
-현재 자동 패치·운영 배포·외부 GitHub 이슈 생성·파일 업로드·공격 실행·비밀번호 크래킹·대상 앱의 동적 테스트는 지원하지 않습니다.
+현재 자동 병합·운영 배포·외부 GitHub 이슈 생성·임의 파일 업로드·공격 실행·비밀번호 크래킹은 지원하지 않습니다. 선택적 코딩 Worker는 Lichu 실습 파일 하나의 추천 수정안을 생성하고 격리된 기능·보안 테스트를 실행합니다. 승인 후 명시적 CLI로 새 worktree를 준비하는 범위이며, 범용 저장소 자동 수정은 지원하지 않습니다.
 
-선택적 격리 스캐너는 읽기 전용 마운트·네트워크 차단·비루트 사용자·자원 제한으로 **정적 분석 도구만 실행**합니다. 대상 앱이나 테스트를 실행하는 Sandbox가 아닙니다.
+선택적 격리 스캐너는 읽기 전용 마운트·네트워크 차단·비루트 사용자·자원 제한으로 **정적 분석 도구만 실행**합니다. 코딩 Worker의 테스트 검증 컨테이너는 이 스캐너와 별도입니다. 범위·실행법·검증 한계는 [코딩 Agent 문서](docs/CODING_AGENT.md)를 참고하세요.
 
 ```sh
 mkdir -p .runtime
@@ -450,11 +465,14 @@ csi/
 
 | 문서 | 내용 |
 |---|---|
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 실제 구현의 서비스 경계, 메시지·승인 재개·실패 경로 |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 서비스 경계·승인·실패 경로, ISO/IEC 25010 품질 요구사항과 설계·검증 대응 |
 | [AGENT_HARNESS.md](docs/AGENT_HARNESS.md) | 모델 도구 선택, 상태·예산·복구, Harness 8요소 |
 | [REVIEW_QUALITY.md](docs/REVIEW_QUALITY.md) | 정적 사실과 정책 대조, 인용·불확실성·모델 출력 검증 |
 | [CHANGE_REVIEWS.md](docs/CHANGE_REVIEWS.md) | 좌우 diff, 변경 요약·연결 리뷰, 한도와 검증 시나리오 |
 | [verification.json](docs/verification.json) | 날짜·환경이 명시된 기존 실행 검증 기록 |
+| [평가표 기반 발표자료 PPTX](docs/presentations/CSI_Evaluation_Design.pptx) · [PDF](docs/presentations/CSI_Evaluation_Design.pdf) · [전체 미리보기](docs/presentations/CSI_Evaluation_Design_preview.png) | 아키텍처·Agent 설계/구현·MCP 담당 영역 60점의 설계와 검증 근거. 본편 10장 + 부록 3장, 발표자 노트 포함 |
 | [상세 아키텍처 PNG](docs/diagrams/CSI.png) · [요약 구조도 PNG](docs/diagrams/csi-system-architecture-paper.en.png) | 전체 서비스 경계와 핵심 구성요소 |
 | [검사·분석 시퀀스 PNG](docs/diagrams/csi-sequence-scan-analysis.en.color.png) · [승인·재개 시퀀스 PNG](docs/diagrams/csi-sequence-approval-resume.en.color.png) | 번호로 표시한 검사 처리 및 HITL 재개 흐름 |
 | [MCP 라우팅 상세도 v5 PDF](docs/diagrams/CSI_MCP_Routing_Visual_v5.pdf) | 모델 선택, 도구 검증·라우팅, MCP 서비스와 승인 후 내부 이슈 생성 |
+
+발표자료의 텍스트·설명 도식은 PowerPoint에서 편집할 수 있으며 Keynote에서 13장 가져오기와 PDF 내보내기를 확인했습니다. 재생성 소스는 [build_evaluation_deck.py](scripts/build_evaluation_deck.py)입니다. 발표자료용 `python-pptx`, `Pillow`는 서비스 런타임 의존성과 분리해 사용합니다.

@@ -32,6 +32,10 @@ export const label = (value?: string) =>
 
 // Agent·백엔드 실행 이벤트 코드의 한국어 이름입니다. 원래 코드는 화면에 함께 남깁니다.
 export const eventLabels: Record<string, string> = {
+  CODING_QUEUED: "코딩 수정안 생성 대기",
+  CODING_RUNNING: "코딩 수정안 생성·검증 시작",
+  CODING_FINISHED: "코딩 수정안 검증 결과 저장",
+  CODING_DECIDED: "코딩 수정안 관리자 결정",
   SCAN_ACCEPTED: "검사 결과 접수",
   KAFKA_PUBLISHED: "분석 요청 전달",
   KAFKA_RETRY: "분석 요청 재전송",

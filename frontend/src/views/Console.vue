@@ -29,10 +29,15 @@ import {
   ChevronDown,
 } from "lucide-vue-next";
 import { api, date } from "../lib/api";
+import { analysisStatus, hasAnalysisText } from "../lib/analysisStatus";
 import { useSession } from "../stores/session";
 import Badge from "../components/Badge.vue";
 import Chart from "../components/Chart.vue";
 import ChangeReview from "../components/ChangeReview.vue";
+import CodingProposal from "../components/CodingProposal.vue";
+import ReportReveal from "../components/ReportReveal.vue";
+import ReportText from "../components/ReportText.vue";
+import { useReportReveal } from "../lib/useReportReveal";
 import ShieldScene from "../components/ShieldScene.vue";
 import { label, eventLabels, toolLabels } from "../components/labels";
 import Pager from "../components/Pager.vue";
@@ -101,6 +106,7 @@ const intro: Record<string, string> = {
 // 코드 근거는 왼쪽 패널에 늘 보이므로 탭은 오른쪽 내용만 바꿉니다.
 const tabs: Record<string, string> = {
   "AI Analysis": "AI 분석",
+  "Coding Proposal": "수정안 생성·검토",
   Action: "조치",
   "Security References": "보안 근거",
 };
@@ -122,6 +128,24 @@ const data = ref<any>({}),
   projectModal = ref(false),
   repo = ref(""),
   defaultBranch = ref("develop");
+const reportReveal = useReportReveal(4);
+const { visibleStage, active: revealingReport, reducedMotion } = reportReveal;
+const revealEnabled = computed(() =>
+  (dash.value && !!projectId.value && Number(data.value.completedScans) > 0) ||
+  (findingsPage.value && !!id.value && data.value.scanStatus === 'COMPLETED' && !!data.value.analysis),
+);
+const revealLabels = computed(() => dash.value
+  ? ['위험 요약', '위험 추이와 분포', '진단 범위', '검토할 항목']
+  : ['코드에서 확인한 사실', '잠재 위험 해석', '근거 검토와 불확실성', '수집 과정과 다음 조치']);
+const dashboardNarrative = computed(() => Number(data.value.openFindings) > 0
+  ? `최근 완료 검사 기준으로 미해결 위험 항목이 ${Number(data.value.openFindings)}건 있습니다. 치명·높음 ${Number(data.value.criticalHigh) || 0}건을 포함해 아래의 근거와 검토할 항목을 확인하세요.`
+  : '최근 완료 검사에서 미해결 위험 항목은 0건입니다. 검사 범위와 실행 기록을 함께 확인하세요.');
+const showReportStage = (stage: number) => !revealEnabled.value || visibleStage.value >= stage;
+function openFindingTab(value: string) {
+  // An explicit navigation choice takes precedence over the presentation delay.
+  reportReveal.showAll();
+  tab.value = value;
+}
 const reviewGroups = computed(() => {
   const groups: Record<string, number> = {};
   for (const f of data.value.findings || []) {
@@ -476,19 +500,31 @@ async function load(quiet = false) {
     data.value = Array.isArray(result) ? {} : result;
     items.value = Array.isArray(result) ? result : result.items || [];
     if (id.value && page.value === "scans") {
-      const [findings, logs, comparison, changes] = await Promise.all([
+      const [findings, logs, comparison, changes, coding] = await Promise.all([
         api(path + "/findings"),
         api(path + "/logs"),
         api(path + "/comparison"),
         api(path + "/changes"),
+        api(path + "/coding-proposals"),
       ]);
       if (key === request)
-        data.value = { ...result, findings, logs, comparison, changes };
+        data.value = { ...result, findings, logs, comparison, changes, coding };
+    }
+    if (id.value && findingsPage.value && result.scanId) {
+      const [scan, coding, findings] = await Promise.all([
+        api(`/scans/${result.scanId}`), api(`/scans/${result.scanId}/coding-proposals`),
+        api(`/scans/${result.scanId}/findings`),
+      ]);
+      if (key === request) data.value = { ...result, scanStatus:scan.status, coding, codingFindings:findings };
     }
   } catch (e: any) {
     if (key === request) error.value = e.message;
   } finally {
-    if (key === request) loading.value = false;
+    if (key === request) {
+      loading.value = false;
+      if (!error.value && revealEnabled.value)
+        reportReveal.start(dash.value ? 'dashboard:' + projectId.value : 'finding:' + id.value);
+    }
   }
 }
 function connect() {
@@ -537,6 +573,7 @@ watch(
     const sameList = findingsPage.value && !id.value && listKey === lastListKey;
     lastListKey = listKey;
     if (sameList) return;
+    reportReveal.reset();
     search.value = "";
     status.value = "";
     severity.value = "";
@@ -639,7 +676,7 @@ async function logout() {
             <h1 v-if="dash" class="project-heading">
               {{ data.project?.repository || "전체 프로젝트"
               }}<Badge
-                v-if="!loading && !error"
+                v-if="!loading && !error && showReportStage(1)"
                 :value="dashRisk"
                 :title="riskTitle[dashRisk]"
               />
@@ -656,6 +693,7 @@ async function logout() {
             </p>
             <p v-if="dash">
               <template v-if="loading">최신 검사 결과를 불러오는 중입니다.</template>
+              <template v-else-if="revealEnabled && !showReportStage(1)">저장된 분석 결과를 순서대로 펼칩니다.</template>
               <template v-else-if="!data.completedScans"
                 >아직 완료된 검사가 없습니다. 검사 결과가 들어오면 위험도를
                 판단합니다.</template
@@ -704,8 +742,14 @@ async function logout() {
           <div v-for="n in 6" :key="n" class="skeleton" />
         </div>
         <template v-else-if="!error"
-          ><template v-if="dash"
-            ><div class="metrics">
+          ><ReportReveal v-if="revealEnabled && (dash || tab === 'AI Analysis')"
+              :stage="visibleStage" :total="4" :active="revealingReport" :labels="revealLabels"
+              @skip="reportReveal.showAll" @replay="reportReveal.replay" />
+          <p v-if="dash && revealEnabled && showReportStage(1)" class="report-narrative report-reveal-block">
+            <ReportText :text="dashboardNarrative" :animate="revealingReport && !reducedMotion" />
+          </p>
+          <template v-if="dash"
+            ><div v-if="showReportStage(1)" class="metrics" :class="{'report-reveal-block':revealEnabled}" data-report-stage="1">
               <article
                 v-for="([name, value, icon], i) in metrics"
                 :key="String(name)"
@@ -715,7 +759,7 @@ async function logout() {
                 <strong>{{ value ?? 0 }}</strong>
               </article>
             </div>
-            <div class="charts-grid">
+            <div v-if="showReportStage(2)" class="charts-grid" :class="{'report-reveal-block':revealEnabled}" data-report-stage="2">
               <section class="panel">
                 <div class="panel-title">
                   <h2>위험 항목 발견 추이</h2>
@@ -755,7 +799,7 @@ async function logout() {
                 </div>
               </section>
             </div>
-            <section class="panel threat-section">
+            <section v-if="showReportStage(3)" class="panel threat-section" :class="{'report-reveal-block':revealEnabled}" data-report-stage="3">
               <div class="panel-title">
                 <h2>진단 범위</h2>
                 <span>4개 위협 유형을 정적 근거와 MCP 정책 검증으로 확인합니다</span>
@@ -772,7 +816,7 @@ async function logout() {
             </section>
           </template>
           <template v-if="dash"
-            ><section class="panel review-feed">
+            ><section v-if="showReportStage(4)" class="panel review-feed" :class="{'report-reveal-block':revealEnabled}" data-report-stage="4">
               <div class="panel-title">
                 <h2>검토 피드</h2>
                 <RouterLink
@@ -1062,6 +1106,7 @@ async function logout() {
               >
             </div>
             <ChangeReview :changes="data.changes" :findings="data.findings || []" :scan-status="data.status" />
+            <CodingProposal :scan-id="id" :scan-status="data.status" :coding="data.coding" :findings="data.findings" @refresh="load(true)" />
             <section class="panel">
               <div class="panel-title">
                 <h2>탐지 결과</h2>
@@ -1293,19 +1338,20 @@ async function logout() {
                 </select></label
               >
             </div>
+            <p class="finding-summary" aria-label="위험 항목 검토 순서">위험 요인 확인 → AI 분석 → 수정안 생성 → 수정 근거·코드 확인 → 승인 또는 거절</p>
             <div class="tabs" role="tablist">
               <button
                 v-for="(name, t) in tabs"
                 role="tab"
                 :aria-selected="tab === t"
-                @click="tab = t"
+                @click="openFindingTab(String(t))"
                 :class="{ selected: tab === t }"
               >
                 {{ name }}
               </button>
             </div>
             <div class="detail-grid">
-              <section class="panel detail-panel">
+              <section v-if="tab !== 'AI Analysis' || showReportStage(1)" class="panel detail-panel" :class="{'report-reveal-block':revealEnabled}" data-report-stage="1">
                 <h2 class="step-title"><b>1</b>스캐너가 찾은 사실</h2>
                 <p class="step-sub">Semgrep 정적 분석이 코드에서 기계적으로 확인한 내용입니다.</p>
                 <p class="mono file-path">
@@ -1341,35 +1387,48 @@ async function logout() {
                   >검사 상세로 이동 <ArrowUpRight :size="14"
                 /></RouterLink>
               </section>
-              <section class="panel detail-panel">
+              <section v-if="tab !== 'AI Analysis' || showReportStage(2)" class="panel detail-panel" :class="{'report-reveal-block':revealEnabled}" data-report-stage="2">
                 <template v-if="tab === 'AI Analysis'"
                   ><h2 class="step-title"><b>2</b>AI의 해석</h2>
                   <p class="step-sub">Agent가 위 사실과 사내 규정을 함께 보고 판단한 내용입니다.</p>
+                  <div class="analysis-status" :class="{'analysis-status-warning':data.scanStatus === 'FAILED' || data.scanStatus === 'COMPLETED' && (!hasAnalysisText(data.analysis?.red) || !hasAnalysisText(data.analysis?.blue))}" role="status" aria-label="분석 상태">
+                    <strong>{{ analysisStatus(data.scanStatus, data.analysis).title }}</strong>
+                    <p>{{ analysisStatus(data.scanStatus, data.analysis).detail }}</p>
+                    <RouterLink v-if="data.scanId" :to="'/scans/' + data.scanId">검사 상세·실행 기록 확인</RouterLink>
+                  </div>
                   <div v-if="data.analysis?.policyComparison" class="review-policy">
                     <strong class="mono">{{ data.analysis.policyComparison.entity }}.{{ data.analysis.policyComparison.field }}</strong>
                     <p>정책 대조: {{ policyLabels[data.analysis.policyComparison.inventoryStatus] }}</p>
                     <small>별도 승인 기록 미확인, 런타임 검증 미수행</small>
                   </div>
-                  <div class="verdict red">
+                  <div v-if="hasAnalysisText(data.analysis?.red)" class="verdict red">
                     <h2><ShieldAlert :size="18" />잠재 위험</h2>
                     <p class="threat-name">{{ data.analysis?.threatProfile }}</p>
-                    <p>{{ data.analysis?.red || "분석 결과 대기 중" }}</p>
+                    <p><ReportText :text="data.analysis.red" :animate="revealingReport && !reducedMotion" /></p>
                   </div>
-                  <div class="verdict blue">
+                  <div v-if="showReportStage(3) && hasAnalysisText(data.analysis?.blue)" class="verdict blue" :class="{'report-reveal-block':revealEnabled}" data-report-stage="3">
                     <h2><ShieldCheck :size="18" />근거 검토와 불확실성</h2>
-                    <p>{{ data.analysis?.blue || "분석 결과 대기 중" }}</p>
+                    <p><ReportText :text="data.analysis.blue" :animate="revealingReport && !reducedMotion" /></p>
                   </div>
-                  <section v-if="data.analysis?.unknowns?.length" class="review-evidence">
+                  <section v-if="showReportStage(3) && data.analysis?.unknowns?.length" class="review-evidence" :class="{'report-reveal-block':revealEnabled}">
                     <h3>추가 확인이 필요한 사항</h3>
                     <ul><li v-for="item in data.analysis.unknowns" :key="item">{{ item }}</li></ul>
                   </section>
-                  <p v-if="data.analysis?.fallbackReason" class="fallback-note">
+                  <p v-if="showReportStage(3) && data.analysis?.fallbackReason" class="fallback-note">
                     이 항목의 일부 판단은 LLM 대신 규칙 기반으로 대체되었습니다 (사유:
                     {{ data.analysis.fallbackReason }}).
-                  </p></template
+                  </p>
+                  <button v-if="showReportStage(4)" class="primary" data-report-stage="4" @click="openFindingTab('Coding Proposal')">수정안 생성·검토로 이동</button></template
+                ><template v-if="tab === 'Coding Proposal'">
+                  <h2 class="step-title"><b>3</b>수정안 생성·검토</h2>
+                  <p class="step-sub">분석한 위험을 보완할 코드를 생성하고, 수정 근거·테스트·diff를 확인한 뒤 승인하거나 거절하세요.</p>
+                  <CodingProposal v-if="data.scanId" :key="data.scanId" :scan-id="data.scanId" :scan-status="data.scanStatus"
+                    :coding="data.coding" :finding="data" :findings="data.codingFindings" @refresh="load(true)" />
+                </template
                 ><template v-if="tab === 'Action'"
                   ><h2 class="step-title"><b>2</b>조치</h2>
-                  <p class="step-sub">어떻게 고칠지 확인하고, 검토 상태를 바꾸면 처리 기록이 남습니다.</p>
+                  <p class="step-sub">위험 항목의 관리 상태를 기록합니다. 코드 수정안 승인·거절은 수정안 생성·검토 탭에서 진행하세요.</p>
+                  <button class="primary" @click="tab='Coding Proposal'">수정안 생성·검토로 이동</button>
                   <section class="action-block">
                     <h3>개선 권고</h3>
                     <p>
@@ -1461,8 +1520,9 @@ async function logout() {
               </section>
             </div>
             <section
-              v-if="tab === 'AI Analysis' && data.analysis?.orchestration"
+              v-if="tab === 'AI Analysis' && showReportStage(4) && data.analysis?.orchestration"
               class="panel detail-panel flow-panel"
+              :class="{'report-reveal-block':revealEnabled}"
             >
               <h2 class="step-title"><b>3</b>Agent가 근거를 모은 과정</h2>
               <p class="step-sub">
@@ -1676,8 +1736,8 @@ async function logout() {
             :total="filtered.length"
             @move="(step) => (current = Math.min(pages, Math.max(1, current + step)))"
           />
-          <template v-if="dash"
-            ><section class="panel" v-if="data.failures?.length">
+          <template v-if="dash && showReportStage(4)"
+            ><section class="panel" v-if="data.failures?.length" :class="{'report-reveal-block':revealEnabled}">
               <div class="panel-title"><h2>최근 실패한 검사</h2></div>
               <RouterLink
                 v-for="s in data.failures"
@@ -1694,7 +1754,7 @@ async function logout() {
             </div></template
           ></template
         >
-        <footer>정적 분석 증거와 검색된 정책 조항에 기반한 진단입니다.</footer>
+        <footer v-if="!revealEnabled || !revealingReport">정적 분석 증거와 검색된 정책 조항에 기반한 진단입니다.</footer>
       </div>
     </main>
     <Transition name="drawer">
@@ -1785,3 +1845,14 @@ async function logout() {
     </Transition>
   </div>
 </template>
+
+<style scoped>
+.analysis-status{margin-bottom:20px;padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#f8fafc;line-height:1.7}
+.analysis-status p{margin:6px 0}
+.analysis-status-warning{background:#fff7ed;border-color:#fdba74;color:#9a3412}
+.report-reveal-block{animation:report-enter .38s ease-out both}
+.content>.report-reveal{margin-bottom:18px}
+.report-narrative{margin:0 0 20px;padding:0 4px;color:#334155;font-size:15px;line-height:1.85}
+@keyframes report-enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.report-reveal-block{animation:none}}
+</style>
