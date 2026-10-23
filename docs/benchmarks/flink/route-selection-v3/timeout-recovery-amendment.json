@@ -1,0 +1,11 @@
+{
+  "reason": "The first B image request produced no content before the 20-second read timeout. Retain failure and allow exactly one transport-timeout recovery, not a patch-quality retry.",
+  "originalResult": "vision_b/vision.json",
+  "recoveryResult": "vision_b_retry/vision.json",
+  "readTimeoutSeconds": 60,
+  "wallLimitSeconds": 120,
+  "maxAdditionalCalls": 2,
+  "expectedTotalCalls": 6,
+  "inputChanged": false,
+  "failedAttemptExcludedFromPrimaryResults": false
+}

@@ -1,0 +1,12 @@
+{
+  "prompt": "Read this deployment diagram. In at most 100 words identify each named logger route, its recipient and displayed authorization, plus the private archive path. Give a concise source-inspection instruction. Do not invent vulnerabilities, code edits or test outcomes. Return plain text.",
+  "imageSha256": "59c655be4cca784a7eb2a9818530401f23e8bd92aa3858f08f711dda78009d99",
+  "model": "qwen3-vl:8b",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "think": true
+}

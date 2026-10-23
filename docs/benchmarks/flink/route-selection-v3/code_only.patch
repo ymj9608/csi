@@ -1,0 +1,11 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
+@@ -79,7 +79,7 @@
+         org.slf4j.LoggerFactory.getLogger("csi.route.a")
+                 .info("Job context: {}", graph.getJobName());
+         org.slf4j.LoggerFactory.getLogger("csi.route.b")
+-                .info("Job context: {}", graph.getJobName());
++                .info("Job context: {}", JobConfigHandler.sanitizeDiagnosticName(graph.getJobName()));
+         ResponseBody json = createJobConfigInfo(graph);
+         String path =
+                 getMessageHeaders()

@@ -1,0 +1,80 @@
+{
+  "conclusion": "No successful AI repair and no demonstrated repair-quality improvement. Vision provided correct external-recipient evidence.",
+  "models": {
+    "vision": "qwen3-vl:8b",
+    "coding": "ministral-3:8b-instruct-2512-q4_K_M"
+  },
+  "upstreamCommit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "sourceFileCount": 3,
+  "sourceBytes": 17228,
+  "injection": "Two named diagnostic logger calls inside actual JobConfigHandler.archiveJsonWithPath. The synthetic external route receives an unmasked job name containing phone numbers.",
+  "staticFindings": 0,
+  "calibration": {
+    "vulnerablePassed": 6,
+    "referencePassed": 9,
+    "total": 9,
+    "referenceIsAiGenerated": false
+  },
+  "firstRound": {
+    "directory": "docs/benchmarks/flink/deployment-boundary",
+    "codeOnly": "No patch; baseline 6/9 reused",
+    "vision": "Correct image extraction; no patch; baseline 6/9 reused"
+  },
+  "secondRound": [
+    {
+      "arm": "code_only",
+      "compilation": "PASSED",
+      "testsRun": 9,
+      "testsPassed": 6,
+      "securityPassed": 0,
+      "securityTotal": 3,
+      "accepted": false,
+      "coderSeconds": 39.558659,
+      "validationSeconds": 72.80356616600011,
+      "freshVisionSecondsThisRound": 0,
+      "historicalPerceptionSeconds": 0,
+      "coderInputTokens": 4570,
+      "coderOutputTokens": 464,
+      "inputTokensIncludingOriginalPerception": 4570,
+      "outputTokensIncludingOriginalPerception": 464
+    },
+    {
+      "arm": "architecture_vision",
+      "compilation": "FAILED",
+      "testsRun": 0,
+      "testsPassed": null,
+      "securityPassed": null,
+      "securityTotal": 3,
+      "accepted": false,
+      "coderSeconds": 32.338164,
+      "validationSeconds": 36.59494266599995,
+      "freshVisionSecondsThisRound": 0,
+      "historicalPerceptionSeconds": 28.450143374999698,
+      "coderInputTokens": 4683,
+      "coderOutputTokens": 350,
+      "inputTokensIncludingOriginalPerception": 5799,
+      "outputTokensIncludingOriginalPerception": 576
+    }
+  ],
+  "diagnosisAssessment": {
+    "codeOnly": "Identified potential raw-name logging risk but had no recipient binding evidence. Nonetheless assumed route b should be changed and route a need not be masked.",
+    "vision": "Qwen correctly extracted a=authorized internal and b=external without phone access. Coder explanation cited these facts, but still labeled its finding POTENTIAL.",
+    "uniqueVisionDetectionProven": false
+  },
+  "failureAnalysis": {
+    "codeOnly": "Checks startsWith(\"010\"); embedded numbers such as orders-01012345678 are not masked. All three security assertions fail.",
+    "vision": "Generated Java string contains invalid single-backslash d escape at line 81. Compilation fails, no tests run. Static review also shows ^ anchor would miss embedded numbers even after escaping is corrected."
+  },
+  "provenance": [
+    "First calibration setup error preserved in deployment-boundary/calibration-setup-failed. Null-builder setup corrected before any model calls; assertion unchanged.",
+    "Both first-round failed candidates retained. Same handoff clarification applied to both second-round prompts.",
+    "Second round reused exact actual Qwen response for identical image; no new perception call. Coder calls were fresh.",
+    "No candidate patch manually repaired. Same source and nine tests retained. Total: one Qwen call plus four Ministral calls."
+  ],
+  "limits": [
+    "Synthetic favorable deployment scenario on real Flink; not an upstream vulnerability claim.",
+    "Architecture adds deployment facts absent from source; not proof of an exclusively visual capability.",
+    "No text control, repeated trials, live collector/network attack, whole-cluster test, or repository-wide navigation measurement.",
+    "Compile failure is not a zero-pass test run. Reference patch is calibration only, never an AI result."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "vision_a",
+  "status": "GENERATED",
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger argument in `archiveJsonWithPath` is raw job name: `graph.getJobName()` (line 23). No explicit external binding or sanitization is applied. The helper `sanitizeDiagnosticName` exists but is unused here. Deployment context confirms this route is external and requires phone number redaction for third-party diagnostic recipients."
+    }
+  ],
+  "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08"
+}

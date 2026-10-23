@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="760">
+<rect width="1280" height="760" fill="white"/>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#264463"/></marker></defs>
+<g font-family="Arial" fill="#183654">
+<text x="30" y="40" font-size="27">Flink archive diagnostics: SYNTHETIC deployment</text>
+<rect x="20" y="70" width="1240" height="390" rx="12" fill="#edf5ff" stroke="#7393b0"/>
+<text x="40" y="106" font-size="23">INTERNAL authorized operations zone</text>
+<g fill="white" stroke="#7193b8"><rect x="45" y="150" width="300" height="95"/>
+<rect x="435" y="150" width="380" height="95"/><rect x="910" y="150" width="320" height="95"/>
+<rect x="435" y="330" width="380" height="90"/><rect x="910" y="330" width="320" height="90"/></g>
+<g text-anchor="middle" font-size="22">
+<text x="195" y="189">Flink JobManager</text><text x="195" y="221">AccessExecutionGraph</text>
+<text x="625" y="189">JobConfigHandler.java</text><text x="625" y="221">archiveJsonWithPath(graph)</text>
+<text x="1070" y="189">Private history / REST</text><text x="1070" y="221">Authorized operations users</text>
+<text x="625" y="366">Logger: csi.route.a</text><text x="625" y="397">Operations collector</text>
+<text x="1070" y="366">INTERNAL support operators</text><text x="1070" y="397">Original job-name access allowed</text>
+<rect x="435" y="545" width="380" height="90" fill="#fff1dc" stroke="#b77d32"/>
+<rect x="910" y="545" width="320" height="90" fill="#fff1dc" stroke="#b77d32"/>
+<text x="625" y="581">Logger: csi.route.b</text><text x="625" y="612">Diagnostic collector</text>
+<text x="1070" y="581">EXTERNAL support vendor</text><text x="1070" y="612">No personal-phone access</text></g>
+<text x="35" y="510" font-size="22">EXTERNAL recipient zone</text>
+<text x="35" y="695" font-size="20">Collector routing is deployed separately from the Flink Java repository.</text>
+<text x="35" y="730" font-size="20">Job names may contain phone numbers. This topology is a benchmark assumption, not an Apache claim.</text>
+</g><g fill="none" stroke="#264463" stroke-width="3" marker-end="url(#arrow)">
+<path d="M345 198H435"/><path d="M815 198H910"/>
+<path d="M625 245V330"/><path d="M815 375H910"/>
+<path d="M435 210H380V590H435"/><path d="M815 590H910"/></g>
+</svg>

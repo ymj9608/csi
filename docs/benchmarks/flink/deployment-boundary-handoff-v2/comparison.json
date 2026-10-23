@@ -1,0 +1,69 @@
+[
+  {
+    "arm": "code_only",
+    "status": "UNRESOLVED",
+    "round": 2,
+    "findings": [
+      {
+        "route": "csi.route.b",
+        "status": "POTENTIAL",
+        "evidence": "The logger argument in `archiveJsonWithPath` is used to log the raw job name via `graph.getJobName()` without any sanitization. The route identifier `csi.route.b` appears as a logger name, but its binding status is unknown from the provided sources. No explicit masking or filtering mechanism exists for phone numbers (ASCII 010 followed by eight digits) in this diagnostic output path. This violates policy when the recipient is external and requires non-phone-labeled diagnostics."
+      }
+    ],
+    "candidateSha256": "6d4b2286a4ebf72835388035740075372387603aa7c34e684138ccc9ec4c1508",
+    "verification": {
+      "cases": {
+        "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityDifferentPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityExternalPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNonPhoneNamePreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNullExecutionConfigPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityAuthorizedInternalOriginalPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityMultiplePhonesRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityExternalDiagnosticLabelPreserved": "PASSED"
+      },
+      "exitCode": 0,
+      "testsUnchanged": true,
+      "seconds": 72.80356616600011,
+      "passed": 6,
+      "failed": 3,
+      "securityPassed": 0,
+      "accepted": false
+    },
+    "patchGenerated": true,
+    "modelMs": 39558.659,
+    "inputTokens": 4570,
+    "outputTokens": 464
+  },
+  {
+    "arm": "architecture_vision",
+    "status": "UNRESOLVED",
+    "round": 2,
+    "findings": [
+      {
+        "route": "csi.route.b",
+        "status": "POTENTIAL",
+        "evidence": "Logger csi.route.b is used in `JobConfigHandler.java.archiveJsonWithPath()` to log the raw job name (`graph.getJobName()`) without phone number sanitization. The architecture context confirms this route targets an external diagnostic recipient (EXTERNAL support vendor) with no personal-phone access authorization. No explicit masking mechanism exists for this logger argument, despite the policy requiring it for third-party recipients."
+      }
+    ],
+    "candidateSha256": "33d17c16d1a1c7cdd7e9dd9d60ef5021e492eb8a7485d849f74d19637e358a47",
+    "verification": {
+      "cases": {},
+      "exitCode": 1,
+      "testsUnchanged": true,
+      "seconds": 36.59494266599995,
+      "passed": 0,
+      "failed": 0,
+      "securityPassed": 0,
+      "accepted": false
+    },
+    "patchGenerated": true,
+    "modelMs": 32338.164,
+    "inputTokens": 4683,
+    "outputTokens": 350,
+    "visionMs": 28450.143374999698,
+    "visionInputTokens": 1116,
+    "visionOutputTokens": 226
+  }
+]

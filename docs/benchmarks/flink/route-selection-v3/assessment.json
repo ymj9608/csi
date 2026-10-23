@@ -1,0 +1,92 @@
+{
+  "conclusion": "No measured vision quality or efficiency advantage. All three generated candidates are byte-identical and mask route b. Topology A passes, topology B fails even after the transport recovery.",
+  "scenario": "Real pinned Apache Flink code with two synthetic raw-job-name log calls and a shared verified sanitizer. Synthetic diagrams swap internal/external recipients; no claim about an actual Flink deployment vulnerability.",
+  "method": {
+    "vision": "qwen3-vl:8b",
+    "coding": "ministral-3:8b-instruct-2512-q4_K_M",
+    "sourceFiles": 3,
+    "codeOnlyCandidates": 1,
+    "visionCandidates": 2,
+    "actualModelRequests": 6,
+    "candidateRepairAttempts": 0,
+    "transportRetries": 1,
+    "uniqueCandidateBuilds": 1,
+    "buildSeconds": 77.03827599999977,
+    "uniqueJavaTests": 22,
+    "uniqueJavaTestsPassed": 18,
+    "codeOnlyCandidateReusedAcrossDeployments": true,
+    "sameCandidateValidationReused": true
+  },
+  "quality": {
+    "codeOnly": {
+      "a": {
+        "passed": 9,
+        "total": 9,
+        "securityPassed": 3,
+        "accepted": true
+      },
+      "b": {
+        "passed": 5,
+        "total": 9,
+        "securityPassed": 0,
+        "accepted": false
+      }
+    },
+    "codeAndVision": {
+      "a": {
+        "passed": 9,
+        "total": 9,
+        "securityPassed": 3,
+        "accepted": true
+      },
+      "bAfterTransportRetry": {
+        "passed": 5,
+        "total": 9,
+        "securityPassed": 0,
+        "accepted": false
+      }
+    },
+    "initialVisionB": "ReadTimeout before any final output; no patch generated"
+  },
+  "timingSeconds": {
+    "codeOnlyGeneration": 35.149271,
+    "visionAIncludingImage": 65.38457854100002,
+    "visionBSuccessfulAttemptIncludingImage": 57.689518165999914,
+    "visionBIncludingFailedAttempt": 77.71953870800024,
+    "note": "Measured request durations, not full workflow wall time; unloading/idle time excluded. Includes cold model load. Single sample, not stable latency estimate."
+  },
+  "tokens": {
+    "codeOnlyInput": 4711,
+    "codeOnlyOutput": 347,
+    "visionACombinedInput": 5933,
+    "visionACombinedOutput": 937,
+    "visionBSuccessfulCombinedInput": 5933,
+    "visionBSuccessfulCombinedOutput": 701,
+    "visionBFailedAttemptUsage": "Unavailable; do not treat as zero. Qwen output counters include reasoning tokens."
+  },
+  "observations": [
+    "CSI configured static scan reported zero findings on the mutated source.",
+    "Code-only model acknowledged UNKNOWN deployment binding but guessed route b; it coincidentally matches topology A.",
+    "Vision A explicitly paired each route with its recipient and produced a correct patch, identical to the code-only patch.",
+    "Vision B listed correct logger/collector names, but listed recipients separately without explicit route-recipient pairs. The coder reported missing binding and still guessed route b.",
+    "Topology B leaves phone numbers in the actual external route a and masks the authorized internal route b: three security tests and one internal functionality test fail.",
+    "All helper checks and Java compilation pass. Earlier v2 regex compilation failure was removed by giving both arms the same tested helper, not by vision."
+  ],
+  "nextChange": "Require explicit per-route logger -> recipient -> authorization -> source-call handoff records and block ungrounded edits. Validate instruction binding before the coder; do not silently supply evaluator ground truth.",
+  "limits": [
+    "Synthetic injected diagnostic calls on real Flink. Collector ownership is deliberately outside source and supplied by diagrams.",
+    "Both conditions receive a working sanitizer: evaluates where to apply protection, not ability to invent sanitization code.",
+    "Code-only input is identical across deployments. One generated candidate is evaluated under both bindings; not two independent inference trials.",
+    "Two fresh image calls and two fresh vision-informed coder calls, one per deployment. No candidate repair or discarded model results.",
+    "Missing-fact abstention is legitimate; lower patch coverage does not imply worse uncertainty calibration.",
+    "No text control; added deployment information is measured, not image-exclusive capability.",
+    "Targeted tests capture logger outputs; no real external collector, full-cluster or repository navigation test.",
+    "Earlier no-patch/compilation/security failures are retained in deployment-boundary and deployment-boundary-handoff-v2."
+  ],
+  "history": [
+    "../deployment-boundary/",
+    "../deployment-boundary-handoff-v2/",
+    "vision_b/vision.json",
+    "timeout-recovery-amendment.json"
+  ]
+}

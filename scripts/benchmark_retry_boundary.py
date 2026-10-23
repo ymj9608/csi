@@ -16,18 +16,18 @@ def setup(name,texts):
  for n,t in texts.items():(f/n).write_text(t)
  return f
 
-def vision(prompt_override=None):
+def vision(prompt_override=None, *, read_timeout_seconds=20, wall_limit_seconds=90):
  prompt='Read the diagram. In at most 100 words name the normal and failure paths and which receiver is external. Give a short coding-agent inspection instruction using the shown filenames. Do not invent code or vulnerabilities.'
  if prompt_override is not None:prompt=prompt_override
  payload={'model':'qwen3-vl:8b','stream':True,'think':True,'keep_alive':0,'options':{'num_ctx':8192,'num_predict':1800,'temperature':0,'seed':42},'messages':[{'role':'user','content':prompt,'images':[base64.b64encode((OUT/'architecture.png').read_bytes()).decode()]}]}
  write(OUT/'vision-input.json',{'prompt':prompt,'imageSha256':hashlib.sha256((OUT/'architecture.png').read_bytes()).hexdigest(),'model':payload['model'],'options':payload['options'],'think':True})
  start=time.monotonic();content='';done={};thinking=False;result={'status':'FAILED'}
  try:
-  with httpx.Client(timeout=20,trust_env=False) as api:
+  with httpx.Client(timeout=read_timeout_seconds,trust_env=False) as api:
    with api.stream('POST','http://127.0.0.1:11434/api/chat',json=payload) as resp:
     resp.raise_for_status()
     for line in resp.iter_lines():
-     if time.monotonic()-start>90:raise TimeoutError('WALL_LIMIT')
+     if time.monotonic()-start>wall_limit_seconds:raise TimeoutError('WALL_LIMIT')
      raw=json.loads(line);m=raw.get('message',{});content+=m.get('content','');thinking=thinking or bool(m.get('thinking'))
      if raw.get('done'):done=raw
   if done.get('done_reason')!='stop' or not content.strip():raise ValueError('NO_COMPLETE_FINAL')
