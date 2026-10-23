@@ -29,7 +29,7 @@ const generationBlocked=computed(()=>generationBlockedReason(props.scanStatus));
 const elapsedSeconds=computed(()=>Math.max(0,Math.floor((now.value-Date.parse(latest.value?.createdAt||''))/1000)));
 const checks=computed(()=>result.value?.verification || result.value?.lastVerification ||
   [...(result.value?.attempts||[])].reverse().find((a:any)=>a.verification)?.verification);
-const phaseNames:Record<string,string>={BASELINE:'수정 전 테스트',GENERATING:'모델 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'검증 오류를 반영한 재생성 준비'};
+const phaseNames:Record<string,string>={ARCHITECTURE_CONTEXT:'아키텍처 참고',BASELINE:'수정 전 테스트',GENERATING:'모델 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'검증 오류를 반영한 재생성 준비'};
 const errors:Record<string,string>={IMPORT_NOT_ALLOWED:'허용되지 않은 모듈 참조',UNDEFINED_GLOBAL:'필요한 import 또는 정의 누락',LEGACY_USES_NEW_HASH:'기존 계정 로그인 호환성 위반',TESTS_FAILED:'기능·보안 테스트 미통과',EVIDENCE_IDS:'근거 인용 검증 실패',MODEL_RESPONSE_FAILED:'모델 응답 처리 실패',OUTPUT_TRUNCATED:'모델 응답 길이 초과',LOGGING_CONFIG_NOT_ALLOWED:'로그 시스템 비활성화·설정 변경 금지',BASELINE_NOT_SUPPORTED:'지원하는 수정 전 코드·검증 환경과 다름',WORKER_LEASE_EXPIRED:'제한 시간 안에 Worker 결과를 받지 못했습니다',VERIFIER_UNAVAILABLE:'격리 테스트 환경에 연결할 수 없습니다',COMMIT_OR_SOURCE_UNAVAILABLE:'검사 커밋 또는 소스를 찾을 수 없습니다',LOCAL_RESULT_STORAGE_FAILED:'생성 결과를 로컬 파일에 저장하지 못했습니다',RETRIEVED_EVIDENCE_REQUIRED:'수정안을 뒷받침할 검색 근거가 없습니다',PROFILE_POLICY_MISMATCH:'현재 지원하는 정책 설정과 다릅니다',WORKER_FAILED:'Worker 실행 중 오류가 발생했습니다'};
 const evidenceIds=computed(()=>[...new Set<string>([...(result.value?.citedIds||[]),...(review.value?.changes.flatMap(change=>change.evidenceIds||[])||[])])]);
 const citedFindings=computed(()=>(props.findings||[]).filter(f=>evidenceIds.value.includes(f.id)));
@@ -99,7 +99,7 @@ function download(){
       <template v-if="latest">
         <p role="status"><strong>{{statusName}}</strong> · {{date(latest.createdAt)}}</p>
         <p v-if="latest.status==='QUEUED'">Mac에서 코딩 Worker가 연결되면 시작합니다.</p>
-        <p v-if="active" role="status">경과 {{elapsedSeconds}}초<span v-if="latest.progress?.phase"> · {{latest.progress.attempt ? `${latest.progress.attempt}차 / 최대 2차 · ` : ''}}{{phaseNames[latest.progress.phase]||latest.progress.phase}}</span></p>
+        <p v-if="active" role="status">경과 {{elapsedSeconds}}초<span v-if="latest.progress?.phase"> · {{latest.progress.attempt ? `${latest.progress.attempt}차 / 최대 2차 · ` : ''}}{{phaseNames[latest.progress.phase]||latest.progress.phase}}<template v-if="latest.progress.note"> ({{latest.progress.note}})</template></span></p>
         <p v-if="latest.status==='RUNNING'" class="coding-note">생성과 테스트를 순서대로 수행합니다. 검증 오류가 있으면 최대 한 번 보완하며, 5초마다 상태를 확인합니다.</p>
         <p v-if="latest.status==='BLOCKED'" class="coding-error">수정안 검증에 실패했습니다. {{errors[result?.failureReason] || '아래 생성 차수별 실패 원인을 확인하세요.'}} 검증을 통과한 코드만 승인할 수 있습니다.</p>
         <p v-if="latest.errorCode" class="coding-error">{{errors[latest.errorCode] || latest.errorCode}} · Worker 연결과 검사 커밋을 확인한 뒤 다시 요청할 수 있습니다.</p>
