@@ -15,3 +15,6 @@ __pycache__/
 .reference-materials/
 /docs/AI-Agent Capstone(+MCP).pdf.txt
 /docs/AI-Agent Capstone(+MCP).pdf
+vlm_eval/
+Lichu/
+.venv-slack/
