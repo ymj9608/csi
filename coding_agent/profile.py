@@ -1,6 +1,9 @@
 """The MVP deliberately supports one reviewed Lichu remediation profile."""
 PROFILE = 'lichu-signup-v1'
 TARGET = 'backend/app/core/csi_signup.py'
+# Lichu 아키텍처 다이어그램 분석 결과 기준 — TARGET이 속한 컴포넌트(Isolated CSI Lab Mode의
+# Vulnerable signup demo path, CSI 혼란용 실습 경로). 생성 단계 진행 표시용 참고 문구.
+ARCHITECTURE_NOTE = 'Isolated CSI Lab Mode → Vulnerable signup demo path 영역 참고'
 MODEL = 'ministral-3:8b-instruct-2512-q4_K_M'
 RULES = {'SEC-02', 'SEC-03', 'SEC-05'}
 FUNCTIONS = {'validate_lab_signup', 'hash_signup_password', 'verify_lab_password', 'record_signup', 'lab_version'}

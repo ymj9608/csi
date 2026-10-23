@@ -66,15 +66,19 @@ public class CodingProposals {
   return Map.of("available",true,"job",job);
  }
  @GetMapping("/internal/coding-proposals/{id}") public Object internal(@PathVariable UUID id){return db.one(SELECT+"WHERE c.id=?",id);}
- public record Progress(String leaseToken,String phase,int attempt,long elapsedMs){}
+ public record Progress(String leaseToken,String phase,int attempt,long elapsedMs,String note){}
  static void validateProgress(Progress progress){
-  if(!Set.of("BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
-     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>600000)
+  if(!Set.of("ARCHITECTURE_CONTEXT","BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
+     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>600000 ||
+     (progress.note()!=null && progress.note().length()>200))
    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid coding progress");
  }
  @PostMapping("/internal/coding-proposals/{id}/progress") @Transactional public Object progress(@PathVariable UUID id,@RequestBody Progress progress){
   validateProgress(progress);var job=leased(id,progress.leaseToken());
-  String value=db.encode(Map.of("phase",progress.phase(),"attempt",progress.attempt(),"elapsedMs",progress.elapsedMs()));
+  var fields=new LinkedHashMap<String,Object>();
+  fields.put("phase",progress.phase());fields.put("attempt",progress.attempt());fields.put("elapsedMs",progress.elapsedMs());
+  if(progress.note()!=null)fields.put("note",progress.note());
+  String value=db.encode(fields);
   db.jdbc.update("UPDATE coding_proposals SET progress=?::jsonb || jsonb_build_object('updatedAt',now()) WHERE id=?",value,id);
   events.publish((String)job.get("scanId"));return Map.of("status","RUNNING");
  }
@@ -146,7 +150,13 @@ public class CodingProposals {
   var job=db.one(SELECT+"WHERE c.id=? FOR UPDATE OF c",id);
   if(!"READY".equals(job.get("status")))throw new ResponseStatusException(HttpStatus.CONFLICT,"검증을 통과한 검토 대기 수정안만 결정할 수 있습니다.");
   db.jdbc.update("UPDATE coding_proposals SET status=?,decided_by=?,decided_at=now() WHERE id=?",decision.decision(),auth.getName(),id);
-  db.log(UUID.fromString((String)job.get("scanId")),"CODING_DECIDED","backend","INFO",decision.decision());events.publish((String)job.get("scanId"));return Map.of("status",decision.decision());
+  UUID scanId=UUID.fromString((String)job.get("scanId"));
+  db.log(scanId,"CODING_DECIDED","backend","INFO",decision.decision());
+  // 승인된 수정안을 슬랙으로 알림 — scan당 approvals 행은 1개뿐이라(UNIQUE scan_id),
+  // 그 scan이 이미 보안 검토 승인 요청을 거쳤다면 여기선 조용히 무시됨(ON CONFLICT DO NOTHING).
+  if("APPROVED".equals(decision.decision()))
+   db.jdbc.update("INSERT INTO approvals(id,scan_id,action) VALUES(?,?,'CODING_PROPOSAL_APPROVED') ON CONFLICT(scan_id) DO NOTHING",UUID.randomUUID(),scanId);
+  events.publish(scanId.toString());return Map.of("status",decision.decision());
  }
  @Scheduled(fixedDelay=30000) public void expire(){
   for(var row:db.list("UPDATE coding_proposals SET status='FAILED',error_code='WORKER_LEASE_EXPIRED',finished_at=now(),lease_token=null,lease_until=null WHERE status='RUNNING' AND lease_until<now() RETURNING scan_id"))events.publish((String)row.get("scanId"));

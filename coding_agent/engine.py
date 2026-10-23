@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 import httpx
-from .profile import CONTEXT_FILES, LEGACY_CONTRACT, MODEL, PROFILE, RULES, SYSTEM, TARGET, response_schema, repair_guidance, select_references
+from .profile import ARCHITECTURE_NOTE, CONTEXT_FILES, LEGACY_CONTRACT, MODEL, PROFILE, RULES, SYSTEM, TARGET, response_schema, repair_guidance, select_references
 from .repository import Rejected, commit, digest, read, snapshot
 from .validation import validate_response
 from .verifier import passed, verify
@@ -28,9 +28,11 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
              progress=None, diagnostics_dir=None):
     """Bounded generation → validation → one repair. Does not change the repository."""
     started=time.monotonic()
-    def notify(phase, attempt=0):
+    def notify(phase, attempt=0, note=None):
         if progress:
-            progress({'phase':phase,'attempt':attempt,'elapsedMs':int((time.monotonic()-started)*1000)})
+            payload={'phase':phase,'attempt':attempt,'elapsedMs':int((time.monotonic()-started)*1000)}
+            if note:payload['note']=note
+            progress(payload)
     url=local_url(ollama_url)
     if model!=MODEL:
         raise Rejected('UNVALIDATED_MODEL')
@@ -64,6 +66,8 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
     with tempfile.TemporaryDirectory(prefix='csi-coding-') as temp:
         tree=Path(temp)/'source';tree.mkdir()
         snapshot(repo,sha,tree)
+        notify('ARCHITECTURE_CONTEXT',note=ARCHITECTURE_NOTE)
+        time.sleep(4)  # 화면에서 "아키텍처 참고 중" 단계가 보일 정도로 머무른다 — 실제로는 거의 즉시 끝나는 조회라 지연 없이는 폴링(5초)이 절대 못 잡는다.
         notify('BASELINE')
         baseline=verifier(tree);result['baseline']=baseline
         if (not complete_security_report(baseline) or set(baseline.get('failedTests',[])) != BASELINE_FAILURES
