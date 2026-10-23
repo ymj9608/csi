@@ -44,6 +44,7 @@ import Pager from "../components/Pager.vue";
 import { buildTimeline, elapsed } from "../lib/timeline";
 import ProjectPicker from "../components/ProjectPicker.vue";
 import ArchitectureUpload from "../components/ArchitectureUpload.vue";
+import ArchitectureDiagramRegister from "../components/ArchitectureDiagramRegister.vue";
 import { ACCEPTED_TYPES, acceptable, addFolder } from "../lib/architecture";
 import { PROJECT_SCOPED, rememberProject, rememberedProject } from "../lib/project";
 const route = useRoute(),
@@ -805,6 +806,7 @@ async function logout() {
           :project="projectId"
           :project-name="data.project?.repository || selectedProject?.repository || ''"
         />
+        <ArchitectureDiagramRegister v-if="dash && dashView === 'architecture' && projectId" :project="projectId" />
         <div v-if="error && !(dash && dashView === 'architecture')" class="error" role="alert">
           {{ error }} <button @click="load()">다시 시도</button>
         </div>

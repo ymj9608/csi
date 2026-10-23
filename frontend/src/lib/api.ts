@@ -45,6 +45,16 @@ export async function api<T = any>(
 export function clearCsrf() {
   csrf = "";
 }
+// multipart/form-data uploads (e.g. 파일 업로드) can't go through api()'s JSON body —
+// this shares the same CSRF-fetch/caching so a FormData POST still carries it.
+export async function csrfToken(): Promise<string> {
+  if (!csrf) {
+    const r = await fetch("/api/auth/csrf", { credentials: "same-origin" });
+    if (!r.ok) throw Error("보안 세션을 시작할 수 없습니다.");
+    csrf = (await r.json()).token;
+  }
+  return csrf;
+}
 export const date = (value?: string) =>
   value
     ? new Date(value).toLocaleString("ko-KR", {
