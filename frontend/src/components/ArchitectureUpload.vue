@@ -8,7 +8,10 @@ import {
   FileText,
   Folder,
   FolderOpen,
+  HelpCircle,
   Network,
+  Server,
+  ShieldAlert,
   Trash2,
   X,
 } from "lucide-vue-next";
@@ -147,6 +150,8 @@ const analysis = ref<DiagramState | null>(null);
 const analysisGroups = computed(() =>
   analysis.value?.components ? groupByIsolation(analysis.value.components) : [],
 );
+// 그룹/카드에 같이 보여줄 아이콘 — 실제 서비스 vs 격리된 환경을 글자 전에 한눈에 구분하도록.
+const ISOLATION_ICON = { PRODUCTION: Server, ISOLATED: ShieldAlert, UNKNOWN: HelpCircle } as const;
 let analysisPoll: ReturnType<typeof setInterval> | undefined;
 function stopAnalysisPolling() {
   clearInterval(analysisPoll);
@@ -433,10 +438,14 @@ onBeforeUnmount(() => {
         class="isolation-group"
         :class="group.key.toLowerCase()"
       >
-        <h4>{{ group.label }} <span class="count">{{ group.items.length }}개</span></h4>
+        <h4>
+          <component :is="ISOLATION_ICON[group.key]" :size="15" />{{ group.label }}
+          <span class="count">{{ group.items.length }}개</span>
+        </h4>
         <ul class="components">
           <li v-for="(c, i) in group.items" :key="i" class="component-card">
             <div class="component-head">
+              <component :is="ISOLATION_ICON[group.key]" :size="16" class="component-icon" />
               <strong>{{ c.name }}</strong>
               <!-- 확인된(OBSERVED) 항목은 뱃지를 생략 — 불확실한 것만 눈에 띄게 둔다. -->
               <span v-if="c.state !== 'OBSERVED'" class="badge" :class="c.state.toLowerCase()">
@@ -901,11 +910,18 @@ onBeforeUnmount(() => {
 .isolation-group.production h4 {
   color: #1d4ed8;
 }
+.components {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 .architecture-analysis .component-card {
   border: 1px solid var(--line);
   border-radius: var(--r-md);
   padding: 10px 12px;
-  margin-bottom: 8px;
 }
 .isolated .component-card {
   border-left: 3px solid #d08c1d;
@@ -915,8 +931,22 @@ onBeforeUnmount(() => {
 }
 .architecture-analysis .component-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 6px;
+}
+.architecture-analysis .component-head strong {
+  flex: 1;
+  min-width: 0;
+}
+.component-icon {
+  flex-shrink: 0;
+  color: var(--ink-3);
+}
+.isolated .component-icon {
+  color: #92620a;
+}
+.production .component-icon {
+  color: #1d4ed8;
 }
 .architecture-analysis .component-card p {
   margin: 4px 0 0;
