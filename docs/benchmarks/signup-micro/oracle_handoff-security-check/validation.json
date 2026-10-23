@@ -1,0 +1,21 @@
+{
+  "exitCode": 0,
+  "seconds": 0.1710737080011313,
+  "cases": {
+    "test_function_event_preserved": "ok",
+    "test_function_legacy_signup": "ok",
+    "test_function_migration": "ok",
+    "test_function_phone_persisted": "ok",
+    "test_security_authorization": "ok",
+    "test_security_html": "ok",
+    "test_security_log_injection": "ok",
+    "test_security_mass_assignment": "ok",
+    "test_security_oversize": "ok",
+    "test_security_sql_injection": "ok",
+    "test_security_telemetry": "ok",
+    "test_security_type": "ok",
+    "test_security_unicode_digits": "ok"
+  },
+  "passed": 13,
+  "total": 13
+}

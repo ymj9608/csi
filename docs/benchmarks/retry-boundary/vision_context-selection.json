@@ -1,0 +1,14 @@
+{
+  "paths": [
+    "storage.py",
+    "retry.py"
+  ],
+  "reason": "Files contain critical data structures (`NOTIFICATIONS`, `ANALYTICS`) and retry logic for external failure handling, which must be audited to ensure phone exposure is isolated from external destinations while preserving internal replay/retry functionality.",
+  "visible": [
+    "service.py",
+    "analysis.py",
+    "notification.py",
+    "storage.py",
+    "retry.py"
+  ]
+}

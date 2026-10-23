@@ -1,0 +1,15 @@
+--- a/exporter.py
++++ b/exporter.py
+@@ -5,4 +5,11 @@
+ CONFIG = json.loads(Path('topology.json').read_text())
+ 
+ def forward(envelope):
+-    OBSERVABILITY.append({'destination': CONFIG['archive_export']['destination'], 'payload': deepcopy(envelope)})
++    OBSERVABILITY.append({
++        'destination': CONFIG['archive_export']['destination'],
++        'payload': {
++            'event': envelope['event'],
++            'error': envelope.get('error', None),
++            'attempts': envelope.get('attempts', 0)
++        }
++    })

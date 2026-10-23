@@ -50,3 +50,17 @@ def test_no_architecture_uses_code_policy_without_api_key(repo, monkeypatch):
                            vlm_chat=lambda _:pytest.fail('no diagram must not require VLM'))
     assert result['status']=='READY' and result['engineVersion']=='3'
     assert payloads[0]['keep_alive']==0 and len(checks)==2
+
+
+@pytest.mark.parametrize('reason,content,error', [
+    ('stop', '', 'VLM_EMPTY_FINAL_CONTENT'),
+    ('stop', '   ', 'VLM_EMPTY_FINAL_CONTENT'),
+    ('length', '', 'VLM_OUTPUT_INCOMPLETE'),
+])
+def test_local_adapter_distinguishes_empty_final_from_truncation(reason, content, error):
+    def handle(request):
+        return httpx.Response(200, json={'done_reason': reason,
+            'message': {'content': content}, 'prompt_eval_count': 10, 'eval_count': 20})
+    client = LocalActionsClient(transport=httpx.MockTransport(handle))
+    with pytest.raises(Rejected, match=error):
+        client({'instructions': 'rules', 'model': 'qwen3-vl:8b', 'tools': TOOLS, 'input': []})

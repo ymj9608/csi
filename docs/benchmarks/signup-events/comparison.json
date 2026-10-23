@@ -1,0 +1,46 @@
+[
+  {
+    "arm": "code_only",
+    "exitCode": 0,
+    "seconds": 0.18475662499986356,
+    "cases": {
+      "test_function_analytics": "ok",
+      "test_function_internal": "ok",
+      "test_function_isolation": "ok",
+      "test_function_legacy": "ok",
+      "test_function_persist": "ok",
+      "test_security_external": "ok",
+      "test_security_newline": "ok",
+      "test_security_oversize": "ok",
+      "test_security_type": "ok",
+      "test_security_unicode": "ok"
+    },
+    "passed": 10,
+    "total": 10,
+    "inputTokens": 552,
+    "outputTokens": 1227,
+    "modelMs": 5207.678
+  },
+  {
+    "arm": "oracle_context",
+    "exitCode": 0,
+    "seconds": 0.1856672920002893,
+    "cases": {
+      "test_function_analytics": "ok",
+      "test_function_internal": "ok",
+      "test_function_isolation": "ok",
+      "test_function_legacy": "ok",
+      "test_function_persist": "ok",
+      "test_security_external": "ok",
+      "test_security_newline": "ok",
+      "test_security_oversize": "ok",
+      "test_security_type": "ok",
+      "test_security_unicode": "ok"
+    },
+    "passed": 10,
+    "total": 10,
+    "inputTokens": 995,
+    "outputTokens": 823,
+    "modelMs": 3811.71
+  }
+]

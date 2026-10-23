@@ -1,0 +1,12 @@
+[
+  {
+    "arm": "code_only",
+    "status": "FAILED",
+    "error": "ValueError: INVALID_SCHEMA"
+  },
+  {
+    "arm": "vision_context",
+    "status": "FAILED",
+    "error": "ValueError: INVALID_SCHEMA"
+  }
+]

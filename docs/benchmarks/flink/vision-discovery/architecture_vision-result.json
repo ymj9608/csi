@@ -1,0 +1,32 @@
+{
+  "status": "PASSED",
+  "arm": "architecture_vision",
+  "changedPaths": [
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+  ],
+  "candidateSha256": "6fc9263cc700196fb2ee91bbba67dc39799eda86df4ca34a0aa14b7d8a5ad703",
+  "verification": {
+    "cases": {
+      "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#securityV1NoSerializedTokenLogging": "PASSED",
+      "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityPreservesByteCountLog": "PASSED",
+      "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityForwardsTokenBytes": "PASSED",
+      "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testDelegationTokenDisabled": "PASSED",
+      "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testAllReceiversLoaded": "PASSED",
+      "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#oneReceiverThrowsExceptionMustFailFast": "PASSED",
+      "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#configurationIsNullMustFailFast": "PASSED"
+    },
+    "exitCode": 0,
+    "testsUnchanged": true,
+    "seconds": 88.48240616600015,
+    "passed": 7,
+    "failed": 0,
+    "securityPassed": true,
+    "accepted": true
+  },
+  "modelMs": 40638.954,
+  "inputTokens": 4038,
+  "outputTokens": 381,
+  "visionMs": 25646.35249999992,
+  "visionInputTokens": 1138,
+  "visionOutputTokens": 337
+}

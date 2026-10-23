@@ -1,0 +1,5 @@
+Risk evidence from source:
+- `topology.json` allows phones in internal zones (`member_store`, `deadletter`) but not external (`archive_export`).
+- Input contract enforces `envelope` keys: `event`, `error`, `attempts`.
+- No validation or network changes required; only masking private data.
+- Original retry/replay logic preserved via unchanged `deadletter.py` calls.

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680">
+<rect width="1200" height="680" fill="white"/>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#26354d"/></marker></defs>
+<g font-family="Arial" fill="#172940"><text x="40" y="40" font-size="26">Member service — deployment routes</text>
+<rect x="25" y="65" width="770" height="475" rx="15" fill="#edf5ff" stroke="#aac0d8"/>
+<text x="45" y="98" font-size="21">INTERNAL: member store + replay archive</text>
+<g fill="white" stroke="#54739b"><rect x="45" y="230" width="135" height="70"/>
+<rect x="235" y="125" width="200" height="60"/><rect x="235" y="245" width="200" height="60"/>
+<rect x="235" y="390" width="185" height="65"/><rect x="470" y="390" width="150" height="65"/>
+<rect x="675" y="125" width="95" height="60"/><rect x="675" y="245" width="95" height="60"/>
+<rect x="675" y="390" width="95" height="65"/>
+<rect x="875" y="125" width="290" height="60" fill="#edf5ff"/>
+<rect x="875" y="245" width="290" height="60" fill="#fff4e5"/>
+<rect x="875" y="390" width="290" height="65" fill="#fff4e5"/></g>
+<g font-size="20" text-anchor="middle"><text x="112" y="272">app.py</text>
+<text x="335" y="161">notification.py</text><text x="335" y="281">analytics.py</text>
+<text x="327" y="417">recovery.py</text><text x="327" y="443" font-size="16">replay archive</text>
+<text x="545" y="429">relay.py</text><text x="722" y="161">r1</text><text x="722" y="281">r2</text><text x="722" y="429">r3</text>
+<text x="1020" y="161">INTERNAL SMS worker</text>
+<text x="1020" y="281">EXTERNAL metrics vendor</text>
+<text x="1020" y="429">EXTERNAL support vendor</text></g>
+<text x="635" y="115" font-size="17">broker.py channels</text>
+<text x="45" y="580" font-size="20">Subscribers are configured by a separate operations system outside this repository.</text>
+<text x="45" y="620" font-size="20">Blue: internal components. Orange: external recipients.</text>
+</g><g fill="none" stroke="#26354d" stroke-width="3" marker-end="url(#a)">
+<path d="M180 250H205V155H235"/><path d="M180 275H235"/><path d="M180 290H205V420H235"/>
+<path d="M435 155H675"/><path d="M435 275H675"/><path d="M420 420H470"/><path d="M620 420H675"/>
+<path d="M770 155H875"/><path d="M770 275H875"/><path d="M770 420H875"/></g>
+<g font-family="Arial" font-size="17" fill="#172940"><text x="55" y="380">delivery failure</text><text x="450" y="145">normal</text><text x="450" y="265">metrics</text></g></svg>

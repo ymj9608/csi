@@ -1,0 +1,17 @@
+--- a/exporter.py
++++ b/exporter.py
+@@ -5,4 +5,13 @@
+ CONFIG = json.loads(Path('topology.json').read_text())
+ 
+ def forward(envelope):
+-    OBSERVABILITY.append({'destination': CONFIG['archive_export']['destination'], 'payload': deepcopy(envelope)})
++    # Filter out phone data for external destinations
++    filtered_payload = {
++        'event': envelope['payload']['event'],
++        'error': envelope.get('error'),
++        'attempts': envelope.get('attempts')
++    }
++    OBSERVABILITY.append({
++        'destination': CONFIG['archive_export']['destination'], 
++        'payload': filtered_payload
++    })

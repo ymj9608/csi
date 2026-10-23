@@ -1,0 +1,12 @@
+[
+  {
+    "attempt": 1,
+    "status": "FAILED",
+    "error": "ScopeError: OUTSIDE_FUNCTION_SCOPE"
+  },
+  {
+    "attempt": 2,
+    "status": "FAILED",
+    "error": "ScopeError: OUTSIDE_FUNCTION_SCOPE"
+  }
+]

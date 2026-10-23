@@ -1,0 +1,33 @@
+{
+  "name": "code_only",
+  "provider": "openai",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T06:23:59Z",
+  "inputSha256": "279df9aad514495e0d08c1fa34c51dbcf136a91dfb038f310ed681dd4f61f0be",
+  "inputTokens": 552,
+  "outputTokens": 1227,
+  "httpStatus": 200,
+  "usage": {
+    "input_tokens": 552,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1227,
+    "output_tokens_details": {
+      "reasoning_tokens": 737
+    },
+    "total_tokens": 1779
+  },
+  "returnedModel": "gpt-5.4-mini-2026-03-17",
+  "answerText": "{\"signup.py\":\"from repository import save\\nfrom events import member_created\\nfrom dispatcher import publish\\n\\n\\ndef _validate_phone(phone):\\n    if phone is None:\\n        return None\\n    if not isinstance(phone, str) or len(phone) != 11 or not phone.startswith('010') or not phone[3:].isdigit():\\n        raise ValueError('invalid phone')\\n    return phone\\n\\n\\ndef signup(payload):\\n    phone = _validate_phone(payload.get('phone'))\\n    member = {'name': payload['name']}\\n    if phone is not None:\\n        member['phone'] = phone\\n    member = save(member)\\n    publish(member_created(member))\\n    return {'id': member['id']}\\n\",\"events.py\":\"def member_created(member):\\n    return {'type': 'member_created', 'member': dict(member)}\\n\",\"dispatcher.py\":\"import json\\nfrom copy import deepcopy\\nfrom pathlib import Path\\n\\nfrom adapters import deliver\\n\\nROUTES = json.loads(Path('topology.json').read_text())['subscriptions']\\n\\n\\ndef _redact_phone(value):\\n    if isinstance(value, dict):\\n        return {k: _redact_phone(v) for k, v in value.items() if k != 'phone'}\\n    if isinstance(value, list):\\n        return [_redact_phone(v) for v in value]\\n    if isinstance(value, tuple):\\n        return tuple(_redact_phone(v) for v in value)\\n    return value\\n\\n\\ndef publish(event):\\n    for route in ROUTES:\\n        payload = deepcopy(event)\\n        if not route.get('phoneAllowed', False):\\n            payload = _redact_phone(payload)\\n        deliver(route['destination'], payload)\\n\",\"risk\":\"Exposure path: signup.py now stores the submitted phone in the member record before dispatch; dispatcher.py previously forwarded the same event to every route, which would have sent that raw phone to topology.json's external analytics subscription via adapters.deliver(). The new dispatcher redacts any 'phone' key recursively for routes without phoneAllowed, while preserving raw phone for the internal notification route. Invalid phone input is rejected in signup.py with ValueError before save() or publish().\"}",
+  "answer": {
+    "signup.py": "from repository import save\nfrom events import member_created\nfrom dispatcher import publish\n\n\ndef _validate_phone(phone):\n    if phone is None:\n        return None\n    if not isinstance(phone, str) or len(phone) != 11 or not phone.startswith('010') or not phone[3:].isdigit():\n        raise ValueError('invalid phone')\n    return phone\n\n\ndef signup(payload):\n    phone = _validate_phone(payload.get('phone'))\n    member = {'name': payload['name']}\n    if phone is not None:\n        member['phone'] = phone\n    member = save(member)\n    publish(member_created(member))\n    return {'id': member['id']}\n",
+    "events.py": "def member_created(member):\n    return {'type': 'member_created', 'member': dict(member)}\n",
+    "dispatcher.py": "import json\nfrom copy import deepcopy\nfrom pathlib import Path\n\nfrom adapters import deliver\n\nROUTES = json.loads(Path('topology.json').read_text())['subscriptions']\n\n\ndef _redact_phone(value):\n    if isinstance(value, dict):\n        return {k: _redact_phone(v) for k, v in value.items() if k != 'phone'}\n    if isinstance(value, list):\n        return [_redact_phone(v) for v in value]\n    if isinstance(value, tuple):\n        return tuple(_redact_phone(v) for v in value)\n    return value\n\n\ndef publish(event):\n    for route in ROUTES:\n        payload = deepcopy(event)\n        if not route.get('phoneAllowed', False):\n            payload = _redact_phone(payload)\n        deliver(route['destination'], payload)\n",
+    "risk": "Exposure path: signup.py now stores the submitted phone in the member record before dispatch; dispatcher.py previously forwarded the same event to every route, which would have sent that raw phone to topology.json's external analytics subscription via adapters.deliver(). The new dispatcher redacts any 'phone' key recursively for routes without phoneAllowed, while preserving raw phone for the internal notification route. Invalid phone input is rejected in signup.py with ValueError before save() or publish()."
+  },
+  "wallMs": 5207.678,
+  "finishedAtUtc": "2026-10-23T06:24:04Z"
+}

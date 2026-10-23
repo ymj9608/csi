@@ -1,0 +1,23 @@
+--- a/service.py
++++ b/service.py
+@@ -9,7 +9,7 @@
+     MEMBERS[uid] = event
+     send_metrics(event)
+     try:
+-        notify(event, fail)
++        notify(deepcopy(event), fail)
+     except RuntimeError:
+-        schedule(event, 'notification_unavailable')
++        schedule(deepcopy(event), 'notification_unavailable')
+     return uid
+--- a/retry.py
++++ b/retry.py
+@@ -10,7 +10,7 @@
+     while RETRY:
+         item = RETRY.pop(0)
+         try:
+-            notify(item['event'], fail)
++            notify(deepcopy(item['event']), fail)
+         except RuntimeError:
+             item['attempts'] += 1
+             if item['attempts'] < 2:

@@ -104,6 +104,25 @@ def test_failed_verification_is_bounded_and_never_publishable(repo):
     assert len(result['attempts'])==2
     assert all(a['error']=='TESTS_FAILED' for a in result['attempts'])
 
+def test_actual_caller_contract_reaches_coder_without_architecture(repo):
+    caller = repo / 'backend/app/services/hub.py'
+    caller.write_text('from app.core.csi_signup import record_signup as record\n'
+                      'def signup(password, email):\n    record(password=password, email=email)\n')
+    git(repo, 'add', str(caller))
+    git(repo, '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-qm', 'caller')
+    requests = []
+    def model(payload):
+        requests.append(payload)
+        return chat(response())
+    result = engine.generate(repo, context(repo), chat=model, verifier=lambda _: report(bool(requests)))
+    assert result['status'] == 'READY'
+    packet = json.loads(requests[0]['messages'][1]['content'])
+    contract = next(c for c in packet['sourceCallContracts'] if c['function'] == 'record_signup')
+    call = contract['calls'][0]
+    assert call['path'] == 'backend/app/services/hub.py'
+    assert call['arguments']['password']['expression'] == 'password'
+    assert call['arguments']['password']['kind'] == 'unknown'
+
 def test_invalid_first_response_repaired_once(repo):
     calls=[];checks=[]
     def model(payload):

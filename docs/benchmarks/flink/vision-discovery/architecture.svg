@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="740">
+<rect width="1200" height="740" fill="white"/><defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#27445e"/></marker></defs>
+<g font-family="Arial" fill="#16314e"><text x="30" y="38" font-size="25">Flink: synthetic deployment overlay — token delivery and diagnostics</text>
+<rect x="20" y="65" width="1160" height="475" rx="12" fill="#edf5ff" stroke="#6b8aaa"/>
+<text x="40" y="95" font-size="19">INTERNAL credential trust boundary</text>
+<g fill="white" stroke="#537ca8"><rect x="40" y="120" width="250" height="80"/><rect x="370" y="120" width="350" height="80"/><rect x="815" y="120" width="330" height="80"/>
+<rect x="510" y="285" width="600" height="80"/><rect x="40" y="285" width="380" height="80"/>
+<rect x="40" y="420" width="540" height="85"/><rect x="730" y="420" width="380" height="85"/></g>
+<g text-anchor="middle" font-size="20"><text x="165" y="150">Credential providers</text><text x="165" y="180">S3 / other services</text>
+<text x="545" y="150">JobManager</text><text x="545" y="180">DelegationTokenContainer</text>
+<text x="980" y="150">TaskManager / TaskExecutor</text><text x="980" y="180">receives serialized data</text>
+<text x="810" y="320">DelegationTokenReceiverRepository</text><text x="810" y="348">deserialize and route per service</text>
+<text x="230" y="320">DelegationTokenReceiver plugins</text><text x="230" y="348">receive service-specific bytes</text>
+<text x="310" y="451">AbstractS3DelegationTokenReceiver</text><text x="310" y="482">session credentials → S3 filesystem</text>
+<text x="920" y="451">Diagnostic logs</text><text x="920" y="482">JobManager / TaskManager</text>
+<rect x="580" y="585" width="560" height="75" fill="#fff0dc" stroke="#ad7738"/>
+<text x="860" y="616">EXTERNAL third-party support collector</text><text x="860" y="643">needs event metadata and sizes, not credentials</text></g>
+<text x="30" y="700" font-size="17">Research scenario only: external log forwarding is a synthetic deployment assumption, not an upstream claim.</text>
+</g><g stroke="#27445e" stroke-width="3" fill="none" marker-end="url(#a)"><path d="M290 160H370"/><path d="M720 160H815"/><path d="M980 200V285"/>
+<path d="M510 325H420"/><path d="M230 365V420"/><path d="M920 365V420"/><path d="M920 505V585"/></g></svg>

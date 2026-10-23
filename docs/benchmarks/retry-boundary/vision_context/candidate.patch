@@ -1,0 +1,41 @@
+--- a/notification.py
++++ b/notification.py
+@@ -1,7 +1,11 @@
+ from copy import deepcopy
+-from storage import NOTIFICATIONS
++from storage import NOTIFICATIONS, ARCHIVE
+ 
+ def notify(event, fail=False):
+     if fail:
+         raise RuntimeError('notification_unavailable')
++    # External exposure: Copy event to ARCHIVE for observability (external)
++    archived_event = deepcopy(event)
++    archived_event['kind'] = 'archived'
++    ARCHIVE.append(archived_event)
+     NOTIFICATIONS.append(deepcopy(event))
+--- a/retry.py
++++ b/retry.py
+@@ -1,10 +1,11 @@
+ from copy import deepcopy
+-from storage import RETRY
+-from notification import notify
+-from deadletter import archive
++from storage import RETRY, ARCHIVE
+ 
+ def schedule(event, error):
+-    RETRY.append({'event': deepcopy(event), 'error': error, 'attempts': 0})
++    # External exposure: Copy event to ARCHIVE for observability (external)
++    archived_event = {'event': deepcopy(event), 'error': error, 'attempts': 0}
++    ARCHIVE.append({'event': deepcopy(archived_event['event']), 'kind': 'retry_archive', 'error': error})
++    RETRY.append(archived_event)
+ 
+ def drain(fail=False):
+     while RETRY:
+@@ -16,4 +17,6 @@
+             if item['attempts'] < 2:
+                 RETRY.append(item)
+             else:
+-                archive(item)
++                # External exposure: Archive failed retry event (external)
++                archived_event = {'event': deepcopy(item['event']), 'kind': 'failed_retry', 'error': 'notification_unavailable'}
++                ARCHIVE.append(archived_event)

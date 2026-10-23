@@ -62,6 +62,9 @@ def test_vlm_drives_reads_coder_verifier_and_final_review(repo):
     assert 'sourceFiles' not in vlm[0]['input'][0]['content'][0]['text']
     assert 'PRIVATE_FIXTURE' not in json.dumps(vlm + coder)
     assert coder[0]['messages'][-1]['content'].endswith(TEXT)
+    coder_input = json.loads(coder[0]['messages'][1]['content'])
+    assert 'sourceCallContracts' in coder_input
+    assert 'Use source call contracts before architecture prose' in coder[0]['messages'][0]['content']
     handoff = result['handoff']
     assert handoff['metrics']['inputTokens'] == 600 and handoff['metrics']['outputTokens'] == 300
     assert handoff['metrics']['reasoningTokens'] == 60

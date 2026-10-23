@@ -15,6 +15,7 @@ from .reporting import build_review, SCOPE
 from .orchestrator import run as orchestrate
 from .executor import CandidateExecutor
 from .openai_vlm import model_name, provider_name
+from .call_contract import source_call_contracts, validate_call_contracts, CONTRACT_RULES
 
 def patch(before, after):
     lines=difflib.unified_diff(before.splitlines(True),after.splitlines(True),
@@ -57,8 +58,9 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
                          'excerpt':r['content'][:1200]} for r in select_references(refs)],
           'source':sources[TARGET],'securitySource':sources[CONTEXT_FILES[1]],'legacyVerificationContract':LEGACY_CONTRACT,
           'callerContract':'Lab signup calls validate_lab_signup, hash_signup_password, record_signup(password,email). The DTO rejects passwords over 72 UTF-8 bytes. Existing test expects after-fix version to use bcrypt $2b$12$ and not log password/email. Preserve legacy lab account verification. No production or legal compliance claim.'}
+    user['sourceCallContracts']=source_call_contracts(sources,TARGET)
     allowed_refs={r['id'] for r in user['references']}
-    messages=[{'role':'system','content':SYSTEM},{'role':'user','content':json.dumps(user,ensure_ascii=False)}]
+    messages=[{'role':'system','content':SYSTEM+'\n'+CONTRACT_RULES},{'role':'user','content':json.dumps(user,ensure_ascii=False)}]
     attempts=[]
     result={'schemaVersion':1,'profile':PROFILE,'repository':context['repository'],'commitSha':sha,
             'model':model,'engineVersion':'3','findingIds':[f['id'] for f in findings],'referenceIds':sorted(allowed_refs),
@@ -84,7 +86,7 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
                 raise Rejected('VLM_MODEL_MISMATCH')
             if context.get('vlmProvider',provider_name()) != provider_name():
                 raise Rejected('VLM_PROVIDER_MISMATCH')
-            packet={key:user[key] for key in ('profile','commitSha','policy','findings','references','callerContract')}
+            packet={key:user[key] for key in ('profile','commitSha','policy','findings','references','callerContract','sourceCallContracts')}
             packet['previousAnalysis']=[{'findingId':f['id'],'analysis':{
                 k:v for k,v in f.get('analysis',{}).items() if k!='references'}} for f in findings]
             result['engineVersion']='4'
@@ -118,6 +120,7 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
                 notify('VALIDATING',number)
                 value=json.loads(text)
                 after=validate_response(value,before,{f['id'] for f in findings},allowed_refs)
+                validate_call_contracts(after,user['sourceCallContracts'])
                 if after==before:raise Rejected('NO_CHANGE')
                 (tree/TARGET).write_text(after)
                 notify('VERIFYING',number)

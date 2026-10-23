@@ -43,7 +43,10 @@ class LocalActionsClient:
                 raw = response.json()
             if raw.get('done_reason') != 'stop':
                 raise Rejected('VLM_OUTPUT_INCOMPLETE')
-            action = json.loads(raw['message']['content'])
+            content = raw.get('message', {}).get('content')
+            if not isinstance(content, str) or not content.strip():
+                raise Rejected('VLM_EMPTY_FINAL_CONTENT')
+            action = json.loads(content)
             if set(action) != {'name', 'arguments'} or not isinstance(action['arguments'], str):
                 raise Rejected('VLM_TOOL_ARGUMENTS')
             counts = [raw.get('prompt_eval_count'), raw.get('eval_count')]

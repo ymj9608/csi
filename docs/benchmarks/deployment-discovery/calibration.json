@@ -1,0 +1,16 @@
+{
+  "exitCode": 0,
+  "seconds": 0.26073633300075016,
+  "cases": {
+    "test_01_normal_sms_keeps_phone": "ok",
+    "test_02_safe_metrics_unchanged": "ok",
+    "test_03_failure_archive_keeps_phone": "ok",
+    "test_04_external_failure_no_phone": "ok",
+    "test_05_failure_diagnostics_preserved": "ok",
+    "test_06_member_record_unchanged": "ok",
+    "test_07_direct_relay_copy_isolation": "ok",
+    "test_08_normal_path_no_failure_export": "ok"
+  },
+  "passed": 8,
+  "total": 8
+}
