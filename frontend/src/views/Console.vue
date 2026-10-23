@@ -140,13 +140,11 @@ const data = ref<any>({}),
   defaultBranch = ref("develop");
 const reportReveal = useReportReveal(4);
 const { visibleStage, active: revealingReport, reducedMotion } = reportReveal;
+// 저장된 분석을 순서대로 펼치는 연출은 위험 항목 상세에서만 씁니다. 프로젝트 화면은 모든 내용을 바로 보여 줍니다.
 const revealEnabled = computed(() =>
-  (dash.value && !!projectId.value && Number(data.value.completedScans) > 0) ||
-  (findingsPage.value && !!id.value && data.value.scanStatus === 'COMPLETED' && !!data.value.analysis),
+  findingsPage.value && !!id.value && data.value.scanStatus === 'COMPLETED' && !!data.value.analysis,
 );
-const revealLabels = computed(() => dash.value
-  ? ['위험 요약', '위험 추이와 분포', '진단 범위', '검토할 항목']
-  : ['코드에서 확인한 사실', '잠재 위험 해석', '근거 검토와 불확실성', '수집 과정과 다음 조치']);
+const revealLabels = ['코드에서 확인한 사실', '잠재 위험 해석', '근거 검토와 불확실성', '수집 과정과 다음 조치'];
 const dashboardNarrative = computed(() => Number(data.value.openFindings) > 0
   ? `최근 완료 검사 기준으로 미해결 위험 항목이 ${Number(data.value.openFindings)}건 있습니다. 치명·높음 ${Number(data.value.criticalHigh) || 0}건을 포함해 아래의 근거와 검토할 항목을 확인하세요.`
   : '최근 완료 검사에서 미해결 위험 항목은 0건입니다. 검사 범위와 실행 기록을 함께 확인하세요.');
@@ -533,7 +531,7 @@ async function load(quiet = false) {
     if (key === request) {
       loading.value = false;
       if (!error.value && revealEnabled.value)
-        reportReveal.start(dash.value ? 'dashboard:' + projectId.value : 'finding:' + id.value);
+        reportReveal.start('finding:' + id.value);
     }
   }
 }
@@ -812,11 +810,11 @@ async function logout() {
           <div v-for="n in 6" :key="n" class="skeleton" />
         </div>
         <template v-else-if="!error"
-          ><ReportReveal v-if="revealEnabled && (dash ? dashStatus : tab === 'AI Analysis')"
+          ><ReportReveal v-if="revealEnabled && tab === 'AI Analysis'"
               :stage="visibleStage" :total="4" :active="revealingReport" :labels="revealLabels"
               @skip="reportReveal.showAll" @replay="reportReveal.replay" />
-          <p v-if="dashStatus && revealEnabled && showReportStage(1)" class="report-narrative report-reveal-block">
-            <ReportText :text="dashboardNarrative" :animate="revealingReport && !reducedMotion" />
+          <p v-if="dashStatus && projectId && Number(data.completedScans) > 0" class="report-narrative">
+            {{ dashboardNarrative }}
           </p>
           <template v-if="dashStatus"
             ><div v-if="showReportStage(1)" class="metrics" :class="{'report-reveal-block':revealEnabled}" data-report-stage="1">

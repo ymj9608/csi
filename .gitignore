@@ -15,3 +15,6 @@ __pycache__/
 .reference-materials/
 /docs/AI-Agent Capstone(+MCP).pdf.txt
 /docs/AI-Agent Capstone(+MCP).pdf
+
+# Screenshots written by local Playwright runs.
+frontend/test-results/
