@@ -1,4 +1,4 @@
-# Lichu 로컬 코딩 Agent
+# VLM 총괄 · Lichu 코딩 Agent
 
 `ai/coding-agent` 브랜치는 보안 리뷰에 **수정 코드 생성 → 격리 검증 → 관리자 승인 → 새 로컬 브랜치에 반영 준비**를 추가합니다. 모델은 이 Mac(Apple M5, 16GB)에서 비교한 후보 중 전체 코드와 설명을 함께 생성하는 과제에 가장 적합했던 `ministral-3:8b-instruct-2512-q4_K_M`입니다. 전체 오픈소스 모델의 최고 성능을 의미하지 않습니다. 파인튜닝은 사용하지 않습니다.
 
@@ -11,33 +11,58 @@
 - cost 12는 현재 **가상 실습 정책** 값입니다. 이 기능으로 개인정보보호법 준수나 전체 애플리케이션 보안을 인증하지 않습니다.
 - 검증된 취약 실습 baseline에서 시작하는 프로필입니다. 다른 파일, 이미 보완한 코드, 다른 정책 비용, 예상과 다른 기존 테스트 상태는 차단합니다. 범용 저장소 자동 수정 기능은 아닙니다.
 
-## 처리 흐름
+## VLM 총괄 경로 (vlm-orchestrator-v1)
+
+기본 총괄 모델은 OpenAI Responses API의 `gpt-5.4-mini-2026-03-17`입니다. `CSI_VLM_PROVIDER=ollama`와 `CSI_VLM_MODEL=qwen3-vl:8b`로 로컬 VLM도 선택할 수 있습니다. VLM이 원본 이미지·위험 분석·정책을 읽고 **조회 → 수정 위임 → 검증 요청 → 재판단**의 다음 행동을 선택합니다. 로컬 `Ministral 3 8B`는 VLM이 요청할 때 코드를 생성하는 하위 실행자입니다. 기존 보안 분석 LangGraph와는 별도의 도구 호출 루프입니다.
 
 ```mermaid
-sequenceDiagram
-    participant Review as 기존 CSI 리뷰 Agent
-    participant API as CSI 백엔드 / PostgreSQL
-    participant Mac as Mac Coding Worker
-    participant Ollama as 로컬 Ollama
-    participant Verify as 격리 Docker
-    participant Admin as 관리자
-    Review->>API: 검사 결과와 문서 근거 저장
-    Admin->>API: 위험 항목 분석 확인 후 수정안 생성 요청
-    Note over API: 해당 검사에 수정 작업 QUEUED
-    Mac->>API: 허용된 저장소 작업 claim
-    API-->>Mac: 검사 커밋·정책·탐지·문서 근거·10분 lease
-    Mac->>Verify: 해당 Git 커밋의 수정 전 테스트
-    Mac->>Ollama: 제한한 소스와 계약·근거
-    Ollama-->>Mac: JSON 수정안·이유·근거 ID
-    Mac->>Verify: 범위/구문/근거 확인 후 수정 후 테스트
-    Mac->>API: READY 또는 BLOCKED 및 검증 결과
-    Admin->>API: diff와 전후 결과 검토 후 승인/거절
-    Note over Mac: 승인된 ID로 명시적 CLI 실행 시 새 worktree 준비
+flowchart TD
+    A[검사 커밋·정책·위험·연결 이미지 고정] --> B[서버가 수정 전 테스트 확인]
+    B --> V[OpenAI VLM: 다음 작업 결정]
+    V --> R[코드 경로·검색·소스·정책 근거 조회]
+    R --> V
+    V --> C[자연어 지시 → 로컬 Ministral 코드 생성]
+    C --> G[서버 범위·구문·근거 검사]
+    G --> V
+    V --> T[현재 후보의 고정 Docker 테스트]
+    T --> V
+    V --> F[검증 결과 검토 완료 요청]
+    F --> H{현재 후보 검증 통과?}
+    H -->|예| U[READY: 관리자 승인·거절]
+    H -->|아니오| V
+    V --> X[근거 부족·한도 초과: BLOCKED]
 ```
 
-기존 LangGraph의 보안 분석·승인 후 내부 검토 이슈 생성과는 별도입니다. 코딩 Worker는 Python의 제한된 생성·검증 루프이며 최대 2번 생성합니다. LLM이 명령을 선택해 실행하는 범용 shell Agent가 아닙니다.
+| VLM 도구 | 서버가 허용하는 동작 |
+|---|---|
+| `list_code_paths` | 고정 Git 커밋의 허용된 애플리케이션 경로 목록. 200개 초과 시 prefix로 좁혀 조회 |
+| `search_code` | 해당 코드에서 문자열 검색. 최대 30개 일치, 2 MB/8초 검색 한도를 만나면 `truncated` 명시 |
+| `read_code` | 선택한 실제 파일의 최대 160줄/12 KB 조회. 미커밋 파일·심볼릭 링크·`.env` 제외 |
+| `get_policy_evidence` | 해당 검사에서 확보한 RAG 스냅샷 중 선택한 ID의 근거 조회. 새로운 법률 검색은 하지 않음 |
+| `delegate_coding` | 근거를 인용한 자연어 지시문을 Ministral에 전달. 코드 후보와 diff/정적 검증 오류 반환 |
+| `run_verification` | 현재 후보에 고정된 격리 테스트 실행. 테스트 명령을 모델이 바꿀 수 없음 |
+| `finish_review` | 현재 후보가 검증을 통과한 경우에만 관리자 검토용 READY 제출 |
+| `block` | 판단 보류 사유를 남기고 적용 가능한 패치 없이 종료 |
 
-전체 저장소와 추론은 Mac에 두며, 서버는 작업 상태와 **추천 파일의 전체 내용·diff·설명·검증 요약**을 저장합니다. 일반 분석 근거의 마스킹과 달리 추천 코드에는 소스가 포함됩니다. 현재 허용된 합성 실습 파일을 대상으로만 운영해야 합니다. `.env`, Git 메타데이터, 미커밋 파일은 모델 입력·테스트 스냅샷에 복사하지 않습니다.
+VLM에 초기 전체 소스는 보내지 않습니다. 이미지와 검사 맥락·근거 목록을 먼저 보내고 VLM이 선택한 코드 범위와 정책 발췌를 추가로 전달합니다. 코딩 모델에는 원본 대상·인증 코드·기존 검증 계약도 독립적으로 제공하여 VLM의 잘못된 설명이 계약을 덮어쓰지 못하게 합니다. 중간 아키텍처 그래프 JSON을 생성하지 않습니다. 수정 지시 본문은 자연어이고, 도구 이름·인수·실행 결과는 검증 가능한 JSON 프로토콜입니다.
+
+VLM은 생성 실패·정적 검사 오류·실행 테스트 결과를 받아 추가 조회, 재수정 또는 보류를 선택합니다. 첫 후보가 통과하지 않았다고 코드가 자동으로 다음 생성을 실행하지 않습니다. VLM이 두 번째 위임을 명시적으로 선택해야 합니다. 후보를 바꾸면 이전 테스트 통과 기록은 무효화되며 새 검증이 필요합니다.
+
+서버 한도는 최대 14 VLM 턴, 코딩 위임 2회, 총괄 루프 540초(진행 중인 호출은 별도 timeout 적용), 누적 토큰 사전 추정 및 실제 usage 120,000입니다. API 호출 timeout은 60초이고 자동 HTTP 재시도는 없습니다. API 입력에는 이미지 토큰도 포함되므로 이 토큰 한도는 정확한 금액 상한을 보장하지 않습니다. 한도를 넘거나 API가 실패하면 BLOCKED로 끝내며 다른 모델로 조용히 대체하지 않습니다. 코드 경로가 5,000개를 넘는 저장소도 명시적으로 차단합니다.
+
+수정 범위는 여전히 Lichu 실습 파일 하나입니다. VLM의 관련 코드 검색은 추가됐지만 범용 다중 파일 수정이나 임의 shell 실행은 제공하지 않습니다. 이미지·문서 속 명령은 신뢰하지 않으며, VLM도 관리자 승인·원본 반영 조건을 해제할 수 없습니다.
+
+## 이미지 연결·기록·데이터 경계
+
+아키텍처는 선택 사항입니다. 사용할 경우 프로젝트 아키텍처에서 이미지를 열고 **코딩 Agent에 연결**합니다. 원본 PNG/JPEG(5 MiB, 16 MP, 각 변 8192 px 이하)를 서버에 등록하고 선택합니다. 새 수정안의 `architecture_id`에 해당 이미지 버전을 고정하므로 이후 이미지 교체가 이미 등록된 작업을 바꾸지 않습니다. 명시된 이미지 기준 커밋이 검사와 다르면 차단합니다. UI 업로드의 기준 커밋은 UNKNOWN으로 표시하며 일치를 가정하지 않습니다.
+
+OpenAI 제공자를 선택하면 원본 이미지, 정책·위험 분석, VLM이 조회한 소스 범위, 코딩 모델의 후보 diff와 테스트 요약이 전송됩니다. 전체 저장소를 한 번에 업로드하지 않습니다. `store:false`로 요청하고 stateless 대화에 필요한 암호화된 reasoning 항목만 메모리에서 다음 호출로 전달합니다. 추론 내용·암호화 항목·API 키는 화면과 결과 로그에 저장하지 않습니다. `store:false`가 모든 제공자 보관 정책을 해제한다는 뜻은 아닙니다.
+
+`result.handoff`에는 공급자/모델, 이미지 SHA, 커밋, 실제 도구 순서, 위임별 자연어 지시문, 읽은 경로, 근거 ID, 총괄 결론과 API 토큰·시간이 기록됩니다. **VLM 총괄 작업 기록**에서 볼 수 있습니다. `wallDurationMs`는 코딩·검증을 포함한 총괄 구간이며 `apiDurationMs`는 선택한 VLM 제공자의 호출 시간만입니다. 출력 토큰에는 reasoning 토큰이 포함됩니다. 실패가 코드 생성 전 발생했다면 지시문과 후보가 없어도 BLOCKED 결과를 저장합니다.
+
+기존 `vlm-direct-v1` Qwen 결과와 비교 실험 로그는 과거 기록으로 보존합니다. `coding_agent/handoff.py`의 단발성 Qwen 함수는 과거 실험용이며 새 이미지 연결 작업에서 호출하지 않습니다. 별도 `architecture_agent` 구조 JSON API도 새 코딩 경로의 선행 조건이 아닙니다. 이미지가 없는 신규·과거 작업은 engine v3의 코드·정책 기반 흐름을 사용하며 VLM/API 키가 필요하지 않습니다. 이미지가 연결되면 선택한 제공자의 총괄 경로를 사용합니다.
+
+진행 중인 구버전 작업은 완료 후 백엔드와 Worker를 함께 갱신하세요. engine v4 이미지 작업 결과는 새 백엔드 검증 계약이 필요합니다. 기존 READY/APPROVED는 재요청해도 재사용되므로 새 흐름은 새 검사에서 시험하세요. 작업 중 프로세스가 종료되면 VLM 중간 턴에서 자동 재개하지 않습니다. 기존 lease 만료·새 요청 및 완료 결과 전송 복구 방식을 사용합니다.
 
 ## 실행
 
@@ -54,17 +79,20 @@ docker build -f coding_agent/verification/Dockerfile -t csi-coding-verifier:loca
 ```dotenv
 CSI_CODING_ENABLED=true
 CSI_CODING_REPOSITORIES=ymj9608/Lichu
+CSI_VLM_PROVIDER=openai
+CSI_VLM_MODEL=gpt-5.4-mini-2026-03-17
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 # 기존 값에 ymj9608/Lichu 추가 (예)
 CSI_REPOSITORY_ALLOWLIST=local/csi-demo,ymj9608/Lichu
 ```
 
-기존 CSI 분석 스택을 실행한 상태에서 백엔드·프론트엔드를 다시 빌드합니다. Flyway V5가 수정안 테이블을 추가합니다.
+기존 CSI 분석 스택을 실행한 상태에서 백엔드·프론트엔드를 다시 빌드합니다. Flyway V5~V8이 수정안·아키텍처·이미지 연결 정보를 관리합니다.
 
 ```sh
 docker compose --project-directory . --env-file .env -f frontend/compose.yml up -d --build backend frontend
 ```
 
-Mac Worker는 별도 터미널에서 실행합니다. `.env`에서 `CSI_INTERNAL_TOKEN`만 읽고, 환경변수에 지정된 토큰이 있으면 우선합니다.
+Mac Worker는 별도 터미널에서 실행합니다. `.env`에서 `CSI_INTERNAL_TOKEN`, `OPENAI_API_KEY`, `CSI_VLM_PROVIDER`, `CSI_VLM_MODEL`을 읽고, 기존 환경변수가 있으면 우선합니다. OpenAI 키는 native Worker만 읽으며 프론트엔드·백엔드 컨테이너에는 전달하지 않습니다. 별도 검증 후 `gpt-6-astra`도 설정할 수 있습니다.
 
 ```sh
 .venv/bin/python -m coding_agent.worker \
@@ -112,7 +140,7 @@ lichu_head=$(git -C ../Lichu rev-parse HEAD)
 - `SKIP LOCKED` claim 및 lease token/만료 검증으로 중복 Worker와 늦게 도착한 결과를 통제합니다. 같은 검사에는 활성 수정안을 하나만 둡니다.
 - Worker가 수정 전 테스트 / N차 생성 / 코드 검사 / 수정 후 테스트 / 보완 요청 단계를 서버에 기록합니다. UI는 경과 시간과 단계를 표시하고 SSE 외에 5초 조회로 종료 상태를 확인합니다. 이 진행 표시는 lease를 연장하는 heartbeat가 아닙니다.
 - 모델이 잘못된 JSON·코드·호환성을 반환하면 오류 위치·누락 이름과 신뢰된 수정 지침을 전달해 한 번 보완 요청 후 BLOCKED가 됩니다. Docker 미실행, 모델 미설치, 원본 커밋 부재, 예상과 다른 baseline 등 실행 전제 문제는 FAILED로 기록됩니다.
-- 서버 연결 장애 시 같은 결과를 최대 3회 재전송하고, 실패하면 로컬 pending 파일을 다음 루프·Worker 재시작에서 복구합니다. 모델을 다시 실행하지 않습니다. 결과 파일과 전송 정보는 0600 권한으로 원자 저장합니다. 서버는 같은 토큰·동일 결과만 중복 응답하며 기존 승인·거절 결정을 유지합니다. 10분 lease가 만료되기 전에 저장되지 않은 결과는 뒤늦게 강제 반영하지 않으며 새 작업 요청이 필요합니다.
+- 서버 연결 장애 시 같은 결과를 최대 3회 재전송하고, 실패하면 로컬 pending 파일을 다음 루프·Worker 재시작에서 복구합니다. 모델을 다시 실행하지 않습니다. 결과 파일과 전송 정보는 0600 권한으로 원자 저장합니다. 서버는 같은 토큰·동일 결과만 중복 응답하며 기존 승인·거절 결정을 유지합니다. 15분 lease가 만료되기 전에 저장되지 않은 결과는 뒤늦게 강제 반영하지 않으며 새 작업 요청이 필요합니다.
 
 AWS에는 이 백엔드와 DB를 두고 Mac Worker에서 `--backend https://...`로 접속할 수 있습니다. 외부 HTTP 서버 URL은 거부하며 Ollama 포트를 인터넷에 공개할 필요가 없습니다. 클라우드 배포·TLS·접근 통제는 이번 구현에서 수행하지 않았습니다.
 
@@ -208,3 +236,15 @@ RAG의 제한적 완료는 정책 스냅샷을 확보했을 때만 허용합니�
 `전체 바로 보기`로 즉시 펼치거나 `다시 보기`로 재생할 수 있습니다. 프로젝트 이동 시 이전 타이머를 정리하고, 운영체제의 동작 줄이기 설정에서는 즉시 전체 결과를 보여줍니다. 스크린리더에는 문장 전체를 제공하며 글자마다 실시간 알림을 발생시키지 않습니다.
 
 검증: 순차 표시 신규 브라우저 8개와 기존 수정안 흐름 9개, 총 17개 통과. 프런트 빌드 후 현재 로컬 서버에 배포했습니다. 실제 Lichu 프로젝트에서도 순차 표시·다시 보기·전체 보기·모바일 및 최신 READY 수정안 연결을 확인했고, 해당 읽기 흐름에서 분석·생성·승인 API를 새로 호출하지 않았습니다.
+
+### OpenAI 실모델 총괄 경로 점검
+
+```sh
+.venv/bin/python scripts/smoke_vlm_coding.py --repo ../Lichu
+```
+
+기본값은 `95345dbd8ba45fe77ea8cd926c84e40e4d16f83a` 커밋, 코드에서 작성한 `docs/benchmarks/lichu-architecture.png`, 실습 정책 카탈로그입니다. `smoke-*` 탐지 ID는 테스트용이며 실제 서버 검사 결과가 아닙니다. 실제 OpenAI API 사용과 외부 전송이 발생합니다. OpenAI 도구 루프 → 로컬 Ministral → Docker 검증을 수행하며 서버 등록·승인·원본 수정은 하지 않습니다. `.runtime/vlm-orchestrator-smoke/summary.json`에 요약, 같은 비공개 디렉터리에 결과·후보 코드가 저장됩니다. 실패 시 종료 코드 1입니다. 기존 Qwen 실측 로그를 이번 모델의 결과로 사용하면 안 됩니다. [현재 검증 범위](testing/vlm-orchestrator-validation.md)를 참고하세요.
+
+## 메모리와 빠른 비교
+
+로컬 VLM과 코딩 모델은 매 응답 후 `keep_alive=0`으로 해제합니다. 모델을 다시 불러오는 시간이 추가될 수 있지만 검증 컨테이너와 모델이 동시에 상주하는 메모리를 줄입니다. 로컬 Qwen 선택 기능은 자동 테스트로 확인했으며 이번 빠른 실험에서는 실행하지 않았습니다. [모델 선택·데이터 수집·팀원용 설명](PERCEPTION_REASONING.md), [OpenAI 빠른 비교](benchmarks/flink/openai-quick/RESULTS.md)를 참고하세요.

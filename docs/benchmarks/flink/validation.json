@@ -1,0 +1,38 @@
+{
+  "pinnedCommit": true,
+  "upstreamUnmodified": true,
+  "restoredFilesByteIdentical": true,
+  "fourMutatedFiles": true,
+  "mutationPatchApplies": true,
+  "codingProfileRejection": "PROFILE_NOT_APPLICABLE",
+  "orchestratorVisiblePaths": 0,
+  "scannerRulesUnchanged": true,
+  "modelGroundTruthNotInInputs": true,
+  "evaluatorTests": {
+    "command": ".venv/bin/python -m pytest tests/test_flink_benchmark.py -q",
+    "passed": 5
+  },
+  "hardware": {
+    "chip": "Apple M5",
+    "memoryBytes": 17179869184,
+    "ollamaVersion": "0.32.1",
+    "semgrepVersion": "1.168.0"
+  },
+  "localModel": {
+    "name": "qwen3-vl:8b",
+    "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+    "quantization": "Q4_K_M",
+    "parameters": "8.2B",
+    "num_ctx": 32768
+  },
+  "callCounts": {
+    "openai": 4,
+    "local": 5
+  },
+  "localTransportDiagnosticCalls": 1,
+  "openaiFourCallLimitRespected": true,
+  "localRunFinished": true,
+  "reportBrokenLinks": [],
+  "allJsonArtifactsParse": true,
+  "safeControlsRetainedCheck": "PASS: N3 false positive persists after positive mutations are reverted"
+}

@@ -1,0 +1,59 @@
+{
+  "repository": "https://github.com/apache/flink",
+  "commit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "createdAt": "2026-10-23T02:32:26Z",
+  "architectureSource": "https://github.com/apache/flink/blob/8d01380ff5bf9892462ef9808b1b56fd9723f54d/docs/static/fig/processes.svg",
+  "architectureSha256": "c20e6780d9c9351bba7fb82a04a5e526ba04232834bacb272561c8da8bb9df69",
+  "sourceFiles": 15499,
+  "sourceBytes": 118585995,
+  "inventoryWallMs": 2136.074,
+  "scannerSha256": "d90907427870af460ca1756b7b28de3296716b6a7712e7d79cf4655aeae9d11a",
+  "rulesSha256": {
+    "java-security.yml": "0c511227db4ac788158b6ea2ad1b23f76e23519e55e2c3ddeddc61cfb85bd916",
+    "python-security.yml": "edc0fa8ba98139536c79ff76c74c6bafa0d98d5430b1567b207d40044037b6b3"
+  },
+  "runnerSha256": "68e28861bae7035ae397f355c67245f1d096265ee30089eccfec6bd97cfc213e",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "changedPaths": [
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java"
+  ],
+  "modelCorpusPaths": [
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java"
+  ],
+  "variants": [
+    "original",
+    "mutated",
+    "remediated"
+  ],
+  "staticArms": [
+    "native_whole_repository",
+    "batched_whole_repository",
+    "runtime_security_scope",
+    "runtime_scope_plus_changed"
+  ],
+  "modelArms": [
+    "architecture_route",
+    "broad_code",
+    "vision_selected_code",
+    "remediated_code"
+  ],
+  "modelInputPolicy": "Only public Flink files and synthetic modifications. Labels and private CSI policies never enter prompts.",
+  "limitations": [
+    "Synthetic mutations are NOT upstream vulnerabilities.",
+    "No Flink build, cluster execution, exploit, legal compliance verdict or production backend integration.",
+    "Whole scanner includes tests; model corpus is eight selected production files, not the whole repository.",
+    "Architecture mapping uses filenames plus diagram, so selection benefit cannot be attributed solely to vision.",
+    "Existing production coding profile is Lichu-only. Remediation restores upstream bytes; it is not an AI-generated fix.",
+    "Model trials are one sample per arm; no significance or general accuracy claim."
+  ]
+}

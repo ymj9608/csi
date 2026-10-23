@@ -13,6 +13,8 @@ import {
   X,
 } from "lucide-vue-next";
 import {
+  uploadArchitecture,
+  selectCodingArchitecture,
   loadFolders,
   saveFolders,
   newId,
@@ -25,6 +27,24 @@ import {
 import { useSession } from "../stores/session";
 const props = defineProps<{ project: string; projectName: string }>();
 const session = useSession();
+const connecting = ref(false);
+async function connectCoding() {
+  if (connecting.value) return;
+  const image = viewing.value?.image;
+  const project = props.project;
+  if (!project) return session.notify("프로젝트를 먼저 선택하세요.");
+  if (!image || !["image/png", "image/jpeg"].includes(image.blob.type) || image.blob.size > 5 * 1024 * 1024)
+    return session.notify("코딩 Agent 연결은 5 MiB 이하 PNG/JPEG 원본을 지원합니다. PDF는 필요한 페이지를 이미지로 등록하세요.");
+  connecting.value = true;
+  try {
+    const saved = await uploadArchitecture(project, new File([image.blob], image.name, { type: image.blob.type }));
+    await selectCodingArchitecture(project, saved.id);
+    session.notify("아키텍처가 연결되었습니다. 위험 항목에서 새 수정안을 요청하면 이 이미지와 정책 근거로 수정 지시문을 작성합니다.");
+  } catch (error: any) {
+    session.notify(error.message || "아키텍처 연결에 실패했습니다.");
+  } finally { connecting.value = false; }
+}
+
 const fullDate = (value: string) =>
   new Date(value).toLocaleString("ko-KR", {
     timeZone: "Asia/Seoul",
@@ -426,6 +446,7 @@ onBeforeUnmount(() => {
           <span class="viewer-actions"
             ><a :href="urls[viewing.image.id]" target="_blank" rel="noopener"
               >원본 보기 <ArrowUpRight :size="14" /></a
+            ><button :disabled="connecting || !project" @click="connectCoding">{{ connecting ? '연결 중…' : '코딩 Agent에 연결' }}</button
             ><button @click="removeImage"><Trash2 :size="15" />삭제</button></span
           >
         </div>

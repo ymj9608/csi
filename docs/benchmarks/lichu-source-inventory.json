@@ -1,0 +1,352 @@
+{
+  "repository": "ymj9608/Lichu",
+  "commitSha": "95345dbd8ba45fe77ea8cd926c84e40e4d16f83a",
+  "scope": "All Git tracked py/ts/tsx/js/jsx/java/sql/vue/html/css outside docs/ and reference/. No environment, config, generated files or dependencies.",
+  "fileCount": 57,
+  "sourceBytes": 173539,
+  "sourceLines": 2236,
+  "files": [
+    {
+      "path": "backend/alembic/env.py",
+      "bytes": 596,
+      "lines": 14,
+      "sha256": "153c147d813150f60b1c4fa1474cd2628c87cfa7f4fbab1232f8b6506c6f7fb8"
+    },
+    {
+      "path": "backend/alembic/versions/2a8d5c11d1af_profile_and_assignment_period.py",
+      "bytes": 2244,
+      "lines": 52,
+      "sha256": "067091f17d63734047415255f85c9ad99c4a3837cf1ea463ee26d6e8bef18e79"
+    },
+    {
+      "path": "backend/alembic/versions/6d918b2c0a41_csi_signup_profile.py",
+      "bytes": 483,
+      "lines": 18,
+      "sha256": "6223c7d586891dd6523c51947ea0ad41888c83cb722a56bb2d2c0687126ee607"
+    },
+    {
+      "path": "backend/alembic/versions/7d44b682c91e_brand_display_name.py",
+      "bytes": 500,
+      "lines": 20,
+      "sha256": "0b960c5ba0253dc5dd97f10cb8e8f601e45420e0ae0053c84118dee35ead8a27"
+    },
+    {
+      "path": "backend/alembic/versions/b60651b58df5_initial.py",
+      "bytes": 6032,
+      "lines": 107,
+      "sha256": "ac77854339c39900b2ded80a2fba323b16f43feb1e11f9561001866d4aec6627"
+    },
+    {
+      "path": "backend/app/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/api/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/api/deps.py",
+      "bytes": 1407,
+      "lines": 44,
+      "sha256": "073e3b5e66904cad325388827edd1584d927ea91b0078b23cb1390363d9e3006"
+    },
+    {
+      "path": "backend/app/api/routes.py",
+      "bytes": 7303,
+      "lines": 136,
+      "sha256": "9d8b2aadcff7ce1ab0227fe73c3b668f33d05f0776db12f6f20a196ec8260716"
+    },
+    {
+      "path": "backend/app/core/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "bytes": 626,
+      "lines": 17,
+      "sha256": "04e887daee71d48e05f975abf335fc13de42770354fb166620bb722485ed0c5f"
+    },
+    {
+      "path": "backend/app/core/csi_signup.py",
+      "bytes": 1580,
+      "lines": 40,
+      "sha256": "05fe8ed573c0786f6638401b3ab9f44a5315610a0f601469f33288fb4f67371d"
+    },
+    {
+      "path": "backend/app/core/errors.py",
+      "bytes": 237,
+      "lines": 6,
+      "sha256": "68c7b7fcf1a696d7dd71047f927181d06795dd06d6b393fd7191da0b96b2a9e2"
+    },
+    {
+      "path": "backend/app/core/security.py",
+      "bytes": 812,
+      "lines": 22,
+      "sha256": "e5fed62ae234a117097303703b130783417f958b905e87443754ecf2fccda5c8"
+    },
+    {
+      "path": "backend/app/db/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/db/seed.py",
+      "bytes": 5486,
+      "lines": 69,
+      "sha256": "3435bb02f785a72bde6115d93a9d8b6ab4b7fe272a5bf5eba16a85949d59ddc3"
+    },
+    {
+      "path": "backend/app/db/session.py",
+      "bytes": 436,
+      "lines": 16,
+      "sha256": "414538133a0fa9bcf1f9cb9452a7e29ae4084352597b439644fde2f11674c30d"
+    },
+    {
+      "path": "backend/app/main.py",
+      "bytes": 2724,
+      "lines": 53,
+      "sha256": "e18f2491ca0dcc578c9d80e2679c8a483496425f6caa8bc641423d1914ff02ad"
+    },
+    {
+      "path": "backend/app/models/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/models/entities.py",
+      "bytes": 5500,
+      "lines": 108,
+      "sha256": "7b4c75c6b547c229becb91ea2cd90cdfb71f9e8426de7291404732c3737a72b2"
+    },
+    {
+      "path": "backend/app/repositories/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/repositories/hub.py",
+      "bytes": 1460,
+      "lines": 37,
+      "sha256": "8b28092a480a95c6065c91a0a852b98fdddf39868eb93543c151af9d7fda495b"
+    },
+    {
+      "path": "backend/app/schemas/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/schemas/dto.py",
+      "bytes": 6738,
+      "lines": 228,
+      "sha256": "bf2d49c21652855ec2d57673a4e0d1f258a30ea11b3c57eefbf22a2a21ff20a7"
+    },
+    {
+      "path": "backend/app/services/__init__.py",
+      "bytes": 0,
+      "lines": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "backend/app/services/hub.py",
+      "bytes": 9490,
+      "lines": 194,
+      "sha256": "e1e624d9e818bc3d4872123438c38867dc1de2413d6e95249981ee8a22851dc4"
+    },
+    {
+      "path": "backend/scripts/export_docs.py",
+      "bytes": 11051,
+      "lines": 169,
+      "sha256": "d101cc085dfe258abd2873d57bc3d66d3aa8c339d71765ae6df574ae90e642aa"
+    },
+    {
+      "path": "backend/tests/conftest.py",
+      "bytes": 2334,
+      "lines": 52,
+      "sha256": "f00bb0b7b417bc71d9a99c2ce44ee40372a04a2ffbf60bcc5df857f2c738b2b2"
+    },
+    {
+      "path": "backend/tests/test_contract.py",
+      "bytes": 1603,
+      "lines": 32,
+      "sha256": "fe0b38d12b4d3b123b6047de943efb10fe345538ab32cee4cd03efb7a6bc9687"
+    },
+    {
+      "path": "backend/tests/test_csi_lab.py",
+      "bytes": 2717,
+      "lines": 51,
+      "sha256": "f915696b2b5a02ac842dc30766451eb570dcbc58f5da4ee6c72eaaa5d0ea9022"
+    },
+    {
+      "path": "backend/tests/test_workflow.py",
+      "bytes": 9932,
+      "lines": 176,
+      "sha256": "49fb3a22952a696a655514c9ebf37531bf468a3a661bd960d6fa20ec6f2df767"
+    },
+    {
+      "path": "frontend/index.html",
+      "bytes": 429,
+      "lines": 1,
+      "sha256": "cfd92bdc251546ee75100c1cf86735f8ad5801c99a76410b6894727b37c14411"
+    },
+    {
+      "path": "frontend/playwright.config.ts",
+      "bytes": 279,
+      "lines": 2,
+      "sha256": "4f2df9cf2b56bb4bf1dfe98da1cf71f5a97a19ac098197d27b2135f7362b8cab"
+    },
+    {
+      "path": "frontend/src/App.vue",
+      "bytes": 35,
+      "lines": 1,
+      "sha256": "c038f5aa464c0e32f18ff2c82c6a405e6c720839e392e57097d622714eb7ec75"
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "bytes": 929,
+      "lines": 19,
+      "sha256": "7031ae8a8c1aa7981c8c194e3efcc6252f8bf62e17bc5330b831ef158239d945"
+    },
+    {
+      "path": "frontend/src/components/AppModal.vue",
+      "bytes": 1543,
+      "lines": 21,
+      "sha256": "e60c236f6f6cbd3cdfbf55af5ef10f9e3e718a9cc842840812370ecc1ad17206"
+    },
+    {
+      "path": "frontend/src/components/LicenseCard.vue",
+      "bytes": 2658,
+      "lines": 17,
+      "sha256": "d009d9bf95632143c1ac67f3906fca65f4467b58bb0349da0dafc7e58357182d"
+    },
+    {
+      "path": "frontend/src/components/ResourceState.vue",
+      "bytes": 782,
+      "lines": 11,
+      "sha256": "7abf4498fc54f9c5548c41c54f9c78d22392f47c76e21045359e41168b93b6d3"
+    },
+    {
+      "path": "frontend/src/components/StatusBadge.vue",
+      "bytes": 399,
+      "lines": 5,
+      "sha256": "6cc5e38225caf019310281fe92a9e04ff3fd56514f07f54814ff90a755e7b91d"
+    },
+    {
+      "path": "frontend/src/layouts/AppLayout.vue",
+      "bytes": 5481,
+      "lines": 40,
+      "sha256": "40d206d1da2c84614ac8393e2bccabf08f26c20b71801e241253a8ce4818d7c6"
+    },
+    {
+      "path": "frontend/src/main.ts",
+      "bytes": 366,
+      "lines": 9,
+      "sha256": "9655b78beaf6546066f3fe17143e0609cbee892d6e0a302e962e6bf3252ab97b"
+    },
+    {
+      "path": "frontend/src/router/index.ts",
+      "bytes": 1620,
+      "lines": 24,
+      "sha256": "97a33366c2fcec20c17e66d46ce72085392a5c1787afad411a14fe6b4ea77b38"
+    },
+    {
+      "path": "frontend/src/stores/auth.ts",
+      "bytes": 676,
+      "lines": 15,
+      "sha256": "8bddac48eadda9e29ac30f4fd254fe97c8b17d12164543f3495327cd7ffb7156"
+    },
+    {
+      "path": "frontend/src/style.css",
+      "bytes": 31049,
+      "lines": 17,
+      "sha256": "070c2e8b8de5ef54797143200be0fdd53ccf31793853fab858bc2b1150a97713"
+    },
+    {
+      "path": "frontend/src/types/index.ts",
+      "bytes": 1840,
+      "lines": 10,
+      "sha256": "685b085a6dbab54e789e354a6eff4024d68a4288ed3b257d954237c8476fb4a3"
+    },
+    {
+      "path": "frontend/src/utils/format.test.ts",
+      "bytes": 714,
+      "lines": 7,
+      "sha256": "dadca7a0ea4b0e96337ecacd9bcc7a92e9eb60d6c8cac6fae723a8864753fb25"
+    },
+    {
+      "path": "frontend/src/utils/format.ts",
+      "bytes": 642,
+      "lines": 4,
+      "sha256": "ce418d566d76a323654b6a0343a363a2c36da98ccf4ebd5f47ae9333cac1ccfd"
+    },
+    {
+      "path": "frontend/src/utils/useResource.ts",
+      "bytes": 1025,
+      "lines": 20,
+      "sha256": "a9cf51bcb1773555ed6eb62996224cfab5019460de06f2e12cc66c2e4f46d9c0"
+    },
+    {
+      "path": "frontend/src/views/AuthView.vue",
+      "bytes": 8866,
+      "lines": 94,
+      "sha256": "583aa023e26df2be6fe6146c333fd5877dc8ca779a91b54bf65c45187ac98f30"
+    },
+    {
+      "path": "frontend/src/views/DashboardView.vue",
+      "bytes": 3247,
+      "lines": 20,
+      "sha256": "699dafcd579ef77f3ea315adaad17fda46bb4f5c0419580eb792ac828f3c2471"
+    },
+    {
+      "path": "frontend/src/views/LicensesView.vue",
+      "bytes": 10675,
+      "lines": 59,
+      "sha256": "bba51ef59969510c4577210db020df8f8295fb605cc19bc4cbb583d2739794ae"
+    },
+    {
+      "path": "frontend/src/views/MyLicensesView.vue",
+      "bytes": 3158,
+      "lines": 15,
+      "sha256": "e561976a297b89fbeca0d333b2d6b90f3e640ce57c0be759fdb490bff00649bf"
+    },
+    {
+      "path": "frontend/src/views/RequestsView.vue",
+      "bytes": 7016,
+      "lines": 32,
+      "sha256": "a87cc9a20c100cc59c5ddf12522156b346032ddcac5ab5bc3556ff2f0e3d8e31"
+    },
+    {
+      "path": "frontend/tests/workflow.spec.ts",
+      "bytes": 7757,
+      "lines": 111,
+      "sha256": "9747d044f833afe40fba4728f94287f6e5975a5892b46bcfc11f2785e7d0aca3"
+    },
+    {
+      "path": "frontend/vite.config.ts",
+      "bytes": 287,
+      "lines": 4,
+      "sha256": "a0846cfb389729d1c02cafc0df7e577c51be6e81dda02ade8875c63572156a1c"
+    },
+    {
+      "path": "frontend/vitest.config.ts",
+      "bytes": 110,
+      "lines": 2,
+      "sha256": "d0cd77e58b9b6d80b69084cba97bb8f4047586db98fd699655402272bbf04a39"
+    },
+    {
+      "path": "scripts/init_csi_lab.py",
+      "bytes": 665,
+      "lines": 15,
+      "sha256": "feea34ec4ab08bc2dff45f19b677ea60bcd12e6795ac350389aa889cff52dd45"
+    }
+  ]
+}

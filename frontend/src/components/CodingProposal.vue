@@ -13,6 +13,12 @@ watch(()=>props.scanId,()=>{snapshot.value=props.coding;pollError.value='';});
 const state=computed(()=>snapshot.value);
 const latest=computed(()=>state.value?.items?.[0]);
 const result=computed(()=>latest.value?.result);
+const orchestrated=computed(()=>result.value?.handoff?.mode==='vlm-orchestrator-v1');
+const modelLabel=computed(()=>orchestrated.value
+  ? `${result.value.handoff.model} · ${result.value.handoff.provider==='ollama'?'로컬':'OpenAI'} 총괄 → Ministral 3 8B · 로컬 코드 생성`
+  : result.value?.handoff?.mode==='vlm-direct-v1' ? 'Qwen3-VL 8B → Ministral 3 8B · 이전 로컬 실행'
+  : latest.value?.architectureId ? `${state.value?.orchestratorModel || 'gpt-5.4-mini-2026-03-17'} · ${state.value?.orchestratorProvider==='ollama'?'로컬':'OpenAI'} 총괄 → Ministral 3 8B · 로컬 코드 생성` : 'Ministral 3 8B · 코드·정책 기반 로컬 실행');
+const toolNames:Record<string,string>={list_code_paths:'코드 경로 탐색',search_code:'관련 코드 검색',read_code:'소스 확인',get_policy_evidence:'정책 근거 조회',delegate_coding:'코딩 Agent에 수정 지시',run_verification:'기능·보안 테스트 실행',finish_review:'검증 결과 검토 완료',block:'작업 보류'};
 const review=computed(()=>readReview(result.value?.review));
 const verified=computed(()=>finalVerificationPassed(result.value,latest.value?.status));
 const verifiedSummary=computed(()=>verified.value && !!review.value?.changes.length &&
@@ -29,9 +35,18 @@ const generationBlocked=computed(()=>generationBlockedReason(props.scanStatus));
 const elapsedSeconds=computed(()=>Math.max(0,Math.floor((now.value-Date.parse(latest.value?.createdAt||''))/1000)));
 const checks=computed(()=>result.value?.verification || result.value?.lastVerification ||
   [...(result.value?.attempts||[])].reverse().find((a:any)=>a.verification)?.verification);
-const phaseNames:Record<string,string>={BASELINE:'수정 전 테스트',GENERATING:'모델 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'검증 오류를 반영한 재생성 준비'};
-const errors:Record<string,string>={IMPORT_NOT_ALLOWED:'허용되지 않은 모듈 참조',UNDEFINED_GLOBAL:'필요한 import 또는 정의 누락',LEGACY_USES_NEW_HASH:'기존 계정 로그인 호환성 위반',TESTS_FAILED:'기능·보안 테스트 미통과',EVIDENCE_IDS:'근거 인용 검증 실패',MODEL_RESPONSE_FAILED:'모델 응답 처리 실패',OUTPUT_TRUNCATED:'모델 응답 길이 초과',LOGGING_CONFIG_NOT_ALLOWED:'로그 시스템 비활성화·설정 변경 금지',BASELINE_NOT_SUPPORTED:'지원하는 수정 전 코드·검증 환경과 다름',WORKER_LEASE_EXPIRED:'제한 시간 안에 Worker 결과를 받지 못했습니다',VERIFIER_UNAVAILABLE:'격리 테스트 환경에 연결할 수 없습니다',COMMIT_OR_SOURCE_UNAVAILABLE:'검사 커밋 또는 소스를 찾을 수 없습니다',LOCAL_RESULT_STORAGE_FAILED:'생성 결과를 로컬 파일에 저장하지 못했습니다',RETRIEVED_EVIDENCE_REQUIRED:'수정안을 뒷받침할 검색 근거가 없습니다',PROFILE_POLICY_MISMATCH:'현재 지원하는 정책 설정과 다릅니다',WORKER_FAILED:'Worker 실행 중 오류가 발생했습니다'};
+const phaseNames:Record<string,string>={VLM_PLANNING:'VLM이 근거와 실행 결과를 검토하고 다음 작업 결정',VLM_READING:'VLM이 선택한 관련 코드 조회',BASELINE:'수정 전 테스트',GENERATING:'VLM 지시에 따른 로컬 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'VLM 재지시에 따른 코드 보완'};
+const errors:Record<string,string>={ARCHITECTURE_REQUIRED:'연결된 아키텍처 이미지가 없습니다',ARCHITECTURE_ID_MISMATCH:'연결된 이미지 버전이 일치하지 않습니다',ARCHITECTURE_IMAGE_INVALID:'아키텍처 이미지 형식이 잘못되었습니다',ARCHITECTURE_DIGEST_MISMATCH:'아키텍처 이미지 무결성 확인 실패',ARCHITECTURE_COMMIT_MISMATCH:'아키텍처와 검사 커밋이 다릅니다',VLM_TIMEOUT:'아키텍처 수정 지시 생성 시간 초과',VLM_UNAVAILABLE:'Qwen3-VL 모델 연결 또는 로딩 실패',VLM_INSTRUCTION_INVALID:'VLM 수정 지시문이 비어 있거나 잘못되었습니다',VLM_OUTPUT_INCOMPLETE:'VLM 수정 지시 생성이 완료되지 않았습니다',VLM_TEXT_REQUIRED:'VLM이 자연어 수정 지시문 대신 다른 형식을 반환했습니다',VLM_EVIDENCE_MISSING:'VLM 수정 지시문에 제공된 근거 인용이 없습니다',VLM_USAGE_MISSING:'VLM 사용량 기록이 누락되었습니다',VLM_CONTEXT_TOO_LARGE:'VLM 입력 맥락이 허용 크기를 초과했습니다',IMPORT_NOT_ALLOWED:'허용되지 않은 모듈 참조',UNDEFINED_GLOBAL:'필요한 import 또는 정의 누락',LEGACY_USES_NEW_HASH:'기존 계정 로그인 호환성 위반',TESTS_FAILED:'기능·보안 테스트 미통과',EVIDENCE_IDS:'근거 인용 검증 실패',MODEL_RESPONSE_FAILED:'모델 응답 처리 실패',OUTPUT_TRUNCATED:'모델 응답 길이 초과',LOGGING_CONFIG_NOT_ALLOWED:'로그 시스템 비활성화·설정 변경 금지',BASELINE_NOT_SUPPORTED:'지원하는 수정 전 코드·검증 환경과 다름',WORKER_LEASE_EXPIRED:'제한 시간 안에 Worker 결과를 받지 못했습니다',VERIFIER_UNAVAILABLE:'격리 테스트 환경에 연결할 수 없습니다',COMMIT_OR_SOURCE_UNAVAILABLE:'검사 커밋 또는 소스를 찾을 수 없습니다',LOCAL_RESULT_STORAGE_FAILED:'생성 결과를 로컬 파일에 저장하지 못했습니다',RETRIEVED_EVIDENCE_REQUIRED:'수정안을 뒷받침할 검색 근거가 없습니다',PROFILE_POLICY_MISMATCH:'현재 지원하는 정책 설정과 다릅니다',WORKER_FAILED:'Worker 실행 중 오류가 발생했습니다'};
 const evidenceIds=computed(()=>[...new Set<string>([...(result.value?.citedIds||[]),...(review.value?.changes.flatMap(change=>change.evidenceIds||[])||[])])]);
+Object.assign(errors,{
+  OPENAI_API_KEY_REQUIRED:'Worker에 OPENAI_API_KEY 설정이 필요합니다',VLM_UNAVAILABLE:'선택한 VLM 연결 실패',
+  VLM_AUTH_FAILED:'OpenAI API 인증 또는 모델 접근 권한 확인이 필요합니다',VLM_RATE_LIMITED:'OpenAI API 사용 한도에 도달했습니다',
+  VLM_MODEL_UNSUPPORTED:'지원하지 않는 VLM 모델 설정입니다',VLM_PROVIDER_UNSUPPORTED:'VLM 제공자는 openai로 설정해야 합니다',
+  VLM_MODEL_MISMATCH:'백엔드와 Worker의 VLM 모델 설정이 다릅니다',VLM_BLOCKED:'VLM이 근거 또는 검증 결과를 검토하고 작업을 보류했습니다',
+  VLM_TIME_BUDGET:'VLM 작업 시간 한도에 도달했습니다',VLM_TURN_BUDGET:'VLM 작업 단계 한도에 도달했습니다',VLM_TOKEN_BUDGET:'VLM 토큰 한도에 도달했습니다',
+  VLM_SINGLE_TOOL_REQUIRED:'VLM의 작업 선택 형식이 올바르지 않습니다',VLM_RESPONSE_INVALID:'VLM 응답 형식 확인에 실패했습니다',
+  VLM_VERIFICATION_REQUIRED:'현재 수정안의 테스트 통과가 확인되지 않았습니다',VLM_CODING_BUDGET:'코드 생성 횟수 한도에 도달했습니다',
+});
 const citedFindings=computed(()=>(props.findings||[]).filter(f=>evidenceIds.value.includes(f.id)));
 const citedReferences=computed(()=>{
   const refs=new Map<string,any>();
@@ -82,14 +97,15 @@ function download(){
 </script>
 <template>
   <section class="panel coding-proposal" aria-label="코딩 Agent 수정안">
-    <div class="panel-title"><h2>코딩 Agent 수정안</h2><span>Ministral 3 8B · 로컬 실행</span></div>
+    <div class="panel-title"><h2>코딩 Agent 수정안</h2><span>{{ modelLabel }}</span></div>
     <p v-if="!state" role="status">코딩 Agent 상태를 확인하고 있습니다.</p>
     <p v-else-if="!state.enabled">코딩 Agent가 비활성화되어 있습니다.</p>
     <p v-else-if="!supported">이 항목의 자동 수정안은 아직 지원하지 않습니다. 현재는 Lichu 회원가입 실습 코드의 비밀번호 저장·로그 보완을 지원합니다.</p>
     <template v-else>
-      <p v-if="!latest">완료된 검사의 커밋을 기준으로 수정안을 생성하고, 별도 공간에서 보안·기능 테스트를 실행합니다.</p>
+      <p v-if="!latest">아키텍처 없이도 코드와 정책 근거로 수정안을 생성할 수 있습니다. 이미지를 연결하면 선택한 VLM이 구조 맥락을 함께 검토합니다. 수정안은 별도 공간에서 보안·기능 테스트를 실행합니다.</p>
       <p v-if="finding" class="coding-note">같은 검사에서 발견한 회원가입 비밀번호·로그 문제를 하나의 수정안으로 함께 검토합니다.</p>
       <template v-if="!latest || ['FAILED','BLOCKED','REJECTED'].includes(latest.status)">
+        <p class="coding-note">이미지와 필요한 코드·정책은 OpenAI에서 분석하고, 코드 생성과 테스트는 Mac에서 수행합니다.</p>
         <button :disabled="busy || !!generationBlocked" :aria-describedby="generationBlocked ? `generation-blocked-${scanId}` : undefined" @click="action(`/scans/${scanId}/coding-proposals`)">{{ latest ? '새 수정안 요청' : '수정안 생성 요청' }}</button>
         <div v-if="generationBlocked" :id="`generation-blocked-${scanId}`" role="status">
           <p>{{generationBlocked}}</p>
@@ -100,8 +116,8 @@ function download(){
         <p role="status"><strong>{{statusName}}</strong> · {{date(latest.createdAt)}}</p>
         <p v-if="latest.status==='QUEUED'">Mac에서 코딩 Worker가 연결되면 시작합니다.</p>
         <p v-if="active" role="status">경과 {{elapsedSeconds}}초<span v-if="latest.progress?.phase"> · {{latest.progress.attempt ? `${latest.progress.attempt}차 / 최대 2차 · ` : ''}}{{phaseNames[latest.progress.phase]||latest.progress.phase}}</span></p>
-        <p v-if="latest.status==='RUNNING'" class="coding-note">생성과 테스트를 순서대로 수행합니다. 검증 오류가 있으면 최대 한 번 보완하며, 5초마다 상태를 확인합니다.</p>
-        <p v-if="latest.status==='BLOCKED'" class="coding-error">수정안 검증에 실패했습니다. {{errors[result?.failureReason] || '아래 생성 차수별 실패 원인을 확인하세요.'}} 검증을 통과한 코드만 승인할 수 있습니다.</p>
+        <p v-if="latest.status==='RUNNING'" class="coding-note">VLM이 코드·정책 조회와 수정 지시, 검증 및 재지시를 결정합니다. 코드는 최대 두 번 생성하며, 5초마다 상태를 확인합니다.</p>
+        <p v-if="latest.status==='BLOCKED'" class="coding-error">수정안 작업이 중단되었습니다. {{errors[result?.failureReason] || '아래 작업 기록을 확인하세요.'}} 검증을 통과한 코드만 승인할 수 있습니다.</p>
         <p v-if="latest.errorCode" class="coding-error">{{errors[latest.errorCode] || latest.errorCode}} · Worker 연결과 검사 커밋을 확인한 뒤 다시 요청할 수 있습니다.</p>
         <template v-if="result">
           <div class="coding-application"><strong>원본 반영 여부는 별도 확인 필요</strong><p>아래 결과는 별도 공간에서 수정안을 테스트한 기록입니다. 승인만으로 원본 코드나 기존 계정·로그가 변경되지는 않습니다.</p></div>
@@ -130,6 +146,22 @@ function download(){
           <p>대상 커밋 <code>{{latest.commitSha}}</code><span v-if="Number.isFinite(result.durationMs)"> · 총 {{(result.durationMs/1000).toFixed(1)}}초</span></p>
           <p v-if="latest.status==='READY' && !canApprove" class="coding-error">최종 검증 기록이 완전하지 않아 승인할 수 없습니다.</p>
           <template v-if="!review"><p v-for="note in result.limitations" :key="note" class="coding-note">{{note}}</p></template>
+          <details v-if="orchestrated" open><summary>VLM 총괄 작업 기록</summary>
+            <p>{{ result.handoff.model }}이 선택한 조회·수정·검증 단계입니다. 승인과 원본 반영은 별도입니다.</p>
+            <p v-if="result.handoff.sourceCommitMatches == null">이미지의 기준 커밋은 미확인입니다. 실제 코드와 구조가 일치하는지 검토하세요.</p>
+            <p>총괄 구간 {{ (result.handoff.metrics.wallDurationMs / 1000).toFixed(1) }}초 (코딩·테스트 포함) · API {{ (result.handoff.metrics.apiDurationMs / 1000).toFixed(1) }}초 · 입력 {{ result.handoff.metrics.inputTokens }} / 출력 {{ result.handoff.metrics.outputTokens }} 토큰 (추론 {{ result.handoff.metrics.reasoningTokens }} 포함)</p>
+            <ol><li v-for="step in result.handoff.trace" :key="step.turn">
+              {{ toolNames[step.tool] || step.tool }} · {{ step.status === 'OK' ? '처리' : '제한·오류 확인' }}<span v-if="step.path"> · {{ step.path }}</span><span v-if="step.errorCode"> · {{ errors[step.errorCode] || step.errorCode }}</span>
+              <details v-if="step.instruction"><summary>{{step.attempt}}차 수정 지시문</summary><pre style="white-space: pre-wrap">{{step.instruction}}</pre></details>
+            </li></ol>
+            <p v-if="result.handoff.conclusion">{{ result.handoff.conclusion }}</p>
+          </details>
+          <details v-if="result.handoff?.mode === 'vlm-direct-v1'"><summary>아키텍처·정책 기반 수정 지시문</summary>
+            <p>Qwen3-VL이 작성하고 코딩 Agent에 직접 전달한 내용입니다. 코드 검증 결과와 함께 확인하세요.</p>
+            <p v-if="result.handoff.sourceCommitMatches == null">이미지의 기준 커밋은 미확인입니다. 실제 코드와 구조가 일치하는지 검토하세요.</p>
+            <p>지시문 생성 {{ (result.handoff.metrics.wallDurationMs / 1000).toFixed(1) }}초 · 입력 {{ result.handoff.metrics.prompt_eval_count }} / 출력 {{ result.handoff.metrics.eval_count }} 토큰</p>
+            <pre style="white-space: pre-wrap">{{ result.handoff.instruction }}</pre>
+          </details>
           <details v-if="result.reason || result.modelLimitations?.length" class="coding-model-explanation"><summary>AI 설명 · 테스트로 확인된 사실과 별도</summary><p class="coding-note">모델이 작성한 설명입니다. 위의 검증 결과와 남은 작업을 기준으로 판단하세요.</p><p v-if="result.reason">{{result.reason}}</p><ul v-if="result.modelLimitations?.length"><li v-for="note in result.modelLimitations" :key="note">{{note}}</li></ul></details>
           <details v-for="attempt in result.attempts" :key="attempt.number"><summary>{{attempt.number}}차 생성 · {{attemptStatus(attempt)}}</summary>
             <p>생성 {{((attempt.generationMs||0)/1000).toFixed(1)}}초</p><p v-for="test in attempt.verification?.failedTests" :key="test">{{test}}</p>

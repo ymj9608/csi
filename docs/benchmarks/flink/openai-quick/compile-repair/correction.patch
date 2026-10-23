@@ -1,0 +1,11 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
+@@ -445,7 +445,7 @@
+                 sslContextBuilder.keyManager(kmf);
+             }
+             sslContextBuilder.endpointIdentificationAlgorithm(
+-                    SecurityOptions.isRestSSLHostnameVerificationEnabled(config) ? "HTTPS" : null);
++                    config.get(SecurityOptions.SSL_REST_VERIFY_HOSTNAME) ? "HTTPS" : null);
+         } else {
+             KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);
+             sslContextBuilder = SslContextBuilder.forServer(kmf);

@@ -1,0 +1,63 @@
+{
+  "purpose": "schema compatibility check without provider maxLength; not a quality trial",
+  "httpStatus": 200,
+  "wallMs": 4424.317,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "notes": {
+        "type": "string"
+      },
+      "readPaths": {
+        "type": "array",
+        "maxItems": 20,
+        "items": {
+          "type": "string",
+          "enum": [
+            "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+            "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+            "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+            "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/net/ConnectionUtils.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/net/RedirectingSslHandler.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenProvider.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenReceiver.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenReceiver.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenReceiver.java",
+            "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java"
+          ]
+        }
+      }
+    },
+    "required": [
+      "notes",
+      "readPaths"
+    ],
+    "additionalProperties": false
+  },
+  "response": {
+    "model": "ministral-3:8b-instruct-2512-q4_K_M",
+    "created_at": "2026-10-23T05:08:52.282111Z",
+    "message": {
+      "role": "assistant",
+      "content": "{\n  \"notes\": \"ready\",\n  \"readPaths\": []\n}"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 4168041375,
+    "load_duration": 993680708,
+    "prompt_eval_count": 570,
+    "prompt_eval_duration": 1790131000,
+    "eval_count": 16,
+    "eval_duration": 1065369999
+  }
+}

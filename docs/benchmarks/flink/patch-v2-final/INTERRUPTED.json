@@ -1,0 +1,7 @@
+{
+  "status": "INTERRUPTED_BY_USER_REQUEST",
+  "reason": "Switch to OpenAI API to reduce elapsed time and Mac memory pressure. Original call and partial validation logs retained.",
+  "recordedAtUtc": "2026-10-23T05:35:08Z",
+  "verifiedQualityResultAvailable": false,
+  "replacementExperiment": "../openai-quick/RESULTS.md"
+}

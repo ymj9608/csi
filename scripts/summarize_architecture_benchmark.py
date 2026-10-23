@@ -1,0 +1,81 @@
+"""Summarize immutable raw measurements without re-running a model."""
+import json
+import statistics
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+DIR=ROOT/'docs/benchmarks'
+
+def load(name):return [json.loads(line) for line in (DIR/name).read_text().splitlines()]
+def summarize(name,truth=None):
+ rows=load(name);meta=next(r for r in rows if r['event']=='metadata');arms={}
+ for arm in ('full_code','vision_selected'):
+  trials=[r for r in rows if r.get('arm')==arm and r.get('complete')]
+  if not trials:continue
+  arms[arm]={'runs':len(trials),'sourceFiles':len(trials[0]['selectedFiles']),'sourceBytes':trials[0]['selectedBytes'],
+   'inputTokensMedian':statistics.median(r['totals']['prompt_eval_count'] for r in trials),
+   'outputTokensMedian':statistics.median(r['totals']['eval_count'] for r in trials),
+   'wallSecondsMedian':statistics.median(r['endToEndWallMs']/1000 for r in trials),
+   'wallSecondsRange':[min(r['endToEndWallMs']/1000 for r in trials),max(r['endToEndWallMs']/1000 for r in trials)],
+   'reviewPhaseInputTokensMedian':statistics.median(r['reviewOnlyTotals']['prompt_eval_count'] for r in trials),
+   'reviewPhaseOutputTokensMedian':statistics.median(r['reviewOnlyTotals']['eval_count'] for r in trials),
+   'reviewPhaseWallSecondsMedian':statistics.median(r['reviewOnlyTotals']['wallDurationMs']/1000 for r in trials),
+   'reviewCallsPerTrial':[len(r['reviewCalls']) for r in trials]}
+  if truth:
+   quality=[]
+   for r in trials:
+    expected={(p['path'],p['category']):p for p in truth['positives']}
+    candidates={(f['filePath'],f['category']) for f in r['findings']}
+    verified={key for key,p in expected.items() if any((f['filePath'],f['category'])==key and f['evidenceValid'] and p['line_start']<=f['line']<=p['line_end'] for f in r['findings'])}
+    quality.append({'trial':r['trial'],'candidateMatches':len(candidates & expected.keys()),'candidateExtra':len(candidates-expected.keys()),'sourceVerifiedMatches':len(verified),'expected':len(expected),'missingCandidateIds':[p['id'] for key,p in expected.items() if key not in candidates],'unverifiedCitationCount':sum(not f['evidenceValid'] for f in r['findings'])})
+   arms[arm]['quality']=quality
+ return {'metadata':{k:meta[k] for k in ('dataset','timestamp','model','sourceFileCount','sourceBytes','imageSha256')},'arms':arms}
+
+def main():
+ truth=json.loads((ROOT/'tests/fixtures/architecture_benchmark/ground_truth.json').read_text())
+ output={'synthetic':summarize('architecture-synthetic.jsonl',truth)}
+ if (DIR/'architecture-lichu.jsonl').exists():output['lichu']=summarize('architecture-lichu.jsonl')
+ (DIR/'summary.json').write_text(json.dumps(output,ensure_ascii=False,indent=2)+'\n')
+ lines=['# 아키텍처 입력 방식 실측 결과','',
+ '2026-10-22 · Apple M5 / 통합 메모리 16 GiB · 로컬 Ministral 3 8B Q4_K_M. 모델 digest·Ollama 버전은 [environment.json](environment.json)에 있습니다.', '',
+ '**소규모 데이터에서는 비전 단계가 비용을 늘렸고, 그림에 빠진 코드의 위험도 놓쳤습니다. 아키텍처는 코드 검사를 대체하는 판정 근거가 아니라 탐색을 돕는 참고 맥락으로 사용하는 것이 타당합니다.**','',
+ '## 측정값','',
+ '| 데이터 / 방식 | 입력 소스 파일 | 입력 토큰 | 출력 토큰 | 클라이언트 시간 |',
+ '|---|---:|---:|---:|---:|']
+ for name,data in output.items():
+  label='합성 3회 중앙값' if name=='synthetic' else '실제 Lichu 1회'
+  for arm,m in data['arms'].items():
+   method='전체 소스 배치 리뷰' if arm=='full_code' else '이미지 해석 + 선별 소스 리뷰'
+   lines.append(f"| {label} · {method} | {m['sourceFiles']} | {m['inputTokensMedian']:,.0f} | {m['outputTokensMedian']:,.0f} | {m['wallSecondsMedian']:.2f}초 |")
+   if arm=='vision_selected':
+    lines.append(f"| {label} · 위 실행의 코드 리뷰 단계만 | {m['sourceFiles']} | {m['reviewPhaseInputTokensMedian']:,.0f} | {m['reviewPhaseOutputTokensMedian']:,.0f} | {m['reviewPhaseWallSecondsMedian']:.2f}초 |")
+ lines += ['', '“코드 리뷰 단계만”은 저장된 구조를 재사용할 때 남는 추론 비용을 이해하기 위한 **실측 단계 분해**입니다. 별도 캐시 조회 요청의 end-to-end latency를 측정한 수치가 아닙니다. 최초 이미지 해석·모델 예열·이미지 수동 작성 비용과 구분하세요.', '',
+ '## 보안 후보와 근거 품질', '',
+ '| 합성 데이터 | 위험 위치·유형 후보 일치 | 원문 행·인용까지 일치 | 추가 후보 |',
+ '|---|---|---|---|']
+ for arm,m in output['synthetic']['arms'].items():
+  q=m['quality'];name='전체 코드' if arm=='full_code' else '비전 + 선별 코드'
+  lines.append(f"| {name} | {', '.join(str(x['candidateMatches']) for x in q)} / 4 | {', '.join(str(x['sourceVerifiedMatches']) for x in q)} / 4 | {', '.join(str(x['candidateExtra']) for x in q)} |")
+ lines += ['', '각 셀은 1·2·3차 실행 순서입니다. 전체 코드 방식은 비밀번호 해시 위험을 후보로 찾았지만 정확한 소스 인용을 맞추지 못했습니다. 비전 방식은 그림 밖 `backend/jobs/directory_sync.py`를 입력에서 제외하여 개인정보 HTTP 전송 위험 V4를 세 번 모두 놓쳤습니다. 비전 방식의 한 실행에는 로그 파일을 외부 전송으로 분류한 추가 후보도 있었습니다.', '',
+ '원시 로그의 `quality.tp/fp/fn`은 **원문 증거까지 검증한 엄격한 기준**입니다. 여기서 인용 실패를 일반적인 의미의 오탐으로 혼동하지 않도록 `summary.json`에서는 후보 일치와 원문 검증을 분리했습니다. 정상 대조 사례를 포함한 총 8개 라벨로 전체 보안 탐지율이나 법률 준수율을 주장하지 않습니다. 실제 Lichu에는 전체 정답 라벨이 없으므로 정확도 수치를 계산하지 않았습니다.', '',
+ '## 데이터와 방식', '',
+ '- 합성 데이터: Python 15개, 321줄, 11,731 bytes. 취약 동작 4개·대조 동작 4개, 동작 검사 12개 통과. 정답 JSON은 모델에 전달하지 않았습니다. [데이터 설명](../ARCHITECTURE_BENCHMARK_DATA.md)',
+ '- 실제 Lichu: 커밋 `95345dbd8ba45fe77ea8cd926c84e40e4d16f83a`의 추적 소스 57개, 173,539 bytes. py/ts/tsx/js/jsx/java/sql/vue/html/css를 포함하고 docs/reference·환경 파일·설정·외부 의존성은 제외했습니다. [원본 목록과 해시](lichu-source-inventory.json)',
+ '- 전체 방식: 범위 내 소스를 전부 번호 붙여 최대 20,000-byte 배치로 전송합니다. 긴 Vue 한 줄도 Unicode 문자 경계로 나누어 모든 문자를 전달합니다. 배치 간 호출 관계를 완전히 합성하는 전체 프로그램 분석은 아닙니다.',
+ '- 비전 방식: 구조 이미지 해석 후 명시된 경로와 지원하는 Python 절대 import 1-hop만 manifest와 대조하여 입력합니다. 상대 import·JS 의존성 전체를 따라가는 분석은 아닙니다.',
+ '- 합성 이미지에서 추출한 경로13개 중12개만 실제 manifest와 일치했습니다. recovery 경로를 잘못 읽어 정상 대조 파일도 입력에서 누락했습니다. 그림에 보인 경로라고 해서 OCR/비전 인식이 정확하다고 가정할 수 없습니다.',
+ '- 같은 모델·리뷰 프롬프트·JSON 형식·temperature=0·seed=42·context=16,384·리뷰 출력 한도1,800을 사용했습니다. 비전 JSON 출력 한도는4,096입니다. 같은 입력을 반복해 latency를 측정했으며 독립적인 세 프로젝트 평가가 아닙니다.',
+ '- 이미지 구조에는 원문 파일 경로가 표시되어 있습니다. 사람이 그림을 작성한 시간은 미포함이며, 경로 없는 사용자 이미지보다 검색에 유리합니다. 비전과 동일 정보를 담은 텍스트 manifest의 우열을 측정한 실험도 아닙니다.',
+ '- 모델 예열1회 후 측정했고 강제 캐시 초기화는 하지 않았습니다. 합성 실행 순서는 전체→비전 / 비전→전체 / 전체→비전입니다. 입력 토큰 수는 이미지 포함 Ollama 보고값이며 이미지 토큰만 분리한 값이 아닙니다. prompt cache count가 없는 응답을 캐시 미사용으로 간주하지 않습니다.',
+ '- 기존 CSI Docker 서비스와 개발 프로세스가 실행 중인 로컬 파일럿입니다. GPU 추론은 순차 실행했지만 통제된 전용 벤치마크 서버가 아닙니다. 단일 실측 지연을 운영 SLA로 일반화하지 마세요.',
+ '- 첫 Lichu 시도는 긴 소스 한 줄을 안전하게 중단한 뒤 분할 처리를 보완하여 재실행했습니다. 실패도 [preflight 로그](architecture-lichu-preflight.jsonl)에 남겼으며 비교 수치에는 넣지 않았습니다.',
+ '- 합성 측정 이후 실제 소스 범위(.vue/html/css)와 배치별 인용 검증을 보강했습니다. 합성 데이터는 단일 배치이며 보강 전후 선택 파일이 동일한 것을 확인했습니다. 각 실행의 runner SHA와 요청 SHA는 원시 로그에 남습니다.', '',
+ '## 팀원 확인 파일', '',
+ '- [합성 원시 로그](architecture-synthetic.jsonl), [Lichu 원시 로그](architecture-lichu.jsonl), [집계 JSON](summary.json)',
+ '- [아키텍처 API 계약](../ARCHITECTURE_API.md), [실행과 프런트엔드 연결](../ARCHITECTURE_VISION.md)',
+ '- [불안정한 coding-flow 테스트 재현·수정 검증](../testing/coding-flow-flake.json)',
+ '', '재집계: `.venv/bin/python scripts/summarize_architecture_benchmark.py`. 모델을 다시 호출하지 않습니다.']
+ (DIR/'ARCHITECTURE_RESULTS.md').write_text('\n'.join(lines)+'\n')
+ print(json.dumps({name:data['arms'] for name,data in output.items()},ensure_ascii=False,indent=2))
+
+if __name__=='__main__':main()

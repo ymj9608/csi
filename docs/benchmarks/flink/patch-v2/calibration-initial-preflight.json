@@ -1,0 +1,8 @@
+{
+  "ready": false,
+  "imageId": null,
+  "image": "maven:3.9.9-eclipse-temurin-17",
+  "reason": "VALIDATION_IMAGE_NOT_INSTALLED",
+  "status": "BLOCKED",
+  "modelCalls": 0
+}

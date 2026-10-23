@@ -1,0 +1,11 @@
+{
+  "action": "unload benchmark Ministral only; no inference",
+  "utc": "2026-10-23T05:26:03Z",
+  "before": {
+    "models": []
+  },
+  "after": {
+    "models": []
+  },
+  "wallSeconds": 0.19614005088806152
+}

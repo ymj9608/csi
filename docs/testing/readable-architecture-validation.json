@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-10-22T08:24:24.073567+00:00",
+  "command": ".venv/bin/python -m pytest tests/test_readable_architecture.py tests/test_readable_architecture_summary.py tests/test_complex_architecture_fixture.py tests/test_architecture_routing.py tests/test_architecture_context.py tests/test_complex_architecture_benchmark.py tests/test_complex_architecture_summary.py tests/test_complex_architecture_response_audit.py -q",
+  "result": {
+    "passed": 128,
+    "failed": 0,
+    "durationSeconds": 0.37
+  },
+  "scope": "Software tests for drawing preservation, response compatibility, source selection, and measurement handling. Not the AI accuracy score.",
+  "testFileHashes": {
+    "tests/test_readable_architecture.py": "0164922167ec747c84dfb1c6c06ca12af0096cb9025c50f229a30f48eb416eee",
+    "tests/test_readable_architecture_summary.py": "d7d3d4673910d1f093161935a2aee9cdefdf2f383f4ba09fc91896c41e1ae356",
+    "tests/test_complex_architecture_fixture.py": "23d6bf6230eb467e3762fee4c4c0de6b9f310b1ad128a2c19b22e8c1e451c4f1",
+    "tests/test_architecture_routing.py": "ba739122092551680df88ba91692abfe787086e5ad1aae36bb67b9c7006912f8",
+    "tests/test_architecture_context.py": "273d209b1fbf394393d6fef148e1a9540410b5e353abab88895ea4526be81378",
+    "tests/test_complex_architecture_benchmark.py": "5f4b4c4bb38972d10be66fdb5baf7afe96e123c794089189829d4f2a0f845b9d",
+    "tests/test_complex_architecture_summary.py": "55b7610ad22d0d0296823f2882415373ca7762971f6cc529437720ac566a3529",
+    "tests/test_complex_architecture_response_audit.py": "c1b95715556e4c7ea891dbd1383f887a48fa76c705f85bbd2b40e74cffc97fa7"
+  }
+}

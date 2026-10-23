@@ -1,0 +1,1942 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "complex-commerce-contact-v1",
+  "synthetic": true,
+  "seed": 20261022,
+  "generator": "scripts/build_complex_architecture_fixture.py",
+  "repository": ".runtime/architecture-benchmark/complex/repository",
+  "serviceCount": 24,
+  "sourceFileCount": 320,
+  "sourceBytes": 150114,
+  "sourceLines": 4208,
+  "sourceSha256": "69a197f6491ab5d6f1f4b4b1aed17648923951a2d79bca8ca717b0f40f9afc1b",
+  "sourceHashMethod": "SHA256 of sorted UTF8 path + NUL + file bytes + NUL",
+  "modelInputExcludes": [
+    "ground_truth.json",
+    "graph.json",
+    "manifest.json",
+    "tests"
+  ],
+  "files": [
+    {
+      "path": "infra/broker.yaml",
+      "bytes": 346,
+      "lines": 8,
+      "sha256": "56eb399e3cf415059eb16a1c29f802a689fffd6dccee7d6c0ba4716319de7cf1"
+    },
+    {
+      "path": "infra/gateway_routes.yaml",
+      "bytes": 180,
+      "lines": 7,
+      "sha256": "6a0fe78ea52fc1a138964d95026b07a3c33836ede9463539b741a2a0155789fc"
+    },
+    {
+      "path": "jobs/legacy_export.py",
+      "bytes": 420,
+      "lines": 9,
+      "sha256": "ce49cf7ac1bf8014b3449d8eeb07da4d5edd35218cadee9442f6f5e486044d0a"
+    },
+    {
+      "path": "jobs/legacy_export.yaml",
+      "bytes": 151,
+      "lines": 6,
+      "sha256": "d00a219fb715311aa1e914ea3150aefc95058d3fdb7023ff936dea59c7e83075"
+    },
+    {
+      "path": "services/analytics_rollup/api.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "2942c2effb87f1aafafc6f68bddfcab14a4ff0b82dd5861d7daf4c853b1e751f"
+    },
+    {
+      "path": "services/analytics_rollup/deployment.yaml",
+      "bytes": 261,
+      "lines": 13,
+      "sha256": "ffaa31ad7a7facfe12eca91251d58a4afa0df5e1beda9e3255212d76fbf76bea"
+    },
+    {
+      "path": "services/analytics_rollup/domain.py",
+      "bytes": 550,
+      "lines": 14,
+      "sha256": "9bdfb2940075eeb87ee9158dfb38d42a4989b87edee6a34c826e27509ad0438a"
+    },
+    {
+      "path": "services/analytics_rollup/events.py",
+      "bytes": 492,
+      "lines": 15,
+      "sha256": "1b4d87b91e6ccba13ce0eeb5637de9bd4320b6cf9273932310c3dbc7910282d0"
+    },
+    {
+      "path": "services/analytics_rollup/jobs.py",
+      "bytes": 508,
+      "lines": 16,
+      "sha256": "cb5cfb514ebb313e080c423ba1a7615a505af43d1d1cc5dd96fd95b5232e1808"
+    },
+    {
+      "path": "services/analytics_rollup/metrics.py",
+      "bytes": 406,
+      "lines": 10,
+      "sha256": "a598e74ca733e989c687f2f7287b01c69b7b870b5557735af564a4e3678a35f4"
+    },
+    {
+      "path": "services/analytics_rollup/models.py",
+      "bytes": 359,
+      "lines": 14,
+      "sha256": "450cb1661a5374330cb82fb0e902ae24dda5ffddae6018eb55dd0551574be769"
+    },
+    {
+      "path": "services/analytics_rollup/policy.py",
+      "bytes": 483,
+      "lines": 13,
+      "sha256": "e8444f3618cb8e502a6d41646e2a8932d0c5476c7b974e2b8a04c10ab3a7fd07"
+    },
+    {
+      "path": "services/analytics_rollup/readmodel.py",
+      "bytes": 397,
+      "lines": 11,
+      "sha256": "d750366372afb249de8765aba03bc032ab79c29a555632e3799db68cc0d25047"
+    },
+    {
+      "path": "services/analytics_rollup/repository.py",
+      "bytes": 664,
+      "lines": 17,
+      "sha256": "cb307cf82de4828edd42e991e18bfe21caa962aecdfefe72c4c28ecb8d30bc92"
+    },
+    {
+      "path": "services/analytics_rollup/schema.sql",
+      "bytes": 233,
+      "lines": 7,
+      "sha256": "b20b6f4e2722a31918a60afabb96934fa0f72fc4a568121bcc16a7382d561544"
+    },
+    {
+      "path": "services/analytics_rollup/service.py",
+      "bytes": 621,
+      "lines": 14,
+      "sha256": "14351ed15a5ffca35d94137536e4aee92a64d3353b31558468549a1e05a50337"
+    },
+    {
+      "path": "services/analytics_rollup/validation.py",
+      "bytes": 613,
+      "lines": 13,
+      "sha256": "367c1f27f6b2e4023377fa9786fd8f5fc58a28f8361e3a0508c6707ec3bdbffc"
+    },
+    {
+      "path": "services/audit_archive/api.py",
+      "bytes": 464,
+      "lines": 13,
+      "sha256": "9e3f9edbaee4e68a009fd3ba4c76f8ce786e26e71758f60879da1da44b689772"
+    },
+    {
+      "path": "services/audit_archive/deployment.yaml",
+      "bytes": 262,
+      "lines": 13,
+      "sha256": "ac77fb5b4fe5ab9a5c829a667641080572748c84f2f6e0aa9572ab927ee2a76b"
+    },
+    {
+      "path": "services/audit_archive/domain.py",
+      "bytes": 507,
+      "lines": 14,
+      "sha256": "76914731338f220a06783964d5073ac021107e9b6e3b66f8748aa4e791119b6b"
+    },
+    {
+      "path": "services/audit_archive/events.py",
+      "bytes": 489,
+      "lines": 15,
+      "sha256": "49328d7b2d607a6bc959d27e9976ee17549b8a6734db11d2d778553c23070819"
+    },
+    {
+      "path": "services/audit_archive/jobs.py",
+      "bytes": 510,
+      "lines": 16,
+      "sha256": "e35ff01fd795cd2759e0d2e9f33df538e09b688dab8efdc8320d918e935bbb30"
+    },
+    {
+      "path": "services/audit_archive/metrics.py",
+      "bytes": 398,
+      "lines": 10,
+      "sha256": "3206e024b6d23b40064e9b4d3479f219811ebd562915267c5fc53361b199464a"
+    },
+    {
+      "path": "services/audit_archive/models.py",
+      "bytes": 367,
+      "lines": 14,
+      "sha256": "85a7a7bb6f9d04085b27818b4fa075b4a8d9ed8ba15e59afb1fd4ecbeec857db"
+    },
+    {
+      "path": "services/audit_archive/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "872ebcd9162cf6cada01c33c88e729e588a8596cb322c3e0223e4550fbbb544a"
+    },
+    {
+      "path": "services/audit_archive/readmodel.py",
+      "bytes": 404,
+      "lines": 11,
+      "sha256": "36e3b47ae42e2322244da7adc724e4dad0cfd206d923bc3a1ee18762f3e97126"
+    },
+    {
+      "path": "services/audit_archive/repository.py",
+      "bytes": 700,
+      "lines": 17,
+      "sha256": "41164fd6e55d4df64a864aa708e03cd1212f07f98535d8d0c4414d8bea6dedf8"
+    },
+    {
+      "path": "services/audit_archive/schema.sql",
+      "bytes": 252,
+      "lines": 7,
+      "sha256": "4da52d248c6fa5fe2825e42bdc9c6e1defa74f2c998d723f0658607ed9ee96f8"
+    },
+    {
+      "path": "services/audit_archive/service.py",
+      "bytes": 606,
+      "lines": 14,
+      "sha256": "260d58f07ad6ab320bcda13d104a018b830ad1ec8b7db11a7170597f41dbabeb"
+    },
+    {
+      "path": "services/audit_archive/validation.py",
+      "bytes": 606,
+      "lines": 13,
+      "sha256": "8fb3154a1745060241adfc7afb8ebc3bef84185621479e4b6276951cc62807c4"
+    },
+    {
+      "path": "services/billing_ledger/api.py",
+      "bytes": 469,
+      "lines": 13,
+      "sha256": "6763af2f18cbc5255506d33f8d911c7ca6fc55aa41f2fec58303121dcdcd9108"
+    },
+    {
+      "path": "services/billing_ledger/deployment.yaml",
+      "bytes": 258,
+      "lines": 13,
+      "sha256": "2b370a03b7adcaeb0408a766070a4e4e332e26d8080d2e707c0dc21aa03b77fa"
+    },
+    {
+      "path": "services/billing_ledger/domain.py",
+      "bytes": 607,
+      "lines": 16,
+      "sha256": "ba708aa0a4242aadaeece1b911dc601507e992cc2eee484c2a6e04006a895ea8"
+    },
+    {
+      "path": "services/billing_ledger/events.py",
+      "bytes": 460,
+      "lines": 15,
+      "sha256": "6d71714e64b13735fd7adffda421ed1281dd5026d4085599e5b18d3df279af6f"
+    },
+    {
+      "path": "services/billing_ledger/jobs.py",
+      "bytes": 507,
+      "lines": 16,
+      "sha256": "385cf64f9b14fc47790a865d4708b7cd2836c8409442c58b9cc7283b51f73112"
+    },
+    {
+      "path": "services/billing_ledger/metrics.py",
+      "bytes": 398,
+      "lines": 10,
+      "sha256": "40f6b63a80c6befabd4d3e57918f60cd412f165f30b5bc4b319271be542b52d3"
+    },
+    {
+      "path": "services/billing_ledger/models.py",
+      "bytes": 364,
+      "lines": 14,
+      "sha256": "2c77b6064eedb1abcb010a704029e67a5bcdd173d8c96d327aa2ae99e7a20e52"
+    },
+    {
+      "path": "services/billing_ledger/policy.py",
+      "bytes": 471,
+      "lines": 13,
+      "sha256": "ca3d343709d1e8b9e83755c7a1d0c7bb57c8ab77c54bb52bb30465a2cc72f8db"
+    },
+    {
+      "path": "services/billing_ledger/readmodel.py",
+      "bytes": 398,
+      "lines": 11,
+      "sha256": "676f136fee453d70125aaa961837a1f21741a2f1fdbc256153161f7ebc50a156"
+    },
+    {
+      "path": "services/billing_ledger/repository.py",
+      "bytes": 676,
+      "lines": 17,
+      "sha256": "992d47fa58a90ed6cd26145e152f6e6c1e98e7ef7159297b1da94b5ef9f9af96"
+    },
+    {
+      "path": "services/billing_ledger/schema.sql",
+      "bytes": 238,
+      "lines": 7,
+      "sha256": "4fd0805a99766f9b500cccd0139e3358fbb075851d50583a341eba49e7cf2d3c"
+    },
+    {
+      "path": "services/billing_ledger/service.py",
+      "bytes": 605,
+      "lines": 14,
+      "sha256": "a237726e0f159b71a0b03e04e06f2da2400bd4f7e0935c6969b36f601d892a9c"
+    },
+    {
+      "path": "services/billing_ledger/validation.py",
+      "bytes": 613,
+      "lines": 13,
+      "sha256": "6274668905273c85a71adaeaa195d35415606c08634f3da730895d57780c26db"
+    },
+    {
+      "path": "services/consent_registry/api.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "f2b425c7f4286f56dcebb135973f895d3cfdd102972b0463e20a8b883a210fb7"
+    },
+    {
+      "path": "services/consent_registry/deployment.yaml",
+      "bytes": 244,
+      "lines": 13,
+      "sha256": "b788902a37e73a51656c0fe7be5ec043aa6df5c62a7dad606a8c5d74ea8e7c61"
+    },
+    {
+      "path": "services/consent_registry/domain.py",
+      "bytes": 697,
+      "lines": 15,
+      "sha256": "5982fd6088ea12472ca0f3ccda87c1bdea67b3e6fbdcc252cbde63b6fc9cc321"
+    },
+    {
+      "path": "services/consent_registry/events.py",
+      "bytes": 448,
+      "lines": 15,
+      "sha256": "a69c1df079f70d1283507c7db393bfa35ad40f6631ee5c34d697f0cea974849e"
+    },
+    {
+      "path": "services/consent_registry/jobs.py",
+      "bytes": 509,
+      "lines": 16,
+      "sha256": "1d2eb502b14d3dbf0395ac537ac9857e87da8ccf38bb6943540064e89e2a7aea"
+    },
+    {
+      "path": "services/consent_registry/metrics.py",
+      "bytes": 404,
+      "lines": 10,
+      "sha256": "250c6ab53347260eb33fb3d49b26f9faf7f38013e9de06786085bf0b53028899"
+    },
+    {
+      "path": "services/consent_registry/models.py",
+      "bytes": 362,
+      "lines": 14,
+      "sha256": "b753c0b3156590254810607ea58a5665a6bec784d63adfa24108b5b44ca61772"
+    },
+    {
+      "path": "services/consent_registry/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "69a8d91f845e0b4a24b1118766e14f25b7ac0be4047e0ab75d8e37cb96207e25"
+    },
+    {
+      "path": "services/consent_registry/readmodel.py",
+      "bytes": 400,
+      "lines": 11,
+      "sha256": "fb490b375f3906c123360bbcc35de265152250d178cd8969a50e8670355bdaae"
+    },
+    {
+      "path": "services/consent_registry/repository.py",
+      "bytes": 672,
+      "lines": 17,
+      "sha256": "117c563c77cb73f7354c7383895824696664b1afcd6bb0190350f46d904f206c"
+    },
+    {
+      "path": "services/consent_registry/schema.sql",
+      "bytes": 237,
+      "lines": 7,
+      "sha256": "6e3ff8e12d2c0cad4240cb50da95e9e1490852b92590e1f548dcc6b86adba41f"
+    },
+    {
+      "path": "services/consent_registry/service.py",
+      "bytes": 618,
+      "lines": 14,
+      "sha256": "f5136096297b4157dc7c5c54a5b79b9a9395e7ce2ba7efdd1063573760b5dc3b"
+    },
+    {
+      "path": "services/consent_registry/validation.py",
+      "bytes": 616,
+      "lines": 13,
+      "sha256": "591e4130bcc628fd914f7410757159150943894cff916ed5770e9dea91c5625e"
+    },
+    {
+      "path": "services/contact_events/api.py",
+      "bytes": 472,
+      "lines": 13,
+      "sha256": "6649cbe6adab57025bb491bd869ff7bda551b01df23fcc421be2ec8ab0be3e19"
+    },
+    {
+      "path": "services/contact_events/bridge.py",
+      "bytes": 368,
+      "lines": 11,
+      "sha256": "edb64e5017ab74dae4ab35f975b774b10808a96ec5b20fba41b3632bbf150b87"
+    },
+    {
+      "path": "services/contact_events/deployment.yaml",
+      "bytes": 268,
+      "lines": 13,
+      "sha256": "2dfae7c4bc6e78d14accaccc11dc8a119e71d3559ab8150229a7c5ff61c98e3a"
+    },
+    {
+      "path": "services/contact_events/domain.py",
+      "bytes": 532,
+      "lines": 17,
+      "sha256": "8947a9b634703803274ca8b6cd0f2ac1021d121c5353404bc521cec35ae79d7c"
+    },
+    {
+      "path": "services/contact_events/events.py",
+      "bytes": 465,
+      "lines": 15,
+      "sha256": "1d8934cee3992ffff5cdf9269e22e5209c76b45b56fe6e53e546c3650c99caf7"
+    },
+    {
+      "path": "services/contact_events/jobs.py",
+      "bytes": 508,
+      "lines": 16,
+      "sha256": "9da32fa4c73b37af1dda083df2f60393284add1224f209f384b7ca89b57c78a0"
+    },
+    {
+      "path": "services/contact_events/metrics.py",
+      "bytes": 401,
+      "lines": 10,
+      "sha256": "fac5be291dc64f74d2b67af35ff5148403f6cd6b3ac426228fd5dace8e2cc8bd"
+    },
+    {
+      "path": "services/contact_events/models.py",
+      "bytes": 373,
+      "lines": 14,
+      "sha256": "f2c2fa352d241e3dd94e12d9f2dd2fd8ae813ca7eb6f3738a2fe8415d7f37d13"
+    },
+    {
+      "path": "services/contact_events/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "521943c7845a24cf3365ae0de19e2e5b633e1cd1902b5f7dedf9feec3c4f21d2"
+    },
+    {
+      "path": "services/contact_events/readmodel.py",
+      "bytes": 403,
+      "lines": 11,
+      "sha256": "58bea88d5b2193af462ae934bdd812cae2a593ffd526583125552c763e9f352d"
+    },
+    {
+      "path": "services/contact_events/repository.py",
+      "bytes": 688,
+      "lines": 17,
+      "sha256": "1d000cfc75587615a7c644a277f1a37d7db4de4705490b207c43ca3b0f6c071d"
+    },
+    {
+      "path": "services/contact_events/schema.sql",
+      "bytes": 243,
+      "lines": 7,
+      "sha256": "895153e9f95a77f97f199d0df339d5ad4027dd46f9ecde0462962200532b5a54"
+    },
+    {
+      "path": "services/contact_events/service.py",
+      "bytes": 615,
+      "lines": 14,
+      "sha256": "26b71ec84d9ff7884b7e03736e94c477aa7323557a5e8276a99b7d66b4aa4344"
+    },
+    {
+      "path": "services/contact_events/validation.py",
+      "bytes": 630,
+      "lines": 13,
+      "sha256": "8c856aae81a33c13555662e65438c503fa822f1ca81316dc9e910f4026c08f7d"
+    },
+    {
+      "path": "services/customer_profile/api.py",
+      "bytes": 479,
+      "lines": 13,
+      "sha256": "0a0f58692f9626b70c42051688e32ca3e8acf94bf2da2a9de4aa940def4c4240"
+    },
+    {
+      "path": "services/customer_profile/deployment.yaml",
+      "bytes": 285,
+      "lines": 13,
+      "sha256": "79f648a1f4aa5303ee6b87f3c081e93a7974c1431927595d7494ffdf739c1722"
+    },
+    {
+      "path": "services/customer_profile/domain.py",
+      "bytes": 675,
+      "lines": 17,
+      "sha256": "db2cf9a206037c09da9ed56f83a33ef6ab6e6c9242441f33826d7e6c58a2372a"
+    },
+    {
+      "path": "services/customer_profile/events.py",
+      "bytes": 447,
+      "lines": 15,
+      "sha256": "30afce96470d6117dba10f47c14d8c4050aad71f9852deda3686df138b55762a"
+    },
+    {
+      "path": "services/customer_profile/jobs.py",
+      "bytes": 509,
+      "lines": 16,
+      "sha256": "876e218f75afba6f4450e85adb12ce25cdc31fa3cd35161bbab7bae01d024dcf"
+    },
+    {
+      "path": "services/customer_profile/metrics.py",
+      "bytes": 403,
+      "lines": 10,
+      "sha256": "1aebb4bb4ee288ff41f475194b11bbe9fa8aa3c73ab7e572a910b0ef5a4b55d7"
+    },
+    {
+      "path": "services/customer_profile/models.py",
+      "bytes": 373,
+      "lines": 14,
+      "sha256": "6572d7fa643ac0aa6c39f170fb82833478c4ccd0ae9c83b79aa919905348cfa7"
+    },
+    {
+      "path": "services/customer_profile/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "5f3d2a4323a4238cf6439adfa47bba57f51882ea113790a094bc2b81c0c04a91"
+    },
+    {
+      "path": "services/customer_profile/readmodel.py",
+      "bytes": 404,
+      "lines": 11,
+      "sha256": "fe8410f7799283b57caac9b8354eca3f4cca29c8c4a33e0c605e66cfa328d9b2"
+    },
+    {
+      "path": "services/customer_profile/repository.py",
+      "bytes": 680,
+      "lines": 17,
+      "sha256": "c1d5ea6da769fd25b0e45eaeb72e781eada29648752b8af0c27ccacb2b5a3321"
+    },
+    {
+      "path": "services/customer_profile/schema.sql",
+      "bytes": 239,
+      "lines": 7,
+      "sha256": "78c9ea0b2c421e623375b3504c4b10cec8ded0c83796f605ed09b413fcdc4e89"
+    },
+    {
+      "path": "services/customer_profile/service.py",
+      "bytes": 828,
+      "lines": 19,
+      "sha256": "2e6111792c3e2c08215f7ec4f72c1780650a6aaf384c4289890855898c027a31"
+    },
+    {
+      "path": "services/customer_profile/validation.py",
+      "bytes": 611,
+      "lines": 13,
+      "sha256": "d9673bac9d1772d77ec3efa9aa4c278f7fd536c500b632a910fb089bbf206bdc"
+    },
+    {
+      "path": "services/document_archive/api.py",
+      "bytes": 473,
+      "lines": 13,
+      "sha256": "107a0b8ec7adcd4637c7f61b1e7de6cc0c5ba4bce450cb60edcfce1f61393a9f"
+    },
+    {
+      "path": "services/document_archive/deployment.yaml",
+      "bytes": 242,
+      "lines": 13,
+      "sha256": "4d9ac97e3da6af92718c7d5a41d99bf786d066c2999a4063cc799cac7b2d123d"
+    },
+    {
+      "path": "services/document_archive/domain.py",
+      "bytes": 500,
+      "lines": 16,
+      "sha256": "997b293009aa47d4a40293d4aa1831aab782f3330a7fdf590621c474f08e33d1"
+    },
+    {
+      "path": "services/document_archive/events.py",
+      "bytes": 447,
+      "lines": 15,
+      "sha256": "a6b3866aa99fb9f382ddd6683340e63c53a76587c3cdea7abfa2c4a1f9480976"
+    },
+    {
+      "path": "services/document_archive/jobs.py",
+      "bytes": 510,
+      "lines": 16,
+      "sha256": "7ef50ac32ec0b748171a7e346adb9f52c224f386e52276b5de24e1f805d6fb36"
+    },
+    {
+      "path": "services/document_archive/metrics.py",
+      "bytes": 402,
+      "lines": 10,
+      "sha256": "b3dc04a751e04d37f86ac96231c1a98abb5a59d9e0aa311be60f0f6d69b1aff3"
+    },
+    {
+      "path": "services/document_archive/models.py",
+      "bytes": 385,
+      "lines": 14,
+      "sha256": "295d31b75397e3e9e81e4eb755ab48eaf4ce3c5955a32a2fa2b8d3ce64b4ab34"
+    },
+    {
+      "path": "services/document_archive/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "a7eee782291b3c7b0a45b4efce6ae324319b75960e61fa043af7bc6542546c58"
+    },
+    {
+      "path": "services/document_archive/readmodel.py",
+      "bytes": 417,
+      "lines": 11,
+      "sha256": "db1ab9097930454b97f4c028a46fb2cfb4142ab201d46e96e2157d6c19917501"
+    },
+    {
+      "path": "services/document_archive/repository.py",
+      "bytes": 708,
+      "lines": 17,
+      "sha256": "86b06f6e8f1a1ad584c8f6c2f289ade51d45e77432cfd316e9259890a1251897"
+    },
+    {
+      "path": "services/document_archive/schema.sql",
+      "bytes": 248,
+      "lines": 7,
+      "sha256": "ff0a65eabe022e52ad25d01f9f9d442756535be51f09ed0aa9f562e2f6a13154"
+    },
+    {
+      "path": "services/document_archive/service.py",
+      "bytes": 614,
+      "lines": 14,
+      "sha256": "44d32a47585b8ba575584abdf402c2e24fd12f3a4078c28d2b190d4e3bfb28db"
+    },
+    {
+      "path": "services/document_archive/validation.py",
+      "bytes": 644,
+      "lines": 13,
+      "sha256": "96e920219e7ddce53071adc77d5f3d99754fd3e702dd59dd35437fd4ac61b0f8"
+    },
+    {
+      "path": "services/edge_gateway/api.py",
+      "bytes": 464,
+      "lines": 13,
+      "sha256": "3a743f86e1c5d9296a47cbed551524fea71774a7648c4945947fb8e227c60549"
+    },
+    {
+      "path": "services/edge_gateway/deployment.yaml",
+      "bytes": 365,
+      "lines": 13,
+      "sha256": "e468b02e767eff433cf9a06f6814ad3231bd8149f704dbcca09506308b7b744f"
+    },
+    {
+      "path": "services/edge_gateway/domain.py",
+      "bytes": 723,
+      "lines": 17,
+      "sha256": "223bb3f53b07f1e694867d0489a013692460c7657f6d934013d041e12974e3cd"
+    },
+    {
+      "path": "services/edge_gateway/events.py",
+      "bytes": 444,
+      "lines": 15,
+      "sha256": "a147c3ef667e4b5b8d2413fa8aa7e33e5faad7de674aa144b3c820924399b56e"
+    },
+    {
+      "path": "services/edge_gateway/jobs.py",
+      "bytes": 505,
+      "lines": 16,
+      "sha256": "691dee0d8d995853e9c04e820998b1fe15b3cf3d2e8b69516d53ae4e034c5875"
+    },
+    {
+      "path": "services/edge_gateway/metrics.py",
+      "bytes": 396,
+      "lines": 10,
+      "sha256": "39d0216f27a197412ec2fd51065f868f1414dfae1c5f0ec6cd425814c704182d"
+    },
+    {
+      "path": "services/edge_gateway/models.py",
+      "bytes": 366,
+      "lines": 14,
+      "sha256": "d81de5304c5a67e9565f41db4e1683cf8038b6cda6ba5cf889222b1940ea366b"
+    },
+    {
+      "path": "services/edge_gateway/policy.py",
+      "bytes": 450,
+      "lines": 13,
+      "sha256": "2727c2e7aad586e569ca0e0470407fb12b2e9b9ed5c7c7cf5c13747606014143"
+    },
+    {
+      "path": "services/edge_gateway/readmodel.py",
+      "bytes": 396,
+      "lines": 11,
+      "sha256": "5b58f876d446a542bba208f597579aafe2d477f7211ad0c39ffa4f132eda0fd7"
+    },
+    {
+      "path": "services/edge_gateway/repository.py",
+      "bytes": 680,
+      "lines": 17,
+      "sha256": "d9e49b52e4a0ff0fcf30d4d4c5ca3e4521cda8bd8a81ecc6e895f5e4aa2bca88"
+    },
+    {
+      "path": "services/edge_gateway/schema.sql",
+      "bytes": 239,
+      "lines": 7,
+      "sha256": "d15cf18ae739251ef131ad75be019c8f9dac5a3bd42b4c74f25333dca3c2486c"
+    },
+    {
+      "path": "services/edge_gateway/service.py",
+      "bytes": 600,
+      "lines": 14,
+      "sha256": "aa6ccc4ddf47d6c36edf2f87ddd8caf0b9edbeb4e5bbdd928a470ef1ca4a1b28"
+    },
+    {
+      "path": "services/edge_gateway/validation.py",
+      "bytes": 596,
+      "lines": 13,
+      "sha256": "05dac7e474553875f3073f310e5418f2f65a9cfc33559c03811e89068914e617"
+    },
+    {
+      "path": "services/fraud_review/api.py",
+      "bytes": 465,
+      "lines": 13,
+      "sha256": "a658615c0d3bd4ad08d2296c1b3217b5b36882161680d878999a75da3a0d6610"
+    },
+    {
+      "path": "services/fraud_review/deployment.yaml",
+      "bytes": 257,
+      "lines": 13,
+      "sha256": "249c4cf7ed62bb7cc7f00903b9e7a32b878e95e58bb8d4ea05ef7eefa4a45aa7"
+    },
+    {
+      "path": "services/fraud_review/domain.py",
+      "bytes": 583,
+      "lines": 15,
+      "sha256": "89f752806dbd5ed88271ef184291f3960ec4f9b129bd157648392c7d4ce78b9b"
+    },
+    {
+      "path": "services/fraud_review/events.py",
+      "bytes": 459,
+      "lines": 15,
+      "sha256": "79af81ece3f0157f5995edcf46afd4f325510aa7677b875a0a94872c06973675"
+    },
+    {
+      "path": "services/fraud_review/jobs.py",
+      "bytes": 504,
+      "lines": 16,
+      "sha256": "e985c701014ea568151c7e63094b11b68c5bea715ffbeacc5bb438fb9d976562"
+    },
+    {
+      "path": "services/fraud_review/metrics.py",
+      "bytes": 395,
+      "lines": 10,
+      "sha256": "68852747271366072e26b7cda805ba325306bcaf930383dcb5d8fdb3ec7f9729"
+    },
+    {
+      "path": "services/fraud_review/models.py",
+      "bytes": 364,
+      "lines": 14,
+      "sha256": "d88d70edb8a463c223ba8d741808b43050bbadd8608cd564894844374d78a4b1"
+    },
+    {
+      "path": "services/fraud_review/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "7a35cb19ac3b89058f60c3bb95f9f7e7ea86a0e89366a674ddba11fd1ca4f031"
+    },
+    {
+      "path": "services/fraud_review/readmodel.py",
+      "bytes": 393,
+      "lines": 11,
+      "sha256": "065ea8a85519273cd0c03314d97abf3ada832b71402718f99d03a52107c04a3b"
+    },
+    {
+      "path": "services/fraud_review/repository.py",
+      "bytes": 672,
+      "lines": 17,
+      "sha256": "0e764b387f31f949450331f5fcd7a32f1c8d2d7c91324c5517d2d1f0643023e2"
+    },
+    {
+      "path": "services/fraud_review/schema.sql",
+      "bytes": 235,
+      "lines": 7,
+      "sha256": "fdaea0ef5abd7c4cdc6b077b6362bc05112efbaa7e65fcebabd9151a45be6ef5"
+    },
+    {
+      "path": "services/fraud_review/service.py",
+      "bytes": 598,
+      "lines": 14,
+      "sha256": "1ed58100d3aaa6f754923d79e88eab7cdbdd95b00a79c5fa6d7aa511574f4f2a"
+    },
+    {
+      "path": "services/fraud_review/validation.py",
+      "bytes": 614,
+      "lines": 13,
+      "sha256": "767e993254b234e94b8163e0194b324a6cf1316e131c7b71ff559f8a963596f9"
+    },
+    {
+      "path": "services/identity_access/api.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "81638bebba53b6c6ff5c2766417357070f24e8cd0ce0b59362c952081848201b"
+    },
+    {
+      "path": "services/identity_access/deployment.yaml",
+      "bytes": 250,
+      "lines": 13,
+      "sha256": "55cfdb6ba6ef7e6c69c4c6c9a8256eef9b084e60443a65c5416808a7e99f1bb7"
+    },
+    {
+      "path": "services/identity_access/domain.py",
+      "bytes": 590,
+      "lines": 18,
+      "sha256": "81917f49a9a1c9de3ddf795017c2cfd211b5fbd667287a18de2f4dcf91d62b25"
+    },
+    {
+      "path": "services/identity_access/events.py",
+      "bytes": 452,
+      "lines": 15,
+      "sha256": "996a4f4589d218ba9de8b442f40d4d51c5f434a27252a16025634237d8accf63"
+    },
+    {
+      "path": "services/identity_access/jobs.py",
+      "bytes": 508,
+      "lines": 16,
+      "sha256": "62567cab760a1d369427b4c2bcbf820afb0ca03d552a95dec88a39e7006c68f9"
+    },
+    {
+      "path": "services/identity_access/metrics.py",
+      "bytes": 407,
+      "lines": 10,
+      "sha256": "a733801de8661eb31d2b7e07e0b725d8f90a00854101a156cff2e9ba18017e76"
+    },
+    {
+      "path": "services/identity_access/models.py",
+      "bytes": 358,
+      "lines": 14,
+      "sha256": "81fb34622779495e5198310a556ba8694c678ffb9b7e57e13a50f3b452da0278"
+    },
+    {
+      "path": "services/identity_access/policy.py",
+      "bytes": 471,
+      "lines": 13,
+      "sha256": "fd22a544d89d083ca87f614c0b760f4f1dd3a696d020864299d6f6ede1f4daa9"
+    },
+    {
+      "path": "services/identity_access/readmodel.py",
+      "bytes": 394,
+      "lines": 11,
+      "sha256": "b1cc1c5fbaf7fd358186556e847e4e154c166c8ec852cc161b6731b38f69f039"
+    },
+    {
+      "path": "services/identity_access/repository.py",
+      "bytes": 664,
+      "lines": 17,
+      "sha256": "24e6303f8dc2a3a83b0fe71f999fb72d2adff056f7ffd0030a6fa54d406758a9"
+    },
+    {
+      "path": "services/identity_access/schema.sql",
+      "bytes": 235,
+      "lines": 7,
+      "sha256": "42aff97c9fa82f14e922d2347622960139ee16565c28cd0ef1efe72896f30072"
+    },
+    {
+      "path": "services/identity_access/service.py",
+      "bytes": 626,
+      "lines": 14,
+      "sha256": "f7e379404f6640010644484cb2afc49077557033be724417b39f81c6319315cf"
+    },
+    {
+      "path": "services/identity_access/validation.py",
+      "bytes": 613,
+      "lines": 13,
+      "sha256": "ebabad383845b2d4eac16d2b97beb9f0ff8227ad8cfc35fa954a9824907a2deb"
+    },
+    {
+      "path": "services/inventory_reservation/api.py",
+      "bytes": 482,
+      "lines": 13,
+      "sha256": "ebef1413b898cf011ab77397352aa8a8e42719595ac07081a263417ec35a70e1"
+    },
+    {
+      "path": "services/inventory_reservation/deployment.yaml",
+      "bytes": 269,
+      "lines": 13,
+      "sha256": "a712dd2bff934a67e38666641780e50e69f3b00d3752bf126ef07725dd321bae"
+    },
+    {
+      "path": "services/inventory_reservation/domain.py",
+      "bytes": 655,
+      "lines": 18,
+      "sha256": "f21faaef1494240d5cc5cada9d53d37d1706f95237de4388baabe00bc2a8dd05"
+    },
+    {
+      "path": "services/inventory_reservation/events.py",
+      "bytes": 471,
+      "lines": 15,
+      "sha256": "9e95b41931ec795af3e1ae161f00c3090856ea392b8d631250824d6e50d00ecc"
+    },
+    {
+      "path": "services/inventory_reservation/jobs.py",
+      "bytes": 518,
+      "lines": 16,
+      "sha256": "40fe9afaa16962ae249a2d43c02944615db9e6bf687fa1453426c8526fa7dc36"
+    },
+    {
+      "path": "services/inventory_reservation/metrics.py",
+      "bytes": 414,
+      "lines": 10,
+      "sha256": "d1489ccdf176c818615d8d2aea6165380fe37cc8af7bbaeb9f7e55624ac9a1de"
+    },
+    {
+      "path": "services/inventory_reservation/models.py",
+      "bytes": 366,
+      "lines": 14,
+      "sha256": "dfd545a5af61df0db30d7155dfcb10491c4556fe94a62402e70d0678c77b9d33"
+    },
+    {
+      "path": "services/inventory_reservation/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "910c7257c6a74011a43e20d53cf6141988e6aeb51a5f8afea9cda5960a975d2f"
+    },
+    {
+      "path": "services/inventory_reservation/readmodel.py",
+      "bytes": 418,
+      "lines": 11,
+      "sha256": "3951b706449fa8d5fee86aface4545a9376f8d460c75c3da75d926896d0c3252"
+    },
+    {
+      "path": "services/inventory_reservation/repository.py",
+      "bytes": 696,
+      "lines": 17,
+      "sha256": "258b4fa88f6f9add1f91c4c8a1d8b2d84abe5c1714a761b12a3afc4cb5274c50"
+    },
+    {
+      "path": "services/inventory_reservation/schema.sql",
+      "bytes": 251,
+      "lines": 7,
+      "sha256": "0347f36ba6c09e4df433261685c5daa440c9c1866e3861c6525b5a979cc52f48"
+    },
+    {
+      "path": "services/inventory_reservation/service.py",
+      "bytes": 640,
+      "lines": 14,
+      "sha256": "92e0ee04be98a46d247e254cfcfe8cb4720ee08dd10f516722dc1e9d40b0c796"
+    },
+    {
+      "path": "services/inventory_reservation/validation.py",
+      "bytes": 630,
+      "lines": 13,
+      "sha256": "8af3d2183031871c0eb5d3bb017b2debfc2721139c0521820be5d67c4571a653"
+    },
+    {
+      "path": "services/loyalty_rewards/api.py",
+      "bytes": 467,
+      "lines": 13,
+      "sha256": "0fbdd51cdc6f4098c5d6b921d1a95c978bcc86efd3497a469ecf9e15bda73aa4"
+    },
+    {
+      "path": "services/loyalty_rewards/deployment.yaml",
+      "bytes": 262,
+      "lines": 13,
+      "sha256": "ada3830ede169a2c44666098d2c67e93078ab22a44b31d4781f5e1ec8cc58d5c"
+    },
+    {
+      "path": "services/loyalty_rewards/domain.py",
+      "bytes": 552,
+      "lines": 14,
+      "sha256": "06be1b953f229064f86f5eda7409c43ef3021ecbad94a8cf963f0f6a162ae42f"
+    },
+    {
+      "path": "services/loyalty_rewards/events.py",
+      "bytes": 465,
+      "lines": 15,
+      "sha256": "a79f8b73557983eb142cdb1f97d51dfd08aaa5f14d9621a47cf141f6b8858140"
+    },
+    {
+      "path": "services/loyalty_rewards/jobs.py",
+      "bytes": 507,
+      "lines": 16,
+      "sha256": "891b413fd98b19060570f91df00886d6542e9d5160e5f03b1a53c2fd12fb626e"
+    },
+    {
+      "path": "services/loyalty_rewards/metrics.py",
+      "bytes": 401,
+      "lines": 10,
+      "sha256": "85114dccf3fded7469c10872aa4250f36af5dfcbbbf3e378e1e131f6ff2123d4"
+    },
+    {
+      "path": "services/loyalty_rewards/models.py",
+      "bytes": 348,
+      "lines": 14,
+      "sha256": "1780d4b0039848ef0b814df2423475803c4ed64483538ed1bb32c804400d9902"
+    },
+    {
+      "path": "services/loyalty_rewards/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "208dd1b9445f7deb96e93a2ccd30885770c9ae88fc7850bf1544d9d78d7fbaf9"
+    },
+    {
+      "path": "services/loyalty_rewards/readmodel.py",
+      "bytes": 391,
+      "lines": 11,
+      "sha256": "2f55808f1e0f88aad2028b903b0e426ccce2fbde495de6845fae7d30100ffd42"
+    },
+    {
+      "path": "services/loyalty_rewards/repository.py",
+      "bytes": 656,
+      "lines": 17,
+      "sha256": "143f4684acd6358c47d21240e7143b88122effad799c3bfab7472a00f194e044"
+    },
+    {
+      "path": "services/loyalty_rewards/schema.sql",
+      "bytes": 231,
+      "lines": 7,
+      "sha256": "8dace74e4799b1c8a1c68ce99e7b1a59db39bf3a8d9db68d6cd58bfe1bdbad7c"
+    },
+    {
+      "path": "services/loyalty_rewards/service.py",
+      "bytes": 606,
+      "lines": 14,
+      "sha256": "e53ded09b2ec52925dee7df3f96339b885913d4538618c92f33bbb2de991ec7e"
+    },
+    {
+      "path": "services/loyalty_rewards/validation.py",
+      "bytes": 611,
+      "lines": 13,
+      "sha256": "c73681342afd14de0e71a27e1b0edf9f27bf1fe55f9daccc7b202abfa66182c6"
+    },
+    {
+      "path": "services/marketing_campaign/api.py",
+      "bytes": 476,
+      "lines": 13,
+      "sha256": "c2a26fc6c0ee505566f2343ec6d379dc3dde945c36e0fd625b07c51bd2266571"
+    },
+    {
+      "path": "services/marketing_campaign/deployment.yaml",
+      "bytes": 292,
+      "lines": 13,
+      "sha256": "ab096294742daccfb282488c6e271e51bcc98c9b50e34099e0fd4aca3da1bf8f"
+    },
+    {
+      "path": "services/marketing_campaign/domain.py",
+      "bytes": 596,
+      "lines": 13,
+      "sha256": "f3570f6cbd14a17b3d26639035b28d831958fdb290785cd425bf5357828a63ab"
+    },
+    {
+      "path": "services/marketing_campaign/events.py",
+      "bytes": 450,
+      "lines": 15,
+      "sha256": "eb405ea81849864fcc898b5173101664cabb17cec72f7510e807d913c5caafb4"
+    },
+    {
+      "path": "services/marketing_campaign/jobs.py",
+      "bytes": 512,
+      "lines": 16,
+      "sha256": "c5c6a5c529a4ba11fc34eed837d560539b063109f1c9dbbf2b9975c36b90d4da"
+    },
+    {
+      "path": "services/marketing_campaign/metrics.py",
+      "bytes": 407,
+      "lines": 10,
+      "sha256": "185390fdd4e2f1c117630746b459921f7b3b5958c9548d2efbb0fce273a383a3"
+    },
+    {
+      "path": "services/marketing_campaign/models.py",
+      "bytes": 363,
+      "lines": 14,
+      "sha256": "30482b2cf02feb45e38ea39c20cb15a4fd74fca06254da593c68c4e8c7afe91d"
+    },
+    {
+      "path": "services/marketing_campaign/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "734dfc51637d7d2249de29eae0371412bcf7e64d7ab5fc4e52e420f280b668dd"
+    },
+    {
+      "path": "services/marketing_campaign/readmodel.py",
+      "bytes": 407,
+      "lines": 11,
+      "sha256": "b60f0f2923e913e447136324d5232f1812249b4bccc2e1a2b85faffaf9a5af6c"
+    },
+    {
+      "path": "services/marketing_campaign/repository.py",
+      "bytes": 680,
+      "lines": 17,
+      "sha256": "a7de4409c75bd91a4c67886e9b260cd892dab864eb553e2938f63b7a66496957"
+    },
+    {
+      "path": "services/marketing_campaign/schema.sql",
+      "bytes": 241,
+      "lines": 7,
+      "sha256": "e421d5508f9ab94b9e4f0cf466c5875d7c67ea37e4e7a306505b1bf1f853a6d3"
+    },
+    {
+      "path": "services/marketing_campaign/service.py",
+      "bytes": 623,
+      "lines": 14,
+      "sha256": "c8c09ea65947e044909371b694ea98c66332683cfea37dfb287e9c6e6a7dfff1"
+    },
+    {
+      "path": "services/marketing_campaign/validation.py",
+      "bytes": 626,
+      "lines": 13,
+      "sha256": "63744331273411cecdc863434bf7e77d5cd01df807dcfa6f2dc1c9e9703da1b5"
+    },
+    {
+      "path": "services/merchant_registry/api.py",
+      "bytes": 476,
+      "lines": 13,
+      "sha256": "6f1428b06b498af44a07c4c0d469941b38aa861a3476f72a1ae7cc81858d7b90"
+    },
+    {
+      "path": "services/merchant_registry/deployment.yaml",
+      "bytes": 294,
+      "lines": 13,
+      "sha256": "6ce8f52eb5767e7e0ff75553b346f88b781f62439e013541d37c4782d71ed229"
+    },
+    {
+      "path": "services/merchant_registry/domain.py",
+      "bytes": 592,
+      "lines": 13,
+      "sha256": "6b0cd8aa029aade0d91116be106f56fa29701094bc0ba57db1ee377d32b1c331"
+    },
+    {
+      "path": "services/merchant_registry/events.py",
+      "bytes": 452,
+      "lines": 15,
+      "sha256": "96964c669878c20d7ce5e16b979befe8ba53b5b2e5629614a53cc09c41efda60"
+    },
+    {
+      "path": "services/merchant_registry/jobs.py",
+      "bytes": 511,
+      "lines": 16,
+      "sha256": "feb04b640ee46d040ba1a6ebeae85c1a3390a232824f482a1d3a806aa316cdd1"
+    },
+    {
+      "path": "services/merchant_registry/metrics.py",
+      "bytes": 408,
+      "lines": 10,
+      "sha256": "6e528d1b4f559b46dea15037b7071506a097e12502a21ab9fe3aed75cbd64f43"
+    },
+    {
+      "path": "services/merchant_registry/models.py",
+      "bytes": 380,
+      "lines": 14,
+      "sha256": "045ca7f8b28a0c3b7da611c80c4cd1f2612fdb9709e4fde996dadb282f59077c"
+    },
+    {
+      "path": "services/merchant_registry/policy.py",
+      "bytes": 486,
+      "lines": 13,
+      "sha256": "ff6b7f7aa50995e844b86c2cd4ab4eb8a52d9fbada9ab86906f7295ba6143c30"
+    },
+    {
+      "path": "services/merchant_registry/readmodel.py",
+      "bytes": 415,
+      "lines": 11,
+      "sha256": "726b9479bb2e1e3e86ccb89b72c2e398c1976c4eadc7104866d508513aa95a4b"
+    },
+    {
+      "path": "services/merchant_registry/repository.py",
+      "bytes": 700,
+      "lines": 17,
+      "sha256": "b8d20f16cc1ed7fbd799ef62c806c783d4da9e1b32f2b0091e812881211f98db"
+    },
+    {
+      "path": "services/merchant_registry/schema.sql",
+      "bytes": 246,
+      "lines": 7,
+      "sha256": "cc5dd7ef4acf42bc12ca8fa12ebd94f0a91a9d7a3f549a576298e7db33186507"
+    },
+    {
+      "path": "services/merchant_registry/service.py",
+      "bytes": 627,
+      "lines": 14,
+      "sha256": "6e6090dce83eb1d65e383ff12bb49fd3baff7d9f54b9b747786e2f7434bcef7e"
+    },
+    {
+      "path": "services/merchant_registry/validation.py",
+      "bytes": 640,
+      "lines": 13,
+      "sha256": "83f886bb083cc8cf551d7bd0c165be42f177b3ed8cb078ad0592ce621c9247e7"
+    },
+    {
+      "path": "services/notification_dispatch/api.py",
+      "bytes": 484,
+      "lines": 13,
+      "sha256": "26c98bdad7d06193d9d2635852699323398e479801eb0faff7a66e178059b019"
+    },
+    {
+      "path": "services/notification_dispatch/consumer.py",
+      "bytes": 513,
+      "lines": 14,
+      "sha256": "1631e1ea5bd8c3d189d6f13108472d0f0fb5429ed20ba638a68004a7e6e0fd5e"
+    },
+    {
+      "path": "services/notification_dispatch/deployment.yaml",
+      "bytes": 271,
+      "lines": 13,
+      "sha256": "7335a1b17c91b52c82aa19e24cc3520cea85d6191903f1889798c9462dbeed05"
+    },
+    {
+      "path": "services/notification_dispatch/domain.py",
+      "bytes": 762,
+      "lines": 17,
+      "sha256": "11a35709f8f7f170f6c2bca995b41c1b96ec0ac5f632cdb9554da95e214dea06"
+    },
+    {
+      "path": "services/notification_dispatch/events.py",
+      "bytes": 470,
+      "lines": 15,
+      "sha256": "0471dcaa5ff5a161f9e12d368d2217aa12fe338ed109d4105dc33467733927d5"
+    },
+    {
+      "path": "services/notification_dispatch/jobs.py",
+      "bytes": 515,
+      "lines": 16,
+      "sha256": "8bc0ebb51d4a9701108f2ba2b12a02c10c5af3cfbea8a458cba42dc8ca37afcd"
+    },
+    {
+      "path": "services/notification_dispatch/metrics.py",
+      "bytes": 415,
+      "lines": 10,
+      "sha256": "e16043ffe1884593ebaeef185827c5bd10920632808bd5cbd9bd9c741ed491ee"
+    },
+    {
+      "path": "services/notification_dispatch/models.py",
+      "bytes": 362,
+      "lines": 14,
+      "sha256": "fe978f2f6aa04da173a406e878c61a07d743e25b019173fbdc2b9a5859a791ba"
+    },
+    {
+      "path": "services/notification_dispatch/policy.py",
+      "bytes": 486,
+      "lines": 13,
+      "sha256": "ddb12f344e2399ddf24d57c99258db5ba0dcb587f40faa284e0246e746a7b02e"
+    },
+    {
+      "path": "services/notification_dispatch/readmodel.py",
+      "bytes": 411,
+      "lines": 11,
+      "sha256": "78661b044d46722eb49e71b943e237692ee164d119701cbf46e043f3ad38c9be"
+    },
+    {
+      "path": "services/notification_dispatch/repository.py",
+      "bytes": 676,
+      "lines": 17,
+      "sha256": "8650d6803cbb5b4b01e2faa14f07b778ce69ec9d4c07bfa04b9cd3dfbd6331c7"
+    },
+    {
+      "path": "services/notification_dispatch/schema.sql",
+      "bytes": 240,
+      "lines": 7,
+      "sha256": "644608624db1b1240f6b08d979268bb823e9319f80aa69bb9522a68a187d3705"
+    },
+    {
+      "path": "services/notification_dispatch/service.py",
+      "bytes": 641,
+      "lines": 14,
+      "sha256": "9c1116b63a89110d45c58069a63c4296b715148634b3d49472accb00b4b6c799"
+    },
+    {
+      "path": "services/notification_dispatch/validation.py",
+      "bytes": 614,
+      "lines": 13,
+      "sha256": "9981a6d74099224ac714fdbaccc74540cd63f72cafad77ec8bee88d4216b662b"
+    },
+    {
+      "path": "services/order_fulfillment/api.py",
+      "bytes": 476,
+      "lines": 13,
+      "sha256": "5d5965c242b78526053037809140872073a706b5463bba28ed9626cfdc94c128"
+    },
+    {
+      "path": "services/order_fulfillment/deployment.yaml",
+      "bytes": 247,
+      "lines": 13,
+      "sha256": "5c62a2b2662adcd1a692f041e51cf1f77265c3e56f62acc63aa0f71f0a948176"
+    },
+    {
+      "path": "services/order_fulfillment/domain.py",
+      "bytes": 729,
+      "lines": 20,
+      "sha256": "e03922eaf3c443845cd1d28d01709d3c83550ede6536fbd70c7d2b3b63244502"
+    },
+    {
+      "path": "services/order_fulfillment/events.py",
+      "bytes": 447,
+      "lines": 15,
+      "sha256": "a6968f27e08004fdb3f5ad9e2bb69723d2f26e279fc8bc7d3943d5a4a5fb7bba"
+    },
+    {
+      "path": "services/order_fulfillment/jobs.py",
+      "bytes": 508,
+      "lines": 16,
+      "sha256": "68f2090f11d020257d868287054ce6e30c4f96e9036ccaf0044659aecfaf2dfc"
+    },
+    {
+      "path": "services/order_fulfillment/metrics.py",
+      "bytes": 406,
+      "lines": 10,
+      "sha256": "f5505550d35899b1d03c076a7d3028e6dbe4cf4b6f6edde03dea09b9091acf02"
+    },
+    {
+      "path": "services/order_fulfillment/models.py",
+      "bytes": 374,
+      "lines": 14,
+      "sha256": "e80252e58a83065ed00a832560452657a97ac72f2c3d5841e113c593b4b6e4a4"
+    },
+    {
+      "path": "services/order_fulfillment/policy.py",
+      "bytes": 471,
+      "lines": 13,
+      "sha256": "547f7d24c5dd15211749a0905b54e72ce386b427c200acf44e172b6a22a60fe9"
+    },
+    {
+      "path": "services/order_fulfillment/readmodel.py",
+      "bytes": 408,
+      "lines": 11,
+      "sha256": "d0b10f271cfd72611b08653ce8c04e40fe3281cf1ffc7fe0ea77458eef31983b"
+    },
+    {
+      "path": "services/order_fulfillment/repository.py",
+      "bytes": 680,
+      "lines": 17,
+      "sha256": "7b0df56a36b2d7d9b958157771d212177a23f9624bac2653c70ff4bfa4470458"
+    },
+    {
+      "path": "services/order_fulfillment/schema.sql",
+      "bytes": 235,
+      "lines": 7,
+      "sha256": "269c87d91020d1c17f4b8b88fa03f790ce36a14e121317938e091b1eb88a4a5f"
+    },
+    {
+      "path": "services/order_fulfillment/service.py",
+      "bytes": 620,
+      "lines": 14,
+      "sha256": "289ff68b536220d5d27858814188fd2b4d9c1e710eef99d9967dc740830bacf7"
+    },
+    {
+      "path": "services/order_fulfillment/validation.py",
+      "bytes": 618,
+      "lines": 13,
+      "sha256": "806956af9c04745d8e4cd3eb329fedfbcd1957ebccd345116a70964e43586621"
+    },
+    {
+      "path": "services/partner_webhook/api.py",
+      "bytes": 470,
+      "lines": 13,
+      "sha256": "f0858872f6bcaa2132d7576a1e28aca01752ee94ee6ac03aee7d1982cef50081"
+    },
+    {
+      "path": "services/partner_webhook/deployment.yaml",
+      "bytes": 278,
+      "lines": 13,
+      "sha256": "6d6d6faacc58dcbd7b9633bb34141278bca0fe707194d8cdffa35401ce6a8507"
+    },
+    {
+      "path": "services/partner_webhook/domain.py",
+      "bytes": 510,
+      "lines": 18,
+      "sha256": "4fac0d0938206d666a753d3f1508dc3f1ec862e7fbd8fec216d181916d1ea90e"
+    },
+    {
+      "path": "services/partner_webhook/events.py",
+      "bytes": 446,
+      "lines": 15,
+      "sha256": "e0507e4cb360de382dad33a7cdf9a03521bf2d9b7bd4146b35ff85abb3e80039"
+    },
+    {
+      "path": "services/partner_webhook/jobs.py",
+      "bytes": 509,
+      "lines": 16,
+      "sha256": "49538208f40588082a3a291d53eb733e35e5036fdcc71a6d21086c11cf80b21c"
+    },
+    {
+      "path": "services/partner_webhook/metrics.py",
+      "bytes": 400,
+      "lines": 10,
+      "sha256": "53c3de9ca955ec7e4c82d9f13a58a3e9d0628e6cccf36c6868733b94a7cf8fb6"
+    },
+    {
+      "path": "services/partner_webhook/models.py",
+      "bytes": 372,
+      "lines": 14,
+      "sha256": "ea4327ee8454d038150497b94960f59f21528266ec039c253d32d84e49e9cbe6"
+    },
+    {
+      "path": "services/partner_webhook/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "3a50d87bcb5eac3e7b81769d5dfe9897e1b883914268a615b52cfed14c54f153"
+    },
+    {
+      "path": "services/partner_webhook/readmodel.py",
+      "bytes": 407,
+      "lines": 11,
+      "sha256": "f8d7765f47e780d52b7a12a25464dd912c72246c5fd843bf210b4a3cf63d9c03"
+    },
+    {
+      "path": "services/partner_webhook/repository.py",
+      "bytes": 692,
+      "lines": 17,
+      "sha256": "81a46963c6d84cc7534c5cc0e4f2d28b9cf213dc629044f07b43963a31447eb3"
+    },
+    {
+      "path": "services/partner_webhook/schema.sql",
+      "bytes": 244,
+      "lines": 7,
+      "sha256": "e9bd32cf5e014f65dca3ac8f7eeec0ecbd2b09ac02c7f8059826352a2d36a2ab"
+    },
+    {
+      "path": "services/partner_webhook/service.py",
+      "bytes": 609,
+      "lines": 14,
+      "sha256": "df2d2885d097bfe1fa92063c35d89f46c324285485c994962dce07585dde5609"
+    },
+    {
+      "path": "services/partner_webhook/validation.py",
+      "bytes": 615,
+      "lines": 13,
+      "sha256": "12770294846c6e79fb66b3cfcfc8cd315c4006a8368854063dd0dfc9d666fd91"
+    },
+    {
+      "path": "services/payment_settlement/api.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "834b0f60bac5aeed67b6c917709ff7eba265bdf97cdb1debbdc0aad473783eb1"
+    },
+    {
+      "path": "services/payment_settlement/deployment.yaml",
+      "bytes": 263,
+      "lines": 13,
+      "sha256": "5db4424944b737f1e64f355f96fc0d3d9ad6221f8fe3a23d6641711262880d45"
+    },
+    {
+      "path": "services/payment_settlement/domain.py",
+      "bytes": 726,
+      "lines": 13,
+      "sha256": "e2298570fdb7d186f82f0a781bcdcf40551a9ed129eb02f5007d6266b5f1dc2a"
+    },
+    {
+      "path": "services/payment_settlement/events.py",
+      "bytes": 465,
+      "lines": 15,
+      "sha256": "75115efec92cc5bdca9ff812f535509ea093b0f4b34d2861cda6005a0fc3ef0f"
+    },
+    {
+      "path": "services/payment_settlement/jobs.py",
+      "bytes": 514,
+      "lines": 16,
+      "sha256": "15e4b39f90d9683e4dd661281ff9e25bda7aadfabc79a9816a4c5c2613c9e2d7"
+    },
+    {
+      "path": "services/payment_settlement/metrics.py",
+      "bytes": 410,
+      "lines": 10,
+      "sha256": "9c1f04d4251c1b76e091405c85cfc11d189b65cfb7497179f00aab6eb1d284aa"
+    },
+    {
+      "path": "services/payment_settlement/models.py",
+      "bytes": 367,
+      "lines": 14,
+      "sha256": "6d467848b0515e313ab054691ec900d74a4b507d473506073e13def2c9b2b080"
+    },
+    {
+      "path": "services/payment_settlement/policy.py",
+      "bytes": 495,
+      "lines": 13,
+      "sha256": "334e92c09c6e315e46c9443e64b4a6892d973c06aaa2a2abc9402e080f357a2e"
+    },
+    {
+      "path": "services/payment_settlement/readmodel.py",
+      "bytes": 411,
+      "lines": 11,
+      "sha256": "67865a604c48d51fab93ad7757b2a91883dd4f3cb59e81681ff29146cf310a96"
+    },
+    {
+      "path": "services/payment_settlement/repository.py",
+      "bytes": 692,
+      "lines": 17,
+      "sha256": "7e46ddcd81c155c502de4a46b8b9085e41e0cfe4bd1114a0036a1a7863bf284b"
+    },
+    {
+      "path": "services/payment_settlement/schema.sql",
+      "bytes": 248,
+      "lines": 7,
+      "sha256": "54a0f7e983d55a897ae155a13e864181550833f5c2341879d50882aa260724d0"
+    },
+    {
+      "path": "services/payment_settlement/service.py",
+      "bytes": 632,
+      "lines": 14,
+      "sha256": "7c35f013da75ad781a1790dbc1b084edba052a256de495a8a60b715e53fb29c0"
+    },
+    {
+      "path": "services/payment_settlement/validation.py",
+      "bytes": 621,
+      "lines": 13,
+      "sha256": "3b8b266e20ad9537ff0e932a06f38488fd2f0b2cea8fb3b3cd74096392a19916"
+    },
+    {
+      "path": "services/product_catalog/api.py",
+      "bytes": 472,
+      "lines": 13,
+      "sha256": "45a5a42cf789904700098d164397b2dc6d6284ae5ea01f40301bcfdea6a40368"
+    },
+    {
+      "path": "services/product_catalog/deployment.yaml",
+      "bytes": 248,
+      "lines": 13,
+      "sha256": "07c2e5341e71947ee22861e74131dfdc75939a5fbc0ddd5e8d7c94851206b6eb"
+    },
+    {
+      "path": "services/product_catalog/domain.py",
+      "bytes": 626,
+      "lines": 17,
+      "sha256": "3d2c4e2944a61aa2078c5ba8c3299a8766d65f1683bc2a7e8c4d3594a879498c"
+    },
+    {
+      "path": "services/product_catalog/events.py",
+      "bytes": 448,
+      "lines": 15,
+      "sha256": "fd2cb7e5a500c9649236425e222f2b2d2e34b87d5673ae4b601d041bb3bab76e"
+    },
+    {
+      "path": "services/product_catalog/jobs.py",
+      "bytes": 508,
+      "lines": 16,
+      "sha256": "a847557ccc48e94978b019b0ba3cf32f1087df62bfa57cbe775b528dc2c84073"
+    },
+    {
+      "path": "services/product_catalog/metrics.py",
+      "bytes": 403,
+      "lines": 10,
+      "sha256": "3445565bafd01b54a8d3200141d3d9db18e4b6a22817c5e76b6c957e09594422"
+    },
+    {
+      "path": "services/product_catalog/models.py",
+      "bytes": 350,
+      "lines": 14,
+      "sha256": "91a546274bbd38b354e11a075956652ed31805346ff9c9ceb8b895f8d63edc27"
+    },
+    {
+      "path": "services/product_catalog/policy.py",
+      "bytes": 480,
+      "lines": 13,
+      "sha256": "8f42ba68931577a60ef7c374af46ad62f1f521f5e29fe922cf0e3a3b7da8aa4b"
+    },
+    {
+      "path": "services/product_catalog/readmodel.py",
+      "bytes": 390,
+      "lines": 11,
+      "sha256": "bd18c6c84003f8c66ce9709d1babc8d213139b6ab97baa6c2d017e5adbab75bf"
+    },
+    {
+      "path": "services/product_catalog/repository.py",
+      "bytes": 656,
+      "lines": 17,
+      "sha256": "8fc4236e9fba20c803a2dfd61ebabde539d8a949c9b48cd770408c3a2ce90105"
+    },
+    {
+      "path": "services/product_catalog/schema.sql",
+      "bytes": 233,
+      "lines": 7,
+      "sha256": "3e3d09763cea9aefbfb1539c73c9c421e52b0a14c608f60ac06980e1257e608e"
+    },
+    {
+      "path": "services/product_catalog/service.py",
+      "bytes": 616,
+      "lines": 14,
+      "sha256": "eedae8e7ece047666dbaa19aa687446a301ad6f48a5b1a3f9e0df7b294cf0579"
+    },
+    {
+      "path": "services/product_catalog/validation.py",
+      "bytes": 606,
+      "lines": 13,
+      "sha256": "a6960385fbc8597488179819d60cd1ff49e57d37f699f50ea1007bb29e95ecdf"
+    },
+    {
+      "path": "services/returns_case/api.py",
+      "bytes": 467,
+      "lines": 13,
+      "sha256": "35f295a3bd9b319910f4afeb3d2a9d842455c51f4124e7a351ef7d89647ae255"
+    },
+    {
+      "path": "services/returns_case/deployment.yaml",
+      "bytes": 253,
+      "lines": 13,
+      "sha256": "865fc2072b12794483699389ec87d23027465e8b78dc3d0148d87d6ff089c366"
+    },
+    {
+      "path": "services/returns_case/domain.py",
+      "bytes": 566,
+      "lines": 13,
+      "sha256": "0faa45ef476e2ff17dc3a27c054f292b6dc7b1a473dcbadc30e361dc38acdbce"
+    },
+    {
+      "path": "services/returns_case/events.py",
+      "bytes": 450,
+      "lines": 15,
+      "sha256": "f997200b2090a248a0dea57fa2c3407472b8ea62484a18f5068191303974b244"
+    },
+    {
+      "path": "services/returns_case/jobs.py",
+      "bytes": 509,
+      "lines": 16,
+      "sha256": "a13ddfe858e416beacb76fe87b3b7cafb60332ed707ab252abe60c04f9fb50e8"
+    },
+    {
+      "path": "services/returns_case/metrics.py",
+      "bytes": 398,
+      "lines": 10,
+      "sha256": "11eb3a08fec72780162d23e98a0ba03ca226cf355d9aeba7c43dca1a8a9f248f"
+    },
+    {
+      "path": "services/returns_case/models.py",
+      "bytes": 360,
+      "lines": 14,
+      "sha256": "0ababf6c9c14f8b9b7878c35aa72564218b2d40f93f075393b1e81eefc2e7db5"
+    },
+    {
+      "path": "services/returns_case/policy.py",
+      "bytes": 483,
+      "lines": 13,
+      "sha256": "4d5a3c40e2e02b7b08c77617efe02858a15791e7baab8abb3c2715fc188b3c5a"
+    },
+    {
+      "path": "services/returns_case/readmodel.py",
+      "bytes": 394,
+      "lines": 11,
+      "sha256": "c99c5cb79ca10eda93782c5f0e131e58c748ac34ca13dff95161e1c17082fe0b"
+    },
+    {
+      "path": "services/returns_case/repository.py",
+      "bytes": 684,
+      "lines": 17,
+      "sha256": "7bdc111e1ba396db50e57a5ee6def88ea5dcb1ee27d886e5ebf6133221777467"
+    },
+    {
+      "path": "services/returns_case/schema.sql",
+      "bytes": 248,
+      "lines": 7,
+      "sha256": "a1b6ee1413cb56f6f4aea1219918d228fccada292873d5de8614084e60c733e3"
+    },
+    {
+      "path": "services/returns_case/service.py",
+      "bytes": 611,
+      "lines": 14,
+      "sha256": "38726293aed6fd34d9f00b09ea37786faff87fb47dbb5e11fe61a70a51e4aa94"
+    },
+    {
+      "path": "services/returns_case/validation.py",
+      "bytes": 638,
+      "lines": 13,
+      "sha256": "fe3bb2f267eb768422a68f6fa2660496532cc0b1b3a790d334b9202bb4785849"
+    },
+    {
+      "path": "services/search_index/api.py",
+      "bytes": 461,
+      "lines": 13,
+      "sha256": "26a8c8d64175ace765a7d1b13dee126dd7b6181d34df364e06e3ee9df19560d2"
+    },
+    {
+      "path": "services/search_index/deployment.yaml",
+      "bytes": 236,
+      "lines": 13,
+      "sha256": "9d71d32ba752a8e029c372156c18695d485e18fe4ffd7729a23c93271baa911c"
+    },
+    {
+      "path": "services/search_index/domain.py",
+      "bytes": 583,
+      "lines": 17,
+      "sha256": "bab9669a95b29cdf2b86529d793f31ab79f1481a27e62a9e4a4ce8438107ee72"
+    },
+    {
+      "path": "services/search_index/events.py",
+      "bytes": 468,
+      "lines": 15,
+      "sha256": "6a57cf9eaa26d9ecb5f70fca0643288da04bc480e17b21068b7c89ccdd367d72"
+    },
+    {
+      "path": "services/search_index/jobs.py",
+      "bytes": 507,
+      "lines": 16,
+      "sha256": "7702b61aa477fbd69731dbbda68ded660e363f6936655f745ffb4892fb68fef5"
+    },
+    {
+      "path": "services/search_index/metrics.py",
+      "bytes": 395,
+      "lines": 10,
+      "sha256": "7d1c3b659309c2c0ec48707902125756bc44cc727f6a4a169997ed444aa4bfd3"
+    },
+    {
+      "path": "services/search_index/models.py",
+      "bytes": 363,
+      "lines": 14,
+      "sha256": "a32daaee99ab917006eb58c4957753addd93f835c4bde838f63788c5f81c2479"
+    },
+    {
+      "path": "services/search_index/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "c1bbcf6fd5b6f6ce1269e93cd68a4c2ce9ff354f79fc11b28729df2e6d8ee9db"
+    },
+    {
+      "path": "services/search_index/readmodel.py",
+      "bytes": 398,
+      "lines": 11,
+      "sha256": "8efb22fe4feae0f323c0e14453cf65b10e51d5245b3b29b778a1ff5bcc4edef6"
+    },
+    {
+      "path": "services/search_index/repository.py",
+      "bytes": 688,
+      "lines": 17,
+      "sha256": "0781642f09d9d8ae8280d3fea0d21ece3c3591d1f5d429fc975a40668821926c"
+    },
+    {
+      "path": "services/search_index/schema.sql",
+      "bytes": 245,
+      "lines": 7,
+      "sha256": "9bc4e77bfe20af6571e406463b6220db213e1e5ac08c21892284d14a5466c21d"
+    },
+    {
+      "path": "services/search_index/service.py",
+      "bytes": 597,
+      "lines": 14,
+      "sha256": "f8be55c7c26bc4ccc1a6001d7b30845305fc8827c4c35b46065fdb3740a8bb62"
+    },
+    {
+      "path": "services/search_index/validation.py",
+      "bytes": 614,
+      "lines": 13,
+      "sha256": "23ba5fe2f59b30913d2ed606a983d442711ea2059531356225859439a3f9f751"
+    },
+    {
+      "path": "services/shipment_tracking/api.py",
+      "bytes": 475,
+      "lines": 13,
+      "sha256": "01871b2be396744d9f5a2ef50fa7e99a9c488a2cfc17425d0a029f72b05783f9"
+    },
+    {
+      "path": "services/shipment_tracking/deployment.yaml",
+      "bytes": 270,
+      "lines": 13,
+      "sha256": "f78f402734b0e58cbb654952f209682ae7361fd5ba11661c24eaba1a94ac5f18"
+    },
+    {
+      "path": "services/shipment_tracking/domain.py",
+      "bytes": 584,
+      "lines": 14,
+      "sha256": "ec8c879494692f4f7f14cdf96f6e729dd75851ac5432ea846ffb8308e55b55eb"
+    },
+    {
+      "path": "services/shipment_tracking/events.py",
+      "bytes": 471,
+      "lines": 15,
+      "sha256": "7e8e6a3534e1ee34731eae603889cc29e178fdf842018e0857282465af27a28c"
+    },
+    {
+      "path": "services/shipment_tracking/jobs.py",
+      "bytes": 511,
+      "lines": 16,
+      "sha256": "21471efa73c22b9862955e79528d65780a0a1277b3b49cc8938977d576bc1a37"
+    },
+    {
+      "path": "services/shipment_tracking/metrics.py",
+      "bytes": 405,
+      "lines": 10,
+      "sha256": "8ebf19358b21a4ad08f484467ace890cf5f1e312e490bd9fc2df0a52d062f526"
+    },
+    {
+      "path": "services/shipment_tracking/models.py",
+      "bytes": 367,
+      "lines": 14,
+      "sha256": "db9f6258008e32ca3e65fdc59ead5bf360b0f16b62625cb3bc641a3cbb77c29c"
+    },
+    {
+      "path": "services/shipment_tracking/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "68f2515ef23c4774a2bd546a9681e868af391852bf0961be7bc51cb0d1270e30"
+    },
+    {
+      "path": "services/shipment_tracking/readmodel.py",
+      "bytes": 407,
+      "lines": 11,
+      "sha256": "955e793f1f939180abaaa812721857116c87fc2858219248b691eb1a2b9f9f70"
+    },
+    {
+      "path": "services/shipment_tracking/repository.py",
+      "bytes": 684,
+      "lines": 17,
+      "sha256": "4c639e7cb65a9c7b81b710b9dfade093707f36db0b593d1127e3cb7de8ddb0cf"
+    },
+    {
+      "path": "services/shipment_tracking/schema.sql",
+      "bytes": 242,
+      "lines": 7,
+      "sha256": "16ddf917d5706770a23f8d6dbc37b0aee4f738d5b2ee756b254047f67f65efc9"
+    },
+    {
+      "path": "services/shipment_tracking/service.py",
+      "bytes": 620,
+      "lines": 14,
+      "sha256": "caabc6185346ce5c0927a1c68aae03eb705008ad2e819dee759430298aab02e9"
+    },
+    {
+      "path": "services/shipment_tracking/validation.py",
+      "bytes": 635,
+      "lines": 13,
+      "sha256": "3c4b09e88f7d01e85fb62674ad0226c06a9fcc3c4a54cc7e3073cc68744db392"
+    },
+    {
+      "path": "services/sms_gateway/api.py",
+      "bytes": 465,
+      "lines": 13,
+      "sha256": "cd23dd61230bd07c83ee2619e4db900425a678ab5a193b836c582622ca58021a"
+    },
+    {
+      "path": "services/sms_gateway/consumer.py",
+      "bytes": 409,
+      "lines": 11,
+      "sha256": "510e4c2cf53bb131f5c53664ef2e29e991120c2c87e3cb661a671e52b6ff391d"
+    },
+    {
+      "path": "services/sms_gateway/deployment.yaml",
+      "bytes": 262,
+      "lines": 13,
+      "sha256": "a429bfff6c29d0b820de111e4331c4ffd25c35e1840a8d3a3ec71f3fd96bb918"
+    },
+    {
+      "path": "services/sms_gateway/domain.py",
+      "bytes": 649,
+      "lines": 14,
+      "sha256": "fda7b0c3e1696db07abfe48db95212692b0af85d69339d3eecea95e73b6fb0c5"
+    },
+    {
+      "path": "services/sms_gateway/events.py",
+      "bytes": 460,
+      "lines": 15,
+      "sha256": "faa210f2241fee0913be2834fbee6be3a2eaee251cac8a8518a36b2779240fc4"
+    },
+    {
+      "path": "services/sms_gateway/jobs.py",
+      "bytes": 504,
+      "lines": 16,
+      "sha256": "11bc9b8079d28b4f4fffe642887519283a6bf3591f57649a272add4ae2e01cab"
+    },
+    {
+      "path": "services/sms_gateway/metrics.py",
+      "bytes": 395,
+      "lines": 10,
+      "sha256": "6423d9d67fba7af4220b938607c9744e467dc12c8ea1677b816e01f8aa30e89b"
+    },
+    {
+      "path": "services/sms_gateway/models.py",
+      "bytes": 378,
+      "lines": 14,
+      "sha256": "c44c3c6e87bc51f3e3f1cf60d5325a406f3e09e1b45b41f9920f3efb885ef1a4"
+    },
+    {
+      "path": "services/sms_gateway/policy.py",
+      "bytes": 477,
+      "lines": 13,
+      "sha256": "434c0a3ba6dd09a2148bafdb0e246d99e5ae1bf4b8a5bee3df89847f5375c5cc"
+    },
+    {
+      "path": "services/sms_gateway/provider.py",
+      "bytes": 559,
+      "lines": 15,
+      "sha256": "5f8cd48bc7df817c56ebbc5fda46dcd9e44f8f8d2ef03ec1417a9a7019d0bb49"
+    },
+    {
+      "path": "services/sms_gateway/readmodel.py",
+      "bytes": 400,
+      "lines": 11,
+      "sha256": "30c193e7cf2c3ac2ebf76f146f83786eb27425f0319f8584760e673348f50d68"
+    },
+    {
+      "path": "services/sms_gateway/repository.py",
+      "bytes": 692,
+      "lines": 17,
+      "sha256": "5179c973decb0f2f14134be8bbd072eea04e5686d7f0f17eed4d8bbaee3310a8"
+    },
+    {
+      "path": "services/sms_gateway/schema.sql",
+      "bytes": 242,
+      "lines": 7,
+      "sha256": "66b140d5da5d44af92a86e2de180fc1c50771e8b0ef8f4733b14e9efd8909819"
+    },
+    {
+      "path": "services/sms_gateway/service.py",
+      "bytes": 601,
+      "lines": 14,
+      "sha256": "514b74fb224e0a40903cd3e0e5b639719408fef5b437fb17d8d298dfe28f2af1"
+    },
+    {
+      "path": "services/sms_gateway/validation.py",
+      "bytes": 612,
+      "lines": 13,
+      "sha256": "0b3e07187778f7c08d3fd6783c0dd4e5a03af8e58e5749831410ecf1cd4ca959"
+    },
+    {
+      "path": "services/support_case/api.py",
+      "bytes": 465,
+      "lines": 13,
+      "sha256": "1f228536f773dbd8351b2e1afd7426d242622fe747384e65ff282d50f6e4be1d"
+    },
+    {
+      "path": "services/support_case/deployment.yaml",
+      "bytes": 270,
+      "lines": 13,
+      "sha256": "9921c84d7f7b020e593a2f66ed6b0923f359c14e7ca31391400424ca3aced8ea"
+    },
+    {
+      "path": "services/support_case/domain.py",
+      "bytes": 627,
+      "lines": 18,
+      "sha256": "2cb809c9637bafa94dc75a3b11fff792ef549d660db96af93b3359aff8a258a9"
+    },
+    {
+      "path": "services/support_case/events.py",
+      "bytes": 443,
+      "lines": 15,
+      "sha256": "7f0e20c1c660038982cdb7ca5d44caf51eae7376b4579a4ec1c3fc7a8ad5bb0e"
+    },
+    {
+      "path": "services/support_case/jobs.py",
+      "bytes": 504,
+      "lines": 16,
+      "sha256": "aaa254fa307b1628f90e9e9a95887718ce27eea83e0c998812fd5229012ea110"
+    },
+    {
+      "path": "services/support_case/metrics.py",
+      "bytes": 396,
+      "lines": 10,
+      "sha256": "54b972b63955681895d6b2937d3f6854c1fe13d9e155c9d165d5263593095fcd"
+    },
+    {
+      "path": "services/support_case/models.py",
+      "bytes": 364,
+      "lines": 14,
+      "sha256": "7bb71b1840894462dcae49c1e2d401b8e01821df2d7ab7cef95b300b54958f6d"
+    },
+    {
+      "path": "services/support_case/policy.py",
+      "bytes": 474,
+      "lines": 13,
+      "sha256": "98af3a5a2ed6ea6e62e4038c90be37b51998b099a4da336c64310646f48ad3ce"
+    },
+    {
+      "path": "services/support_case/readmodel.py",
+      "bytes": 393,
+      "lines": 11,
+      "sha256": "9d99c02d786916584fbc8aef7127a972b55bdffe8932cbbbfb9636d3f242da7c"
+    },
+    {
+      "path": "services/support_case/repository.py",
+      "bytes": 672,
+      "lines": 17,
+      "sha256": "c6c84d46560ce1b30c7ad26e1c7ab3022e7159e688e3127588024ddcca1b6623"
+    },
+    {
+      "path": "services/support_case/schema.sql",
+      "bytes": 235,
+      "lines": 7,
+      "sha256": "75d9728d9f4343a08043cdefbc6ed25e0a579d2bacf274e6862861230f4f18ef"
+    },
+    {
+      "path": "services/support_case/service.py",
+      "bytes": 600,
+      "lines": 14,
+      "sha256": "f83933c6f6fd04c7b96e63b6ab05aeda2cb3536d2f4ffd0d58017f8009e6805e"
+    },
+    {
+      "path": "services/support_case/validation.py",
+      "bytes": 616,
+      "lines": 13,
+      "sha256": "63c90c7e7c7f587090f5f69f9ff4476abee4714b6e5d99358bfb9cb27ed1cc0f"
+    }
+  ]
+}

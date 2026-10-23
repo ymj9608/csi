@@ -1,0 +1,13 @@
+{
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "arm": "architecture_route",
+  "complete": false,
+  "requestTextBytes": 2457,
+  "imageBytes": 90528,
+  "httpStatus": 403,
+  "providerErrorCode": "model_not_found",
+  "providerErrorType": "invalid_request_error",
+  "error": "PROVIDER_HTTP_ERROR",
+  "wallMs": 1483.832
+}

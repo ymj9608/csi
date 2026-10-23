@@ -1,0 +1,173 @@
+{
+  "width": 3000,
+  "height": 2320,
+  "nodes": 28,
+  "edges": 26,
+  "excludedIds": [],
+  "routes": [
+    {
+      "from": "edge_gateway",
+      "to": "customer_profile",
+      "mode": "sync",
+      "label": "contact update"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "identity_access",
+      "mode": "sync",
+      "label": "session validation"
+    },
+    {
+      "from": "customer_profile",
+      "to": "consent_registry",
+      "mode": "sync",
+      "label": "contact purpose"
+    },
+    {
+      "from": "customer_profile",
+      "to": "profile_db",
+      "mode": "sync",
+      "label": "contact storage"
+    },
+    {
+      "from": "customer_profile",
+      "to": "contact_events",
+      "mode": "async",
+      "label": "contact.changed"
+    },
+    {
+      "from": "contact_events",
+      "to": "kafka",
+      "mode": "async",
+      "label": "delivery.requested"
+    },
+    {
+      "from": "kafka",
+      "to": "notification_dispatch",
+      "mode": "async",
+      "label": "delivery.requested"
+    },
+    {
+      "from": "notification_dispatch",
+      "to": "sms_gateway",
+      "mode": "async",
+      "label": "sms.requested"
+    },
+    {
+      "from": "sms_gateway",
+      "to": "external_sms",
+      "mode": "sync",
+      "label": "message delivery"
+    },
+    {
+      "from": "sms_gateway",
+      "to": "audit_archive",
+      "mode": "async",
+      "label": "delivery.completed"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "product_catalog",
+      "mode": "sync",
+      "label": "product browse"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "order_fulfillment",
+      "mode": "sync",
+      "label": "order request"
+    },
+    {
+      "from": "product_catalog",
+      "to": "search_index",
+      "mode": "async",
+      "label": "product.published"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "inventory_reservation",
+      "mode": "async",
+      "label": "order.accepted"
+    },
+    {
+      "from": "inventory_reservation",
+      "to": "shipment_tracking",
+      "mode": "async",
+      "label": "inventory.reserved"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "billing_ledger",
+      "mode": "async",
+      "label": "order.accepted"
+    },
+    {
+      "from": "billing_ledger",
+      "to": "payment_settlement",
+      "mode": "async",
+      "label": "invoice.posted"
+    },
+    {
+      "from": "payment_settlement",
+      "to": "fraud_review",
+      "mode": "async",
+      "label": "payment.settled"
+    },
+    {
+      "from": "payment_settlement",
+      "to": "analytics_rollup",
+      "mode": "async",
+      "label": "payment.settled"
+    },
+    {
+      "from": "shipment_tracking",
+      "to": "loyalty_rewards",
+      "mode": "async",
+      "label": "shipment.delivered"
+    },
+    {
+      "from": "loyalty_rewards",
+      "to": "analytics_rollup",
+      "mode": "async",
+      "label": "reward.accrued"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "business_db",
+      "mode": "sync",
+      "label": "order persistence"
+    },
+    {
+      "from": "support_case",
+      "to": "returns_case",
+      "mode": "sync",
+      "label": "return authorization"
+    },
+    {
+      "from": "marketing_campaign",
+      "to": "consent_registry",
+      "mode": "sync",
+      "label": "audience permission"
+    },
+    {
+      "from": "merchant_registry",
+      "to": "document_archive",
+      "mode": "sync",
+      "label": "onboarding records"
+    },
+    {
+      "from": "partner_webhook",
+      "to": "shipment_tracking",
+      "mode": "sync",
+      "label": "carrier status"
+    }
+  ],
+  "labelPlacementWarnings": [],
+  "graphSha256": "d9b623570a9d60e023ebcff53777d768ef72736cb517fd28c2a5eef0320ff037",
+  "svgSha256": "0c105b8ef5a016d4e5f6e9535d954d00ee0e9fc0769b88f1a352c8a80dfadcfe",
+  "provenance": "Generated synthetic component graph, not a production architecture.",
+  "containsSourcePaths": false,
+  "containsEvaluationAnswers": false,
+  "pngSha256": "8f43346912a8f8683f5f37c8444c92de569aa12f3890310b557ec87edc7e66b3",
+  "pngBytes": 436721
+}

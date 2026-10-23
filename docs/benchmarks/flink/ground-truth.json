@@ -1,0 +1,74 @@
+[
+  {
+    "id": "V1",
+    "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "startLine": 130,
+    "endLine": 130,
+    "positive": true,
+    "reason": "Delegation token bytes encoded to Base64 then logged",
+    "expectedRule": "SEC-05"
+  },
+  {
+    "id": "V2",
+    "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "startLine": 93,
+    "endLine": 93,
+    "positive": true,
+    "reason": "AWS session token logged",
+    "expectedRule": "SEC-05"
+  },
+  {
+    "id": "V3",
+    "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "startLine": 71,
+    "endLine": 71,
+    "positive": true,
+    "reason": "AWS secret key replaces upstream redaction",
+    "expectedRule": "SEC-05"
+  },
+  {
+    "id": "V4",
+    "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "startLine": 447,
+    "endLine": 448,
+    "positive": true,
+    "reason": "REST hostname verification unconditionally disabled",
+    "expectedRule": null
+  },
+  {
+    "id": "V5",
+    "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "startLine": 292,
+    "endLine": 292,
+    "positive": true,
+    "reason": "Keystore password logged",
+    "expectedRule": "SEC-05"
+  },
+  {
+    "id": "N1",
+    "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "startLine": 131,
+    "endLine": 131,
+    "positive": false,
+    "reason": "Only byte count logged",
+    "expectedRule": null
+  },
+  {
+    "id": "N2",
+    "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "startLine": 94,
+    "endLine": 94,
+    "positive": false,
+    "reason": "Only event name logged",
+    "expectedRule": null
+  },
+  {
+    "id": "N3",
+    "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "startLine": 296,
+    "endLine": 296,
+    "positive": false,
+    "reason": "Variable named password holds a constant redaction marker",
+    "expectedRule": null
+  }
+]

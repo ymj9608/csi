@@ -1,0 +1,25 @@
+{
+  "name": "1-full_code-1-inspect",
+  "provider": "ollama",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T05:11:11Z",
+  "inputSha256": "337188fc2e8962e1e62eedab7f1e33057141b57b030af5d91e383b3aed36ae0f",
+  "inputTokens": 8957,
+  "outputTokens": 63,
+  "httpStatus": 200,
+  "loadNs": 721947666,
+  "prefillNs": 31718508000,
+  "generationNs": 5515587000,
+  "returnedModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "answerText": "{\n  \"notes\": \"\",\n  \"readPaths\": [\n    \"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\n    \"flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java\"\n  ]\n}",
+  "answer": {
+    "notes": "",
+    "readPaths": [
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ]
+  },
+  "wallMs": 39731.825,
+  "finishedAtUtc": "2026-10-23T05:11:50Z"
+}

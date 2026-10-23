@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "complete": true,
+  "synthetic": true,
+  "allTrialsComplete": true,
+  "protocolSha256": "6c3693ec799b4e01a51ce7dd18dea807ff4a30d437b787ca0e2506ba1c8ea6ec",
+  "measurementSha256": "1d10b1b88ab5eb27cfab0027d6b86dc285c4f419632a7547551cb7eccf6359c2",
+  "manifestSha256": "affee2d42d4236805e8ce00e501ad30a061b3465343fb845190028abf64db939",
+  "rawResponsesSha256": "17d275d6a0225c39ddcf7df785b0c1ba868972649d02f4e63a8977973c8f8c49",
+  "rawResponseCount": 26,
+  "arms": {
+    "full_code": {
+      "trialComplete": true,
+      "reviewResponseCount": 10,
+      "followupResponseCount": 2,
+      "followupResponseNeeds": [
+        {
+          "batch": 9,
+          "path": "Exact path to the `publish` function in services/customer_profile/events.py",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        },
+        {
+          "batch": 10,
+          "path": "Exact path to `parse_record` in services/identity_access/validation.py (lines 9–13) for contact data validation evidence.",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        }
+      ],
+      "discardedValidFollowupNeeds": [],
+      "hasDiscardedValidFollowupNeeds": false,
+      "responseIssues": [],
+      "invalidPrimaryEvidenceCount": 8,
+      "invalidSupportEvidenceCount": 14,
+      "recordedFindingCount": 33,
+      "runnerUnresolvedNeeds": [
+        [
+          "services/marketing_campaign/service.py",
+          "services/merchant_registry/service.py",
+          "services/notification_dispatch/consumer.py",
+          "services/notification_dispatch/service.py"
+        ]
+      ],
+      "runnerRejectedNeeds": [
+        {
+          "path": "exact relative path to the database schema or table definition for `profile_records`",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Contact data fields (e.g., phone numbers, email addresses) in the supplied source to confirm exposure.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "services/partner_webhook/service.py: exact path to external HTTP transfer code (e.g., direct HTTP client call)",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the external HTTP client or broker library used for event publishing (e.g., `services/returns_case/events.py` imports a non-TLS transport).",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the SMS payload template content (e.g., `services/sms_gateway/validation.py` or similar) for further evidence of raw contact data.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the `publish` function in services/customer_profile/events.py",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to `parse_record` in services/identity_access/validation.py (lines 9–13) for contact data validation evidence.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ]
+    },
+    "code_index": {
+      "trialComplete": true,
+      "reviewResponseCount": 5,
+      "followupResponseCount": 2,
+      "followupResponseNeeds": [
+        {
+          "batch": 4,
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        },
+        {
+          "batch": 5,
+          "path": "Exact relative path for `repository.py` in both services to confirm if contact data is stored or exposed via raw persistence.",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        }
+      ],
+      "discardedValidFollowupNeeds": [],
+      "hasDiscardedValidFollowupNeeds": false,
+      "responseIssues": [],
+      "invalidPrimaryEvidenceCount": 3,
+      "invalidSupportEvidenceCount": 6,
+      "recordedFindingCount": 16,
+      "runnerUnresolvedNeeds": [],
+      "runnerRejectedNeeds": [
+        {
+          "path": "Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact relative path for `repository.py` in both services to confirm if contact data is stored or exposed via raw persistence.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ]
+    },
+    "vision_index": {
+      "trialComplete": true,
+      "reviewResponseCount": 4,
+      "followupResponseCount": 1,
+      "followupResponseNeeds": [
+        {
+          "batch": 4,
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        }
+      ],
+      "discardedValidFollowupNeeds": [],
+      "hasDiscardedValidFollowupNeeds": false,
+      "responseIssues": [],
+      "invalidPrimaryEvidenceCount": 4,
+      "invalidSupportEvidenceCount": 3,
+      "recordedFindingCount": 11,
+      "runnerUnresolvedNeeds": [],
+      "runnerRejectedNeeds": [
+        {
+          "path": "Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the external HTTP client used for sending contact data (e.g., SMS gateway or email service) in `services/notification_dispatch/events.py`",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ]
+    },
+    "structure_json_index": {
+      "trialComplete": true,
+      "reviewResponseCount": 5,
+      "followupResponseCount": 2,
+      "followupResponseNeeds": [
+        {
+          "batch": 4,
+          "path": "jobs/legacy_export.yaml",
+          "inManifest": true,
+          "inEffectiveSelection": true,
+          "runnerAccepted": true
+        },
+        {
+          "batch": 5,
+          "path": "services/customer_profile/events.py (exact path for `publish` implementation to confirm external HTTP usage)",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        },
+        {
+          "batch": 5,
+          "path": "services/edge_gateway/service.py (exact path for any direct HTTP calls to external services)",
+          "inManifest": false,
+          "inEffectiveSelection": false,
+          "runnerAccepted": true
+        }
+      ],
+      "discardedValidFollowupNeeds": [
+        {
+          "batch": 4,
+          "path": "jobs/legacy_export.yaml",
+          "inManifest": true,
+          "inEffectiveSelection": true,
+          "runnerAccepted": true
+        }
+      ],
+      "hasDiscardedValidFollowupNeeds": true,
+      "responseIssues": [],
+      "invalidPrimaryEvidenceCount": 6,
+      "invalidSupportEvidenceCount": 8,
+      "recordedFindingCount": 12,
+      "runnerUnresolvedNeeds": [
+        [
+          "services/consent_registry/service.py",
+          "services/edge_gateway/deployment.yaml",
+          "services/edge_gateway/service.py",
+          "services/identity_access/service.py",
+          "services/marketing_campaign/service.py"
+        ],
+        [
+          "services/contact_events/api.py",
+          "services/order_fulfillment/service.py",
+          "services/product_catalog/api.py"
+        ]
+      ],
+      "runnerRejectedNeeds": [
+        {
+          "path": "<-- Missing path for contact data handling (e.g., logging or external HTTP transfers).",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "services/customer_profile/events.py (exact path for `publish` implementation to confirm external HTTP usage)",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "services/edge_gateway/service.py (exact path for any direct HTTP calls to external services)",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ]
+    }
+  },
+  "hasDiscardedValidFollowupNeeds": true,
+  "limits": [
+    "This audit does not alter or replace frozen model calls, protocol, planner, labels, or original scores.",
+    "The frozen runner silently drops manifest-valid needs returned by a successful follow-up. They are separately preserved here.",
+    "inEffectiveSelection does not establish that the requested file was present in the same follow-up call or understood by the model.",
+    "Primary/support invalid counts use the frozen runner's recorded per-reference evidence flags; they are not a new semantic source review.",
+    "Reference validation establishes a matching submitted line, not complete runtime dataflow or legal compliance.",
+    "Raw response hashes are captured at audit time; original capture did not include a response-content hash in the measurement stream.",
+    "Complete means every logged response was audited after four finished trials, not that every trial or quality check passed."
+  ]
+}

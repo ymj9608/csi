@@ -1,0 +1,155 @@
+{
+  "version": 2,
+  "status": "FROZEN_NOT_MEASURED",
+  "commit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "task": {
+    "id": "flink-credential-and-tls",
+    "instruction": "Repair credential/token/password disclosure and REST hostname verification regressions in changed files; preserve safe diagnostics, credential forwarding/refresh and existing explicit true/false configuration behavior.",
+    "changedPaths": [
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ],
+    "scannerPaths": [
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ],
+    "finding": {
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+      "fields": [
+        "accessToken",
+        "secretKey",
+        "password"
+      ]
+    },
+    "readOnlyContractPaths": [
+      "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java"
+    ]
+  },
+  "paths": [
+    "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/ConnectionUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/RedirectingSslHandler.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java"
+  ],
+  "sources": {
+    "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java": "f754d99afb7ed3d8d6459d94a2ec5e4ed50743505bfb36c4799ae5bcc50629fc",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java": "869c9de83bb26840338238f29a83e4c3ff881ad454a77015c7973076fd71fd57",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java": "2099765ee0d010b7ddc9a8c25635ddaa8053bb6b69d0a0bc9bbec7607e6f65d1",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java": "87e292742ab54ca561e266154f0d6961389790692813dad7b5f4b4026ce46dce",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/ConnectionUtils.java": "400d0743bdaf3605a98a25509b40a7f622d8cf0964185275da2f004225b95378",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/RedirectingSslHandler.java": "3f41573e907d03f1ac4690aa6fd5615160fccf3b159e0b4a735ba4d8e278138c",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java": "65ab10c43e044c64ae418982bb1c3ff75ff2beb65bdf3246a4d6f7970a0774cb",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java": "023bee108436e0c4f09e4a4b573cf15f084248517e0a260a88572e5a52a85caa",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java": "c585017d749fa38609c5cd2d49aefe6bc6d05789e896f5a1f08f77015a0615cf",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java": "95e7e7aeb6a2f3313c7693034a6e5d1f73fc7a95d9aae029960de24caef13051",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java": "da28fa0beb4c7a1d05584c185b454bbcdaf593097793abb4d84547f9b8632f93",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java": "bee57d51ef25741c97250163aae0a2c9c6ba709639161564db7f8864a0b1a1a2",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java": "79eae1799e2cb316c95245c2ac44ace4dbb57ac6faec6ab25018e5e91328332b",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenProvider.java": "ddaab743c94920838ac2ac1fa1acb907512d57f00d436c5a3818a529a98a60a5",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenReceiver.java": "58dca433d5a9459c50c2c083f166b40197332dfa5f4ba06d07167fed761007fe",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java": "f08bb43f4647c73c321eaaf63f3cc22e6c51c3f06644d9622e680b7b374fa70f",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenReceiver.java": "4fcc86cc6c69ff743fa69b862e3197e4cef0f17f4de970386a860c338702052f",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java": "9854a8d239184429c8515730484a78ff48e0a28ce4eaa5de50c4ae5edc2a1405",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenReceiver.java": "984cb458da3d3e7acd476414bf782f5da4282ab33cce5229b4e5a1cd9d9df68b",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java": "52cab611db3b145c49dce58fe95ae36ffe9f4fef4beb42ae0e2121aaec0e2efc"
+  },
+  "sourceBytes": 173112,
+  "imageSha256": "90fc3976daf274defbbcf9307ae5891699a790702de42a116b1b2b52a2a6f012",
+  "codingProvider": "ollama",
+  "codingModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "visionProvider": "openai",
+  "visionModel": "gpt-5.4-mini-2026-03-17",
+  "schedule": [
+    {
+      "repeat": 1,
+      "seed": 42,
+      "arm": "full_code"
+    },
+    {
+      "repeat": 1,
+      "seed": 42,
+      "arm": "code_index"
+    },
+    {
+      "repeat": 1,
+      "seed": 42,
+      "arm": "vision_index"
+    },
+    {
+      "repeat": 2,
+      "seed": 43,
+      "arm": "code_index"
+    },
+    {
+      "repeat": 2,
+      "seed": 43,
+      "arm": "vision_index"
+    },
+    {
+      "repeat": 2,
+      "seed": 43,
+      "arm": "full_code"
+    },
+    {
+      "repeat": 3,
+      "seed": 44,
+      "arm": "vision_index"
+    },
+    {
+      "repeat": 3,
+      "seed": 44,
+      "arm": "full_code"
+    },
+    {
+      "repeat": 3,
+      "seed": 44,
+      "arm": "code_index"
+    }
+  ],
+  "maxCodeCallsPerTrial": 10,
+  "maxExtraReads": 2,
+  "maxOutputTokens": 4096,
+  "contextTokens": 32768,
+  "maxRequestSourceBytes": 48000,
+  "temperature": 0,
+  "attemptsPerTrial": 1,
+  "implementationHashes": {
+    "scripts/benchmark_flink_patches.py": "5d1f228af3dda6405140545a368536eb93a6412fbb1a4881bf355f6224bba465",
+    "scripts/flink_patch_protocol.py": "f95408a62fb47cf77f0bcb719b51ef933f56abd4c9ead1b54bd9389372fe21ac",
+    "scripts/flink_patch_validation.py": "54d5cecc9afe11e515cf07475af22e3dbcb28b6587f24a53760ff553fa6291af",
+    "architecture_agent/context.py": "fb964a4b7d4b250048cde748884fc979d9e3bca17c239a1b647cafff2d0e9a54",
+    "architecture_agent/vision.py": "715fda93909c4e9f354195776e32f85ba1b0cc6856121889c82700df505c6c27",
+    "scripts/benchmark_flink.py": "91db2be4235042def4a84734d172451681a835a1b1041c4a607edc2379b88b51",
+    "tests/fixtures/flink_patch_eval/CsiS3SecurityTest.java": "01c89ffcb0b808e7ac7f414830d0601153e9f33313b1c0fca66db6135e2fe450",
+    "tests/fixtures/flink_patch_eval/CsiSslSecurityTest.java": "c7ccc52973debdb604335aaf2bab0ce5ce626cde92ec9393d4e53af2e93d5120",
+    "tests/fixtures/flink_patch_eval/CsiTokenSecurityTest.java": "540dc3d37b769df38087ed9aac403a34b0559c91610311a131a6741d01515712",
+    "tests/fixtures/flink_patch_eval/maven-settings.xml": "0be2a3ae26ebe7f4866b2858331e47474a40e87cbb23c161e15182c0adf2ae33"
+  },
+  "limits": [
+    "One task with five synthetic defects, not independent samples of five tasks.",
+    "Quality gate is observed paired preservation, not statistical noninferiority.",
+    "Full arm reads the declared scoped corpus, not all Flink files.",
+    "Vision arm cannot remove code-index candidates; gains are not guaranteed.",
+    "Tests and reference restoration never enter model prompts.",
+    "This runner is isolated; the production Lichu coding profile is unchanged."
+  ]
+}

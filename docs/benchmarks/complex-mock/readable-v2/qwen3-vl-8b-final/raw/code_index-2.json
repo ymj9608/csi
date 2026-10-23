@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:17:26.887915Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"services/edge_gateway/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"request admitted id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) is logged in plaintext via logger.info(). No masking or sanitization isap\",\n      \"support\": [\n        {\n          \"filePath\": \"services/edge_gateway/models.py\",\n          \"line\": 7,\n          \"evidence\": \"    record_id: str\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/identity_access/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"session authenticated id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) is logged in plaintext via logger.info(). No masking or sanitization isap\",\n      \"support\": [\n        {\n          \"filePath\": \"services/identity_access/models.py\",\n          \"line\": 7,\n          \"evidence\": \"    record_id: str\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/marketing_campaign/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"campaign planned id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) is logged in plaintext via logger.info(). No masking or sanitization isap\",\n      \"support\": [\n        {\n          \"filePath\": \"services/marketing_campaign/models.py\",\n          \"line\": 7,\n          \"evidence\": \"    record_id: str\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/edge_gateway/events.py\",\n      \"line\": 7,\n      \"evidence\": \"\\\"id\\\": correlation_id, \\\"type\\\": TOPIC, \\\"body\\\": dict(payload)\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"Contact data (`owner_ref`) is sent over external HTTP without TLS in event payloads. No evidence of encrypted transport.\",\n      \"support\": [\n        {\n          \"filePath\": \"services/edge_gateway/service.py\",\n          \"line\": 12,\n          \"evidence\": \"publish(bus, record.record_id, {\\\"owner_ref\\\": record.owner_ref})\"\n        },\n        {\n          \"filePath\": \"services/identity_access/events.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"id\\\": correlation_id, \\\"type\\\": TOPIC, \\\"body\\\": dict(payload)\"\n        }\n      ]\n    }\n  ],\n  \"needs\": [\n    \"Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.\"\n  ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 57268184791,
+  "load_duration": 118971000,
+  "prompt_eval_count": 7594,
+  "prompt_eval_duration": 21872209000,
+  "eval_count": 642,
+  "eval_duration": 34909933000
+}

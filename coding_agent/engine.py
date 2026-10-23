@@ -12,6 +12,9 @@ from .validation import validate_response
 from .verifier import passed, verify
 from .verification.contract import BASELINE_FAILURES, complete_security_report
 from .reporting import build_review, SCOPE
+from .orchestrator import run as orchestrate
+from .executor import CandidateExecutor
+from .openai_vlm import model_name, provider_name
 
 def patch(before, after):
     lines=difflib.unified_diff(before.splitlines(True),after.splitlines(True),
@@ -25,8 +28,8 @@ def local_url(url):
     return url.rstrip('/')
 
 def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL, verifier=verify, chat=None,
-             progress=None, diagnostics_dir=None):
-    """Bounded generation → validation → one repair. Does not change the repository."""
+             progress=None, diagnostics_dir=None, vlm_chat=None):
+    """VLM-led tool loop for image jobs; legacy bounded flow for historical jobs."""
     started=time.monotonic()
     def notify(phase, attempt=0):
         if progress:
@@ -71,11 +74,35 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
                 or baseline.get('passed',0) < 33 or baseline.get('exitCode') != 1
                 or baseline.get('isolation') != 'DOCKER_NETWORK_NONE'):
             raise Rejected('BASELINE_NOT_SUPPORTED')
+        architecture=context.get('architecture')
+        if context.get('architectureId') and not architecture:
+            raise Rejected('ARCHITECTURE_REQUIRED')
+        if architecture:
+            if context.get('architectureId') != architecture.get('id'):
+                raise Rejected('ARCHITECTURE_ID_MISMATCH')
+            if context.get('vlmModel',model_name()) != model_name():
+                raise Rejected('VLM_MODEL_MISMATCH')
+            if context.get('vlmProvider',provider_name()) != provider_name():
+                raise Rejected('VLM_PROVIDER_MISMATCH')
+            packet={key:user[key] for key in ('profile','commitSha','policy','findings','references','callerContract')}
+            packet['previousAnalysis']=[{'findingId':f['id'],'analysis':{
+                k:v for k,v in f.get('analysis',{}).items() if k!='references'}} for f in findings]
+            result['engineVersion']='4'
+            executor=CandidateExecutor(tree,user,result,findings,[refs[key] for key in sorted(allowed_refs)],
+                url=url,verifier=verifier,chat=chat,notify=notify,patch=patch,diagnostics_dir=diagnostics_dir)
+            handoff=orchestrate(repo,packet,architecture,executor,chat=vlm_chat,notify=notify,ollama_url=url)
+            result['handoff']=handoff
+            if handoff['status']=='READY':
+                executor.publish_for_review()
+            else:
+                result['failureReason']=handoff.get('failureReason','VLM_BLOCKED')
+            result['durationMs']=int((time.monotonic()-started)*1000)
+            return result
         for number in range(1,3):
             attempt={'number':number};attempts.append(attempt)
             text=None
             payload={'model':model,'stream':False,'think':False,
-                     'format':response_schema(allowed_refs | {f['id'] for f in findings}),'keep_alive':'3m',
+                     'format':response_schema(allowed_refs | {f['id'] for f in findings}),'keep_alive':0,
                      'options':{'temperature':0,'seed':42,'num_ctx':8192,'num_predict':3000},'messages':messages}
             t=time.monotonic()
             try:

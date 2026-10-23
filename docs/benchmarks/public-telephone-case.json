@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "case_id": "petclinic-owner-telephone-impact-v1",
+  "repository": "spring-petclinic/spring-petclinic-microservices",
+  "commit": "1d76b00d683e86b62867a6bf59530f8ab301244f",
+  "manifest": "public-project-manifest.json",
+  "reference_material_only": true,
+  "task_prompt": "Review Owner.telephone personal-data handling in this Spring application. Identify concrete source-supported risks and change-impact paths across validation, mapping, persistence, responses, logging and other services that consume owner data. Distinguish verified code evidence from missing deployment configuration. Recommend a minimal safe change and validation plan; do not infer a legal violation or claim PostgreSQL is configured. Do not execute or change the repository.",
+  "categories": [
+    "telephone_logging"
+  ],
+  "positives": [
+    {
+      "id": "PHONE-LOG-1",
+      "category": "telephone_logging",
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerResource.java",
+      "function": "updateOwner",
+      "line_start": 85,
+      "line_end": 90,
+      "sink_line": 89,
+      "description": "Owner update logs an Owner object whose toString includes telephone. This is a static logging exposure candidate; actual log sinks and runtime data remain unverified.",
+      "required_evidence": [
+        {
+          "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerResource.java",
+          "line_start": 85,
+          "line_end": 90,
+          "role": "object passed to log"
+        },
+        {
+          "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/Owner.java",
+          "line_start": 88,
+          "line_end": 97,
+          "role": "toString includes telephone"
+        }
+      ],
+      "diagram_visibility": "customers-service component visible; internal logging/toString behavior absent"
+    },
+    {
+      "id": "PHONE-LOG-2",
+      "category": "telephone_logging",
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicTools.java",
+      "function": "addOwnerToPetclinic",
+      "line_start": 48,
+      "line_end": 51,
+      "sink_line": 49,
+      "description": "GenAI tool logs an OwnerRequest record containing telephone; Java record string representation includes component values. This is a second data path outside Customers Service.",
+      "required_evidence": [
+        {
+          "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicTools.java",
+          "line_start": 48,
+          "line_end": 51,
+          "role": "record passed to log"
+        },
+        {
+          "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicTools.java",
+          "line_start": 76,
+          "line_end": 81,
+          "role": "record declares telephone component"
+        }
+      ],
+      "diagram_visibility": "genai-service component and function call visible; record logging behavior absent"
+    }
+  ],
+  "required_context_paths": [
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerRequest.java",
+      "role": "input validation"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/mapper/OwnerEntityMapper.java",
+      "role": "request-to-entity telephone mapping"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/Owner.java",
+      "role": "stored property and shared string representation"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/OwnerRepository.java",
+      "role": "Spring Data persistence"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerResource.java",
+      "role": "create/update/read call flow"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/hsqldb/schema.sql",
+      "role": "default database schema"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/mysql/schema.sql",
+      "role": "optional database schema"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/OwnerDetails.java",
+      "role": "gateway response carries telephone"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/OwnerDetails.java",
+      "role": "AI owner response carries telephone"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicTools.java",
+      "role": "additional input/logging path and owner tools"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/AIDataProvider.java",
+      "role": "cross-service owner data access"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicChatClient.java",
+      "role": "tool registration; external provider questions remain runtime dependent"
+    }
+  ],
+  "negative_controls": [
+    {
+      "id": "N-VETS",
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/web/VetResource.java",
+      "classification": "not_a_telephone_handler_in_supplied_code",
+      "reason": "Handles veterinarian data; no Owner.telephone access. This does not establish general security or privacy safety."
+    },
+    {
+      "id": "N-VISITS",
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/web/VisitResource.java",
+      "classification": "not_a_telephone_handler_in_supplied_code",
+      "reason": "Handles visit records and pet IDs, not owner telephone. Visit free text may have other privacy risks outside this narrow label."
+    },
+    {
+      "id": "N-DISCOVERY",
+      "path": "spring-petclinic-discovery-server/src/main/java/org/springframework/samples/petclinic/discovery/DiscoveryServerApplication.java",
+      "classification": "not_a_telephone_handler_in_supplied_code",
+      "reason": "Bootstraps service registry; does not read owner telephone."
+    }
+  ],
+  "scoring_rules": [
+    "Report candidate file/category matching separately from exact line/evidence validation.",
+    "For PHONE-LOG-1 complete reasoning must connect the logger to Owner.toString; merely flagging all object logs is insufficient.",
+    "For PHONE-LOG-2 complete reasoning must connect the logger to the record telephone component.",
+    "Do not count missing runtime authorization, TLS, external consent or PostgreSQL as a verified vulnerability.",
+    "Coverage of required_context_paths measures retrieval completeness, not legal compliance or fully correct repairs."
+  ],
+  "not_provided_to_model": [
+    "positives",
+    "required_context_paths",
+    "negative_controls",
+    "scoring_rules",
+    "reviewer_only_reference_facts"
+  ],
+  "scope_limits": [
+    "Public educational sample; static source review only, no production records accessed.",
+    "UI JS/HTML and external config repository excluded from measured backend corpus.",
+    "Two carefully traced telephone log candidates are not an exhaustive vulnerability ground truth."
+  ]
+}

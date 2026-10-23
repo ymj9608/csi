@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "dataset_id": "synthetic-lichu-architecture-v1",
+  "synthetic": true,
+  "repository": "repository",
+  "diagram": "architecture.png",
+  "diagram_source": "architecture.svg",
+  "source_file_count": 15,
+  "source_bytes": 11731,
+  "source_lines": 321,
+  "source_sha256": "87314cfbb54cf11772cc3a55671ad13861fcfc85178215680dcc64d7eee1982f",
+  "source_hash_method": "SHA256 of sorted UTF8 path + NUL + file bytes + NUL for each source file",
+  "diagram_svg_sha256": "25a90b6e617241882689d70832582f53f2dcc984d58b49c8b7c4ad454855499a",
+  "files": [
+    {
+      "path": "backend/app/api/routes.py",
+      "bytes": 1626,
+      "lines": 44,
+      "sha256": "e75aa651a6d87303f479f9b5eba43eb650ec884c0863ab5552e3738de8217229"
+    },
+    {
+      "path": "backend/app/core/audit.py",
+      "bytes": 371,
+      "lines": 11,
+      "sha256": "2e2921b81a3d630a6be83d504ba92ab6c1aeb5949e8d92dd5b72319d889050ee"
+    },
+    {
+      "path": "backend/app/core/checksums.py",
+      "bytes": 238,
+      "lines": 9,
+      "sha256": "4fc9aa0f4b8893586a2c4a5c211afbeabe85b8afe12da3d3f504ad90131f8945"
+    },
+    {
+      "path": "backend/app/core/errors.py",
+      "bytes": 120,
+      "lines": 10,
+      "sha256": "d016d208a8bd4318ccfd2b79c5e50a1428a965068b6d5d9abaa01fdc0a50d4af"
+    },
+    {
+      "path": "backend/app/core/passwords.py",
+      "bytes": 333,
+      "lines": 12,
+      "sha256": "51b2a45dddacee6254b949e6bc1a956a371e398182035b59e4e283dac82f40fe"
+    },
+    {
+      "path": "backend/app/core/recovery.py",
+      "bytes": 834,
+      "lines": 25,
+      "sha256": "91546095571b970632b918627e043ddb2380f09f2f62f7888624c5e95448c4cf"
+    },
+    {
+      "path": "backend/app/db/session.py",
+      "bytes": 1552,
+      "lines": 38,
+      "sha256": "27a44a92afded0fa0b5dcd7cc7a46e79c78a35a0a0078076e68982dd3d387c2b"
+    },
+    {
+      "path": "backend/app/main.py",
+      "bytes": 220,
+      "lines": 8,
+      "sha256": "3f5b4cda4c34a4c2d3191ebd2f1388d503df86465b6ba7bc5c309420233b70e3"
+    },
+    {
+      "path": "backend/app/repositories/catalog.py",
+      "bytes": 591,
+      "lines": 17,
+      "sha256": "673ae462683d877e324a734ac1e9519bccb877abfdf9146d6e663faf9f62bfaa"
+    },
+    {
+      "path": "backend/app/repositories/users.py",
+      "bytes": 734,
+      "lines": 19,
+      "sha256": "a20731ab033b4145fecfce492a86575771f7f224b8f2203b27662b8911b52c68"
+    },
+    {
+      "path": "backend/app/schemas/dto.py",
+      "bytes": 1236,
+      "lines": 35,
+      "sha256": "45192ca0f642d14e6b1322316d89b114fb3d4dfbcbc13cd0633398828fbe1aab"
+    },
+    {
+      "path": "backend/app/services/accounts.py",
+      "bytes": 856,
+      "lines": 21,
+      "sha256": "e73509bf4c7f8b79c13adf9a81b11e78d30a82446ceae334ff6dccf43d279b9f"
+    },
+    {
+      "path": "backend/app/services/dashboard.py",
+      "bytes": 443,
+      "lines": 12,
+      "sha256": "85338ee7168733e6538ea717e626355bf37ef9be5b34e7253d7b1a76bf275725"
+    },
+    {
+      "path": "backend/app/services/requests.py",
+      "bytes": 1999,
+      "lines": 46,
+      "sha256": "bc7bcbfd8a0ca444aafceeda2b4df48d4bdd3bb2ff3c5abb344225f05886102c"
+    },
+    {
+      "path": "backend/jobs/directory_sync.py",
+      "bytes": 578,
+      "lines": 14,
+      "sha256": "5a9eab0332d28183b9ae2b6fba5ee46ddeecbd018ed0d57ca2a755a03a195d00"
+    }
+  ]
+}

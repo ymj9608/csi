@@ -17,6 +17,7 @@ GitHub Actions 또는 로컬 스캐너가 Java/Python 코드를 정적으로 검
 | 근거 기반 리뷰 | 검사 당시 정책 snapshot, 사내 규정·외부 참조집 검색, 사실·문서 인용 검증, 개선 권고 |
 | 코드 변경 리뷰 | 두 Git 커밋의 마스킹된 좌우 diff, 지원하는 Python 선언의 추가·삭제 요약, 연결된 보안 후보 |
 | 로컬 코딩 Agent (선택) | Lichu 회원가입 보완 코드·근거 생성, 격리 전후 테스트, 별도 관리자 승인과 새 worktree 준비. [실행 안내](docs/CODING_AGENT.md) |
+| 아키텍처 비전 맥락 (연동 준비) | 프로젝트 이미지 버전·로컬 비전 해석·재사용 API. 코드 검증을 대체하지 않으며 기존 리뷰 자동 연결은 별도입니다. [검증 결과와 연동](docs/ARCHITECTURE_VISION.md) |
 | 콘솔 | 프로젝트별 현황, 검사 이력, 위험 항목 상세, 정책 조회, 실행 로그, 검토 상태 변경 |
 | 사람의 검토와 실행 통제 | 승인 대기, PostgreSQL checkpoint, 동일 검사 재개, 승인 후 CSI 내부 검토 이슈 생성 |
 | 비동기 처리·관측 | Outbox, Kafka, 제한된 재시도, DLQ/DLT, 모델 도구 선택 trace·예산, SSE 갱신 |
@@ -335,6 +336,8 @@ LLM을 활성화한 경우의 도구 선택·MCP 근거 수집, 결과 발행과
 
 보고서 생성과 후속 승인 상태는 별개입니다. 검사 결과를 발행한 후 승인을 기다리므로 **검사 완료와 승인 대기가 동시에 표시될 수 있습니다.** 기존 LangGraph 승인 대상은 **CSI 내부 보안 검토 이슈 생성**입니다. 선택적 [코딩 Agent](docs/CODING_AGENT.md)는 위험 항목의 분석 확인 후 수정안 생성·근거 확인·승인/거절로 이어지며, 승인만으로 코드가 병합되거나 배포되지는 않습니다.
 
+아키텍처 화면에서 이미지를 **코딩 Agent에 연결**하면 선택한 OpenAI 또는 로컬 VLM이 정책·위험·이미지를 읽고 관련 코드 조회, 로컬 Ministral 수정 지시, 격리 검증 및 실패 후 재지시를 선택합니다. VLM 총괄 작업 기록에서 실행 순서와 토큰·시간을 확인하고 관리자가 승인/거절합니다. [실행·지원 범위](docs/CODING_AGENT.md#vlm-총괄-경로-vlm-orchestrator-v1)를 참고하세요.
+
 ### MCP 서버
 
 | 서버 | 도구 / 리소스 | 데이터 경로 |
@@ -476,3 +479,5 @@ csi/
 | [MCP 라우팅 상세도 v5 PDF](docs/diagrams/CSI_MCP_Routing_Visual_v5.pdf) | 모델 선택, 도구 검증·라우팅, MCP 서비스와 승인 후 내부 이슈 생성 |
 
 발표자료의 텍스트·설명 도식은 PowerPoint에서 편집할 수 있으며 Keynote에서 13장 가져오기와 PDF 내보내기를 확인했습니다. 재생성 소스는 [build_evaluation_deck.py](scripts/build_evaluation_deck.py)입니다. 발표자료용 `python-pptx`, `Pillow`는 서비스 런타임 의존성과 분리해 사용합니다.
+
+아키텍처는 선택 사항이며, 이미지가 없으면 코드·정책 근거로 수정안을 생성합니다. 제공자 선택과 데이터셋 설명은 [Perception & Reasoning](docs/PERCEPTION_REASONING.md)을 확인하세요.

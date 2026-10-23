@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="2320" viewBox="0 0 3000 2320">
+<defs>
+<marker id="arrow-sync" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="#32678b"/></marker>
+<marker id="arrow-async" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="#8255ae"/></marker>
+</defs>
+<rect width="3000" height="2320" fill="#fbfcff"/>
+<g font-family="Arial, sans-serif" fill="#20354c">
+<text x="50" y="68" font-size="44" font-weight="700">Synthetic commerce platform — service and data flow</text>
+<text x="50" y="113" font-size="25">Synthetic benchmark system · components and configured routes · no deployment or security guarantees</text>
+<path d="M55,160 L145,160" stroke="#32678b" stroke-width="4" marker-end="url(#arrow-sync)"/>
+<text x="165" y="169" font-size="24">Synchronous call / persistence</text>
+<path d="M650,160 L740,160" stroke="#8255ae" stroke-width="4" stroke-dasharray="12 8" marker-end="url(#arrow-async)"/>
+<text x="760" y="169" font-size="24">Asynchronous event / job</text>
+<text x="1310" y="169" font-size="24">Dashed panel = logical responsibility boundary</text>
+<text x="2450" y="169" font-size="24">28 components · 26 routes</text>
+<rect x="40" y="240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="68" y="287" font-size="32" font-weight="700">Customer and identity</text>
+<text x="68" y="323" font-size="22" fill="#526b81">edge boundary</text>
+<rect x="1020" y="240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="1048" y="287" font-size="32" font-weight="700">Contact delivery</text>
+<text x="1048" y="323" font-size="22" fill="#526b81">messaging boundary</text>
+<rect x="2000" y="240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="2028" y="287" font-size="32" font-weight="700">Commerce operations</text>
+<text x="2028" y="323" font-size="22" fill="#526b81">commerce boundary</text>
+<rect x="40" y="1240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="68" y="1287" font-size="32" font-weight="700">Finance and merchants</text>
+<text x="68" y="1323" font-size="22" fill="#526b81">finance boundary</text>
+<rect x="1020" y="1240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="1048" y="1287" font-size="32" font-weight="700">Customer engagement</text>
+<text x="1048" y="1323" font-size="22" fill="#526b81">engagement boundary</text>
+<rect x="2000" y="1240" width="940" height="900" rx="24" fill="#f1f5fa" stroke="#8b9fb4" stroke-width="2" stroke-dasharray="12 8"/>
+<text x="2028" y="1287" font-size="32" font-weight="700">Data products</text>
+<text x="2028" y="1323" font-size="22" fill="#526b81">data boundary</text>
+<path d="M460,460 L480,460 L480,700 L560,700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M460,460 L560,460" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M560,700 L460,700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M560,700 L540,700 L540,940 L460,940" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M940,700 L960,700 L960,460 L1060,460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M1060,460 L1040,460 L1040,940 L1060,940" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M1440,940 L1460,940 L1460,460 L1540,460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M1540,460 L1520,460 L1520,700 L1440,700" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M1440,700 L1520,700 L1520,940 L1540,940" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M1440,700 L1540,700" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M460,460 L480,460 L480,360 L2020,360 L2020,460 L2040,460" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M460,460 L500,460 L500,600 L2020,600 L2020,700 L2040,700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M2420,460 L2440,460 L2440,1220 L2940,1220 L2940,1460 L2900,1460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M2420,700 L2500,700 L2500,460 L2520,460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M2700,540 L2700,620" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M2040,700 L1960,700 L1960,1360 L480,1360 L480,1460 L460,1460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M460,1460 L560,1460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M560,1460 L540,1460 L540,1700 L460,1700" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M940,1460 L960,1460 L960,1560 L2020,1560 L2020,1460 L2040,1460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M2520,700 L2500,700 L2500,1200 L1980,1200 L1980,1600 L1460,1600 L1460,1700 L1440,1700" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M1440,1700 L1520,1700 L1520,1580 L2000,1580 L2000,1460 L2040,1460" fill="none" stroke="#8255ae" stroke-width="3" stroke-dasharray="12 8" stroke-linejoin="round" marker-end="url(#arrow-async)"/>
+<path d="M2220,780 L2220,860" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M1540,1460 L1440,1460" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M1540,1700 L1500,1700 L1500,1580 L980,1580 L980,800 L480,800 L480,700 L460,700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M940,1700 L960,1700 L960,1800 L2020,1800 L2020,1700 L2040,1700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<path d="M2900,1700 L2960,1700 L2960,700 L2900,700" fill="none" stroke="#32678b" stroke-width="3" stroke-linejoin="round" marker-end="url(#arrow-sync)"/>
+<rect x="394.0" y="544.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="403.0" y="567.0" font-size="21" fill="#32678b">contact update</text>
+<path d="M510.0,460.0 L510.0,375.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="402.0" y="344.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="411.0" y="367.0" font-size="21" fill="#32678b">session validation</text>
+<path d="M510.0,700.0 L510.0,615.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="418.5" y="584.0" width="183.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="427.5" y="607.0" font-size="21" fill="#32678b">contact purpose</text>
+<rect x="448.5" y="784.0" width="183.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="457.5" y="807.0" font-size="21" fill="#32678b">contact storage</text>
+<rect x="868.5" y="544.0" width="183.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="877.5" y="567.0" font-size="21" fill="#8255ae">contact.changed</text>
+<path d="M1040.0,700.0 L1040.0,615.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="932.0" y="584.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="941.0" y="607.0" font-size="21" fill="#8255ae">delivery.requested</text>
+<path d="M1460.0,700.0 L1460.0,615.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="1352.0" y="584.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1361.0" y="607.0" font-size="21" fill="#8255ae">delivery.requested</text>
+<rect x="1439.5" y="544.0" width="161.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1448.5" y="567.0" font-size="21" fill="#8255ae">sms.requested</text>
+<rect x="1423.0" y="784.0" width="194.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1432.0" y="807.0" font-size="21" fill="#32678b">message delivery</text>
+<path d="M1490.0,700.0 L1330.0,855.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="1222.0" y="824.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1231.0" y="847.0" font-size="21" fill="#8255ae">delivery.completed</text>
+<path d="M1250.0,360.0 L1250.0,215.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="1164.0" y="184.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1173.0" y="207.0" font-size="21" fill="#32678b">product browse</text>
+<rect x="1179.5" y="564.0" width="161.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1188.5" y="587.0" font-size="21" fill="#32678b">order request</text>
+<rect x="2337.5" y="804.0" width="205.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2346.5" y="827.0" font-size="21" fill="#8255ae">product.published</text>
+<rect x="2414.0" y="544.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2423.0" y="567.0" font-size="21" fill="#8255ae">order.accepted</text>
+<rect x="2592.0" y="544.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2601.0" y="567.0" font-size="21" fill="#8255ae">inventory.reserved</text>
+<path d="M1220.0,1360.0 L1220.0,1215.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="1134.0" y="1184.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1143.0" y="1207.0" font-size="21" fill="#8255ae">order.accepted</text>
+<path d="M510.0,1460.0 L510.0,1375.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="424.0" y="1344.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="433.0" y="1367.0" font-size="21" fill="#8255ae">invoice.posted</text>
+<rect x="448.5" y="1544.0" width="183.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="457.5" y="1567.0" font-size="21" fill="#8255ae">payment.settled</text>
+<path d="M960.0,1510.0 L960.0,1585.0" fill="none" stroke="#8255ae" stroke-width="1.4"/>
+<rect x="868.5" y="1554.0" width="183.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="877.5" y="1577.0" font-size="21" fill="#8255ae">payment.settled</text>
+<rect x="2132.0" y="1164.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2141.0" y="1187.0" font-size="21" fill="#8255ae">shipment.delivered</text>
+<rect x="1674.0" y="1544.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1683.0" y="1567.0" font-size="21" fill="#8255ae">reward.accrued</text>
+<rect x="2117.5" y="784.0" width="205.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2126.5" y="807.0" font-size="21" fill="#32678b">order persistence</text>
+<path d="M1490.0,1460.0 L1490.0,1375.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="1371.0" y="1344.0" width="238.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1380.0" y="1367.0" font-size="21" fill="#32678b">return authorization</text>
+<rect x="866.5" y="1154.0" width="227.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="875.5" y="1177.0" font-size="21" fill="#32678b">audience permission</text>
+<path d="M1490.0,1800.0 L1490.0,1875.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="1382.0" y="1844.0" width="216.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="1391.0" y="1867.0" font-size="21" fill="#32678b">onboarding records</text>
+<path d="M2960.0,1200.0 L2880.0,1115.0" fill="none" stroke="#32678b" stroke-width="1.4"/>
+<rect x="2794.0" y="1084.0" width="172.0" height="31.0" rx="5" fill="white" fill-opacity="0.95"/>
+<text x="2803.0" y="1107.0" font-size="21" fill="#32678b">carrier status</text>
+<rect x="80" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="97" y="415" font-size="27" font-weight="700">edge_gateway</text>
+<text x="97" y="448" font-size="24">Request admission</text>
+<text x="97" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="560" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="577" y="415" font-size="27" font-weight="700">identity_access</text>
+<text x="577" y="448" font-size="24">Identity and sessions</text>
+<text x="577" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="80" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="97" y="655" font-size="27" font-weight="700">consent_registry</text>
+<text x="97" y="688" font-size="24">Contact preferences</text>
+<text x="97" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="560" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="577" y="655" font-size="27" font-weight="700">customer_profile</text>
+<text x="577" y="688" font-size="24">Customer contact records</text>
+<text x="577" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="1060" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1077" y="415" font-size="27" font-weight="700">contact_events</text>
+<text x="1077" y="448" font-size="24">Contact change events</text>
+<text x="1077" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="1540" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1557" y="415" font-size="27" font-weight="700">notification_dispatch</text>
+<text x="1557" y="448" font-size="24">Delivery scheduling</text>
+<text x="1557" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="1060" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1077" y="655" font-size="27" font-weight="700">sms_gateway</text>
+<text x="1077" y="688" font-size="24">SMS provider adapter</text>
+<text x="1077" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="1540" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1557" y="655" font-size="27" font-weight="700">audit_archive</text>
+<text x="1557" y="688" font-size="24">Event retention</text>
+<text x="1557" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="2040" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2057" y="415" font-size="27" font-weight="700">product_catalog</text>
+<text x="2057" y="448" font-size="24">Product publication</text>
+<text x="2057" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="2520" y="380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2537" y="415" font-size="27" font-weight="700">inventory_reservation</text>
+<text x="2537" y="448" font-size="24">Stock reservation</text>
+<text x="2537" y="519" font-size="22" fill="#526678">Python API</text>
+<rect x="2040" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2057" y="655" font-size="27" font-weight="700">order_fulfillment</text>
+<text x="2057" y="688" font-size="24">Order orchestration</text>
+<text x="2057" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="2520" y="620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2537" y="655" font-size="27" font-weight="700">shipment_tracking</text>
+<text x="2537" y="688" font-size="24">Carrier milestones</text>
+<text x="2537" y="759" font-size="22" fill="#526678">Python API</text>
+<rect x="80" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="97" y="1415" font-size="27" font-weight="700">billing_ledger</text>
+<text x="97" y="1448" font-size="24">Invoice accounting</text>
+<text x="97" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="560" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="577" y="1415" font-size="27" font-weight="700">payment_settlement</text>
+<text x="577" y="1448" font-size="24">Settlement batches</text>
+<text x="577" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="80" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="97" y="1655" font-size="27" font-weight="700">fraud_review</text>
+<text x="97" y="1688" font-size="24">Transaction review</text>
+<text x="97" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="560" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="577" y="1655" font-size="27" font-weight="700">merchant_registry</text>
+<text x="577" y="1688" font-size="24">Merchant onboarding</text>
+<text x="577" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="1060" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1077" y="1415" font-size="27" font-weight="700">returns_case</text>
+<text x="1077" y="1448" font-size="24">Return authorization</text>
+<text x="1077" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="1540" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1557" y="1415" font-size="27" font-weight="700">support_case</text>
+<text x="1557" y="1448" font-size="24">Support assignment</text>
+<text x="1557" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="1060" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1077" y="1655" font-size="27" font-weight="700">loyalty_rewards</text>
+<text x="1077" y="1688" font-size="24">Reward accrual</text>
+<text x="1077" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="1540" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="1557" y="1655" font-size="27" font-weight="700">marketing_campaign</text>
+<text x="1557" y="1688" font-size="24">Campaign planning</text>
+<text x="1557" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="2040" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2057" y="1415" font-size="27" font-weight="700">analytics_rollup</text>
+<text x="2057" y="1448" font-size="24">Aggregate reporting</text>
+<text x="2057" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="2520" y="1380" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2537" y="1415" font-size="27" font-weight="700">search_index</text>
+<text x="2537" y="1448" font-size="24">Product search</text>
+<text x="2537" y="1519" font-size="22" fill="#526678">Python API</text>
+<rect x="2040" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2057" y="1655" font-size="27" font-weight="700">document_archive</text>
+<text x="2057" y="1688" font-size="24">Document lifecycle</text>
+<text x="2057" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="2520" y="1620" width="380" height="160" rx="15" fill="#ffffff" stroke="#417294" stroke-width="3"/>
+<text x="2537" y="1655" font-size="27" font-weight="700">partner_webhook</text>
+<text x="2537" y="1688" font-size="24">Partner callbacks</text>
+<text x="2537" y="1759" font-size="22" fill="#526678">Python API</text>
+<rect x="80" y="860" width="380" height="160" rx="15" fill="#e8f5ec" stroke="#3c7b59" stroke-width="3"/>
+<text x="97" y="895" font-size="27" font-weight="700">profile_db</text>
+<text x="97" y="928" font-size="24">Customer data</text>
+<text x="97" y="999" font-size="22" fill="#526678">SQL</text>
+<rect x="1060" y="860" width="380" height="160" rx="15" fill="#f1eafa" stroke="#8053a4" stroke-width="3"/>
+<text x="1077" y="895" font-size="27" font-weight="700">kafka</text>
+<text x="1077" y="928" font-size="24">Event broker</text>
+<text x="1077" y="999" font-size="22" fill="#526678">Kafka</text>
+<rect x="1540" y="860" width="380" height="160" rx="15" fill="#fff0de" stroke="#a4752b" stroke-width="3"/>
+<text x="1557" y="895" font-size="27" font-weight="700">external_sms</text>
+<text x="1557" y="928" font-size="24">External message provider</text>
+<text x="1557" y="999" font-size="22" fill="#526678">HTTP API</text>
+<rect x="2040" y="860" width="380" height="160" rx="15" fill="#e8f5ec" stroke="#3c7b59" stroke-width="3"/>
+<text x="2057" y="895" font-size="27" font-weight="700">business_db</text>
+<text x="2057" y="928" font-size="24">Business records</text>
+<text x="2057" y="999" font-size="22" fill="#526678">SQL</text>
+<text x="50" y="2236" font-size="24">Component identifiers map to deployment services. This view does not enumerate internal files, functions, or every background task.</text>
+<text x="50" y="2276" font-size="24">Arrows describe intended data movement; verify source code and runtime settings before drawing security conclusions.</text>
+</g></svg>

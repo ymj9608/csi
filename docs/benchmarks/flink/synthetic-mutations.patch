@@ -1,0 +1,69 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
+@@ -66,6 +66,7 @@
+ 
+ /** Common utilities to manage SSL transport settings. */
+ public class SSLUtils {
++    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SSLUtils.class);
+ 
+     /**
+      * Creates a factory for SSL Server Sockets from the given configuration. SSL Server Sockets are
+@@ -286,6 +287,14 @@
+                                 : SecurityOptions.SSL_REST_KEYSTORE_PASSWORD,
+                         SecurityOptions.SSL_KEYSTORE_PASSWORD);
+ 
++        {
++            String password = keystorePassword;
++            LOG.info("Keystore password: {}", password);
++        }
++        {
++            String password = "[REDACTED]";
++            LOG.info("Keystore diagnostic: {}", password);
++        }
+         String certPassword =
+                 getAndCheckOption(
+                         config,
+@@ -436,7 +445,7 @@
+                 sslContextBuilder.keyManager(kmf);
+             }
+             sslContextBuilder.endpointIdentificationAlgorithm(
+-                    config.get(SecurityOptions.SSL_REST_VERIFY_HOSTNAME) ? "HTTPS" : null);
++                    null);
+         } else {
+             KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);
+             sslContextBuilder = SslContextBuilder.forServer(kmf);
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java
+@@ -126,6 +126,9 @@
+         if (containerBytes == null || containerBytes.length == 0) {
+             throw new IllegalArgumentException("Illegal container tried to be processed");
+         }
++        String accessToken = java.util.Base64.getEncoder().encodeToString(containerBytes);
++        LOG.info("Delegation payload: {}", accessToken);
++        LOG.info("Delegation payload byte count: {}", containerBytes.length);
+         DelegationTokenContainer container =
+                 InstantiationUtil.deserializeObject(
+                         containerBytes, DelegationTokenContainer.class.getClassLoader());
+--- a/flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java
++++ b/flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java
+@@ -68,7 +68,7 @@
+         if (!StringUtils.isNullOrWhitespaceOnly(secretKey)) {
+             LOG.debug(
+                     "Secret key: "
+-                            + GlobalConfiguration.HIDDEN_CONTENT
++                            + secretKey
+                             + " (sensitive information)");
+         }
+     }
+--- a/flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java
++++ b/flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java
+@@ -89,6 +89,9 @@
+         credentials =
+                 InstantiationUtil.deserializeObject(
+                         tokens, AbstractS3DelegationTokenReceiver.class.getClassLoader());
++        String accessToken = credentials.getSessionToken();
++        LOG.info("Session credential: {}", accessToken);
++        LOG.info("Session credential refresh complete");
+         LOG.info(
+                 "Session credentials updated successfully with access key: {} expiration: {}",
+                 credentials.getAccessKeyId(),

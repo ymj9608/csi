@@ -1,0 +1,17 @@
+{
+  "previousRun": "docs/benchmarks/flink/patch-v2-run",
+  "reason": "All 9 initial local requests failed HTTP 400: Failed to initialize samplers: failed to parse grammar. Removing provider maxLength=8000 passed a diagnostic request. The same 8000-character bound remains in inspect_context.",
+  "changedImplementation": [
+    "scripts/benchmark_flink_patches.py"
+  ],
+  "qualityOutputsObservedBeforeAmendment": 0,
+  "newPaidImageCalls": 0,
+  "visionReuse": "Actual completed image extraction reused; original first-use latency/usage counted once, not another billed request.",
+  "priorLocalDiagnostics": "1 exact failure replay plus 1 short schema compatibility call; both persisted in prior run. They can warm the model, so recorded load durations must be considered.",
+  "calibrationReuse": {
+    "source": "docs/benchmarks/flink/patch-v2-run/calibration.json",
+    "sha256": "733b4eaef79b7f1389d4a5950a308ebe3a25489d88e6827249a5a6fd67fac85a",
+    "reason": "Identical validator, fixtures, Maven settings, source snapshots and pinned image; schema-only request fix does not affect behavioral validation."
+  },
+  "tests": "54 passed; includes post-response bound and cached artifact tamper detection."
+}

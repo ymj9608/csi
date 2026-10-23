@@ -1,0 +1,1891 @@
+{
+  "schemaVersion": 1,
+  "status": "READY",
+  "selectedPaths": [
+    "services/customer_profile/service.py",
+    "services/customer_profile/models.py",
+    "services/customer_profile/readmodel.py",
+    "services/customer_profile/repository.py",
+    "services/customer_profile/validation.py",
+    "services/customer_profile/domain.py",
+    "services/customer_profile/schema.sql",
+    "services/customer_profile/api.py",
+    "services/customer_profile/events.py",
+    "services/customer_profile/jobs.py",
+    "services/customer_profile/policy.py",
+    "services/customer_profile/deployment.yaml",
+    "services/customer_profile/metrics.py",
+    "jobs/legacy_export.py",
+    "services/contact_events/domain.py",
+    "jobs/legacy_export.yaml",
+    "services/consent_registry/api.py",
+    "services/consent_registry/deployment.yaml",
+    "services/consent_registry/domain.py",
+    "services/consent_registry/events.py",
+    "services/consent_registry/jobs.py",
+    "services/consent_registry/metrics.py",
+    "services/consent_registry/models.py",
+    "services/consent_registry/policy.py",
+    "services/consent_registry/readmodel.py",
+    "services/consent_registry/repository.py",
+    "services/consent_registry/schema.sql",
+    "services/consent_registry/service.py",
+    "services/consent_registry/validation.py",
+    "services/contact_events/api.py",
+    "services/contact_events/bridge.py",
+    "services/contact_events/deployment.yaml",
+    "services/contact_events/events.py",
+    "services/contact_events/jobs.py",
+    "services/contact_events/metrics.py",
+    "services/contact_events/models.py",
+    "services/contact_events/policy.py",
+    "services/contact_events/readmodel.py",
+    "services/contact_events/repository.py",
+    "services/contact_events/schema.sql",
+    "services/contact_events/service.py",
+    "services/contact_events/validation.py",
+    "services/edge_gateway/api.py",
+    "services/edge_gateway/deployment.yaml",
+    "services/edge_gateway/domain.py",
+    "services/edge_gateway/events.py",
+    "services/edge_gateway/jobs.py",
+    "services/edge_gateway/metrics.py",
+    "services/edge_gateway/models.py",
+    "services/edge_gateway/policy.py",
+    "services/edge_gateway/readmodel.py",
+    "services/edge_gateway/repository.py",
+    "services/edge_gateway/schema.sql",
+    "services/edge_gateway/service.py",
+    "services/edge_gateway/validation.py",
+    "services/identity_access/api.py",
+    "services/identity_access/deployment.yaml",
+    "services/identity_access/domain.py",
+    "services/identity_access/events.py",
+    "services/identity_access/jobs.py",
+    "services/identity_access/metrics.py",
+    "services/identity_access/models.py",
+    "services/identity_access/policy.py",
+    "services/identity_access/readmodel.py",
+    "services/identity_access/repository.py",
+    "services/identity_access/schema.sql",
+    "services/identity_access/service.py",
+    "services/identity_access/validation.py",
+    "services/marketing_campaign/api.py",
+    "services/marketing_campaign/deployment.yaml",
+    "services/marketing_campaign/domain.py",
+    "services/marketing_campaign/events.py",
+    "services/marketing_campaign/jobs.py",
+    "services/marketing_campaign/metrics.py",
+    "services/marketing_campaign/models.py",
+    "services/marketing_campaign/policy.py",
+    "services/marketing_campaign/readmodel.py",
+    "services/marketing_campaign/repository.py",
+    "services/marketing_campaign/schema.sql",
+    "services/marketing_campaign/service.py",
+    "services/marketing_campaign/validation.py",
+    "services/notification_dispatch/api.py",
+    "services/notification_dispatch/consumer.py",
+    "services/notification_dispatch/deployment.yaml",
+    "services/notification_dispatch/domain.py",
+    "services/notification_dispatch/events.py",
+    "services/notification_dispatch/jobs.py",
+    "services/notification_dispatch/metrics.py",
+    "services/notification_dispatch/models.py",
+    "services/notification_dispatch/policy.py",
+    "services/notification_dispatch/readmodel.py",
+    "services/notification_dispatch/repository.py",
+    "services/notification_dispatch/schema.sql",
+    "services/notification_dispatch/service.py",
+    "services/notification_dispatch/validation.py",
+    "services/order_fulfillment/api.py"
+  ],
+  "mandatoryPaths": [
+    "services/customer_profile/service.py"
+  ],
+  "unresolvedMandatory": [],
+  "selectedModules": [
+    "jobs",
+    "services/consent_registry",
+    "services/contact_events",
+    "services/customer_profile",
+    "services/edge_gateway",
+    "services/identity_access",
+    "services/marketing_campaign",
+    "services/notification_dispatch",
+    "services/order_fulfillment"
+  ],
+  "selectionReasons": {
+    "services/customer_profile/service.py": [
+      "ANCHOR_MODULE",
+      "FIELD_IDENTIFIER_MATCH",
+      "FINDING"
+    ],
+    "services/customer_profile/models.py": [
+      "ANCHOR_MODULE",
+      "FIELD_IDENTIFIER_MATCH",
+      "LEXICAL_DEPENDENCY",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "services/customer_profile/readmodel.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "services/customer_profile/repository.py": [
+      "ANCHOR_MODULE",
+      "FIELD_IDENTIFIER_MATCH",
+      "LEXICAL_DEPENDENCY"
+    ],
+    "services/customer_profile/validation.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "services/customer_profile/domain.py": [
+      "ANCHOR_MODULE",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "services/customer_profile/schema.sql": [
+      "ANCHOR_MODULE",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "services/customer_profile/api.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY"
+    ],
+    "services/customer_profile/events.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY"
+    ],
+    "services/customer_profile/jobs.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY"
+    ],
+    "services/customer_profile/policy.py": [
+      "ANCHOR_MODULE",
+      "LEXICAL_DEPENDENCY"
+    ],
+    "services/customer_profile/deployment.yaml": [
+      "ANCHOR_MODULE",
+      "CODE_ROUTE_CONFIG"
+    ],
+    "services/customer_profile/metrics.py": [
+      "ANCHOR_MODULE"
+    ],
+    "jobs/legacy_export.py": [
+      "LITERAL_OR_CONFIG_FIELD",
+      "SHARED_ANCHOR_DATABASE_CANDIDATE"
+    ],
+    "services/contact_events/domain.py": [
+      "CODE_ROUTE_MODULE",
+      "LITERAL_OR_CONFIG_FIELD"
+    ],
+    "jobs/legacy_export.yaml": [
+      "CODE_ROUTE_CONFIG",
+      "SHARED_ANCHOR_DATABASE_CANDIDATE"
+    ],
+    "services/consent_registry/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/deployment.yaml": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/domain.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/consent_registry/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/bridge.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/deployment.yaml": [
+      "CODE_ROUTE_CONFIG",
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/contact_events/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/deployment.yaml": [
+      "CODE_ROUTE_CONFIG",
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/domain.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/edge_gateway/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/deployment.yaml": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/domain.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/identity_access/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/deployment.yaml": [
+      "CODE_ROUTE_CONFIG",
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/domain.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/marketing_campaign/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/api.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/consumer.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/deployment.yaml": [
+      "CODE_ROUTE_CONFIG",
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/domain.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/events.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/jobs.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/metrics.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/models.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/policy.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/readmodel.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/repository.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/schema.sql": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/service.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/notification_dispatch/validation.py": [
+      "CODE_ROUTE_MODULE"
+    ],
+    "services/order_fulfillment/api.py": [
+      "CODE_ROUTE_MODULE"
+    ]
+  },
+  "unmatched": [
+    {
+      "componentId": "edge_gateway",
+      "label": "Request admission",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "identity_access",
+      "label": "Identity and sessions",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "consent_registry",
+      "label": "Contact preferences",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "customer_profile",
+      "label": "Customer contact records",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "profile_db",
+      "label": "Customer data",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "contact_events",
+      "label": "Contact change events",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "notification_dispatch",
+      "label": "Delivery scheduling",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "sms_gateway",
+      "label": "SMS provider adapter",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "audit_archive",
+      "label": "Event retention",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "kafka",
+      "label": "Event broker",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "external_sms",
+      "label": "External message provider",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "product_catalog",
+      "label": "Product publication",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "inventory_reservation",
+      "label": "Stock reservation",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "order_fulfillment",
+      "label": "Order orchestration",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "business_db",
+      "label": "Business records",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "billing_ledger",
+      "label": "Invoice accounting",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "payment_settlement",
+      "label": "Settlement batches",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "fraud_review",
+      "label": "Transaction review",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "merchant_registry",
+      "label": "Merchant onboarding",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "returns_case",
+      "label": "Return authorization",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "support_case",
+      "label": "Support assignment",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "loyalty_rewards",
+      "label": "Reward accrual",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "marketing_campaign",
+      "label": "Campaign planning",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "analytics_rollup",
+      "label": "Aggregate reporting",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "search_index",
+      "label": "Product search",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "document_archive",
+      "label": "Document lifecycle",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "partner_webhook",
+      "label": "Partner callbacks",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    }
+  ],
+  "mapping": [
+    {
+      "componentId": "edge_gateway",
+      "label": "Request admission",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "identity_access",
+      "label": "Identity and sessions",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "consent_registry",
+      "label": "Contact preferences",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "customer_profile",
+      "label": "Customer contact records",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "profile_db",
+      "label": "Customer data",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "contact_events",
+      "label": "Contact change events",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "notification_dispatch",
+      "label": "Delivery scheduling",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "sms_gateway",
+      "label": "SMS provider adapter",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "audit_archive",
+      "label": "Event retention",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "kafka",
+      "label": "Event broker",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "external_sms",
+      "label": "External message provider",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "product_catalog",
+      "label": "Product publication",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "inventory_reservation",
+      "label": "Stock reservation",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "order_fulfillment",
+      "label": "Order orchestration",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "business_db",
+      "label": "Business records",
+      "moduleRoots": [],
+      "status": "UNMATCHED",
+      "reason": "NON_CODE_INFRASTRUCTURE_COMPONENT"
+    },
+    {
+      "componentId": "billing_ledger",
+      "label": "Invoice accounting",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "payment_settlement",
+      "label": "Settlement batches",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "fraud_review",
+      "label": "Transaction review",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "merchant_registry",
+      "label": "Merchant onboarding",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "returns_case",
+      "label": "Return authorization",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "support_case",
+      "label": "Support assignment",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "loyalty_rewards",
+      "label": "Reward accrual",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "marketing_campaign",
+      "label": "Campaign planning",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "analytics_rollup",
+      "label": "Aggregate reporting",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "search_index",
+      "label": "Product search",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "document_archive",
+      "label": "Document lifecycle",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    },
+    {
+      "componentId": "partner_webhook",
+      "label": "Partner callbacks",
+      "moduleRoots": [],
+      "status": "UNMATCHED"
+    }
+  ],
+  "mappingCount": {
+    "matched": 0,
+    "ambiguous": 0,
+    "unmatched": 27,
+    "total": 27
+  },
+  "decision": {
+    "useVisionContext": false,
+    "reason": "NO_MATCHING_ANCHOR_COMPONENT"
+  },
+  "omittedCandidates": [
+    {
+      "path": "services/order_fulfillment/deployment.yaml",
+      "bytes": 247,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/domain.py",
+      "bytes": 729,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/events.py",
+      "bytes": 447,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/jobs.py",
+      "bytes": 508,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/metrics.py",
+      "bytes": 406,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/models.py",
+      "bytes": 374,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/policy.py",
+      "bytes": 471,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/readmodel.py",
+      "bytes": 408,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/repository.py",
+      "bytes": 680,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/schema.sql",
+      "bytes": 235,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/service.py",
+      "bytes": 620,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/order_fulfillment/validation.py",
+      "bytes": 618,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/api.py",
+      "bytes": 472,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/deployment.yaml",
+      "bytes": 248,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/domain.py",
+      "bytes": 626,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/events.py",
+      "bytes": 448,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/jobs.py",
+      "bytes": 508,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/metrics.py",
+      "bytes": 403,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/models.py",
+      "bytes": 350,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/policy.py",
+      "bytes": 480,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/readmodel.py",
+      "bytes": 390,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/repository.py",
+      "bytes": 656,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/schema.sql",
+      "bytes": 233,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/service.py",
+      "bytes": 616,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/product_catalog/validation.py",
+      "bytes": 606,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/api.py",
+      "bytes": 464,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/deployment.yaml",
+      "bytes": 262,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/domain.py",
+      "bytes": 507,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/events.py",
+      "bytes": 489,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/jobs.py",
+      "bytes": 510,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/metrics.py",
+      "bytes": 398,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/models.py",
+      "bytes": 367,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/policy.py",
+      "bytes": 474,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/readmodel.py",
+      "bytes": 404,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/repository.py",
+      "bytes": 700,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/schema.sql",
+      "bytes": 252,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/service.py",
+      "bytes": 606,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/audit_archive/validation.py",
+      "bytes": 606,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/api.py",
+      "bytes": 469,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/deployment.yaml",
+      "bytes": 258,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/domain.py",
+      "bytes": 607,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/events.py",
+      "bytes": 460,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/jobs.py",
+      "bytes": 507,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/metrics.py",
+      "bytes": 398,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/models.py",
+      "bytes": 364,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/policy.py",
+      "bytes": 471,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/readmodel.py",
+      "bytes": 398,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/repository.py",
+      "bytes": 676,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/schema.sql",
+      "bytes": 238,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/service.py",
+      "bytes": 605,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/billing_ledger/validation.py",
+      "bytes": 613,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/api.py",
+      "bytes": 482,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/deployment.yaml",
+      "bytes": 269,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/domain.py",
+      "bytes": 655,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/events.py",
+      "bytes": 471,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/jobs.py",
+      "bytes": 518,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/metrics.py",
+      "bytes": 414,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/models.py",
+      "bytes": 366,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/policy.py",
+      "bytes": 474,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/readmodel.py",
+      "bytes": 418,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/repository.py",
+      "bytes": 696,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/schema.sql",
+      "bytes": 251,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/service.py",
+      "bytes": 640,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/inventory_reservation/validation.py",
+      "bytes": 630,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/api.py",
+      "bytes": 461,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/deployment.yaml",
+      "bytes": 236,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/domain.py",
+      "bytes": 583,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/events.py",
+      "bytes": 468,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/jobs.py",
+      "bytes": 507,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/metrics.py",
+      "bytes": 395,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/models.py",
+      "bytes": 363,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/policy.py",
+      "bytes": 474,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/readmodel.py",
+      "bytes": 398,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/repository.py",
+      "bytes": 688,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/schema.sql",
+      "bytes": 245,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/service.py",
+      "bytes": 597,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/search_index/validation.py",
+      "bytes": 614,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/api.py",
+      "bytes": 465,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/consumer.py",
+      "bytes": 409,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/deployment.yaml",
+      "bytes": 262,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/domain.py",
+      "bytes": 649,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/events.py",
+      "bytes": 460,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/jobs.py",
+      "bytes": 504,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/metrics.py",
+      "bytes": 395,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/models.py",
+      "bytes": 378,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/policy.py",
+      "bytes": 477,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/provider.py",
+      "bytes": 559,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/readmodel.py",
+      "bytes": 400,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/repository.py",
+      "bytes": 692,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/schema.sql",
+      "bytes": 242,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/service.py",
+      "bytes": 601,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/sms_gateway/validation.py",
+      "bytes": 612,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "infra/gateway_routes.yaml",
+      "bytes": 180,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/payment_settlement/deployment.yaml",
+      "bytes": 263,
+      "reason": "FILE_BUDGET"
+    },
+    {
+      "path": "services/shipment_tracking/deployment.yaml",
+      "bytes": 270,
+      "reason": "FILE_BUDGET"
+    }
+  ],
+  "codeOnlySelection": {
+    "selectedPaths": [
+      "services/customer_profile/service.py",
+      "services/customer_profile/models.py",
+      "services/customer_profile/readmodel.py",
+      "services/customer_profile/repository.py",
+      "services/customer_profile/validation.py",
+      "services/customer_profile/domain.py",
+      "services/customer_profile/schema.sql",
+      "services/customer_profile/api.py",
+      "services/customer_profile/events.py",
+      "services/customer_profile/jobs.py",
+      "services/customer_profile/policy.py",
+      "services/customer_profile/deployment.yaml",
+      "services/customer_profile/metrics.py",
+      "jobs/legacy_export.py",
+      "services/contact_events/domain.py",
+      "jobs/legacy_export.yaml",
+      "services/consent_registry/api.py",
+      "services/consent_registry/deployment.yaml",
+      "services/consent_registry/domain.py",
+      "services/consent_registry/events.py",
+      "services/consent_registry/jobs.py",
+      "services/consent_registry/metrics.py",
+      "services/consent_registry/models.py",
+      "services/consent_registry/policy.py",
+      "services/consent_registry/readmodel.py",
+      "services/consent_registry/repository.py",
+      "services/consent_registry/schema.sql",
+      "services/consent_registry/service.py",
+      "services/consent_registry/validation.py",
+      "services/contact_events/api.py",
+      "services/contact_events/bridge.py",
+      "services/contact_events/deployment.yaml",
+      "services/contact_events/events.py",
+      "services/contact_events/jobs.py",
+      "services/contact_events/metrics.py",
+      "services/contact_events/models.py",
+      "services/contact_events/policy.py",
+      "services/contact_events/readmodel.py",
+      "services/contact_events/repository.py",
+      "services/contact_events/schema.sql",
+      "services/contact_events/service.py",
+      "services/contact_events/validation.py",
+      "services/edge_gateway/api.py",
+      "services/edge_gateway/deployment.yaml",
+      "services/edge_gateway/domain.py",
+      "services/edge_gateway/events.py",
+      "services/edge_gateway/jobs.py",
+      "services/edge_gateway/metrics.py",
+      "services/edge_gateway/models.py",
+      "services/edge_gateway/policy.py",
+      "services/edge_gateway/readmodel.py",
+      "services/edge_gateway/repository.py",
+      "services/edge_gateway/schema.sql",
+      "services/edge_gateway/service.py",
+      "services/edge_gateway/validation.py",
+      "services/identity_access/api.py",
+      "services/identity_access/deployment.yaml",
+      "services/identity_access/domain.py",
+      "services/identity_access/events.py",
+      "services/identity_access/jobs.py",
+      "services/identity_access/metrics.py",
+      "services/identity_access/models.py",
+      "services/identity_access/policy.py",
+      "services/identity_access/readmodel.py",
+      "services/identity_access/repository.py",
+      "services/identity_access/schema.sql",
+      "services/identity_access/service.py",
+      "services/identity_access/validation.py",
+      "services/marketing_campaign/api.py",
+      "services/marketing_campaign/deployment.yaml",
+      "services/marketing_campaign/domain.py",
+      "services/marketing_campaign/events.py",
+      "services/marketing_campaign/jobs.py",
+      "services/marketing_campaign/metrics.py",
+      "services/marketing_campaign/models.py",
+      "services/marketing_campaign/policy.py",
+      "services/marketing_campaign/readmodel.py",
+      "services/marketing_campaign/repository.py",
+      "services/marketing_campaign/schema.sql",
+      "services/marketing_campaign/service.py",
+      "services/marketing_campaign/validation.py",
+      "services/notification_dispatch/api.py",
+      "services/notification_dispatch/consumer.py",
+      "services/notification_dispatch/deployment.yaml",
+      "services/notification_dispatch/domain.py",
+      "services/notification_dispatch/events.py",
+      "services/notification_dispatch/jobs.py",
+      "services/notification_dispatch/metrics.py",
+      "services/notification_dispatch/models.py",
+      "services/notification_dispatch/policy.py",
+      "services/notification_dispatch/readmodel.py",
+      "services/notification_dispatch/repository.py",
+      "services/notification_dispatch/schema.sql",
+      "services/notification_dispatch/service.py",
+      "services/notification_dispatch/validation.py",
+      "services/order_fulfillment/api.py"
+    ],
+    "selectedBytes": 45331
+  },
+  "totals": {
+    "manifestFileCount": 320,
+    "manifestBytes": 150114,
+    "selectedFileCount": 96,
+    "selectedBytes": 45331,
+    "maxFiles": 96,
+    "maxBytes": 96000,
+    "withinBudget": true
+  },
+  "coverage": {
+    "kind": "LEXICAL_AND_CONFIG_ROUTES_NOT_RUNTIME_DATAFLOW",
+    "maxHops": 3,
+    "fieldIdentifiers": [
+      "getTelephone",
+      "isTelephone",
+      "setTelephone",
+      "telephone"
+    ],
+    "fieldMatchPaths": [
+      "jobs/legacy_export.py",
+      "services/contact_events/domain.py",
+      "services/customer_profile/domain.py",
+      "services/customer_profile/models.py",
+      "services/customer_profile/readmodel.py",
+      "services/customer_profile/repository.py",
+      "services/customer_profile/schema.sql",
+      "services/customer_profile/service.py",
+      "services/customer_profile/validation.py"
+    ],
+    "codeReachableModules": [
+      "services/audit_archive",
+      "services/billing_ledger",
+      "services/consent_registry",
+      "services/contact_events",
+      "services/customer_profile",
+      "services/edge_gateway",
+      "services/identity_access",
+      "services/inventory_reservation",
+      "services/marketing_campaign",
+      "services/notification_dispatch",
+      "services/order_fulfillment",
+      "services/product_catalog",
+      "services/search_index",
+      "services/sms_gateway"
+    ],
+    "architectureReachableModules": [],
+    "anchorDatabaseCandidateModules": [
+      "jobs"
+    ],
+    "candidateCount": 191,
+    "omittedCandidateCount": 95,
+    "unselectedManifestPaths": [
+      "infra/broker.yaml",
+      "infra/gateway_routes.yaml",
+      "services/analytics_rollup/api.py",
+      "services/analytics_rollup/deployment.yaml",
+      "services/analytics_rollup/domain.py",
+      "services/analytics_rollup/events.py",
+      "services/analytics_rollup/jobs.py",
+      "services/analytics_rollup/metrics.py",
+      "services/analytics_rollup/models.py",
+      "services/analytics_rollup/policy.py",
+      "services/analytics_rollup/readmodel.py",
+      "services/analytics_rollup/repository.py",
+      "services/analytics_rollup/schema.sql",
+      "services/analytics_rollup/service.py",
+      "services/analytics_rollup/validation.py",
+      "services/audit_archive/api.py",
+      "services/audit_archive/deployment.yaml",
+      "services/audit_archive/domain.py",
+      "services/audit_archive/events.py",
+      "services/audit_archive/jobs.py",
+      "services/audit_archive/metrics.py",
+      "services/audit_archive/models.py",
+      "services/audit_archive/policy.py",
+      "services/audit_archive/readmodel.py",
+      "services/audit_archive/repository.py",
+      "services/audit_archive/schema.sql",
+      "services/audit_archive/service.py",
+      "services/audit_archive/validation.py",
+      "services/billing_ledger/api.py",
+      "services/billing_ledger/deployment.yaml",
+      "services/billing_ledger/domain.py",
+      "services/billing_ledger/events.py",
+      "services/billing_ledger/jobs.py",
+      "services/billing_ledger/metrics.py",
+      "services/billing_ledger/models.py",
+      "services/billing_ledger/policy.py",
+      "services/billing_ledger/readmodel.py",
+      "services/billing_ledger/repository.py",
+      "services/billing_ledger/schema.sql",
+      "services/billing_ledger/service.py",
+      "services/billing_ledger/validation.py",
+      "services/document_archive/api.py",
+      "services/document_archive/deployment.yaml",
+      "services/document_archive/domain.py",
+      "services/document_archive/events.py",
+      "services/document_archive/jobs.py",
+      "services/document_archive/metrics.py",
+      "services/document_archive/models.py",
+      "services/document_archive/policy.py",
+      "services/document_archive/readmodel.py",
+      "services/document_archive/repository.py",
+      "services/document_archive/schema.sql",
+      "services/document_archive/service.py",
+      "services/document_archive/validation.py",
+      "services/fraud_review/api.py",
+      "services/fraud_review/deployment.yaml",
+      "services/fraud_review/domain.py",
+      "services/fraud_review/events.py",
+      "services/fraud_review/jobs.py",
+      "services/fraud_review/metrics.py",
+      "services/fraud_review/models.py",
+      "services/fraud_review/policy.py",
+      "services/fraud_review/readmodel.py",
+      "services/fraud_review/repository.py",
+      "services/fraud_review/schema.sql",
+      "services/fraud_review/service.py",
+      "services/fraud_review/validation.py",
+      "services/inventory_reservation/api.py",
+      "services/inventory_reservation/deployment.yaml",
+      "services/inventory_reservation/domain.py",
+      "services/inventory_reservation/events.py",
+      "services/inventory_reservation/jobs.py",
+      "services/inventory_reservation/metrics.py",
+      "services/inventory_reservation/models.py",
+      "services/inventory_reservation/policy.py",
+      "services/inventory_reservation/readmodel.py",
+      "services/inventory_reservation/repository.py",
+      "services/inventory_reservation/schema.sql",
+      "services/inventory_reservation/service.py",
+      "services/inventory_reservation/validation.py",
+      "services/loyalty_rewards/api.py",
+      "services/loyalty_rewards/deployment.yaml",
+      "services/loyalty_rewards/domain.py",
+      "services/loyalty_rewards/events.py",
+      "services/loyalty_rewards/jobs.py",
+      "services/loyalty_rewards/metrics.py",
+      "services/loyalty_rewards/models.py",
+      "services/loyalty_rewards/policy.py",
+      "services/loyalty_rewards/readmodel.py",
+      "services/loyalty_rewards/repository.py",
+      "services/loyalty_rewards/schema.sql",
+      "services/loyalty_rewards/service.py",
+      "services/loyalty_rewards/validation.py",
+      "services/merchant_registry/api.py",
+      "services/merchant_registry/deployment.yaml",
+      "services/merchant_registry/domain.py",
+      "services/merchant_registry/events.py",
+      "services/merchant_registry/jobs.py",
+      "services/merchant_registry/metrics.py",
+      "services/merchant_registry/models.py",
+      "services/merchant_registry/policy.py",
+      "services/merchant_registry/readmodel.py",
+      "services/merchant_registry/repository.py",
+      "services/merchant_registry/schema.sql",
+      "services/merchant_registry/service.py",
+      "services/merchant_registry/validation.py",
+      "services/order_fulfillment/deployment.yaml",
+      "services/order_fulfillment/domain.py",
+      "services/order_fulfillment/events.py",
+      "services/order_fulfillment/jobs.py",
+      "services/order_fulfillment/metrics.py",
+      "services/order_fulfillment/models.py",
+      "services/order_fulfillment/policy.py",
+      "services/order_fulfillment/readmodel.py",
+      "services/order_fulfillment/repository.py",
+      "services/order_fulfillment/schema.sql",
+      "services/order_fulfillment/service.py",
+      "services/order_fulfillment/validation.py",
+      "services/partner_webhook/api.py",
+      "services/partner_webhook/deployment.yaml",
+      "services/partner_webhook/domain.py",
+      "services/partner_webhook/events.py",
+      "services/partner_webhook/jobs.py",
+      "services/partner_webhook/metrics.py",
+      "services/partner_webhook/models.py",
+      "services/partner_webhook/policy.py",
+      "services/partner_webhook/readmodel.py",
+      "services/partner_webhook/repository.py",
+      "services/partner_webhook/schema.sql",
+      "services/partner_webhook/service.py",
+      "services/partner_webhook/validation.py",
+      "services/payment_settlement/api.py",
+      "services/payment_settlement/deployment.yaml",
+      "services/payment_settlement/domain.py",
+      "services/payment_settlement/events.py",
+      "services/payment_settlement/jobs.py",
+      "services/payment_settlement/metrics.py",
+      "services/payment_settlement/models.py",
+      "services/payment_settlement/policy.py",
+      "services/payment_settlement/readmodel.py",
+      "services/payment_settlement/repository.py",
+      "services/payment_settlement/schema.sql",
+      "services/payment_settlement/service.py",
+      "services/payment_settlement/validation.py",
+      "services/product_catalog/api.py",
+      "services/product_catalog/deployment.yaml",
+      "services/product_catalog/domain.py",
+      "services/product_catalog/events.py",
+      "services/product_catalog/jobs.py",
+      "services/product_catalog/metrics.py",
+      "services/product_catalog/models.py",
+      "services/product_catalog/policy.py",
+      "services/product_catalog/readmodel.py",
+      "services/product_catalog/repository.py",
+      "services/product_catalog/schema.sql",
+      "services/product_catalog/service.py",
+      "services/product_catalog/validation.py",
+      "services/returns_case/api.py",
+      "services/returns_case/deployment.yaml",
+      "services/returns_case/domain.py",
+      "services/returns_case/events.py",
+      "services/returns_case/jobs.py",
+      "services/returns_case/metrics.py",
+      "services/returns_case/models.py",
+      "services/returns_case/policy.py",
+      "services/returns_case/readmodel.py",
+      "services/returns_case/repository.py",
+      "services/returns_case/schema.sql",
+      "services/returns_case/service.py",
+      "services/returns_case/validation.py",
+      "services/search_index/api.py",
+      "services/search_index/deployment.yaml",
+      "services/search_index/domain.py",
+      "services/search_index/events.py",
+      "services/search_index/jobs.py",
+      "services/search_index/metrics.py",
+      "services/search_index/models.py",
+      "services/search_index/policy.py",
+      "services/search_index/readmodel.py",
+      "services/search_index/repository.py",
+      "services/search_index/schema.sql",
+      "services/search_index/service.py",
+      "services/search_index/validation.py",
+      "services/shipment_tracking/api.py",
+      "services/shipment_tracking/deployment.yaml",
+      "services/shipment_tracking/domain.py",
+      "services/shipment_tracking/events.py",
+      "services/shipment_tracking/jobs.py",
+      "services/shipment_tracking/metrics.py",
+      "services/shipment_tracking/models.py",
+      "services/shipment_tracking/policy.py",
+      "services/shipment_tracking/readmodel.py",
+      "services/shipment_tracking/repository.py",
+      "services/shipment_tracking/schema.sql",
+      "services/shipment_tracking/service.py",
+      "services/shipment_tracking/validation.py",
+      "services/sms_gateway/api.py",
+      "services/sms_gateway/consumer.py",
+      "services/sms_gateway/deployment.yaml",
+      "services/sms_gateway/domain.py",
+      "services/sms_gateway/events.py",
+      "services/sms_gateway/jobs.py",
+      "services/sms_gateway/metrics.py",
+      "services/sms_gateway/models.py",
+      "services/sms_gateway/policy.py",
+      "services/sms_gateway/provider.py",
+      "services/sms_gateway/readmodel.py",
+      "services/sms_gateway/repository.py",
+      "services/sms_gateway/schema.sql",
+      "services/sms_gateway/service.py",
+      "services/sms_gateway/validation.py",
+      "services/support_case/api.py",
+      "services/support_case/deployment.yaml",
+      "services/support_case/domain.py",
+      "services/support_case/events.py",
+      "services/support_case/jobs.py",
+      "services/support_case/metrics.py",
+      "services/support_case/models.py",
+      "services/support_case/policy.py",
+      "services/support_case/readmodel.py",
+      "services/support_case/repository.py",
+      "services/support_case/schema.sql",
+      "services/support_case/service.py",
+      "services/support_case/validation.py"
+    ],
+    "routeEvidence": [
+      {
+        "from": "services/customer_profile",
+        "to": "services/consent_registry",
+        "path": "services/customer_profile/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/edge_gateway",
+        "to": "services/customer_profile",
+        "path": "services/edge_gateway/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/edge_gateway",
+        "to": "services/identity_access",
+        "path": "services/edge_gateway/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/edge_gateway",
+        "to": "services/product_catalog",
+        "path": "services/edge_gateway/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/edge_gateway",
+        "to": "services/order_fulfillment",
+        "path": "services/edge_gateway/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/marketing_campaign",
+        "to": "services/consent_registry",
+        "path": "services/marketing_campaign/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/merchant_registry",
+        "to": "services/document_archive",
+        "path": "services/merchant_registry/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/partner_webhook",
+        "to": "services/shipment_tracking",
+        "path": "services/partner_webhook/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/support_case",
+        "to": "services/returns_case",
+        "path": "services/support_case/deployment.yaml",
+        "reason": "CONFIG_ROUTE"
+      },
+      {
+        "from": "services/customer_profile",
+        "to": "services/contact_events",
+        "path": "services/customer_profile/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/customer_profile",
+        "to": "services/contact_events",
+        "path": "services/contact_events/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/sms_gateway",
+        "to": "services/audit_archive",
+        "path": "services/sms_gateway/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/sms_gateway",
+        "to": "services/audit_archive",
+        "path": "services/audit_archive/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/contact_events",
+        "to": "services/notification_dispatch",
+        "path": "services/contact_events/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/contact_events",
+        "to": "services/notification_dispatch",
+        "path": "services/notification_dispatch/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/inventory_reservation",
+        "to": "services/shipment_tracking",
+        "path": "services/inventory_reservation/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/inventory_reservation",
+        "to": "services/shipment_tracking",
+        "path": "services/shipment_tracking/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/billing_ledger",
+        "to": "services/payment_settlement",
+        "path": "services/billing_ledger/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/billing_ledger",
+        "to": "services/payment_settlement",
+        "path": "services/payment_settlement/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/audit_archive",
+        "path": "services/order_fulfillment/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/audit_archive",
+        "path": "services/audit_archive/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/billing_ledger",
+        "path": "services/order_fulfillment/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/billing_ledger",
+        "path": "services/billing_ledger/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/inventory_reservation",
+        "path": "services/order_fulfillment/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/order_fulfillment",
+        "to": "services/inventory_reservation",
+        "path": "services/inventory_reservation/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/payment_settlement",
+        "to": "services/analytics_rollup",
+        "path": "services/payment_settlement/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/payment_settlement",
+        "to": "services/analytics_rollup",
+        "path": "services/analytics_rollup/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/payment_settlement",
+        "to": "services/fraud_review",
+        "path": "services/payment_settlement/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/payment_settlement",
+        "to": "services/fraud_review",
+        "path": "services/fraud_review/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/product_catalog",
+        "to": "services/search_index",
+        "path": "services/product_catalog/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/product_catalog",
+        "to": "services/search_index",
+        "path": "services/search_index/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/loyalty_rewards",
+        "to": "services/analytics_rollup",
+        "path": "services/loyalty_rewards/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/loyalty_rewards",
+        "to": "services/analytics_rollup",
+        "path": "services/analytics_rollup/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/shipment_tracking",
+        "to": "services/loyalty_rewards",
+        "path": "services/shipment_tracking/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/shipment_tracking",
+        "to": "services/loyalty_rewards",
+        "path": "services/loyalty_rewards/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/notification_dispatch",
+        "to": "services/sms_gateway",
+        "path": "services/notification_dispatch/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/notification_dispatch",
+        "to": "services/sms_gateway",
+        "path": "services/sms_gateway/deployment.yaml",
+        "reason": "CONFIG_TOPIC"
+      },
+      {
+        "from": "services/customer_profile",
+        "to": "jobs",
+        "path": "jobs/legacy_export.yaml",
+        "reason": "CONFIG_SHARED_DATABASE_CANDIDATE"
+      },
+      {
+        "from": "services/customer_profile",
+        "to": "jobs",
+        "path": "services/customer_profile/deployment.yaml",
+        "reason": "CONFIG_SHARED_DATABASE_CANDIDATE"
+      }
+    ],
+    "unresolvedRoutes": [],
+    "indexIssues": [],
+    "diagramIssues": [
+      {
+        "from": "order_fulfillment",
+        "to": "business_db",
+        "reason": "DATASTORE_EDGE_NOT_A_SERVICE_CALL"
+      },
+      {
+        "from": "product_catalog",
+        "to": "business_db",
+        "reason": "DATASTORE_EDGE_NOT_A_SERVICE_CALL"
+      }
+    ],
+    "freshness": "UNVERIFIED",
+    "codeVerificationRequired": true,
+    "fullRepositorySecurityCoverage": false,
+    "limitations": [
+      "Module proximity and field presence are retrieval evidence, not proof of a runtime flow or vulnerability.",
+      "Dynamic wiring, external configuration, reflection and generated sources may be absent.",
+      "Diagram freshness is unverified when no matching commit metadata is supplied.",
+      "Selected modules may still be incomplete when file or byte budgets omit candidates."
+    ]
+  }
+}

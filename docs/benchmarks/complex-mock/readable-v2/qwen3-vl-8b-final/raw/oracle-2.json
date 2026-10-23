@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:22:59.341394Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"services/edge_gateway/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"request admitted id=%s\\\"\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) logged in plaintext via logger.info(). No masking or redaction applied.\",\n      \"support\": [\n        {\n          \"filePath\": \"services/edge_gateway/models.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"record_id: str\\\"\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/identity_access/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"session authenticated id=%s\\\"\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) logged in plaintext via logger.info(). No masking or redaction applied.\",\n      \"support\": [\n        {\n          \"filePath\": \"services/identity_access/models.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"record_id: str\\\"\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/marketing_campaign/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"campaign planned id=%s\\\"\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw `record_id` (potential contact identifier) logged in plaintext via logger.info(). No masking or redaction applied.\",\n      \"support\": [\n        {\n          \"filePath\": \"services/marketing_campaign/models.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"record_id: str\\\"\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/edge_gateway/deployment.yaml\",\n      \"line\": 5,\n      \"evidence\": \"\\\"transport: http\\\"\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"HTTP transport (no TLS) used for external HTTP communication. No evidence of TLS enforcement in deployment or flow.\",\n      \"support\": [\n        {\n          \"filePath\": \"services/edge_gateway/api.py\",\n          \"line\": 6,\n          \"evidence\": \"\\\"ports.db\\\" (database interaction via injected ports, likely external-facing)\"\n        },\n        {\n          \"filePath\": \"services/marketing_campaign/deployment.yaml\",\n          \"line\": 5,\n          \"evidence\": \"\\\"transport: http\\\"\"\n        }\n      ]\n    }\n  ],\n  \"needs\": [\n    \"services/customer_profile/**/*\" ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 40137999792,
+  "load_duration": 139256750,
+  "prompt_eval_count": 9262,
+  "prompt_eval_duration": 7157930000,
+  "eval_count": 576,
+  "eval_duration": 32253286000
+}

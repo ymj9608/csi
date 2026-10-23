@@ -1,0 +1,302 @@
+{
+  "modelTrials": [
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "arm": "architecture_route",
+      "complete": true,
+      "files": 0,
+      "sourceBytes": null,
+      "wallMs": 5135.132,
+      "inputTokens": 1256,
+      "outputTokens": 720,
+      "cachedInputTokens": 0,
+      "estimatedApiCostUsd": 0.004182,
+      "candidateIds": null,
+      "verifiedIds": null,
+      "falsePositiveIds": null,
+      "invalidEvidenceCount": null,
+      "error": null
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "arm": "broad_code",
+      "complete": true,
+      "files": 8,
+      "sourceBytes": 47901,
+      "wallMs": 7679.67,
+      "inputTokens": 13186,
+      "outputTokens": 887,
+      "cachedInputTokens": 0,
+      "estimatedApiCostUsd": 0.013881,
+      "candidateIds": [
+        "V1",
+        "V2",
+        "V3",
+        "V4"
+      ],
+      "verifiedIds": [
+        "V1",
+        "V2"
+      ],
+      "falsePositiveIds": [],
+      "invalidEvidenceCount": 2,
+      "error": null
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5.4-mini",
+      "arm": "vision_selected_code",
+      "complete": true,
+      "files": 4,
+      "sourceBytes": 35327,
+      "wallMs": 5539.575,
+      "inputTokens": 10102,
+      "outputTokens": 780,
+      "cachedInputTokens": 0,
+      "estimatedApiCostUsd": 0.0110865,
+      "candidateIds": [
+        "V2",
+        "V3",
+        "V4"
+      ],
+      "verifiedIds": [],
+      "falsePositiveIds": [],
+      "invalidEvidenceCount": 4,
+      "error": null
+    },
+    {
+      "provider": "local",
+      "model": "qwen3-vl:8b",
+      "arm": "architecture_route",
+      "complete": false,
+      "files": 0,
+      "sourceBytes": null,
+      "wallMs": 159171.258,
+      "inputTokens": 1615,
+      "outputTokens": 2800,
+      "cachedInputTokens": null,
+      "estimatedApiCostUsd": 0,
+      "candidateIds": null,
+      "verifiedIds": null,
+      "falsePositiveIds": null,
+      "invalidEvidenceCount": null,
+      "error": "INCOMPLETE_OUTPUT"
+    },
+    {
+      "provider": "local",
+      "model": "qwen3-vl:8b",
+      "arm": "broad_code",
+      "complete": false,
+      "files": 8,
+      "sourceBytes": 47901,
+      "wallMs": 450487.052,
+      "inputTokens": 14577,
+      "outputTokens": 6000,
+      "cachedInputTokens": null,
+      "estimatedApiCostUsd": 0,
+      "candidateIds": null,
+      "verifiedIds": null,
+      "falsePositiveIds": null,
+      "invalidEvidenceCount": null,
+      "error": "INCOMPLETE_OUTPUT"
+    },
+    {
+      "provider": "local",
+      "model": "qwen3-vl:8b",
+      "arm": "remediated_code",
+      "complete": false,
+      "files": 8,
+      "sourceBytes": 47244,
+      "wallMs": 436675.992,
+      "inputTokens": 14371,
+      "outputTokens": 6000,
+      "cachedInputTokens": null,
+      "estimatedApiCostUsd": 0,
+      "candidateIds": null,
+      "verifiedIds": null,
+      "falsePositiveIds": null,
+      "invalidEvidenceCount": null,
+      "error": "INCOMPLETE_OUTPUT"
+    }
+  ],
+  "staticTrials": [
+    {
+      "event": "native_preflight",
+      "arm": "native_whole_repository",
+      "complete": false,
+      "error": "Snapshot size limit",
+      "wallMs": 1451.3645829993038
+    },
+    {
+      "event": "scan",
+      "variant": "original",
+      "arm": "batched_whole_repository",
+      "complete": false,
+      "error": "RuntimeError: Semgrep reported incomplete analysis",
+      "wallMs": 21594.232166000438
+    },
+    {
+      "event": "scan",
+      "variant": "original",
+      "arm": "runtime_security_scope",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 976.502,
+      "files": 37,
+      "bytes": 186048,
+      "batches": 1,
+      "findingCount": 0,
+      "ruleCounts": {},
+      "quality": null,
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "scan",
+      "variant": "original",
+      "arm": "runtime_scope_plus_changed",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 1044.94,
+      "files": 39,
+      "bytes": 195088,
+      "batches": 1,
+      "findingCount": 0,
+      "ruleCounts": {},
+      "quality": null,
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "scan",
+      "variant": "mutated",
+      "arm": "batched_whole_repository",
+      "complete": false,
+      "error": "RuntimeError: Semgrep reported incomplete analysis",
+      "wallMs": 19712.360166000508
+    },
+    {
+      "event": "scan",
+      "variant": "mutated",
+      "arm": "runtime_security_scope",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 1815.399,
+      "files": 37,
+      "bytes": 186556,
+      "batches": 1,
+      "findingCount": 3,
+      "ruleCounts": {
+        "SEC-05": 3
+      },
+      "quality": {
+        "truePositiveIds": [
+          "V1",
+          "V5"
+        ],
+        "falseNegativeIds": [
+          "V2",
+          "V3",
+          "V4"
+        ],
+        "falsePositiveIds": [
+          "N3"
+        ],
+        "truePositive": 2,
+        "falseNegative": 3,
+        "falsePositive": 1,
+        "trueNegative": 2,
+        "recall": 0.4,
+        "labeledPrecision": 0.6666666666666666
+      },
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "scan",
+      "variant": "mutated",
+      "arm": "runtime_scope_plus_changed",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 1091.47,
+      "files": 39,
+      "bytes": 195745,
+      "batches": 1,
+      "findingCount": 4,
+      "ruleCounts": {
+        "SEC-05": 4
+      },
+      "quality": {
+        "truePositiveIds": [
+          "V1",
+          "V2",
+          "V5"
+        ],
+        "falseNegativeIds": [
+          "V3",
+          "V4"
+        ],
+        "falsePositiveIds": [
+          "N3"
+        ],
+        "truePositive": 3,
+        "falseNegative": 2,
+        "falsePositive": 1,
+        "trueNegative": 2,
+        "recall": 0.6,
+        "labeledPrecision": 0.75
+      },
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "scan",
+      "variant": "remediated",
+      "arm": "batched_whole_repository",
+      "complete": false,
+      "error": "RuntimeError: Semgrep reported incomplete analysis",
+      "wallMs": 28700.741749999906
+    },
+    {
+      "event": "scan",
+      "variant": "remediated",
+      "arm": "runtime_security_scope",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 3076.94,
+      "files": 37,
+      "bytes": 186048,
+      "batches": 1,
+      "findingCount": 0,
+      "ruleCounts": {},
+      "quality": null,
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "scan",
+      "variant": "remediated",
+      "arm": "runtime_scope_plus_changed",
+      "repeat": 1,
+      "complete": true,
+      "wallMs": 2138.425,
+      "files": 39,
+      "bytes": 195088,
+      "batches": 1,
+      "findingCount": 0,
+      "ruleCounts": {},
+      "quality": null,
+      "modelTokens": 0,
+      "apiCostUsd": 0
+    },
+    {
+      "event": "finished"
+    }
+  ],
+  "definitions": {
+    "candidateIds": "Positive labeled file/line matched; evidence quote may be invalid.",
+    "verifiedIds": "Positive label matched AND exact literal quote exists at supplied file/line."
+  }
+}

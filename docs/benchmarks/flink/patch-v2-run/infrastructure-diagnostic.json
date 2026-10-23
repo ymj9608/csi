@@ -1,0 +1,8 @@
+{
+  "purpose": "diagnose unchanged HTTP failure; excluded from quality comparison",
+  "httpStatus": 400,
+  "wallMs": 2573.159,
+  "response": {
+    "error": "{\"error\":{\"code\":400,\"message\":\"Failed to initialize samplers: failed to parse grammar\",\"type\":\"invalid_request_error\"}}"
+  }
+}

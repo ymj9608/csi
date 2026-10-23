@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "dataset_id": "synthetic-lichu-architecture-v1",
+  "synthetic": true,
+  "scope": "Four seeded security behaviors and four matched controls; not a complete audit of all possible bugs.",
+  "label_method": "Human-authored source-level labels, verified by deterministic behavior checks; never passed to the model.",
+  "positives": [
+    {
+      "id": "V1",
+      "category": "weak_password_hash",
+      "path": "backend/app/core/passwords.py",
+      "function": "hash_password",
+      "diagram_visible": true,
+      "evidence": "Persisted passwords use one fast SHA-256 digest and a global fixed salt; accounts.register stores the result.",
+      "line_start": 5,
+      "line_end": 8
+    },
+    {
+      "id": "V2",
+      "category": "sensitive_logging",
+      "path": "backend/app/core/audit.py",
+      "function": "record_signup",
+      "diagram_visible": true,
+      "evidence": "Registration records raw passwords and complete email addresses in application logs.",
+      "line_start": 6,
+      "line_end": 7
+    },
+    {
+      "id": "V3",
+      "category": "sql_injection",
+      "path": "backend/app/repositories/users.py",
+      "function": "search_users",
+      "diagram_visible": true,
+      "evidence": "User-controlled directory query is interpolated into executable SQL; admin authorization does not sanitize SQL.",
+      "line_start": 13,
+      "line_end": 15
+    },
+    {
+      "id": "V4",
+      "category": "plaintext_pii_export",
+      "path": "backend/jobs/directory_sync.py",
+      "function": "synchronize_directory",
+      "diagram_visible": false,
+      "evidence": "A separate scheduled job exports users' names, emails and phones to an external HTTP endpoint without TLS.",
+      "line_start": 7,
+      "line_end": 14
+    }
+  ],
+  "negatives": [
+    {
+      "id": "N1",
+      "category": "weak_password_hash",
+      "path": "backend/app/core/checksums.py",
+      "function": "document_checksum",
+      "reason": "SHA-256 hashes document bytes for identity, not passwords.",
+      "line_start": 4,
+      "line_end": 5
+    },
+    {
+      "id": "N2",
+      "category": "sensitive_logging",
+      "path": "backend/app/core/audit.py",
+      "function": "record_decision",
+      "reason": "Decision event excludes raw credentials and contact fields; identifiers may still require access/retention controls.",
+      "line_start": 10,
+      "line_end": 11
+    },
+    {
+      "id": "N3",
+      "category": "sql_injection",
+      "path": "backend/app/repositories/catalog.py",
+      "function": "list_licenses",
+      "reason": "Search input is bound as a query parameter, including embedded SQL punctuation.",
+      "line_start": 1,
+      "line_end": 6
+    },
+    {
+      "id": "N4",
+      "category": "weak_password_hash",
+      "path": "backend/app/core/recovery.py",
+      "function": "hash_recovery_code",
+      "reason": "PBKDF2-HMAC-SHA256 applies 600,000 iterations with a per-secret random salt; SHA-256 usage alone is not a finding.",
+      "line_start": 8,
+      "line_end": 11
+    }
+  ],
+  "diagram_omissions": [
+    "backend/jobs/directory_sync.py"
+  ],
+  "out_of_scope": [
+    "Legal compliance certification",
+    "Real Lichu security claims",
+    "Production concurrency",
+    "All possible findings outside the four benchmark categories"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "arms": {
+    "full_code": {
+      "scheduled": 3,
+      "recorded": 0,
+      "cohortComplete": false,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 0,
+      "firstUseTotalMs": null,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    },
+    "code_index": {
+      "scheduled": 3,
+      "recorded": 0,
+      "cohortComplete": false,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 0,
+      "firstUseTotalMs": null,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    },
+    "vision_index": {
+      "scheduled": 3,
+      "recorded": 0,
+      "cohortComplete": false,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 0,
+      "firstUseTotalMs": null,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    }
+  },
+  "comparisons": {
+    "full_code": {
+      "observedQualityPreserved": false,
+      "firstUseTimeImproved": null,
+      "requestTokensReduced": null,
+      "conclusion": "INCOMPLETE",
+      "attributableToSuccessfulVisionPipeline": false
+    },
+    "code_index": {
+      "observedQualityPreserved": false,
+      "firstUseTimeImproved": null,
+      "requestTokensReduced": null,
+      "conclusion": "INCOMPLETE",
+      "attributableToSuccessfulVisionPipeline": false
+    }
+  },
+  "statisticalNoninferiorityProven": false,
+  "visionSetupMs": null,
+  "taskCount": 1,
+  "note": "Cold total includes actual image setup once; warm request totals are measured disk-cache reads + inspection + patch + validation. No quality claim before complete paired results.",
+  "visionSetupInputTokens": null,
+  "visionSetupOutputTokens": null,
+  "visionInferenceCompleted": false
+}

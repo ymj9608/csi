@@ -230,3 +230,39 @@ def test_changes_link_their_actual_findings_and_retrieved_policy():
     review=build_review(report(False),report(True),findings,refs)
     assert next(c for c in review['changes'] if c['id']=='sensitive-logs')['evidenceIds']==['log-policy','log-reference','logs']
     assert next(c for c in review['changes'] if c['id']=='password-storage')['evidenceIds']==['password','pwd-policy','salt-reference']
+
+
+def test_vlm_replans_across_repair_and_keeps_guardrails(repo):
+    from test_coding_handoff import ARCH, TEXT
+    from test_vlm_orchestrator import scripted, READ, EVIDENCE, DELEGATE, VERIFY, FINISH
+    job=context(repo)
+    job.update(architectureId=ARCH['id'],architecture={**ARCH,'sourceCommitSha':job['commitSha']})
+    vlm=[];coder=[];checks=[];phases=[]
+    planner=scripted([READ,EVIDENCE,DELEGATE,DELEGATE,VERIFY,FINISH],vlm)
+    def model(payload):
+        coder.append(copy.deepcopy(payload))
+        return chat(response(AFTER+'\nimport os\n' if len(coder)==1 else AFTER))
+    def verify(_):checks.append(True);return report(len(checks)>1)
+    result=engine.generate(repo,job,verifier=verify,chat=model,vlm_chat=planner,progress=phases.append)
+    assert result['status']=='READY' and len(vlm)==6 and len(coder)==2
+    assert 'format' not in vlm[0] and 'format' in coder[0]
+    assert vlm[0]['tools'] and vlm[0]['model']=='gpt-5.4-mini-2026-03-17'
+    assert 'PRIVATE_FIXTURE' not in json.dumps(vlm+coder)
+    assert coder[0]['messages'][-1]['content'].endswith(TEXT)
+    assert result['handoff']['instruction']==TEXT
+    assert [p['phase'] for p in phases][:3]==['BASELINE','VLM_PLANNING','VLM_READING']
+    assert (repo/TARGET).read_text()==BEFORE
+
+
+def test_vlm_failure_does_not_silently_fall_back_to_coder(repo):
+    from test_coding_handoff import ARCH
+    job=context(repo);job.update(architectureId=ARCH['id'],architecture={**ARCH,'sourceCommitSha':job['commitSha']})
+    result=engine.generate(repo,job,verifier=lambda _:report(False),vlm_chat=lambda _: {'status':'incomplete'},
+                           chat=lambda _:pytest.fail('no coder call after failed VLM'))
+    assert result['status']=='BLOCKED' and result['files']==[]
+
+
+def test_pinned_architecture_cannot_be_omitted(repo):
+    job=context(repo);job['architectureId']='11111111-1111-4111-8111-111111111111'
+    with pytest.raises(Rejected,match='ARCHITECTURE_REQUIRED'):
+        engine.generate(repo,job,verifier=lambda _:report(False),chat=lambda _:pytest.fail('no fallback'))
