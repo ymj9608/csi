@@ -750,8 +750,8 @@ onBeforeUnmount(() => {
   padding: 20px;
 }
 .drop-preview {
-  max-width: 220px;
-  max-height: 140px;
+  max-width: 420px;
+  max-height: 280px;
   object-fit: contain;
   border: 1px solid var(--line);
   border-radius: var(--r-md);
