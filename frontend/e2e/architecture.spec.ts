@@ -22,7 +22,7 @@ test("architecture folders: choose folder on upload, browse thumbnails, view and
   await expect(page).toHaveURL(/\/projects$/);
   await page.locator(".project-card").first().click();
   // 아키텍처는 사이드바 메뉴가 아니라 프로젝트 화면의 버튼입니다. 처음에는 보안 현황이 선택되어 있습니다.
-  await expect(page.locator("aside nav a", { hasText: "아키텍처" })).toHaveCount(0);
+  await expect(page.locator("aside nav > a", { hasText: "아키텍처" })).toHaveCount(0);
   const tabs = page.getByRole("tablist", { name: "프로젝트 화면" });
   await expect(tabs.getByRole("tab", { name: "보안 현황" })).toHaveAttribute("aria-selected", "true");
   await expect(page.locator(".metrics")).toBeVisible();
@@ -165,28 +165,4 @@ test("old architecture address opens the project screen with the architecture bu
   await tabs.getByRole("tab", { name: "보안 현황" }).click();
   await expect(page).not.toHaveURL(/view=/);
   await expect(page.locator(".metrics")).toBeVisible();
-});
-
-test("project picker offers all projects only on the security status view", async ({ page }) => {
-  await page.goto("/login");
-  await page.getByLabel("계정", { exact: true }).fill(env.CSI_ADMIN_USERNAME);
-  await page.getByLabel("비밀번호", { exact: true }).fill(env.CSI_ADMIN_PASSWORD);
-  await page.getByRole("button", { name: "로그인", exact: true }).click();
-  await expect(page).toHaveURL(/\/projects$/);
-  await page.locator(".project-card").first().click();
-  const picker = page.getByRole("combobox", { name: "프로젝트 선택" });
-  const allOption = picker.locator('option[value=""]');
-  await expect(allOption).toHaveText("전체 프로젝트");
-
-  // 보안 현황에서 전체 프로젝트를 고른 뒤 아키텍처로 가면 개별 프로젝트가 자동으로 선택됩니다.
-  await picker.selectOption("");
-  await expect(page).not.toHaveURL(/project=/);
-  await page.getByRole("tab", { name: "아키텍처" }).click();
-  await expect(page).toHaveURL(/project=[0-9a-f-]+/);
-  await expect(allOption).toHaveCount(0);
-  await expect(picker).not.toHaveValue("");
-
-  // 다시 보안 현황으로 오면 전체 프로젝트를 고를 수 있습니다.
-  await page.getByRole("tab", { name: "보안 현황" }).click();
-  await expect(allOption).toHaveText("전체 프로젝트");
 });
