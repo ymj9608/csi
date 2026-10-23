@@ -1,0 +1,16 @@
+{
+  "findings": [
+    {
+      "route": "csi.route.a",
+      "status": "POTENTIAL",
+      "evidence": "**exact source match**\norg.slf4j.LoggerFactory.getLogger(\"csi.route.a\").info(\"Job context: {}\", graph.getJobName());\n\n**deployment evidence missing**:\n- No explicit validation that `graph.getJobName()` is not a phone number (ASCII 010 + 8 digits) before logging.\n- No evidence of a policy enforcement mechanism for authorized internal operations recipients in the source or architecture context. The logger is unconditionally exposed to the private archive path (`Private history / REST for authorized operations users`).\n\n**policy conflict**:\nThe policy requires *explicit authorization* for internal operations recipients, but the current implementation does not enforce this. The logger may leak job names containing phone numbers without restriction.\n\n---"
+    },
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "**exact source match**\norg.slf4j.LoggerFactory.getLogger(\"csi.route.a\").info(\"Job context: {}\", graph.getJobName());\n\n**deployment evidence missing**:\n- No evidence of a phone-number sanitization or masking mechanism for `graph.getJobName()` before logging to the diagnostic collector.\n- The logger is unconditionally exposed to an external vendor recipient (`EXTERNAL support vendor`), which violates the policy of *no personal-phone access* in diagnostics.\n\n**policy conflict**:\nThe policy requires third-party diagnostic recipients to receive a non-phone-labeled job name, but the current implementation does not sanitize or redact phone numbers from `graph.getJobName()`.\n\n---"
+    }
+  ],
+  "edits": [],
+  "reason": "No sufficient evidence of deployment-specific mechanisms (e.g., custom `ArchivedJson` serialization, route-level filters, or conditional logging) to justify minimal edits. The policy requires explicit authorization and sanitization, neither of which are evidenced in the source or architecture context."
+}

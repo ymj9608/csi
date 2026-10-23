@@ -1,0 +1,22 @@
+{
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger identifier `csi.route.b` is present in source but not explicitly bound to an external recipient in the architecture context. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, which violates policy if this route is external (e.g., third-party diagnostic recipient)."
+    },
+    {
+      "route": "csi.route.a",
+      "status": "UNKNOWN",
+      "evidence": "Logger identifier `csi.route.a` is present in source but not explicitly bound to an internal or external recipient. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, but policy allows retention of original values for authorized internal routes."
+    }
+  ],
+  "edits": [
+    {
+      "path": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java",
+      "before": "        org.slf4j.LoggerFactory.getLogger(\"csi.route.b\")\n                .info(\"Job context: {}\", graph.getJobName());",
+      "after": "        org.slf4j.LoggerFactory.getLogger(\"csi.route.b\")\n                .info(\"Job context: {}\", JobConfigHandler.sanitizeDiagnosticName(graph.getJobName()));"
+    }
+  ],
+  "reason": "The external diagnostic route (`csi.route.b`) is evidenced by the presence of a logger identifier but lacks explicit binding confirmation in the architecture context. The policy requires sanitization for third-party recipients, and the helper `sanitizeDiagnosticName` is already implemented. No changes are required for internal routes or private JSON/archive behavior."
+}

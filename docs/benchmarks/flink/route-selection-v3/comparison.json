@@ -1,0 +1,177 @@
+[
+  {
+    "name": "code_only",
+    "status": "GENERATED",
+    "findings": [
+      {
+        "route": "csi.route.b",
+        "status": "POTENTIAL",
+        "evidence": "Logger argument is raw job name: `graph.getJobName()` in `org.slf4j.LoggerFactory.getLogger(\"csi.route.b\").info(\"Job context: {}\", graph.getJobName());` with no sanitization. No explicit binding or access rights are provided for this route in the architecture context, so its external status is UNKNOWN."
+      }
+    ],
+    "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08",
+    "verification": {
+      "cases": {
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityDifferentPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityExternalPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNonPhoneNamePreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNullExecutionConfigPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityAuthorizedInternalOriginalPreserved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityMultiplePhonesRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityExternalDiagnosticLabelPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#preservesNonPhone": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksBeginning": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksMultiple": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksEmbedded": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#handlesNull": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityDifferentPhoneRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityExternalPhoneRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNonPhoneNamePreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNullExecutionConfigPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityAuthorizedInternalOriginalPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityMultiplePhonesRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityExternalDiagnosticLabelPreserved": "PASSED"
+      },
+      "exitCode": 0,
+      "testsUnchanged": true,
+      "seconds": 77.03827599999977,
+      "helperPassed": 5,
+      "deployments": {
+        "a": {
+          "passed": 9,
+          "total": 9,
+          "securityPassed": 3,
+          "accepted": true
+        },
+        "b": {
+          "passed": 5,
+          "total": 9,
+          "securityPassed": 0,
+          "accepted": false
+        }
+      }
+    },
+    "modelMs": 35149.271,
+    "inputTokens": 4711,
+    "outputTokens": 347
+  },
+  {
+    "name": "vision_a",
+    "status": "GENERATED",
+    "findings": [
+      {
+        "route": "csi.route.b",
+        "status": "POTENTIAL",
+        "evidence": "Logger argument in `archiveJsonWithPath` is raw job name: `graph.getJobName()` (line 23). No explicit external binding or sanitization is applied. The helper `sanitizeDiagnosticName` exists but is unused here. Deployment context confirms this route is external and requires phone number redaction for third-party diagnostic recipients."
+      }
+    ],
+    "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08",
+    "verification": {
+      "cases": {
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#preservesNonPhone": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksBeginning": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksMultiple": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksEmbedded": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#handlesNull": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityDifferentPhoneRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityExternalPhoneRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNonPhoneNamePreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNullExecutionConfigPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityAuthorizedInternalOriginalPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityMultiplePhonesRemoved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityExternalDiagnosticLabelPreserved": "PASSED"
+      },
+      "exitCode": 0,
+      "testsUnchanged": true,
+      "seconds": 0,
+      "helperPassed": 5,
+      "deployments": {
+        "a": {
+          "passed": 9,
+          "total": 9,
+          "securityPassed": 3,
+          "accepted": true
+        }
+      },
+      "reusedFrom": "code_only",
+      "identicalCandidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08",
+      "originalValidationSeconds": 77.03827599999977,
+      "timingNote": "Exact same source and frozen tests: no second build was executed. This is not a measured speedup."
+    },
+    "modelMs": 30791.527,
+    "inputTokens": 4813,
+    "outputTokens": 295,
+    "visionMs": 34593.05154100002,
+    "visionInputTokens": 1120,
+    "visionOutputTokens": 642
+  },
+  {
+    "name": "vision_b",
+    "status": "VISION_FAILED",
+    "visionMs": 20030.02054200033,
+    "visionInputTokens": null,
+    "visionOutputTokens": null
+  },
+  {
+    "name": "vision_b_retry",
+    "status": "GENERATED",
+    "findings": [
+      {
+        "route": "csi.route.b",
+        "status": "POTENTIAL",
+        "evidence": "Logger identifier `csi.route.b` is present in source but not explicitly bound to an external recipient in the architecture context. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, which violates policy if this route is external (e.g., third-party diagnostic recipient)."
+      },
+      {
+        "route": "csi.route.a",
+        "status": "UNKNOWN",
+        "evidence": "Logger identifier `csi.route.a` is present in source but not explicitly bound to an internal or external recipient. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, but policy allows retention of original values for authorized internal routes."
+      }
+    ],
+    "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08",
+    "verification": {
+      "cases": {
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityDifferentPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityExternalPhoneRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNonPhoneNamePreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNullExecutionConfigPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityAuthorizedInternalOriginalPreserved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityMultiplePhonesRemoved": "FAILED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityExternalDiagnosticLabelPreserved": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#preservesNonPhone": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksBeginning": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksMultiple": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksEmbedded": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#handlesNull": "PASSED",
+        "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED"
+      },
+      "exitCode": 0,
+      "testsUnchanged": true,
+      "seconds": 0,
+      "helperPassed": 5,
+      "deployments": {
+        "b": {
+          "passed": 5,
+          "total": 9,
+          "securityPassed": 0,
+          "accepted": false
+        }
+      },
+      "reusedFrom": "code_only",
+      "identicalCandidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08",
+      "originalValidationSeconds": 77.03827599999977,
+      "timingNote": "Exact same source and frozen tests: no second build was executed. This is not a measured speedup."
+    },
+    "modelMs": 38788.072,
+    "inputTokens": 4813,
+    "outputTokens": 424,
+    "visionMs": 18901.446165999914,
+    "visionInputTokens": 1120,
+    "visionOutputTokens": 277
+  }
+]

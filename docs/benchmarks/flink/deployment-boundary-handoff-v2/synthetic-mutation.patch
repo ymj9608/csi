@@ -1,0 +1,13 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
+@@ -76,6 +76,10 @@
+     @Override
+     public Collection<ArchivedJson> archiveJsonWithPath(AccessExecutionGraph graph)
+             throws IOException {
++        org.slf4j.LoggerFactory.getLogger("csi.route.a")
++                .info("Job context: {}", graph.getJobName());
++        org.slf4j.LoggerFactory.getLogger("csi.route.b")
++                .info("Job context: {}", graph.getJobName());
+         ResponseBody json = createJobConfigInfo(graph);
+         String path =
+                 getMessageHeaders()

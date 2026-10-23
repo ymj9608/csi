@@ -1,0 +1,30 @@
+{
+  "arm": "architecture_vision",
+  "status": "UNRESOLVED",
+  "round": 2,
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger csi.route.b is used in `JobConfigHandler.java.archiveJsonWithPath()` to log the raw job name (`graph.getJobName()`) without phone number sanitization. The architecture context confirms this route targets an external diagnostic recipient (EXTERNAL support vendor) with no personal-phone access authorization. No explicit masking mechanism exists for this logger argument, despite the policy requiring it for third-party recipients."
+    }
+  ],
+  "candidateSha256": "33d17c16d1a1c7cdd7e9dd9d60ef5021e492eb8a7485d849f74d19637e358a47",
+  "verification": {
+    "cases": {},
+    "exitCode": 1,
+    "testsUnchanged": true,
+    "seconds": 36.59494266599995,
+    "passed": 0,
+    "failed": 0,
+    "securityPassed": 0,
+    "accepted": false
+  },
+  "patchGenerated": true,
+  "modelMs": 32338.164,
+  "inputTokens": 4683,
+  "outputTokens": 350,
+  "visionMs": 28450.143374999698,
+  "visionInputTokens": 1116,
+  "visionOutputTokens": 226
+}

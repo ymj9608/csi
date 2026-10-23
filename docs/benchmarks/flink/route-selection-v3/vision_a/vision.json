@@ -1,0 +1,9 @@
+{
+  "status": "COMPLETED",
+  "seconds": 34.59305154100002,
+  "final": "Loggers: csi.route.a (Operations collector), csi.route.b (Diagnostic collector). Recipients: INTERNAL authorized operations users (for csi.route.a); EXTERNAL support vendor (no personal-phone access for csi.route.b). Private archive path: Output of JobConfigHandler.java’s `archiveJsonWithPath(graph)` to \"Private history / REST\".  \n\nInspection instruction: Confirm logger routing aligns with zone assignments and verify private archive path via the specified method.",
+  "thinkingPresent": true,
+  "inputTokens": 1120,
+  "outputTokens": 642,
+  "doneReason": "stop"
+}

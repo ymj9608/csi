@@ -1,0 +1,17 @@
+{
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger csi.route.b is used in `JobConfigHandler.java.archiveJsonWithPath()` to log the raw job name (`graph.getJobName()`) without phone number sanitization. The architecture context confirms this route targets an external diagnostic recipient (EXTERNAL support vendor) with no personal-phone access authorization. No explicit masking mechanism exists for this logger argument, despite the policy requiring it for third-party recipients."
+    }
+  ],
+  "edits": [
+    {
+      "path": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java",
+      "before": "        org.slf4j.LoggerFactory.getLogger(\"csi.route.b\")\n                .info(\"Job context: {}\", graph.getJobName());",
+      "after": "        String jobNameForLogging = graph.getJobName().replaceAll(\"^010\\d{8}\", \"PHONE_REDACTED\");\n        org.slf4j.LoggerFactory.getLogger(\"csi.route.b\")\n                .info(\"Job context: {}\", jobNameForLogging);"
+    }
+  ],
+  "reason": "The external diagnostic route (csi.route.b) lacks phone number sanitization despite the architecture context explicitly prohibiting personal-phone exposure to third-party recipients. The minimal repair is an inline regex replacement of ASCII `010` followed by eight digits in the logged job name, preserving all other characters."
+}

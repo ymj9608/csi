@@ -1,0 +1,19 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
+@@ -78,8 +78,14 @@
+             throws IOException {
+         org.slf4j.LoggerFactory.getLogger("csi.route.a")
+                 .info("Job context: {}", graph.getJobName());
+-        org.slf4j.LoggerFactory.getLogger("csi.route.b")
+-                .info("Job context: {}", graph.getJobName());
++        String jobNameForLogging = graph.getJobName();
++        // Mask phone numbers (ASCII 010 followed by eight digits) for external diagnostics
++        if (jobNameForLogging != null && jobNameForLogging.startsWith("010") && jobNameForLogging.length() > 8) {
++            String masked = "010" + "*******";
++            org.slf4j.LoggerFactory.getLogger("csi.route.b").info("Job context: {}", masked);
++        } else {
++            org.slf4j.LoggerFactory.getLogger("csi.route.b").info("Job context: {}", jobNameForLogging);
++        }
+         ResponseBody json = createJobConfigInfo(graph);
+         String path =
+                 getMessageHeaders()

@@ -1,0 +1,12 @@
+{
+  "prompt": "Read this deployment diagram carefully. In at most 90 words list the exact logger identifiers and each recipient: INTERNAL authorized or EXTERNAL no personal-phone access. Also identify the private archive path. Return a short factual inspection instruction. Do not infer route bindings from names or invent code fixes.",
+  "imageSha256": "59c655be4cca784a7eb2a9818530401f23e8bd92aa3858f08f711dda78009d99",
+  "model": "qwen3-vl:8b",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "think": true
+}

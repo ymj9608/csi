@@ -1,0 +1,54 @@
+{
+  "loadedModels": [],
+  "experimentContainers": [],
+  "installedModels": [
+    {
+      "name": "qwen3-vl:8b",
+      "model": "qwen3-vl:8b",
+      "modified_at": "2026-10-22T17:02:55.467194184+09:00",
+      "size": 6190971699,
+      "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+      "details": {
+        "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+        "format": "gguf",
+        "family": "qwen3vl",
+        "families": [
+          "qwen3vl",
+          "clip"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M"
+      },
+      "capabilities": [
+        "completion",
+        "tools",
+        "thinking",
+        "vision"
+      ]
+    },
+    {
+      "name": "ministral-3:8b-instruct-2512-q4_K_M",
+      "model": "ministral-3:8b-instruct-2512-q4_K_M",
+      "modified_at": "2026-10-22T11:52:25.710696115+09:00",
+      "size": 6022236616,
+      "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "mistral3",
+        "families": [
+          "mistral3"
+        ],
+        "parameter_size": "8.9B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 4096
+      },
+      "capabilities": [
+        "vision",
+        "completion",
+        "tools"
+      ]
+    }
+  ]
+}
