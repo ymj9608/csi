@@ -79,28 +79,16 @@ async function enterProject(page: Page) {
   await page.goto('/projects');
   await page.locator('.project-card').filter({ hasText: 'team/Project-A' }).click();
   await expect(page).toHaveURL(/\/dashboard\?project=a$/);
-  await expect(reveal(page)).toBeVisible();
 }
 
-test('project card opens saved sections from top to bottom, with immediate show-all', async ({ page }) => {
+// 프로젝트 화면은 펼쳐보기 상자 없이 저장된 결과를 처음부터 모두 보여 줍니다.
+test('project screen shows every saved section at once without the reveal box', async ({ page }) => {
   const { writes } = await mockReports(page);
   await stopTime(page);
   await enterProject(page);
-  await expect(stages(page)).toHaveCount(0);
-  await page.clock.runFor(180);
-  await expect(page.locator('[data-report-stage="1"]')).toBeVisible();
-  await expect(stages(page)).toHaveCount(1);
-  await expect(page.getByRole('heading', { name: '최근 실패한 검사', exact: true })).toHaveCount(0);
-  await expect(page.locator('.evidence-note')).toHaveCount(0);
-  await expect(page.locator('footer')).toHaveCount(0);
-  await page.clock.runFor(620);
-  await expect(page.locator('[data-report-stage="2"]')).toBeVisible();
-  await expect(stages(page)).toHaveCount(2);
-  await expect(page.getByRole('heading', { name: '최근 실패한 검사', exact: true })).toHaveCount(0);
-  await expect(page.locator('.evidence-note')).toHaveCount(0);
-  await expect(page.locator('footer')).toHaveCount(0);
-  await reveal(page).getByRole('button', { name: '전체 바로 보기', exact: true }).click();
+  await expect(reveal(page)).toHaveCount(0);
   await expect(stages(page)).toHaveCount(4);
+  await expect(page.locator('.report-narrative')).toContainText('미해결 위험 항목이 2건 있습니다.');
   await expect(page.getByRole('heading', { name: '검토 피드', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: '최근 실패한 검사', exact: true })).toBeVisible();
   await expect(page.locator('.evidence-note')).toBeVisible();
@@ -109,75 +97,21 @@ test('project card opens saved sections from top to bottom, with immediate show-
   expect(writes).toEqual([]);
 });
 
-test('replay only changes presentation and does not request generation or review decisions', async ({ page }) => {
-  const { reads, writes } = await mockReports(page);
-  await stopTime(page);
-  await enterProject(page);
-  await reveal(page).getByRole('button', { name: '전체 바로 보기', exact: true }).click();
-  const requestCount = reads.length;
-  await reveal(page).getByRole('button', { name: '다시 보기', exact: true }).click();
-  await expect(stages(page)).toHaveCount(0);
-  await page.clock.runFor(180);
-  await expect(stages(page)).toHaveCount(1);
-  await page.clock.runFor(1860);
-  await expect(stages(page)).toHaveCount(4);
-  expect(reads).toHaveLength(requestCount);
-  expect(writes).toEqual([]);
-});
-
-test('quick project switching cancels timers belonging to the previous project', async ({ page }) => {
-  const { writes } = await mockReports(page);
-  await stopTime(page);
-  await enterProject(page);
-  await page.clock.runFor(500);
-  await expect(stages(page)).toHaveCount(1);
-  await page.getByLabel('프로젝트 선택', { exact: true }).selectOption('b');
-  await expect(page.locator('.project-heading')).toContainText('team/Project-B');
-  await expect(stages(page)).toHaveCount(0);
-  await page.clock.runFor(180);
-  await expect(stages(page)).toHaveCount(1);
-  // The old project's next step was due after another 120ms; it must not advance B.
-  await page.clock.runFor(200);
-  await expect(stages(page)).toHaveCount(1);
-  await page.clock.runFor(420);
-  await expect(stages(page)).toHaveCount(2);
-  await page.clock.runFor(1240);
-  await expect(stages(page)).toHaveCount(4);
-  expect(writes).toEqual([]);
-});
-
-test('SSE quiet refresh updates counts without replaying or resetting an ongoing reveal', async ({ page }) => {
+test('project switching and SSE refresh keep every section visible', async ({ page }) => {
   const { reads, writes, state } = await mockReports(page);
   await stopTime(page);
   await enterProject(page);
-  await page.clock.runFor(180);
-  await expect(stages(page)).toHaveCount(1);
+  await expect(stages(page)).toHaveCount(4);
+  await page.getByLabel('프로젝트 선택', { exact: true }).selectOption('b');
+  await expect(page.locator('.project-heading')).toContainText('team/Project-B');
+  await expect(stages(page)).toHaveCount(4);
   state.openFindings = 7;
   await page.evaluate(() => (window as any).__reportUpdate());
   await page.clock.runFor(400);
   await expect(page.locator('.metrics article').filter({ hasText: '미해결 위험 항목' })).toContainText('7');
-  await expect(stages(page)).toHaveCount(1);
-  await page.clock.runFor(220);
-  await expect(stages(page)).toHaveCount(2);
-  await page.clock.runFor(1240);
   await expect(stages(page)).toHaveCount(4);
-  state.openFindings = 9;
-  await page.evaluate(() => (window as any).__reportUpdate());
-  await page.clock.runFor(400);
-  await expect(page.locator('.metrics article').filter({ hasText: '미해결 위험 항목' })).toContainText('9');
-  await expect(stages(page)).toHaveCount(4);
+  await expect(reveal(page)).toHaveCount(0);
   expect(reads.filter(path => path.startsWith('/api/dashboard/overview'))).toHaveLength(3);
-  expect(writes).toEqual([]);
-});
-
-test('reduced motion shows every saved section immediately, including replay', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  const { writes } = await mockReports(page);
-  await stopTime(page);
-  await enterProject(page);
-  await expect(stages(page)).toHaveCount(4);
-  await reveal(page).getByRole('button', { name: '다시 보기', exact: true }).click();
-  await expect(stages(page)).toHaveCount(4);
   expect(writes).toEqual([]);
 });
 
@@ -212,13 +146,11 @@ test('finding detail reveals stored facts, analysis and limits before the review
   expect(writes).toEqual([]);
 });
 
-test('mobile reveal controls and completed report fit the viewport', async ({ page }) => {
+test('mobile project report and finding reveal controls fit the viewport', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const { writes } = await mockReports(page);
   await stopTime(page);
   await enterProject(page);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  await reveal(page).getByRole('button', { name: '전체 바로 보기', exact: true }).click();
   await expect(stages(page)).toHaveCount(4);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '../.runtime/report-reveal-mobile.png', fullPage: true, animations: 'disabled' });
