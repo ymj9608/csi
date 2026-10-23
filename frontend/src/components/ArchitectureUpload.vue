@@ -55,6 +55,13 @@ const folders = shallowRef<ArchitectureFolder[]>([]),
 const sorted = computed(() =>
   [...folders.value].sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
 );
+// 폴더를 가리지 않고, 전체에서 가장 최근에 올라온 사진 — 업로드 칸 미리보기용.
+const latestImage = computed(() => {
+  const images = folders.value.flatMap((f) => f.images);
+  return images.length
+    ? images.reduce((a, b) => (b.uploadedAt > a.uploadedAt ? b : a))
+    : null;
+});
 function show(list: ArchitectureFolder[]) {
   [...Object.values(urls.value), ...Object.values(previews.value)].forEach((u) =>
     URL.revokeObjectURL(u),
@@ -320,18 +327,30 @@ onBeforeUnmount(() => {
       />
       <button
         class="architecture-drop"
-        :class="{ dragging }"
+        :class="{ dragging, 'has-preview': latestImage }"
         :disabled="busy"
         @click="input?.click()"
         @dragover.prevent="dragging = true"
         @dragleave="dragging = false"
         @drop.prevent="drop"
       >
-        <Network :size="28" /><strong>아키텍처 이미지를 올려 주세요</strong
-        ><span
-          >클릭하거나 파일을 끌어다 놓으세요. 여러 장을 한 번에 올릴 수 있습니다.
-          PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</span
-        >
+        <template v-if="latestImage">
+          <img
+            v-if="previews[latestImage.id] || !isPdf(latestImage)"
+            class="drop-preview"
+            :src="previews[latestImage.id] || urls[latestImage.id]"
+            :alt="latestImage.name"
+          /><span v-else class="thumb-file"><FileText :size="28" />{{ latestImage.name }}</span>
+          <strong>최신 업로드 · {{ ago(latestImage.uploadedAt) }}</strong
+          ><span>클릭하거나 파일을 끌어다 놓으면 새 이미지를 추가합니다.</span>
+        </template>
+        <template v-else>
+          <Network :size="28" /><strong>아키텍처 이미지를 올려 주세요</strong
+          ><span
+            >클릭하거나 파일을 끌어다 놓으세요. 여러 장을 한 번에 올릴 수 있습니다.
+            PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</span
+          >
+        </template>
       </button>
     </section>
     <section v-if="folders.length" class="panel architecture-folders">
@@ -726,6 +745,17 @@ onBeforeUnmount(() => {
 .architecture-drop.dragging,
 .architecture-drop:hover {
   border-color: var(--blue);
+}
+.architecture-drop.has-preview {
+  padding: 20px;
+}
+.drop-preview {
+  max-width: 220px;
+  max-height: 140px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: #fff;
 }
 .folder-modal p {
   font-size: 13px;
