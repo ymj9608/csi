@@ -1,5 +1,36 @@
 # 아키텍처 이미지 로컬 worker
 
+## 팀원 업로드 화면과 병합 후 로컬 실행
+
+`feature/vlm-diagram-architecture-worker`의 프로젝트별 분석과 기존 코딩 이미지 연결은 서로 다른 API/저장소를 사용합니다. 화면의 분석 완료가 코딩 Agent 연결 완료를 의미하지는 않습니다.
+
+1. 저장소 루트에서 `docker compose --env-file .env -f compose.yml up -d --build backend frontend`로 변경된 서버와 UI를 반영합니다. Docker Desktop과 Ollama가 실행 중이어야 합니다.
+2. `http://localhost:5174`에서 프로젝트 → 아키텍처 → 이미지를 업로드합니다. 주소의 `project=` 값이 아래 프로젝트 UUID입니다.
+3. 아래 워커를 실행하면 `QUEUED → LOADING_MODEL → ANALYZING → EXTRACTED` 순서로 분석하고 컴포넌트 카드가 표시됩니다.
+
+```bash
+.venv/bin/python -m pip install -r architecture_agent/requirements.txt
+.venv/bin/python -m architecture_agent.worker \
+  --project-id '<프로젝트 UUID>' \
+  --backend http://127.0.0.1:8080 \
+  --env-file .env \
+  --model qwen3-vl:8b
+```
+
+모델이 설치되어 있지 않으면 먼저 `ollama pull qwen3-vl:8b`를 실행합니다. `--once`를 추가하면 대기 중인 작업 하나를 처리한 뒤 종료합니다. 결과 응답 후 모델을 메모리에서 해제하도록 설정했습니다. 상세 그림은 최대 600초의 응답 대기 시간이 있어, 코딩 워커와 동시에 실행하지 않는 편이 좋습니다.
+
+업로드 분석은 프로젝트당 한 장입니다. 이미 `EXTRACTED` 결과가 있으면 추가 이미지를 앨범에 넣어도 자동 재분석하지 않습니다. 이 신규 워커는 기존 워커의 lease/디스크 재전송 기능과 별개입니다. 처리 도중 종료되면 진행 상태가 남을 수 있으며 자동 복구는 아직 없습니다.
+
+4. 코딩 수정안에도 이미지를 쓰려면 이미지 뷰어의 **코딩 Agent에 연결**을 누릅니다(5 MiB 이하 PNG/JPEG). 이후 위험 항목에서 새 수정안을 요청하고 기존 코딩 워커를 실행합니다. 단순 업로드만으로 코딩 작업이 실행되지는 않습니다.
+
+`--project-id` 없이 실행하면 아래에 설명된 기존 `/internal/architectures/*` 작업 큐를 처리합니다. 프로젝트별 신규 분석은 `/internal/projects/{id}/architecture/claim`과 `/internal/architecture/{id}/*`를 사용합니다.
+
+DB 마이그레이션은 기존 V7(contexts)·V8(coding handoff)을 보존하고 신규 diagrams 테이블을 **V9**로 배치했습니다. 팀원 브랜치의 원래 V7(diagrams)을 이미 적용한 다른 DB는 이력 차이가 있으므로 그대로 혼용하지 마세요. 현재 병합은 기존 CSI V7/V8 이력을 기준으로 합니다.
+
+**Slack 상태:** 이 브랜치에는 Slack 알림/승인 API, Bot 설정, 이벤트 수신기가 없습니다. `.venv-slack/`은 Git 제외 경로일 뿐 연동 구현이 아닙니다. 팀원 설계 문서에도 Slack 승인과 GitHub 자동 PR은 비목표로 명시되어 있습니다. 현재 검토·승인 테스트는 CSI 웹에서 수행합니다. Slack 알림 및 승인 연동은 별도 구현이 필요합니다.
+
+## 기존 아키텍처 맥락 워커
+
 프로젝트에 등록한 이미지를 로컬 Ollama로 해석해 구조화된 참고 맥락으로 저장합니다. 이 worker는 코드를 수정하거나 보안 검사를 생략하지 않습니다. 이미지에 없는 암호화·인증 구현은 확인 불가로 남기며 사용자 흐름도와 시스템 구조도를 구분합니다.
 
 CSI 저장소 루트에서 실행합니다. 기존 `.env`의 `CSI_INTERNAL_TOKEN`과 백엔드 설정이 같아야 합니다. `.env` 또는 토큰을 팀 공유 문서나 브라우저에 넣지 마세요.

@@ -12,8 +12,8 @@ server:
 spring:
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 6MB
+      max-file-size: 30MB
+      max-request-size: 31MB
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/csi}
     username: ${DATABASE_USER:csi}

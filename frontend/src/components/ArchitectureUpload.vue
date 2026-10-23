@@ -2,14 +2,26 @@
 import { ref, shallowRef, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import {
   ArrowUpRight,
+  Box,
+  Boxes,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Database,
   FileText,
+  FlaskConical,
   Folder,
   FolderOpen,
+  GitBranch,
+  Globe,
+  HelpCircle,
+  Monitor,
   Network,
+  Server,
+  ShieldAlert,
+  ShieldCheck,
   Trash2,
+  Users,
   X,
 } from "lucide-vue-next";
 import {
@@ -24,6 +36,14 @@ import {
   ACCEPTED_TYPES as TYPES,
   type ArchitectureFolder,
 } from "../lib/architecture";
+import {
+  uploadDiagram,
+  getDiagramStatus,
+  groupByIsolation,
+  STATUS_LABEL,
+  STATE_LABEL,
+  type DiagramState,
+} from "../lib/architectureDiagram";
 import { useSession } from "../stores/session";
 const props = defineProps<{ project: string; projectName: string }>();
 const session = useSession();
@@ -67,6 +87,13 @@ const folders = shallowRef<ArchitectureFolder[]>([]),
 const sorted = computed(() =>
   [...folders.value].sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
 );
+// 폴더를 가리지 않고, 전체에서 가장 최근에 올라온 사진 — 업로드 칸 미리보기용.
+const latestImage = computed(() => {
+  const images = folders.value.flatMap((f) => f.images);
+  return images.length
+    ? images.reduce((a, b) => (b.uploadedAt > a.uploadedAt ? b : a))
+    : null;
+});
 function show(list: ArchitectureFolder[]) {
   [...Object.values(urls.value), ...Object.values(previews.value)].forEach((u) =>
     URL.revokeObjectURL(u),
@@ -146,6 +173,70 @@ const pending = ref<File[]>([]),
   mode = ref<"existing" | "new">("new"),
   target = ref(""),
   folderName = ref("");
+
+// 아키텍처 분석 — 업로드된 이미지 중 1장이 자동으로 서버에 전송되어 분석됩니다.
+const analysis = ref<DiagramState | null>(null);
+const analysisGroups = computed(() =>
+  analysis.value?.components ? groupByIsolation(analysis.value.components) : [],
+);
+// 그룹 제목에 보여줄 아이콘 — 실제 서비스 vs 격리된 환경을 글자 전에 한눈에 구분하도록.
+const ISOLATION_ICON = { PRODUCTION: Server, ISOLATED: ShieldAlert, UNKNOWN: HelpCircle } as const;
+// 카드마다는 이름/역할의 키워드로 대략적인 종류를 추정해 다른 아이콘을 보여줍니다.
+// 그룹 아이콘만 쓰면 한 그룹 안에서 전부 똑같아 보여 구분이 안 되므로.
+const CATEGORY_ICONS: [RegExp, typeof Server][] = [
+  [/사용자|user|public/i, Users],
+  [/브라우저|browser|프론트|frontend|vue/i, Monitor],
+  [/데이터|data\b|db\b|postgres|테이블/i, Database],
+  [/docker|compose|배포|deploy|container/i, Boxes],
+  [/테스트|test|pytest|playwright/i, FlaskConical],
+  [/문서|docs|readme|export|내보내기/i, FileText],
+  [/github|actions|\bci\b|\bcd\b|깃허브/i, GitBranch],
+  [/보안|security|scan/i, ShieldCheck],
+  [/외부|external/i, Globe],
+];
+function categoryIcon(c: { name: string; role: string }) {
+  const text = `${c.name} ${c.role}`;
+  return CATEGORY_ICONS.find(([re]) => re.test(text))?.[1] || Box;
+}
+let analysisPoll: ReturnType<typeof setInterval> | undefined;
+function stopAnalysisPolling() {
+  clearInterval(analysisPoll);
+  analysisPoll = undefined;
+}
+async function refreshAnalysis() {
+  try {
+    analysis.value = await getDiagramStatus(props.project);
+    if (analysis.value.status === "EXTRACTED") stopAnalysisPolling();
+  } catch {
+    analysis.value = null;
+    stopAnalysisPolling();
+  }
+}
+function startAnalysisPolling() {
+  stopAnalysisPolling();
+  analysisPoll = setInterval(refreshAnalysis, 2000);
+}
+async function requestAnalysis(image: { blob: Blob; name: string }) {
+  try {
+    await uploadDiagram(props.project, new File([image.blob], image.name, { type: image.blob.type }));
+    await refreshAnalysis();
+    startAnalysisPolling();
+  } catch (e: any) {
+    session.notify(e.message || "아키텍처 분석 요청에 실패했습니다.");
+  }
+}
+// 이 프로젝트에 이미 진행 중이거나 끝난 분석이 있으면 이어서 보여줍니다.
+// (프로젝트를 바꿔도 다시 조회합니다.)
+watch(
+  () => props.project,
+  () => {
+    stopAnalysisPolling();
+    refreshAnalysis().then(() => {
+      if (analysis.value && analysis.value.status !== "EXTRACTED") startAnalysisPolling();
+    });
+  },
+  { immediate: true },
+);
 function uniqueName(base: string) {
   const names = new Set(folders.value.map((f) => f.name));
   let name = base,
@@ -191,8 +282,19 @@ async function upload() {
   try {
     // 폴더는 접힌 상태로 두고, 화살표를 눌러야 사진이 보입니다.
     await persist(list);
-    session.notify(`아키텍처 이미지 ${images.length}장을 저장했습니다.`);
     pending.value = [];
+    // 이미 완료된 분석 결과가 있으면 새로 업로드해도 자동으로 재분석하지 않는다 —
+    // 미리보기 목적으로 사진만 더 올리고 싶을 때 기존 분석(최대 8분 걸림)을 잃지 않게.
+    // 아직 분석이 없거나 실패한 상태일 때만 이번 업로드로 자동 분석을 시작한다.
+    if (analysis.value?.status === "EXTRACTED") {
+      session.notify(`아키텍처 이미지 ${images.length}장을 저장했습니다. (기존 분석 결과는 그대로 유지됩니다)`);
+    } else {
+      session.notify(`아키텍처 이미지 ${images.length}장을 저장했습니다.`);
+      // 한 번에 여러 장을 올려도 분석은 항상 1장만 — 맨 처음 이미지로 자동 분석 요청.
+      // (백엔드가 "프로젝트당 다이어그램 1장" 구조라, 여러 장을 전부 분석하면
+      // 매번 이전 결과를 덮어쓰며 반복 실행되므로 일부러 막는다.)
+      requestAnalysis(images[0]);
+    }
   } catch {
     session.notify("이 브라우저에 이미지를 저장할 수 없습니다.");
   } finally {
@@ -258,6 +360,7 @@ onMounted(() => window.addEventListener("keydown", keydown));
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", keydown);
   clearInterval(timer);
+  stopAnalysisPolling();
   show([]);
 });
 </script>
@@ -275,18 +378,30 @@ onBeforeUnmount(() => {
       />
       <button
         class="architecture-drop"
-        :class="{ dragging }"
+        :class="{ dragging, 'has-preview': latestImage }"
         :disabled="busy"
         @click="input?.click()"
         @dragover.prevent="dragging = true"
         @dragleave="dragging = false"
         @drop.prevent="drop"
       >
-        <Network :size="28" /><strong>아키텍처 이미지를 올려 주세요</strong
-        ><span
-          >클릭하거나 파일을 끌어다 놓으세요. 여러 장을 한 번에 올릴 수 있습니다.
-          PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</span
-        >
+        <template v-if="latestImage">
+          <img
+            v-if="previews[latestImage.id] || !isPdf(latestImage)"
+            class="drop-preview"
+            :src="previews[latestImage.id] || urls[latestImage.id]"
+            :alt="latestImage.name"
+          /><span v-else class="thumb-file"><FileText :size="28" />{{ latestImage.name }}</span>
+          <strong>최신 업로드 · {{ ago(latestImage.uploadedAt) }}</strong
+          ><span>클릭하거나 파일을 끌어다 놓으면 새 이미지를 추가합니다.</span>
+        </template>
+        <template v-else>
+          <Network :size="28" /><strong>아키텍처 이미지를 올려 주세요</strong
+          ><span
+            >클릭하거나 파일을 끌어다 놓으세요. 여러 장을 한 번에 올릴 수 있습니다.
+            PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</span
+          >
+        </template>
       </button>
     </section>
     <section v-if="folders.length" class="panel architecture-folders">
@@ -352,9 +467,43 @@ onBeforeUnmount(() => {
     </section>
   </div>
   <p class="evidence-note">
-    이미지는 이 브라우저에만 프로젝트별로 저장되며 CSI 서버나 다른 사용자에게
-    전송되지 않습니다.
+    이미지는 이 브라우저에 프로젝트별로 저장됩니다. 업로드 시 그중 1장은 아키텍처 분석을 위해 서버로
+    전송되어 CSI 보안 검토에 참고 자료로 쓰입니다.
   </p>
+
+  <section v-if="analysis" class="panel architecture-analysis">
+    <h3>아키텍처 분석 결과</h3>
+    <p v-if="analysis.status !== 'EXTRACTED'" class="analysis-progress">
+      {{ STATUS_LABEL[analysis.status] }}…
+    </p>
+    <template v-else>
+      <p class="analysis-summary">{{ analysis.summary }}</p>
+      <section
+        v-for="group in analysisGroups"
+        :key="group.key"
+        class="isolation-group"
+        :class="group.key.toLowerCase()"
+      >
+        <h4>
+          <component :is="ISOLATION_ICON[group.key]" :size="15" />{{ group.label }}
+          <span class="count">{{ group.items.length }}개</span>
+        </h4>
+        <ul class="components">
+          <li v-for="(c, i) in group.items" :key="i" class="component-card">
+            <div class="component-head">
+              <component :is="categoryIcon(c)" :size="16" class="component-icon" />
+              <strong>{{ c.name }}</strong>
+              <!-- 확인된(OBSERVED) 항목은 뱃지를 생략 — 불확실한 것만 눈에 띄게 둔다. -->
+              <span v-if="c.state !== 'OBSERVED'" class="badge" :class="c.state.toLowerCase()">
+                {{ STATE_LABEL[c.state] }}
+              </span>
+            </div>
+            <p>{{ c.role }}</p>
+          </li>
+        </ul>
+      </section>
+    </template>
+  </section>
 
   <Transition name="fade">
     <div v-if="pending.length" class="overlay center" @click.self="pending = []">
@@ -653,6 +802,17 @@ onBeforeUnmount(() => {
 .architecture-drop:hover {
   border-color: var(--blue);
 }
+.architecture-drop.has-preview {
+  padding: 20px;
+}
+.drop-preview {
+  max-width: 420px;
+  max-height: 280px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: #fff;
+}
 .folder-modal p {
   font-size: 13px;
   color: var(--ink-3);
@@ -763,5 +923,93 @@ onBeforeUnmount(() => {
   gap: 4px;
   color: var(--blue);
   font-weight: 600;
+}
+.architecture-analysis {
+  padding: 20px;
+}
+.analysis-progress {
+  color: var(--ink-3);
+}
+.analysis-summary {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+.isolation-group {
+  margin-bottom: 18px;
+}
+.isolation-group h4 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.isolation-group .count {
+  font-weight: 400;
+  color: var(--ink-3);
+  font-size: 12px;
+}
+/* 격리된 환경은 경고 톤, 실제 서비스는 중립 톤으로 — 핵심 구분을 색으로도 바로 보이게. */
+.isolation-group.isolated h4 {
+  color: #92620a;
+}
+.isolation-group.production h4 {
+  color: #1d4ed8;
+}
+.components {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.architecture-analysis .component-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+}
+.architecture-analysis .component-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.isolated .component-card {
+  border-left: 3px solid #d08c1d;
+}
+.production .component-card {
+  border-left: 3px solid #93b4f0;
+}
+.architecture-analysis .component-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.architecture-analysis .component-head strong {
+  flex: 1;
+  min-width: 0;
+}
+.component-icon {
+  flex-shrink: 0;
+  color: var(--ink-3);
+}
+.isolated .component-icon {
+  color: #92620a;
+}
+.production .component-icon {
+  color: #1d4ed8;
+}
+.architecture-analysis .component-card p {
+  margin: 4px 0 0;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+.architecture-analysis .badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-2, #eee);
 }
 </style>

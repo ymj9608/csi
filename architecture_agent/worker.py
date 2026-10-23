@@ -183,13 +183,21 @@ def process(api, job, output, ollama_url, model=DEFAULT_MODEL):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-id", help="Process the project upload UI diagram queue instead of the legacy context queue")
     parser.add_argument("--backend", default="http://127.0.0.1:8080")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model", help="Defaults to Qwen3-VL for --project-id; legacy context model otherwise")
     parser.add_argument("--output", type=Path, default=Path(".runtime/architecture"))
     parser.add_argument("--once", action="store_true")
     args = parser.parse_args()
+    if args.project_id:
+        from .diagram_worker import run
+        from .extractor import DEFAULT_MODEL as DIAGRAM_MODEL
+        args.model = args.model or DIAGRAM_MODEL
+        run(args)
+        return
+    args.model = args.model or DEFAULT_MODEL
     args.output.mkdir(parents=True, exist_ok=True)
     with open(args.output / "worker.lock", "a") as lock, client(args) as api:
         try:

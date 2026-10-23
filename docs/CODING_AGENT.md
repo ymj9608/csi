@@ -89,7 +89,7 @@ CSI_REPOSITORY_ALLOWLIST=local/csi-demo,ymj9608/Lichu
 기존 CSI 분석 스택을 실행한 상태에서 백엔드·프론트엔드를 다시 빌드합니다. Flyway V5~V8이 수정안·아키텍처·이미지 연결 정보를 관리합니다.
 
 ```sh
-docker compose --project-directory . --env-file .env -f frontend/compose.yml up -d --build backend frontend
+docker compose --project-directory . --env-file .env -f compose.yml up -d --build backend frontend
 ```
 
 Mac Worker는 별도 터미널에서 실행합니다. `.env`에서 `CSI_INTERNAL_TOKEN`, `OPENAI_API_KEY`, `CSI_VLM_PROVIDER`, `CSI_VLM_MODEL`을 읽고, 기존 환경변수가 있으면 우선합니다. OpenAI 키는 native Worker만 읽으며 프론트엔드·백엔드 컨테이너에는 전달하지 않습니다. 별도 검증 후 `gpt-6-astra`도 설정할 수 있습니다.

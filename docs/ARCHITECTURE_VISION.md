@@ -32,7 +32,7 @@
 ```bash
 # csi 저장소 루트
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml up -d --build backend frontend
+  -f compose.yml up -d --build backend frontend
 .venv/bin/python -m pip install -r architecture_agent/requirements.txt
 .venv/bin/python -m architecture_agent.worker --help
 .venv/bin/python -m architecture_agent.worker --backend http://127.0.0.1:8080 --env-file .env

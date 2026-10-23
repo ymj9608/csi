@@ -60,14 +60,14 @@ CSI_REPOSITORY_ALLOWLIST=local/csi-demo,ymj9608/Lichu
 
 ### 2. Docker Compose로 전체 서비스 실행
 
-Docker Desktop 또는 Docker Engine과 Compose v2가 필요합니다. **Compose 파일은 `frontend/compose.yml`에 있지만, 빌드·마운트 기준 경로는 저장소 루트**입니다.
+Docker Desktop 또는 Docker Engine과 Compose v2가 필요합니다. **Compose 파일과 빌드·마운트 기준 경로는 저장소 루트**입니다.
 
 ```sh
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml up -d --build
+  -f compose.yml up -d --build
 
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml ps -a
+  -f compose.yml ps -a
 
 curl -fsS http://127.0.0.1:8080/api/health
 ```
@@ -84,15 +84,15 @@ curl -fsS http://127.0.0.1:8080/api/health
 ```sh
 # 오류·진행 상태 확인
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml logs --tail=80 backend rag-index business-mcp rag-mcp agent
+  -f compose.yml logs --tail=80 backend rag-index business-mcp rag-mcp agent
 
 # 코드 변경 반영: 이미지 재빌드 및 컨테이너 갱신
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml up -d --build
+  -f compose.yml up -d --build
 
 # 종료: named volume의 검사 이력·DB 데이터 유지
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml down
+  -f compose.yml down
 ```
 
 `restart`만으로 이미지에 포함된 코드나 변경된 환경변수가 반영되지는 않습니다. 기존 완료 보고서도 소급 변경되지 않으므로 분석 변경을 확인하려면 새 검사를 실행하세요.
@@ -187,7 +187,7 @@ LLM_MODEL=gpt-4.1-mini
 ```sh
 # .env 수정 후 Agent에 반영
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml up -d --no-deps --force-recreate agent
+  -f compose.yml up -d --no-deps --force-recreate agent
 ```
 
 모델에는 허용된 필드·클래스 이름, 구조화된 정적 사실, 정책 대조 결과와 관련 조항 발췌를 전달합니다. 코드 원문·전체 diff·파일 경로·개인정보 값·비밀값·PDF 전체를 분석 입력으로 보내지 않습니다.
@@ -425,7 +425,7 @@ E2E는 빈 DB용 테스트가 아닙니다. 콘솔 테스트에는 프로젝트�
 - [CHANGE_REVIEWS.md](docs/CHANGE_REVIEWS.md): 2026-10-20 변경 비교 검증, 당시 Python 40개·Spring 8개·Chrome E2E 2개 통과 및 Vue 빌드 기록.
 - [REVIEW_QUALITY.md](docs/REVIEW_QUALITY.md), [AGENT_HARNESS.md](docs/AGENT_HARNESS.md): 인용 검증, 실제 LLM 호출·도구 trace·fallback 검증 범위.
 
-이는 기록된 시점의 결과이며 현재 환경의 자동 재검증 결과나 실제 GitHub Push 검증을 대신하지 않습니다. 실행 경로는 이 README의 `frontend/compose.yml` 기준 명령을 사용하세요.
+이는 기록된 시점의 결과이며 현재 환경의 자동 재검증 결과나 실제 GitHub Push 검증을 대신하지 않습니다. 실행 경로는 이 README의 `compose.yml` 기준 명령을 사용하세요.
 
 ## 한계와 향후 과제
 
@@ -445,7 +445,7 @@ E2E는 빈 DB용 테스트가 아닙니다. 콘솔 테스트에는 프로젝트�
 ```sh
 mkdir -p .runtime
 docker compose --project-directory . --env-file .env \
-  -f frontend/compose.yml --profile tools run --build --rm scanner
+  -f compose.yml --profile tools run --build --rm scanner
 ```
 
 기본 대상은 `fixtures/vulnerable`, 출력은 `.runtime/findings.json`입니다. `CSI_SCAN_TARGET`, `CSI_SCAN_OUTPUT`으로 경로를 지정할 수 있으며 이 명령 자체는 결과를 Backend에 접수하지 않습니다. Linux bind mount에서는 출력 디렉터리에 컨테이너 사용자 UID/GID `65532:65532`의 쓰기 권한이 필요합니다.
