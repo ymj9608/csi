@@ -2,17 +2,26 @@
 import { ref, shallowRef, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import {
   ArrowUpRight,
+  Box,
+  Boxes,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Database,
   FileText,
+  FlaskConical,
   Folder,
   FolderOpen,
+  GitBranch,
+  Globe,
   HelpCircle,
+  Monitor,
   Network,
   Server,
   ShieldAlert,
+  ShieldCheck,
   Trash2,
+  Users,
   X,
 } from "lucide-vue-next";
 import {
@@ -150,8 +159,25 @@ const analysis = ref<DiagramState | null>(null);
 const analysisGroups = computed(() =>
   analysis.value?.components ? groupByIsolation(analysis.value.components) : [],
 );
-// 그룹/카드에 같이 보여줄 아이콘 — 실제 서비스 vs 격리된 환경을 글자 전에 한눈에 구분하도록.
+// 그룹 제목에 보여줄 아이콘 — 실제 서비스 vs 격리된 환경을 글자 전에 한눈에 구분하도록.
 const ISOLATION_ICON = { PRODUCTION: Server, ISOLATED: ShieldAlert, UNKNOWN: HelpCircle } as const;
+// 카드마다는 이름/역할의 키워드로 대략적인 종류를 추정해 다른 아이콘을 보여줍니다.
+// 그룹 아이콘만 쓰면 한 그룹 안에서 전부 똑같아 보여 구분이 안 되므로.
+const CATEGORY_ICONS: [RegExp, typeof Server][] = [
+  [/사용자|user|public/i, Users],
+  [/브라우저|browser|프론트|frontend|vue/i, Monitor],
+  [/데이터|data\b|db\b|postgres|테이블/i, Database],
+  [/docker|compose|배포|deploy|container/i, Boxes],
+  [/테스트|test|pytest|playwright/i, FlaskConical],
+  [/문서|docs|readme|export|내보내기/i, FileText],
+  [/github|actions|\bci\b|\bcd\b|깃허브/i, GitBranch],
+  [/보안|security|scan/i, ShieldCheck],
+  [/외부|external/i, Globe],
+];
+function categoryIcon(c: { name: string; role: string }) {
+  const text = `${c.name} ${c.role}`;
+  return CATEGORY_ICONS.find(([re]) => re.test(text))?.[1] || Box;
+}
 let analysisPoll: ReturnType<typeof setInterval> | undefined;
 function stopAnalysisPolling() {
   clearInterval(analysisPoll);
@@ -445,7 +471,7 @@ onBeforeUnmount(() => {
         <ul class="components">
           <li v-for="(c, i) in group.items" :key="i" class="component-card">
             <div class="component-head">
-              <component :is="ISOLATION_ICON[group.key]" :size="16" class="component-icon" />
+              <component :is="categoryIcon(c)" :size="16" class="component-icon" />
               <strong>{{ c.name }}</strong>
               <!-- 확인된(OBSERVED) 항목은 뱃지를 생략 — 불확실한 것만 눈에 띄게 둔다. -->
               <span v-if="c.state !== 'OBSERVED'" class="badge" :class="c.state.toLowerCase()">
@@ -912,7 +938,7 @@ onBeforeUnmount(() => {
 }
 .components {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 10px;
   list-style: none;
   margin: 0;
@@ -922,6 +948,12 @@ onBeforeUnmount(() => {
   border: 1px solid var(--line);
   border-radius: var(--r-md);
   padding: 10px 12px;
+}
+.architecture-analysis .component-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .isolated .component-card {
   border-left: 3px solid #d08c1d;
