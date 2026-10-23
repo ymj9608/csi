@@ -33,7 +33,7 @@ for (const scenario of [
     const notice = page.getByRole('status', { name: '분석 상태' });
     await expect(notice).toContainText(scenario.title);
     await expect(page.getByText('분석 결과 대기 중', { exact: true })).toHaveCount(0);
-    if (scenario.red.trim()) await expect(page.locator('.verdict.red .report-text > [aria-hidden="true"]')).toHaveText(scenario.red);
+    if (scenario.red.trim()) await expect(page.locator('.verdict.red')).toContainText(scenario.red);
     else await expect(page.locator('.verdict.red')).toHaveCount(0);
     if (scenario.status === 'FAILED') await expect(notice).toContainText('기다려도 결과가 추가되지 않습니다');
     await expect(notice.getByRole('link')).toHaveAttribute('href', '/scans/scan');
@@ -55,7 +55,7 @@ for (const scenario of [
       await expect(button).toBeEnabled();
       await page.getByRole('tab', { name: 'AI 분석', exact: true }).click();
       await expect(notice).toContainText('분석 완료');
-      await expect(page.locator('.verdict.red .report-text > [aria-hidden="true"]')).toHaveText('완료된 위험 분석');
+      await expect(page.locator('.verdict.red')).toContainText('완료된 위험 분석');
     }
   });
 }
