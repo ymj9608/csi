@@ -1,0 +1,17 @@
+{
+  "repeat": 2,
+  "seed": 43,
+  "arm": "vision_index",
+  "accepted": false,
+  "status": "FAILED",
+  "startedAtUtc": "2026-10-23T05:07:14Z",
+  "cacheStatus": "READY",
+  "architectureContextUsed": true,
+  "selectionFallback": "NO_MATCHING_MANIFEST_TARGETS",
+  "selectionMs": 32.12974999951257,
+  "error": "MODEL_CALL_FAILED",
+  "modelCalls": 1,
+  "wallMs": 703.937,
+  "inputTokens": null,
+  "outputTokens": null
+}

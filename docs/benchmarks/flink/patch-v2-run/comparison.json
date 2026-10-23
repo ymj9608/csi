@@ -1,0 +1,65 @@
+{
+  "arms": {
+    "full_code": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 17561.079,
+      "firstUseTotalMs": 17561.079,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    },
+    "code_index": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 3756.5260000000003,
+      "firstUseTotalMs": 3756.5260000000003,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    },
+    "vision_index": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 2531.641,
+      "firstUseTotalMs": 11845.520209000333,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null
+    }
+  },
+  "comparisons": {
+    "full_code": {
+      "observedQualityPreserved": false,
+      "observedQualityImproved": false,
+      "firstUseTimeImproved": true,
+      "requestTokensReduced": false,
+      "conclusion": "QUALITY_GATE_FAILED",
+      "attributableToSuccessfulVisionPipeline": true
+    },
+    "code_index": {
+      "observedQualityPreserved": false,
+      "observedQualityImproved": false,
+      "firstUseTimeImproved": false,
+      "requestTokensReduced": false,
+      "conclusion": "QUALITY_GATE_FAILED",
+      "attributableToSuccessfulVisionPipeline": true
+    }
+  },
+  "statisticalNoninferiorityProven": false,
+  "visionSetupMs": 9313.879209000334,
+  "taskCount": 1,
+  "note": "Cold total includes actual image setup once; warm request totals are measured disk-cache reads + inspection + patch + validation. No quality claim before complete paired results.",
+  "visionSetupInputTokens": 1115,
+  "visionSetupOutputTokens": 1229,
+  "visionInferenceCompleted": true
+}

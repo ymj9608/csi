@@ -1,0 +1,25 @@
+{
+  "sourceRun": "docs/benchmarks/retry-boundary-contract-v2",
+  "newModelCalls": 0,
+  "selection": "First response of each arm, no best-of selection",
+  "sourceHashes": {
+    "service.py": "2a6b957081dac37d1d133a099d114dcf6e48312d9e553a8405c1a2dc412ff49b",
+    "analysis.py": "32800a75eb1af528ffb4bbe41d0d868cc0fe7ee4deb579b6d8aec4b139c948f4",
+    "notification.py": "cd84c67d1347436c567fd3fa36a3eaf46590ae98435cb5df6372603e3467e030",
+    "exporter.py": "4fc73a1b58e43e55804bafae8c2f0e24942a9e0eafd63f0b507676c3ed5d686c",
+    "retry.py": "bcaa5c1f4fe85d14bce0580986be6dd9ff625ce6679122f6456911d4e7cef3b1",
+    "deadletter.py": "0c04aee81e9be273b4dba409c59721da6ec0f041a905c39f4e4b19778f3ef6c3",
+    "storage.py": "4ea047ac8e945a13dd07054dc32f3d423b4c656f0dd450a3fd55be179dc923aa",
+    "topology.json": "00bd3dc9c4a76c27d8e6c15737ffd4c67cea47e92c0d57ace94cde9e2317dd97"
+  },
+  "testsSha256": "9e746f4b78aa6df728cf9c9d86005caafe3d54bdeef951ed23cf38b41c8916f9",
+  "responseHashes": {
+    "code_only": "b6f227d12549081fc1cf61d6070321a21f42e5b6305cf9b9ba846501a7d98412",
+    "vision_context": "7aca30a5b6ed78f8c7e29802b483f08aba46deb4486f4974e64302d2c7eae5d9"
+  },
+  "normalization": "If entire module returned, require unchanged AST outside target, then extract original model function verbatim. No semantic edits.",
+  "limitations": [
+    "Offline replay of recorded model responses, not a fresh inference trial.",
+    "Single small synthetic scenario. No evidence of general vision superiority."
+  ]
+}

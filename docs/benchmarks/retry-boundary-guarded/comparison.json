@@ -1,0 +1,77 @@
+[
+  {
+    "arm": "code_only",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.512008292000246,
+          "cases": {
+            "test_01_normal_notification": "ERROR",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ERROR",
+            "test_04_archive_preserved": "FAIL",
+            "test_05_external_export_no_phone": "FAIL",
+            "test_06_external_diagnostics_preserved": "FAIL",
+            "test_07_member_not_mutated": "ok",
+            "test_08_export_copy_isolation": "FAIL"
+          },
+          "passed": 2,
+          "total": 8
+        }
+      },
+      {
+        "attempt": 2,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.25918683300005796,
+          "cases": {
+            "test_01_normal_notification": "ok",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ok",
+            "test_04_archive_preserved": "ok",
+            "test_05_external_export_no_phone": "FAIL",
+            "test_06_external_diagnostics_preserved": "ok",
+            "test_07_member_not_mutated": "ok",
+            "test_08_export_copy_isolation": "FAIL"
+          },
+          "passed": 6,
+          "total": 8
+        }
+      }
+    ]
+  },
+  {
+    "arm": "vision_context",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "FAILED",
+        "error": "ValueError: INVALID_EDIT"
+      },
+      {
+        "attempt": 2,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.3293805409994093,
+          "cases": {
+            "test_01_normal_notification": "ERROR",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ERROR",
+            "test_04_archive_preserved": "ERROR",
+            "test_05_external_export_no_phone": "ERROR",
+            "test_06_external_diagnostics_preserved": "ERROR",
+            "test_07_member_not_mutated": "ERROR",
+            "test_08_export_copy_isolation": "ERROR"
+          },
+          "passed": 1,
+          "total": 8
+        }
+      }
+    ]
+  }
+]

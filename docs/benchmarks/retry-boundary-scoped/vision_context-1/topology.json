@@ -1,0 +1,1 @@
+{"member_store":{"zone":"internal","phoneAllowed":true},"notification":{"zone":"internal","phoneAllowed":true},"analytics":{"zone":"external","phoneAllowed":false},"retry":{"zone":"internal","maxAttempts":2},"deadletter":{"zone":"internal","purpose":"replay","phoneAllowed":true},"archive_export":{"destination":"vendor-observability","zone":"external","phoneAllowed":false}}

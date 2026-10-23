@@ -24,6 +24,9 @@ public class CodingProposals {
   "test_legacy_hash_rejects_malformed_values","test_legacy_login_keeps_existing_hash_before_migration");
  static final String SELECT="SELECT c.*,s.repository,s.commit_sha FROM coding_proposals c JOIN scans s ON s.id=c.scan_id ";
  final Db db; final Events events; final boolean enabled; final Set<String> repositories;
+ @Value("${CSI_VLM_PROVIDER:openai}") String vlmProvider="openai";
+ @Value("${CSI_VLM_MODEL:}") String vlmModel="";
+ String configuredVlmModel(){return vlmModel.isBlank()?("ollama".equals(vlmProvider)?"qwen3-vl:8b":"gpt-5.4-mini-2026-03-17"):vlmModel;}
  public CodingProposals(Db db,Events events,@Value("${CSI_CODING_ENABLED:false}")boolean enabled,
                         @Value("${CSI_CODING_REPOSITORIES:ymj9608/Lichu}")String repositories){
   this.db=db;this.events=events;this.enabled=enabled;this.repositories=Set.of(repositories.split(","));
@@ -32,7 +35,7 @@ public class CodingProposals {
   var scan=db.one("SELECT repository,status FROM scans WHERE id=?",id);
   boolean supported=repositories.contains(scan.get("repository")) && applicable(id);
   var items=db.list(SELECT+"WHERE scan_id=? ORDER BY c.created_at DESC LIMIT 20",id);
-  return Map.of("enabled",enabled,"supported",supported,"items",items.stream().map(CodingProposals::publicJob).toList());
+  return Map.of("enabled",enabled,"supported",supported,"orchestratorModel",configuredVlmModel(),"orchestratorProvider",vlmProvider,"architectureRequired",false,"items",items.stream().map(CodingProposals::publicJob).toList());
  }
  static Map<String,Object> publicJob(Map<String,Object> job){
   var visible=new LinkedHashMap<>(job);visible.remove("leaseToken");visible.remove("leaseUntil");return visible;
@@ -47,8 +50,14 @@ public class CodingProposals {
   }
   var existing=db.list(SELECT+"WHERE scan_id=? AND c.status IN ('QUEUED','RUNNING','READY','APPROVED')",id);
   if(!existing.isEmpty())return publicJob(existing.getFirst());
+  var images=db.list("SELECT a.id,a.source_commit_sha FROM projects p JOIN project_architectures a ON a.id=p.coding_architecture_id AND a.project_id=p.id WHERE p.id=?",UUID.fromString((String)scan.get("projectId")));
+  var image=images.isEmpty()?Map.<String,Object>of():images.getFirst();String source=Objects.toString(image.get("sourceCommitSha"),"");
+  if(!source.isEmpty() && !source.equals(scan.get("commitSha"))){
+   if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"아키텍처의 기준 커밋이 검사 커밋과 다릅니다. 현재 검사에 맞는 이미지를 연결하세요.");
+   return Map.of();
+  }
   UUID proposal=UUID.randomUUID();
-  db.jdbc.update("INSERT INTO coding_proposals(id,scan_id,status) VALUES(?,?,'QUEUED')",proposal,id);
+  db.jdbc.update("INSERT INTO coding_proposals(id,scan_id,status,architecture_id) VALUES(?,?,'QUEUED',?)",proposal,id,image.isEmpty()?null:UUID.fromString((String)image.get("id")));
   db.log(id,"CODING_QUEUED","coding-agent","INFO","Local coding proposal queued for immutable scan commit");events.publish(id.toString());
   return publicJob(db.one(SELECT+"WHERE c.id=?",proposal));
  }
@@ -58,18 +67,24 @@ public class CodingProposals {
   var rows=db.list("SELECT c.id FROM coding_proposals c JOIN scans s ON s.id=c.scan_id WHERE c.status='QUEUED' AND s.repository=? ORDER BY c.created_at LIMIT 1 FOR UPDATE OF c SKIP LOCKED",claim.repository());
   if(rows.isEmpty())return Map.of("available",false);
   UUID id=UUID.fromString((String)rows.getFirst().get("id")),token=UUID.randomUUID();
-  db.jdbc.update("UPDATE coding_proposals SET status='RUNNING',lease_token=?,lease_until=now()+interval '10 minutes' WHERE id=?",token,id);
+  db.jdbc.update("UPDATE coding_proposals SET status='RUNNING',lease_token=?,lease_until=now()+interval '15 minutes' WHERE id=?",token,id);
   var job=db.one(SELECT+"WHERE c.id=?",id);UUID scan=UUID.fromString((String)job.get("scanId"));
   job.put("policy",db.one("SELECT policy FROM scans WHERE id=?",scan).get("policy"));
   job.put("findings",db.list("SELECT id,rule_id,file_path,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET));
+  job.put("vlmModel",configuredVlmModel());job.put("vlmProvider",vlmProvider);
+  if(job.get("architectureId")!=null){
+   var image=new LinkedHashMap<>(db.one("SELECT a.id,a.version,a.image_sha256,a.image_content_type,a.source_commit_sha,a.image_bytes FROM project_architectures a JOIN scans s ON s.project_id=a.project_id WHERE a.id=? AND s.id=?",UUID.fromString((String)job.get("architectureId")),scan));
+   image.put("imageBase64",Base64.getEncoder().encodeToString((byte[])image.remove("imageBytes")));
+   job.put("architecture",image);
+  }
   db.log(scan,"CODING_RUNNING","coding-agent","INFO","Local worker claimed coding proposal");events.publish(scan.toString());
   return Map.of("available",true,"job",job);
  }
  @GetMapping("/internal/coding-proposals/{id}") public Object internal(@PathVariable UUID id){return db.one(SELECT+"WHERE c.id=?",id);}
  public record Progress(String leaseToken,String phase,int attempt,long elapsedMs){}
  static void validateProgress(Progress progress){
-  if(!Set.of("BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
-     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>600000)
+  if(!Set.of("VLM_PLANNING","VLM_READING","BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
+     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>900000)
    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid coding progress");
  }
  @PostMapping("/internal/coding-proposals/{id}/progress") @Transactional public Object progress(@PathVariable UUID id,@RequestBody Progress progress){
@@ -88,8 +103,37 @@ public class CodingProposals {
    throw new ResponseStatusException(HttpStatus.CONFLICT,"만료되었거나 이미 처리된 작업입니다.");
  }
  static void validateResult(JsonNode result,Map<String,Object> job,Set<String> findings,Set<String> references){
-  if(result.toString().length()>150000 || result.path("schemaVersion").asInt()!=1 || !"3".equals(result.path("engineVersion").asText()) || !"lichu-signup-v1".equals(result.path("profile").asText()) ||
+  if(result.toString().length()>150000 || result.path("schemaVersion").asInt()!=1 || !Set.of("3","4").contains(result.path("engineVersion").asText()) || !"lichu-signup-v1".equals(result.path("profile").asText()) ||
     !Objects.equals(job.get("commitSha"),result.path("commitSha").asText()) || !Objects.equals(job.get("repository"),result.path("repository").asText()) || !MODEL.equals(result.path("model").asText()))throw new IllegalArgumentException("Coding context mismatch");
+  if(job.get("architectureId")!=null){
+   var handoff=result.path("handoff");
+   if(!"4".equals(result.path("engineVersion").asText()) || !"vlm-orchestrator-v1".equals(handoff.path("mode").asText()) ||
+      !("openai".equals(handoff.path("provider").asText()) && Set.of("gpt-6.1-sol","gpt-6-astra","gpt-5.4-mini","gpt-5.4-mini-2026-03-17").contains(handoff.path("model").asText()) ||
+        "ollama".equals(handoff.path("provider").asText()) && "qwen3-vl:8b".equals(handoff.path("model").asText())) ||
+      !Objects.equals(job.get("architectureId"),handoff.path("architectureId").asText()) ||
+      !Objects.equals(job.get("commitSha"),handoff.path("commitSha").asText()) ||
+      !result.path("status").asText().equals(handoff.path("status").asText()) ||
+      !handoff.path("imageSha256").asText().matches("[a-f0-9]{64}") ||
+      handoff.path("instruction").asText().length()>6000 || handoff.path("conclusion").asText().length()>3000)
+    throw new IllegalArgumentException("VLM orchestration required");
+   var trace=handoff.path("trace");
+   if(!trace.isArray() || trace.size()>14)throw new IllegalArgumentException("VLM trace required");
+   for(String metric:List.of("inputTokens","outputTokens","wallDurationMs"))
+    if(!handoff.path("metrics").path(metric).isIntegralNumber() || handoff.path("metrics").path(metric).asLong()<0)
+     throw new IllegalArgumentException("VLM usage required");
+   if("READY".equals(result.path("status").asText())){
+    boolean delegated=false,checked=false;
+    for(var step:trace)if("OK".equals(step.path("status").asText())){
+     if("delegate_coding".equals(step.path("tool").asText())){delegated=true;checked=false;}
+     if("run_verification".equals(step.path("tool").asText()) && delegated)checked=true;
+    }
+    if(!delegated || !checked || trace.isEmpty() || !"finish_review".equals(trace.get(trace.size()-1).path("tool").asText()) ||
+       !"OK".equals(trace.get(trace.size()-1).path("status").asText()) || handoff.path("instruction").asText().isBlank() || handoff.path("conclusion").asText().isBlank())
+     throw new IllegalArgumentException("VLM verified review required");
+   }
+  }else if(!"3".equals(result.path("engineVersion").asText())){
+   throw new IllegalArgumentException("Image required for orchestration");
+  }
   String status=result.path("status").asText();if(!Set.of("READY","BLOCKED").contains(status))throw new IllegalArgumentException("Coding status");
   for(var f:result.path("findingIds"))if(!findings.contains(f.asText()))throw new IllegalArgumentException("Unknown finding");
   for(var r:result.path("referenceIds"))if(!references.contains(r.asText()))throw new IllegalArgumentException("Unknown reference");
@@ -130,7 +174,13 @@ public class CodingProposals {
   for(var row:db.list("SELECT id,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET)){
    findings.add((String)row.get("id"));for(var ref:db.json.valueToTree(row.get("analysis")).path("references"))references.add(ref.path("chunkId").asText());
   }
-  try{validateResult(result,job,findings,references);}catch(IllegalArgumentException e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());}
+  try{
+   validateResult(result,job,findings,references);
+   if(job.get("architectureId")!=null){
+    var image=db.one("SELECT image_sha256 FROM project_architectures WHERE id=?",UUID.fromString((String)job.get("architectureId")));
+    if(!Objects.equals(image.get("imageSha256"),result.path("handoff").path("imageSha256").asText()))throw new IllegalArgumentException("Architecture digest mismatch");
+   }
+  }catch(IllegalArgumentException e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());}
   db.jdbc.update("UPDATE coding_proposals SET status=?,result=?::jsonb,finished_at=now(),lease_until=null WHERE id=?",result.path("status").asText(),result.toString(),id);
   db.log(scan,"CODING_FINISHED","coding-agent","INFO","Coding proposal "+result.path("status").asText());events.publish(scan.toString());return Map.of("status",result.path("status").asText());
  }

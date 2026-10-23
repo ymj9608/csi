@@ -1,4 +1,4 @@
-"""Pull CSI jobs and run inference locally; upload the reviewed file proposal and proof."""
+"""Pull CSI jobs: optional OpenAI/local VLM, local coding and isolated verification."""
 import argparse
 import json
 import os
@@ -142,9 +142,22 @@ def main():
     p.add_argument('--backend',default='http://127.0.0.1:8080');p.add_argument('--env-file',type=Path,default=Path('.env'))
     p.add_argument('--repository',default='ymj9608/Lichu');p.add_argument('--repo',type=Path,required=True)
     p.add_argument('--ollama-url',default='http://127.0.0.1:11434');p.add_argument('--once',action='store_true')
+    p.add_argument('--vlm-provider',choices=['openai','ollama'])
+    p.add_argument('--vlm-model')
     p.add_argument('--output',type=Path,default=Path('.runtime/coding'))
     p.add_argument('--apply-approved',metavar='PROPOSAL_UUID');p.add_argument('--destination',type=Path)
     args=p.parse_args();repo=args.repo.resolve(strict=True)
+    # Keep provider credentials in this native worker, never the frontend or result payload.
+    values=dotenv_values(args.env_file)
+    for key in ('OPENAI_API_KEY','CSI_VLM_PROVIDER','CSI_VLM_MODEL'):
+        if values.get(key) and key not in os.environ:
+            os.environ[key]=values[key]
+    if args.vlm_provider:
+        os.environ['CSI_VLM_PROVIDER']=args.vlm_provider
+        if not args.vlm_model:
+            os.environ.pop('CSI_VLM_MODEL',None)
+    if args.vlm_model:
+        os.environ['CSI_VLM_MODEL']=args.vlm_model
     with client(args) as api:
         if args.apply_approved:
             if args.destination is None:p.error('--destination is required with --apply-approved')

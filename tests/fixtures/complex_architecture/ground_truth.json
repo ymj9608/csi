@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "complex-commerce-contact-v1",
+  "evaluatorOnly": true,
+  "scope": "Four contact logging/transport behaviors and three matched function controls, not all possible defects.",
+  "positives": [
+    {
+      "id": "PHONE-LOG-1",
+      "category": "sensitive_logging",
+      "path": "services/customer_profile/service.py",
+      "function": "execute",
+      "line_start": 8,
+      "line_end": 15,
+      "sink_line": 12,
+      "diagram_visible": true,
+      "evidence": "Contact update writes the complete telephone value to the logger.",
+      "required_evidence": [
+        {
+          "path": "services/customer_profile/service.py",
+          "line_start": 12,
+          "line_end": 12
+        }
+      ]
+    },
+    {
+      "id": "PHONE-LOG-2",
+      "category": "sensitive_logging",
+      "path": "services/notification_dispatch/consumer.py",
+      "function": "handle",
+      "line_start": 5,
+      "line_end": 8,
+      "sink_line": 7,
+      "diagram_visible": true,
+      "evidence": "Consumer logs the entire delivery payload, including destination carried from telephone.",
+      "required_evidence": [
+        {
+          "path": "services/notification_dispatch/consumer.py",
+          "line_start": 7,
+          "line_end": 7
+        },
+        {
+          "path": "services/customer_profile/service.py",
+          "line_start": 13,
+          "line_end": 13
+        }
+      ]
+    },
+    {
+      "id": "PHONE-HTTP-1",
+      "category": "plaintext_pii_export",
+      "path": "services/sms_gateway/provider.py",
+      "function": "deliver",
+      "line_start": 5,
+      "line_end": 8,
+      "sink_line": 6,
+      "diagram_visible": true,
+      "evidence": "The external provider endpoint is HTTP and the request contains the contact destination.",
+      "required_evidence": [
+        {
+          "path": "services/sms_gateway/provider.py",
+          "line_start": 6,
+          "line_end": 6
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "line_start": 2,
+          "line_end": 2
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "line_start": 7,
+          "line_end": 7
+        }
+      ]
+    },
+    {
+      "id": "PHONE-HTTP-2",
+      "category": "plaintext_pii_export",
+      "path": "jobs/legacy_export.py",
+      "function": "export_snapshot",
+      "line_start": 5,
+      "line_end": 9,
+      "sink_line": 8,
+      "diagram_visible": false,
+      "evidence": "An off-diagram scheduled job sends persisted telephone values to an external HTTP endpoint.",
+      "required_evidence": [
+        {
+          "path": "jobs/legacy_export.py",
+          "line_start": 8,
+          "line_end": 8
+        },
+        {
+          "path": "jobs/legacy_export.py",
+          "line_start": 2,
+          "line_end": 2
+        },
+        {
+          "path": "jobs/legacy_export.py",
+          "line_start": 6,
+          "line_end": 6
+        }
+      ]
+    }
+  ],
+  "negatives": [
+    {
+      "id": "SAFE-LOG-1",
+      "path": "services/customer_profile/service.py",
+      "function": "record_completion",
+      "line_start": 18,
+      "line_end": 19,
+      "reason": "Logs only the synthetic record identifier, not contact data."
+    },
+    {
+      "id": "SAFE-LOG-2",
+      "path": "services/notification_dispatch/consumer.py",
+      "function": "record_outcome",
+      "line_start": 11,
+      "line_end": 14,
+      "reason": "Logs bounded outcome and event identifier, not the payload."
+    },
+    {
+      "id": "SAFE-TLS-1",
+      "path": "services/sms_gateway/provider.py",
+      "function": "deliver_private",
+      "line_start": 11,
+      "line_end": 15,
+      "reason": "Uses HTTPS with certificate verification; destination handling alone is not a plaintext-transport finding."
+    }
+  ],
+  "required_context_paths": [
+    {
+      "path": "services/customer_profile/api.py"
+    },
+    {
+      "path": "services/customer_profile/validation.py"
+    },
+    {
+      "path": "services/customer_profile/models.py"
+    },
+    {
+      "path": "services/customer_profile/service.py"
+    },
+    {
+      "path": "services/customer_profile/repository.py"
+    },
+    {
+      "path": "services/customer_profile/schema.sql"
+    },
+    {
+      "path": "services/customer_profile/events.py"
+    },
+    {
+      "path": "services/contact_events/bridge.py"
+    },
+    {
+      "path": "services/notification_dispatch/consumer.py"
+    },
+    {
+      "path": "services/sms_gateway/consumer.py"
+    },
+    {
+      "path": "services/sms_gateway/provider.py"
+    },
+    {
+      "path": "jobs/legacy_export.py"
+    }
+  ],
+  "diagram_omissions": [
+    "jobs/legacy_export.py",
+    "jobs/legacy_export.yaml"
+  ],
+  "limitations": [
+    "Generated service scaffolds share conventions; source volume alone is not production complexity.",
+    "No claim of complete legal compliance, production deployment, or benchmark generalization.",
+    "HTTP function calls are captured by fake transports; no network requests are executed.",
+    "Regular synchronous business links are design context; only the contact workflow has end-to-end behavior tests."
+  ]
+}

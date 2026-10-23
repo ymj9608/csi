@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:20:05.340114Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"services/notification_dispatch/consumer.py\",\n      \"line\": 7,\n      \"evidence\": \"\\\"dispatch payload=%s\\\", payload\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw delivery request payload (potentially containing contact data) is logged unmasked in `logger.info` at line 7. The `s\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/events.py\",\n          \"line\": 13,\n          \"evidence\": \"return dict(envelope[\\\"body\\\"])\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/notification_dispatch/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"delivery scheduled id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"While not raw contact data, logging of `record_id` (a unique identifier for delivery records) may expose PII if combined\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/schema.sql\",\n          \"line\": 2,\n          \"evidence\": \"record_id TEXT PRIMARY KEY\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/notification_dispatch/deployment.yaml\",\n      \"line\": 5,\n      \"evidence\": \"\\\"transport: http\\\"\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"HTTP transport (port 8080) is used without TLS enforcement, risking unencrypted transfer of contact data in API requests\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/api.py\",\n          \"line\": 6,\n          \"evidence\": \"def post(body, actor, ports):\"\n        }\n      ]\n    }\n  ],\n  \"needs\": [\n    \"Exact path to the external HTTP client used for sending contact data (e.g., SMS gateway or email service) in `services/notification_dispatch/events.py`\"\n  ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 23138773667,
+  "load_duration": 135650584,
+  "prompt_eval_count": 3103,
+  "prompt_eval_duration": 59157000,
+  "eval_count": 451,
+  "eval_duration": 22519688000
+}

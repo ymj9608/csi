@@ -1,0 +1,16 @@
+{
+  "exitCode": 1,
+  "seconds": 0.512008292000246,
+  "cases": {
+    "test_01_normal_notification": "ERROR",
+    "test_02_normal_analytics": "ok",
+    "test_03_retry_recovery": "ERROR",
+    "test_04_archive_preserved": "FAIL",
+    "test_05_external_export_no_phone": "FAIL",
+    "test_06_external_diagnostics_preserved": "FAIL",
+    "test_07_member_not_mutated": "ok",
+    "test_08_export_copy_isolation": "FAIL"
+  },
+  "passed": 2,
+  "total": 8
+}

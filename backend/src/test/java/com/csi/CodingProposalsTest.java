@@ -78,7 +78,53 @@ class CodingProposalsTest {
  @Test void progressOnlyAcceptsBoundedKnownStages(){
   assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","GENERATING",2,120000)));
   for(var p:List.of(new CodingProposals.Progress("token","arbitrary source text",1,0),
-      new CodingProposals.Progress("token","VERIFYING",3,0),new CodingProposals.Progress("token","VERIFYING",1,600001)))
+      new CodingProposals.Progress("token","VERIFYING",3,0),new CodingProposals.Progress("token","VERIFYING",1,900001)))
    assertThrows(ResponseStatusException.class,()->CodingProposals.validateProgress(p));
+ }
+
+ @Test void orchestrationIsRequiredForPinnedImageButNotHistoricalJobs() throws Exception {
+  var pinned=new HashMap<String,Object>(job);pinned.put("architectureId","image-id");
+  var r=result();
+  assertThrows(IllegalArgumentException.class,()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  r.put("engineVersion","4");
+  var handoff=r.putObject("handoff").put("mode","vlm-orchestrator-v1").put("provider","openai").put("model","gpt-6.1-sol").put("architectureId","image-id")
+   .put("commitSha","a".repeat(40)).put("status","READY").put("conclusion","실행 검증 결과를 확인한 관리자 검토용 수정안")
+   .put("imageSha256","a".repeat(64)).put("instruction","근거 finding reference에 따른 수정 지시문");
+  handoff.putObject("metrics").put("inputTokens",500).put("outputTokens",200).put("wallDurationMs",5000);
+  var trace=handoff.putArray("trace");
+  for(String tool:List.of("delegate_coding","run_verification","finish_review"))trace.addObject().put("tool",tool).put("status","OK");
+  assertDoesNotThrow(()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  handoff.put("model","qwen3-vl:8b");
+  assertThrows(IllegalArgumentException.class,()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  handoff.put("provider","ollama");
+  assertDoesNotThrow(()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  handoff.put("provider","openai").put("model","gpt-6.1-sol");
+  trace.remove(1);
+  assertThrows(IllegalArgumentException.class,()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  handoff.put("status","BLOCKED");r.put("status","BLOCKED");r.putArray("files");handoff.put("instruction","");trace.removeAll();
+  assertDoesNotThrow(()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  ((ObjectNode)r.path("handoff")).put("architectureId","other-image");
+  assertThrows(IllegalArgumentException.class,()->CodingProposals.validateResult(r,pinned,Set.of("finding"),Set.of("reference")));
+  assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","VLM_PLANNING",0,150000)));
+ }
+ @Test void staleImageDoesNotQueueNewProposal(){
+  Db db=mock(Db.class);var service=new CodingProposals(db,mock(Events.class),true,"ymj9608/Lichu");
+  UUID id=UUID.randomUUID(),project=UUID.randomUUID();
+  when(db.one(anyString(),eq(id))).thenReturn(Map.of("projectId",project.toString(),"repository","ymj9608/Lichu","status","COMPLETED","commitSha","a".repeat(40)));
+  when(db.count(anyString(),eq(id),eq(CodingProposals.TARGET))).thenReturn(1L);
+  when(db.list(anyString(),eq(id))).thenReturn(List.of());
+  when(db.list(anyString(),eq(project))).thenReturn(List.of(Map.of("id",UUID.randomUUID().toString(),"sourceCommitSha","b".repeat(40))));
+  assertEquals(409,assertThrows(ResponseStatusException.class,()->service.queue(id,true)).getStatusCode().value());
+ }
+ @Test void missingImageQueuesCodeOnlyProposal(){
+  var jdbc=mock(org.springframework.jdbc.core.JdbcTemplate.class);
+  Db db=spy(new Db(jdbc,json));var service=new CodingProposals(db,mock(Events.class),true,"ymj9608/Lichu");
+  UUID id=UUID.randomUUID(),project=UUID.randomUUID();
+  doReturn(Map.of("projectId",project.toString(),"repository","ymj9608/Lichu","status","COMPLETED","commitSha","a".repeat(40))).when(db).one(anyString(),eq(id));
+  doReturn(Map.of("status","QUEUED")).when(db).one(startsWith(CodingProposals.SELECT),any(UUID.class));
+  doReturn(1L).when(db).count(anyString(),eq(id),eq(CodingProposals.TARGET));
+  doReturn(List.of()).when(db).list(anyString(),any(UUID.class));
+  assertEquals("QUEUED",service.queue(id,true).get("status"));
+  verify(jdbc).update(startsWith("INSERT INTO coding_proposals"),any(UUID.class),eq(id),isNull());
  }
 }

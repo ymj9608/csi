@@ -1,0 +1,17 @@
+{
+  "externalLeak": {
+    "channel": "r3",
+    "path": "relay.py",
+    "function": "emit",
+    "recipient": "external support vendor"
+  },
+  "safeExternal": "r2",
+  "requiredInternal": "r1",
+  "flow": [
+    "app.py",
+    "recovery.py",
+    "relay.py",
+    "r3",
+    "external support vendor"
+  ]
+}

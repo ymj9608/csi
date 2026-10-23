@@ -1,0 +1,7 @@
+{
+  "type": "chronology_clarification",
+  "protocolFile": "petclinic-protocol.json",
+  "clarification": "The protocol's FROZEN_BEFORE_NEW_MODEL_CALLS label means the fixed telephone review calls. Extraction of the original architecture image using the already implemented architecture-v1 prompt had started before the protocol file was written. No telephone review result was available when task, corpus, selection budget and quality criteria were frozen.",
+  "measurementInputsChanged": false,
+  "reason": "Avoid describing a partially preregistered local pilot as preregistered before every vision call."
+}

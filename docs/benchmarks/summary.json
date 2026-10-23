@@ -1,0 +1,166 @@
+{
+  "synthetic": {
+    "metadata": {
+      "dataset": "synthetic-lichu-architecture-v1",
+      "timestamp": "2026-10-22T06:19:34.393074+00:00",
+      "model": "ministral-3:8b-instruct-2512-q4_K_M",
+      "sourceFileCount": 15,
+      "sourceBytes": 11731,
+      "imageSha256": "0c33e560191010d113966322f8fc17b60cf626a02b055082c5213d9290531814"
+    },
+    "arms": {
+      "full_code": {
+        "runs": 3,
+        "sourceFiles": 15,
+        "sourceBytes": 11731,
+        "inputTokensMedian": 4648,
+        "outputTokensMedian": 410,
+        "wallSecondsMedian": 31.238516999999998,
+        "wallSecondsRange": [
+          21.978164,
+          34.485977
+        ],
+        "reviewPhaseInputTokensMedian": 4648,
+        "reviewPhaseOutputTokensMedian": 410,
+        "reviewPhaseWallSecondsMedian": 31.234036,
+        "reviewCallsPerTrial": [
+          1,
+          1,
+          1
+        ],
+        "quality": [
+          {
+            "trial": 1,
+            "candidateMatches": 4,
+            "candidateExtra": 0,
+            "sourceVerifiedMatches": 3,
+            "expected": 4,
+            "missingCandidateIds": [],
+            "unverifiedCitationCount": 1
+          },
+          {
+            "trial": 2,
+            "candidateMatches": 4,
+            "candidateExtra": 0,
+            "sourceVerifiedMatches": 3,
+            "expected": 4,
+            "missingCandidateIds": [],
+            "unverifiedCitationCount": 1
+          },
+          {
+            "trial": 3,
+            "candidateMatches": 4,
+            "candidateExtra": 0,
+            "sourceVerifiedMatches": 3,
+            "expected": 4,
+            "missingCandidateIds": [],
+            "unverifiedCitationCount": 1
+          }
+        ]
+      },
+      "vision_selected": {
+        "runs": 3,
+        "sourceFiles": 13,
+        "sourceBytes": 10319,
+        "inputTokensMedian": 6241,
+        "outputTokensMedian": 1505,
+        "wallSecondsMedian": 80.642781,
+        "wallSecondsRange": [
+          79.104495,
+          89.48957700000001
+        ],
+        "reviewPhaseInputTokensMedian": 4927,
+        "reviewPhaseOutputTokensMedian": 473,
+        "reviewPhaseWallSecondsMedian": 27.798303,
+        "reviewCallsPerTrial": [
+          1,
+          1,
+          1
+        ],
+        "quality": [
+          {
+            "trial": 1,
+            "candidateMatches": 3,
+            "candidateExtra": 1,
+            "sourceVerifiedMatches": 2,
+            "expected": 4,
+            "missingCandidateIds": [
+              "V4"
+            ],
+            "unverifiedCitationCount": 1
+          },
+          {
+            "trial": 2,
+            "candidateMatches": 3,
+            "candidateExtra": 0,
+            "sourceVerifiedMatches": 2,
+            "expected": 4,
+            "missingCandidateIds": [
+              "V4"
+            ],
+            "unverifiedCitationCount": 1
+          },
+          {
+            "trial": 3,
+            "candidateMatches": 3,
+            "candidateExtra": 0,
+            "sourceVerifiedMatches": 2,
+            "expected": 4,
+            "missingCandidateIds": [
+              "V4"
+            ],
+            "unverifiedCitationCount": 1
+          }
+        ]
+      }
+    }
+  },
+  "lichu": {
+    "metadata": {
+      "dataset": "actual-Lichu-unscored",
+      "timestamp": "2026-10-22T06:27:56.067962+00:00",
+      "model": "ministral-3:8b-instruct-2512-q4_K_M",
+      "sourceFileCount": 57,
+      "sourceBytes": 173539,
+      "imageSha256": "77cd54c12c3896b81ed930dd3f353d29f411257b8ce5323f5c64a54e718d7a66"
+    },
+    "arms": {
+      "full_code": {
+        "runs": 1,
+        "sourceFiles": 57,
+        "sourceBytes": 173539,
+        "inputTokensMedian": 63145,
+        "outputTokensMedian": 4890,
+        "wallSecondsMedian": 442.870134,
+        "wallSecondsRange": [
+          442.870134,
+          442.870134
+        ],
+        "reviewPhaseInputTokensMedian": 63145,
+        "reviewPhaseOutputTokensMedian": 4890,
+        "reviewPhaseWallSecondsMedian": 442.796295,
+        "reviewCallsPerTrial": [
+          11
+        ]
+      },
+      "vision_selected": {
+        "runs": 1,
+        "sourceFiles": 15,
+        "sourceBytes": 47377,
+        "inputTokensMedian": 22363,
+        "outputTokensMedian": 2525,
+        "wallSecondsMedian": 187.021117,
+        "wallSecondsRange": [
+          187.021117,
+          187.021117
+        ],
+        "reviewPhaseInputTokensMedian": 21076,
+        "reviewPhaseOutputTokensMedian": 1591,
+        "reviewPhaseWallSecondsMedian": 135.21774000000002,
+        "reviewCallsPerTrial": [
+          4
+        ]
+      }
+    }
+  }
+}

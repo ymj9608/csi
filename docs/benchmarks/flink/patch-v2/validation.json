@@ -1,0 +1,25 @@
+{
+  "status": "OFFLINE_VALIDATED_MODEL_TRIAL_NOT_RUN",
+  "command": ".venv/bin/python -m pytest tests/test_flink_patch_protocol.py tests/test_architecture_context.py tests/test_flink_benchmark.py -q",
+  "passed": 51,
+  "failed": 0,
+  "syntaxCheck": "passed",
+  "protocolHashesMatch": true,
+  "documentationLinksExist": true,
+  "modelCalls": 0,
+  "javaTestsExecuted": false,
+  "calibration": {
+    "ready": false,
+    "imageId": null,
+    "image": "maven:3.9.9-eclipse-temurin-17",
+    "reason": "VALIDATION_IMAGE_NOT_INSTALLED",
+    "status": "BLOCKED",
+    "modelCalls": 0,
+    "attempt": "calibration-attempts/1"
+  },
+  "notes": [
+    "20 source files, 173112 bytes; code-only preflight selects 9 files, 99354 bytes with all 5 mandatory paths.",
+    "Selection preview is not evidence of vision gains.",
+    "Java regression suite must be calibrated before any model experiment."
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "commit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "sourceFileCount": 4,
+  "sourceBytes": 15087,
+  "syntheticRegression": "A Base64 snapshot of serialized delegation credentials is written to an INFO log under the neutral name snapshot. The byte-count log is safe and required.",
+  "deployment": "Researcher-authored diagram assumes third-party log collection outside the credential trust boundary. This is not a claim about Apache deployments.",
+  "staticScannerFindings": 0,
+  "calibration": {
+    "vulnerablePassed": 6,
+    "referencePassed": 7,
+    "total": 7,
+    "referenceIsAiGenerated": false
+  },
+  "measurementSummary": [
+    {
+      "arm": "code_only",
+      "status": "PASSED",
+      "diagnosis": "Injected serialized-token log identified",
+      "testsRun": 7,
+      "testsPassed": 7,
+      "securityPassed": true,
+      "generationSeconds": 40.01896300000001,
+      "visionSeconds": 0.0,
+      "totalModelSeconds": 40.01896300000001,
+      "validationSeconds": 95.68549241599976,
+      "inputTokensIncludingVision": 3871,
+      "outputTokensIncludingVision": 553
+    },
+    {
+      "arm": "architecture_text",
+      "status": "VALIDATION_FAILED",
+      "diagnosis": "Injected serialized-token log identified",
+      "testsRun": 0,
+      "testsPassed": 0,
+      "securityPassed": null,
+      "generationSeconds": 44.197843,
+      "visionSeconds": 0.0,
+      "totalModelSeconds": 44.197843,
+      "validationSeconds": 46.544687124998745,
+      "inputTokensIncludingVision": 4032,
+      "outputTokensIncludingVision": 568
+    },
+    {
+      "arm": "architecture_vision",
+      "status": "PASSED",
+      "diagnosis": "Injected serialized-token log identified",
+      "testsRun": 7,
+      "testsPassed": 7,
+      "securityPassed": true,
+      "generationSeconds": 40.638954,
+      "visionSeconds": 25.64635249999992,
+      "totalModelSeconds": 66.28530649999992,
+      "validationSeconds": 88.48240616600015,
+      "inputTokensIncludingVision": 5176,
+      "outputTokensIncludingVision": 718
+    }
+  ],
+  "interpretation": [
+    "All three model conditions found the injected risk. No new detection attributable only to vision.",
+    "Code-only and vision generated real patches and passed all seven unchanged Flink Java tests.",
+    "Text condition failed compilation due to a missing semicolon; tests did not run. This is a code-generation error, not a detection failure.",
+    "Both passing patches replace logged contents with length but leave the now-unused Base64 snapshot computation. They do not represent optimal cleanup.",
+    "Vision adds external-recipient context but costs an extra image call; no quality or end-to-end latency improvement demonstrated.",
+    "Model-written source line numbers are inaccurate: original injected lines are 129-130, not the cited ~50 or 72. Exact source-match patches and compiler/test results are authoritative."
+  ],
+  "limits": [
+    "Favorable scenario selected before generation; no post-hoc patch repair, retries, discarded model trials or outcome selection.",
+    "Single local run per arm, fixed order; build/cache timing variation is not causal evidence.",
+    "Four full related Java files from a real large repository were supplied equally. This does not evaluate large-repository navigation or context-budget scaling.",
+    "One synthetic flaw and seven targeted tests, not the complete Flink suite, cluster test or actual external log delivery.",
+    "Uses the CSI static scanner, existing local coding transport and experimental Java verification adapter. Production Lichu-only profile and GitHub push/RAG flow were not replaced."
+  ]
+}

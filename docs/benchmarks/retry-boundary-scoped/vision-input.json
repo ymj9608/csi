@@ -1,0 +1,12 @@
+{
+  "prompt": "Read the architecture image and choose ONE existing function to inspect/modify for preventing phone from reaching external failure observability, preserving internal notification and replay. Available source declarations: {\"service.py\": [\"register\"], \"analysis.py\": [\"send_metrics\"], \"notification.py\": [\"notify\"], \"exporter.py\": [\"forward\"], \"retry.py\": [\"schedule\", \"drain\"], \"deadletter.py\": [\"archive\"], \"storage.py\": [\"reset\"]}. Return these three lines, no JSON: FILE: exact filename; FUNCTION: exact function name; REASON: brief diagram-grounded instruction. Do not invent code or claim tests passed. Keep the final answer under 80 words.",
+  "imageSha256": "9e07ad162e00f2ddc397d4f1126c527d3fad0e4059772b50d6bb02129bf00d37",
+  "model": "qwen3-vl:8b",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "think": true
+}

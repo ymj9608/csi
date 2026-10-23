@@ -1,0 +1,699 @@
+{
+  "width": 3000,
+  "height": 2320,
+  "nodes": [
+    {
+      "id": "edge_gateway",
+      "label": "Request admission",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        190,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "identity_access",
+      "label": "Identity and sessions",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        190,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "consent_registry",
+      "label": "Contact preferences",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        190,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "customer_profile",
+      "label": "Customer contact records",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        190,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "contact_events",
+      "label": "Contact change events",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        282,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "notification_dispatch",
+      "label": "Delivery scheduling",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        282,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "sms_gateway",
+      "label": "SMS provider adapter",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        282,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "audit_archive",
+      "label": "Event retention",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        282,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "product_catalog",
+      "label": "Product publication",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        374,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "inventory_reservation",
+      "label": "Stock reservation",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        374,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "order_fulfillment",
+      "label": "Order orchestration",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        374,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "shipment_tracking",
+      "label": "Carrier milestones",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        374,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "billing_ledger",
+      "label": "Invoice accounting",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        466,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "payment_settlement",
+      "label": "Settlement batches",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        466,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "fraud_review",
+      "label": "Transaction review",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        466,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "merchant_registry",
+      "label": "Merchant onboarding",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        466,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "returns_case",
+      "label": "Return authorization",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        558,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "support_case",
+      "label": "Support assignment",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        558,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "loyalty_rewards",
+      "label": "Reward accrual",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        558,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "marketing_campaign",
+      "label": "Campaign planning",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        558,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "analytics_rollup",
+      "label": "Aggregate reporting",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API",
+      "bbox": [
+        40,
+        650,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "search_index",
+      "label": "Product search",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API",
+      "bbox": [
+        780,
+        650,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "document_archive",
+      "label": "Document lifecycle",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API",
+      "bbox": [
+        1520,
+        650,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "partner_webhook",
+      "label": "Partner callbacks",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API",
+      "bbox": [
+        2260,
+        650,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "profile_db",
+      "label": "Customer data",
+      "kind": "DATABASE",
+      "group": "edge",
+      "technology": "SQL",
+      "bbox": [
+        40,
+        742,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "kafka",
+      "label": "Event broker",
+      "kind": "MESSAGE_QUEUE",
+      "group": "messaging",
+      "technology": "Kafka",
+      "bbox": [
+        780,
+        742,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "external_sms",
+      "label": "External message provider",
+      "kind": "EXTERNAL_SERVICE",
+      "group": "messaging",
+      "technology": "HTTP API",
+      "bbox": [
+        1520,
+        742,
+        710,
+        84
+      ]
+    },
+    {
+      "id": "business_db",
+      "label": "Business records",
+      "kind": "DATABASE",
+      "group": "commerce",
+      "technology": "SQL",
+      "bbox": [
+        2260,
+        742,
+        710,
+        84
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "from": "edge_gateway",
+      "to": "customer_profile",
+      "label": "contact update",
+      "mode": "sync",
+      "bbox": [
+        40,
+        920,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "edge_gateway",
+      "to": "identity_access",
+      "label": "session validation",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1018,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "customer_profile",
+      "to": "consent_registry",
+      "label": "contact purpose",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1116,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "customer_profile",
+      "to": "profile_db",
+      "label": "contact storage",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1214,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "customer_profile",
+      "to": "contact_events",
+      "label": "contact.changed",
+      "mode": "async",
+      "bbox": [
+        40,
+        1312,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "contact_events",
+      "to": "kafka",
+      "label": "delivery.requested",
+      "mode": "async",
+      "bbox": [
+        40,
+        1410,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "kafka",
+      "to": "notification_dispatch",
+      "label": "delivery.requested",
+      "mode": "async",
+      "bbox": [
+        40,
+        1508,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "notification_dispatch",
+      "to": "sms_gateway",
+      "label": "sms.requested",
+      "mode": "async",
+      "bbox": [
+        40,
+        1606,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "sms_gateway",
+      "to": "external_sms",
+      "label": "message delivery",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1704,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "sms_gateway",
+      "to": "audit_archive",
+      "label": "delivery.completed",
+      "mode": "async",
+      "bbox": [
+        40,
+        1802,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "edge_gateway",
+      "to": "product_catalog",
+      "label": "product browse",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1900,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "edge_gateway",
+      "to": "order_fulfillment",
+      "label": "order request",
+      "mode": "sync",
+      "bbox": [
+        40,
+        1998,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "product_catalog",
+      "to": "search_index",
+      "label": "product.published",
+      "mode": "async",
+      "bbox": [
+        40,
+        2096,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "inventory_reservation",
+      "label": "order.accepted",
+      "mode": "async",
+      "bbox": [
+        1520,
+        920,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "inventory_reservation",
+      "to": "shipment_tracking",
+      "label": "inventory.reserved",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1018,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "billing_ledger",
+      "label": "order.accepted",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1116,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "billing_ledger",
+      "to": "payment_settlement",
+      "label": "invoice.posted",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1214,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "payment_settlement",
+      "to": "fraud_review",
+      "label": "payment.settled",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1312,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "payment_settlement",
+      "to": "analytics_rollup",
+      "label": "payment.settled",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1410,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "shipment_tracking",
+      "to": "loyalty_rewards",
+      "label": "shipment.delivered",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1508,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "loyalty_rewards",
+      "to": "analytics_rollup",
+      "label": "reward.accrued",
+      "mode": "async",
+      "bbox": [
+        1520,
+        1606,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "business_db",
+      "label": "order persistence",
+      "mode": "sync",
+      "bbox": [
+        1520,
+        1704,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "support_case",
+      "to": "returns_case",
+      "label": "return authorization",
+      "mode": "sync",
+      "bbox": [
+        1520,
+        1802,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "marketing_campaign",
+      "to": "consent_registry",
+      "label": "audience permission",
+      "mode": "sync",
+      "bbox": [
+        1520,
+        1900,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "merchant_registry",
+      "to": "document_archive",
+      "label": "onboarding records",
+      "mode": "sync",
+      "bbox": [
+        1520,
+        1998,
+        1440,
+        90
+      ]
+    },
+    {
+      "from": "partner_webhook",
+      "to": "shipment_tracking",
+      "label": "carrier status",
+      "mode": "sync",
+      "bbox": [
+        1520,
+        2096,
+        1440,
+        90
+      ]
+    }
+  ],
+  "graphUnchanged": true,
+  "edgeCrossings": 0,
+  "layout": "component catalog + isolated directed connection rows",
+  "containsSourcePaths": false,
+  "containsEvaluationAnswers": false,
+  "visualChanges": [
+    "Exact endpoint IDs repeated beside each arrow",
+    "One isolated row per directed edge",
+    "Explicit component kind labels from the existing graph",
+    "No overlapping edges or edge labels"
+  ],
+  "graphSha256": "d9b623570a9d60e023ebcff53777d768ef72736cb517fd28c2a5eef0320ff037",
+  "svgSha256": "dcbeda06e87d680143b5993f0f124afa8efbdeccf0dc0087382973ee58a29c72",
+  "pngSha256": "b38c46ff0cc03ed549f66f41904d145b71a88f80fd3778d8e75434b67aa9f77d",
+  "pngBytes": 656008
+}

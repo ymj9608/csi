@@ -1,0 +1,14 @@
+{
+  "model": "qwen3-vl:8b",
+  "provider": "ollama",
+  "status": "FAILED",
+  "startedAtUtc": "2026-10-23T06:26:56Z",
+  "answerText": "",
+  "inputTokens": 282,
+  "outputTokens": 125,
+  "doneReason": "stop",
+  "loadNs": 6503629084,
+  "generationNs": 5281014000,
+  "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+  "wallMs": 12480.871
+}

@@ -1,0 +1,22 @@
+{
+  "model": "qwen3-vl:8b",
+  "stream": false,
+  "think": true,
+  "keep_alive": 0,
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "messages": [
+    {
+      "role": "system",
+      "content": "Write a concise implementation handoff from the given task and assumed-correct architecture. Do not invent requirements or test results. Return a short plain-text implementation instruction, not JSON."
+    },
+    {
+      "role": "user",
+      "content": "{\"task\": \"Add optional phone to signup. When provided, accept only a string of ASCII 010 followed by eight digits; reject otherwise with ValueError before writes/deliveries. Missing phone allowed. Persist it and deliver raw phone to the authorized internal notification destination. Never deliver raw phone to external analytics, including nested payloads. Preserve one member_created event per subscriber with member.id, existing alias name and legacy signup. Do not disable events or remove phone from stored/internal member. Preserve public functions and topology. Explain the concrete exposure path with file references. Read-only repository.py, adapters.py, topology.json must not change. This is a synthetic in-memory fixture, not production code.\", \"architecture\": \"Perfect perception assumption (not measured): signup.py is the member service entry point. repository.py owns the internal member store. events.py builds member_created from a member record. dispatcher.py fans the same event to BOTH subscribers listed in topology.json. adapters.py represents the receivers. notification is inside the trusted contact-processing boundary; analytics is an external metrics recipient. Edges: signup->repository; signup->events->dispatcher->notification AND analytics. These facts also appear in the source/topology supplied to both conditions.\"}"
+    }
+  ]
+}

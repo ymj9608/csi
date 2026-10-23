@@ -232,7 +232,7 @@ s = new('아키텍처 구성과 설계 판단 근거', '아키텍처 설계', 10
         'K backend/src/main/java/com/csi/KafkaPipeline.java; C backend/src/main/java/com/csi/ApiController.java; '
         'S backend/src/main/java/com/csi/Security.java; G agent/csi_agent/graph.py; A agent/csi_agent/app.py; '
         'M mcp_servers/business.py 및 rag.py; T tests/ 및 docs/verification.json, docs/CHANGE_REVIEWS.md. '
-        '서비스 배포는 frontend/compose.yml, UI는 frontend/src/views/Console.vue, 벡터 검색은 mcp_servers/vector.py에서 확인합니다.')
+        '서비스 배포는 compose.yml, UI는 frontend/src/views/Console.vue, 벡터 검색은 mcp_servers/vector.py에서 확인합니다.')
 txt(s,56,137,646,38,'구성요소와 책임 분리',30,INK,True)
 txt(s,738,137,646,38,'아키텍처 흐름과 설계 근거',30,INK,True)
 components = [

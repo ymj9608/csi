@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "imageSha256": "6356a7a938d55def53dce94dd5ec758c0d18d0da1095b62b6f722b8716d3a930",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "promptVersion": "architecture-v1",
+  "diagramType": "ARCHITECTURE",
+  "components": [
+    {
+      "id": "A1",
+      "label": "Git Repo",
+      "kind": "CONFIGURATION_REPOSITORY"
+    },
+    {
+      "id": "A2",
+      "label": "Spring Cloud Config Server",
+      "kind": "CONFIGURATION_SERVER"
+    },
+    {
+      "id": "A3",
+      "label": "Eureka Service Discovery",
+      "kind": "SERVICE_DISCOVERY"
+    },
+    {
+      "id": "A4",
+      "label": "UI + API Gateway <port 8080>",
+      "kind": "API_GATEWAY"
+    },
+    {
+      "id": "A5",
+      "label": "Spring Boot Admin Server",
+      "kind": "ADMIN_SERVER"
+    },
+    {
+      "id": "A6",
+      "label": "OpenZipkin Distributed Logging Server",
+      "kind": "LOGGING_SERVER"
+    },
+    {
+      "id": "A7",
+      "label": "customers-service REST API <random port>",
+      "kind": "MICROSERVICE"
+    },
+    {
+      "id": "A8",
+      "label": "genai-service REST API <random port>",
+      "kind": "MICROSERVICE"
+    },
+    {
+      "id": "A9",
+      "label": "vets-service REST API <random port>",
+      "kind": "MICROSERVICE"
+    },
+    {
+      "id": "A10",
+      "label": "pets-service REST API <random port>",
+      "kind": "MICROSERVICE"
+    },
+    {
+      "id": "D1",
+      "label": "RDBMS (customers-service)",
+      "kind": "DATABASE"
+    },
+    {
+      "id": "D2",
+      "label": "Vector Store (genai-service)",
+      "kind": "VECTOR_STORE"
+    },
+    {
+      "id": "D3",
+      "label": "RDBMS (vets-service)",
+      "kind": "DATABASE"
+    },
+    {
+      "id": "D4",
+      "label": "RDBMS (pets-service)",
+      "kind": "DATABASE"
+    }
+  ],
+  "flows": [
+    {
+      "from": "A1",
+      "to": "A2",
+      "data": "versioned YAML configuration files",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A2",
+      "to": "A3",
+      "data": "fetch configuration",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A2",
+      "to": "A4",
+      "data": "fetch configuration",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A3",
+      "to": "A7",
+      "data": "register + retrieve microservices IP",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A5",
+      "data": "Monitoring",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A3",
+      "to": "A4",
+      "data": "register",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A7",
+      "to": "A4",
+      "data": "load-balanced HTTP requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A8",
+      "to": "A4",
+      "data": "load-balanced HTTP requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A9",
+      "to": "A4",
+      "data": "load-balanced HTTP requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A10",
+      "to": "A4",
+      "data": "load-balanced HTTP requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A7",
+      "data": "REST requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A8",
+      "data": "REST requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A9",
+      "data": "REST requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A10",
+      "data": "REST requests",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A7",
+      "to": "D1",
+      "data": "UNKNOWN",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A8",
+      "to": "D2",
+      "data": "UNKNOWN",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A9",
+      "to": "D3",
+      "data": "UNKNOWN",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A10",
+      "to": "D4",
+      "data": "UNKNOWN",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A8",
+      "to": "A7",
+      "data": "function calling",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A9",
+      "to": "A8",
+      "data": "ingest",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "A4",
+      "to": "A6",
+      "data": "distributed logs",
+      "protection": "UNKNOWN"
+    }
+  ],
+  "trustBoundaries": [
+    "boundary around UI + API Gateway (A4)",
+    "boundary around each microservice (A7, A8, A9, A10)"
+  ],
+  "codeHints": [],
+  "assumptions": [
+    "The 'random port' label on microservices implies dynamic port assignment handled by the system.",
+    "REST requests between UI + API Gateway and microservices are HTTP-based without explicit protocol labels.",
+    "Monitoring from UI + API Gateway to Spring Boot Admin Server is generic and not explicitly labeled with a protocol."
+  ],
+  "uncertainties": [
+    "No explicit security protocols (e.g., TLS) or authentication mechanisms are visible on any connections.",
+    "The nature of interactions between microservices (A7, A8, A9, A10) with their respective databases is unspecified beyond storage access.",
+    "OpenZipkin’s role is limited to distributed logging; no details about data flow security or encryption are provided."
+  ],
+  "summary": "이 이미지는 Spring Cloud 기반의 마이크로서비스 아키텍처를 보여줍니다. Git Repo에서 YAML 설정 파일을 Spring Cloud Config Server가 관리하며, Eureka Service Discovery는 서비스 등록 및 IP 검색을 담당합니다. UI + API Gateway(포트 8080)는 클라이언트 요청을 로드밸런싱하여 네 개의 마이크로서비스(customers-service, genai-service, vets-service, pets-service)로 분산시킵니다. 각 서비스에는 별도의 데이터베이스 또는 벡터 스토어가 연결되어 있으며, genai-service는 다른 서비스와 함수 호출 및 ingest 기능을 수행합니다. Spring Boot Admin Server와 OpenZipkin은 모니터링과 로깅을 담당합니다.",
+  "metrics": {
+    "wallDurationMs": 91514.02,
+    "prompt_eval_count": 1313,
+    "eval_count": 1699,
+    "total_duration": 91427887000,
+    "load_duration": 143107750,
+    "prompt_eval_duration": 4294020000,
+    "eval_duration": 86838111000
+  }
+}

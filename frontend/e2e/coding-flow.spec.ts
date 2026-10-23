@@ -6,6 +6,29 @@ function verifiedResult(){
   return {reason:'전체 정책을 준수하고 기존 계정 문제가 모두 해결되었습니다.',modelLimitations:['bcrypt로 생성된 해쉬는 레거시 계정과 호환되지 않습니다.'],citedIds:['finding'],baseline:{passed:30,failed:10,securityPassed:3,securityTotal:13,suiteVersion:2,skipped:1},verification:proof,durationMs:60000,attempts:[{number:1,generationMs:45000,verification:proof}],limitations:[],files:[{path:'backend/app/core/csi_signup.py',diff:'--- a/signup.py\n+++ b/signup.py\n+import bcrypt\n'}],review:{version:1,summary:'신규 비밀번호 저장과 로그 노출 개선을 테스트로 확인했습니다.',changes:[{id:'password',title:'신규 계정 비밀번호 저장',before:'공통 Salt와 빠른 SHA-256 해시를 사용했습니다.',after:'bcrypt 비용 12와 개별 무작위 Salt를 사용합니다.',status:'VERIFIED',tests:['check-1','check-2'],evidenceIds:['reference']},{id:'login',title:'기존·신규 계정 로그인',before:'SHA-256 실습 계정을 인증합니다.',after:'기존 SHA-256 계정과 신규 bcrypt 계정을 모두 인증합니다.',status:'VERIFIED',tests:['check-3']}],remainingRisks:[{id:'migration',title:'기존 계정 해시 전환',detail:'기존 SHA-256 해시는 그대로 남습니다.',nextStep:'로그인 성공 후 재해시하는 기능이 필요합니다.'},{id:'logs',title:'과거 민감정보 로그',detail:'이미 남은 로그는 삭제되지 않습니다.',nextStep:'보존 정책에 따라 정리 대상을 확인하세요.'}],scope:['Lichu 회원가입 실습 경로를 SQLite로 테스트했습니다.','PostgreSQL 동시성과 실제 배포는 검증하지 않았습니다.']}};
 }
 
+test('OpenAI orchestration trace is visible and model text is escaped',async({page})=>{
+  const result:any=verifiedResult();
+  result.handoff={mode:'vlm-orchestrator-v1',provider:'openai',model:'gpt-6.1-sol',sourceCommitMatches:null,
+    metrics:{wallDurationMs:90000,apiDurationMs:20000,inputTokens:14000,outputTokens:1800,reasoningTokens:500},
+    trace:[{turn:1,tool:'read_code',status:'OK',path:'backend/app/core/csi_signup.py'},
+      {turn:2,tool:'delegate_coding',status:'OK',attempt:1,instruction:'<img src=x onerror="window.injected=true"> 비밀번호 저장을 보완하세요.'},
+      {turn:3,tool:'run_verification',status:'OK',attempt:1},{turn:4,tool:'finish_review',status:'OK'}],
+    conclusion:'격리 테스트 통과를 확인했습니다. 기존 데이터 정리와 관리자 승인은 별도입니다.'};
+  const {state}=await mockFlow(page,'SEC-02',{status:'READY',result});
+  await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
+  const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
+  await expect(region).toContainText('gpt-6.1-sol · OpenAI 총괄');
+  await expect(region.getByText('VLM 총괄 작업 기록',{exact:true})).toBeVisible();
+  await expect(region).toContainText('입력 14000 / 출력 1800 토큰');
+  await region.getByText('1차 수정 지시문',{exact:true}).click();
+  await expect(region.locator('pre').filter({hasText:'onerror'})).toContainText('<img src=x');
+  await expect(region.locator('img')).toHaveCount(0);
+  expect(state.decisions).toEqual([]);
+  await expect(region.getByRole('button',{name:'검토 후 승인',exact:true})).toBeEnabled();
+  await page.setViewportSize({width:390,height:844});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
 async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result:any}) {
   const finding:any={id:'finding',scanId:'scan',repository:'ymj9608/Lichu',ruleId:rule,title:'비밀번호 저장 보완',status:'OPEN',severity:'HIGH',evidenceStatus:'SUSPECTED',confidence:'MEDIUM',filePath:rule==='POL-01'?'backend/app/models/entities.py':'backend/app/core/csi_signup.py',startLine:1,endLine:2,commitSha:'a'.repeat(40),maskedCodeEvidence:'hashlib.sha256(password.encode())',analysis:{red:'빠른 해시 저장 위험',blue:'회원가입 경로 확인',references:[{chunkId:'reference',sectionId:'POL-04',sectionTitle:'비밀번호 저장 정책',documentId:'POLICY',documentVersion:'1',pageNumber:4,content:'bcrypt 비용 12와 개별 salt를 사용합니다.'}]}};
   const result=verifiedResult();
@@ -34,12 +57,16 @@ async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result
 
 test('risk analysis → generate → progress polling without SSE → evidence → approve',async({page})=>{
   const {state,result}=await mockFlow(page);
-  await expect(page.getByText('빠른 해시 저장 위험',{exact:true})).toBeVisible();
+  // ReportText has a screen-reader copy as well as animated visible text.
+  // Wait for the visible copy to finish, without matching both DOM nodes.
+  const riskText=page.locator('.verdict.red .report-text > [aria-hidden="true"]');
+  await expect(riskText).toBeVisible();
+  await expect(riskText).toHaveText('빠른 해시 저장 위험');
   await page.getByRole('button',{name:'수정안 생성·검토로 이동',exact:true}).click();
   const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
   await region.getByRole('button',{name:'수정안 생성 요청',exact:true}).click();
   await expect.poll(()=>state.requests).toBe(1);
-  await expect(region).toContainText('모델 코드 생성');
+  await expect(region).toContainText('VLM 지시에 따른 로컬 코드 생성');
   await expect(region.getByRole('button',{name:'검토 후 승인',exact:true})).toHaveCount(0);
   state.job={...state.job,status:'READY',result};
   await expect(region).toContainText('수정안 검증 완료 · 관리자 검토 대기',{timeout:12000});
@@ -70,16 +97,16 @@ test('failed result stays unapprovable and successful retry can be rejected',asy
   await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
   const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
   await region.getByRole('button',{name:'수정안 생성 요청',exact:true}).click();
-  await expect(region).toContainText('모델 코드 생성');
+  await expect(region).toContainText('VLM 지시에 따른 로컬 코드 생성');
   state.job={...state.job,status:'BLOCKED',result:{...result,verification:undefined,files:[],failureReason:'UNDEFINED_GLOBAL',lastVerification:{passed:29,failed:5,securityPassed:3,skipped:1},attempts:[{number:1,error:'UNDEFINED_GLOBAL',generationMs:40000}]}};
-  await expect(region).toContainText('수정안 검증에 실패했습니다.',{timeout:12000});
+  await expect(region).toContainText('수정안 작업이 중단되었습니다.',{timeout:12000});
   await expect(region.locator('.coding-check-passed')).toHaveCount(0);
   await expect(region.getByText('신규 비밀번호 저장과 로그 노출 개선을 테스트로 확인했습니다.',{exact:true})).toHaveCount(0);
   await expect(region.getByRole('button',{name:'검토 후 승인',exact:true})).toHaveCount(0);
   await expect(region.locator('tr').filter({hasText:'실패'})).toContainText('5');
   await region.getByRole('button',{name:'새 수정안 요청',exact:true}).click();
   await expect.poll(()=>state.requests).toBe(2);
-  await expect(region).toContainText('모델 코드 생성');
+  await expect(region).toContainText('VLM 지시에 따른 로컬 코드 생성');
   state.job={...state.job,status:'READY',result};
   await expect(region.getByRole('button',{name:'거절',exact:true})).toBeVisible({timeout:12000});
   await region.getByRole('button',{name:'거절',exact:true}).click();
@@ -149,4 +176,23 @@ test('a failed legacy verification cannot authorize approval',async({page})=>{
   const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
   await expect(region.getByRole('button',{name:'검토 후 승인',exact:true})).toBeDisabled();
   await expect(region).toContainText('최종 검증 기록이 완전하지 않아 승인할 수 없습니다.');
+});
+
+test('direct VLM planning progress and literal work order remain separate from approval',async({page})=>{
+  const {state,result}=await mockFlow(page);
+  await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
+  const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
+  state.job={id:'proposal',architectureId:'image-id',status:'RUNNING',createdAt:new Date().toISOString(),progress:{phase:'VLM_PLANNING',attempt:0}};
+  await page.getByRole('button',{name:'새로고침',exact:true}).click();
+  await expect(region).toContainText('VLM이 근거와 실행 결과를 검토하고 다음 작업 결정');
+  await expect(region.getByRole('button',{name:'검토 후 승인',exact:true})).toHaveCount(0);
+  state.job={...state.job,status:'READY',result:{...result,handoff:{mode:'vlm-direct-v1',sourceCommitMatches:null,
+    instruction:'코딩 Agent에게: <script>throw Error("must remain text")</script> 근거를 확인하세요.',
+    metrics:{wallDurationMs:2000,prompt_eval_count:100,eval_count:50}}}};
+  await page.getByRole('button',{name:'새로고침',exact:true}).click();
+  await region.getByText('아키텍처·정책 기반 수정 지시문',{exact:true}).click();
+  await expect(region).toContainText('이미지의 기준 커밋은 미확인');
+  await expect(region).toContainText('<script>throw Error("must remain text")</script>');
+  await expect(region.locator('script')).toHaveCount(0);
+  expect(state.decisions).toEqual([]);
 });

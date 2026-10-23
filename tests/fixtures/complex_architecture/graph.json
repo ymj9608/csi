@@ -1,0 +1,392 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "complex-commerce-contact-v1",
+  "synthetic": true,
+  "title": "Synthetic commerce platform — service and data flow",
+  "groups": [
+    {
+      "id": "edge",
+      "label": "Customer and identity"
+    },
+    {
+      "id": "messaging",
+      "label": "Contact delivery"
+    },
+    {
+      "id": "commerce",
+      "label": "Commerce operations"
+    },
+    {
+      "id": "finance",
+      "label": "Finance and merchants"
+    },
+    {
+      "id": "engagement",
+      "label": "Customer engagement"
+    },
+    {
+      "id": "data",
+      "label": "Data products"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "edge_gateway",
+      "label": "Request admission",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API"
+    },
+    {
+      "id": "identity_access",
+      "label": "Identity and sessions",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API"
+    },
+    {
+      "id": "consent_registry",
+      "label": "Contact preferences",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API"
+    },
+    {
+      "id": "customer_profile",
+      "label": "Customer contact records",
+      "kind": "SERVICE",
+      "group": "edge",
+      "technology": "Python API"
+    },
+    {
+      "id": "contact_events",
+      "label": "Contact change events",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API"
+    },
+    {
+      "id": "notification_dispatch",
+      "label": "Delivery scheduling",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API"
+    },
+    {
+      "id": "sms_gateway",
+      "label": "SMS provider adapter",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API"
+    },
+    {
+      "id": "audit_archive",
+      "label": "Event retention",
+      "kind": "SERVICE",
+      "group": "messaging",
+      "technology": "Python API"
+    },
+    {
+      "id": "product_catalog",
+      "label": "Product publication",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API"
+    },
+    {
+      "id": "inventory_reservation",
+      "label": "Stock reservation",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API"
+    },
+    {
+      "id": "order_fulfillment",
+      "label": "Order orchestration",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API"
+    },
+    {
+      "id": "shipment_tracking",
+      "label": "Carrier milestones",
+      "kind": "SERVICE",
+      "group": "commerce",
+      "technology": "Python API"
+    },
+    {
+      "id": "billing_ledger",
+      "label": "Invoice accounting",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API"
+    },
+    {
+      "id": "payment_settlement",
+      "label": "Settlement batches",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API"
+    },
+    {
+      "id": "fraud_review",
+      "label": "Transaction review",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API"
+    },
+    {
+      "id": "merchant_registry",
+      "label": "Merchant onboarding",
+      "kind": "SERVICE",
+      "group": "finance",
+      "technology": "Python API"
+    },
+    {
+      "id": "returns_case",
+      "label": "Return authorization",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API"
+    },
+    {
+      "id": "support_case",
+      "label": "Support assignment",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API"
+    },
+    {
+      "id": "loyalty_rewards",
+      "label": "Reward accrual",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API"
+    },
+    {
+      "id": "marketing_campaign",
+      "label": "Campaign planning",
+      "kind": "SERVICE",
+      "group": "engagement",
+      "technology": "Python API"
+    },
+    {
+      "id": "analytics_rollup",
+      "label": "Aggregate reporting",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API"
+    },
+    {
+      "id": "search_index",
+      "label": "Product search",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API"
+    },
+    {
+      "id": "document_archive",
+      "label": "Document lifecycle",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API"
+    },
+    {
+      "id": "partner_webhook",
+      "label": "Partner callbacks",
+      "kind": "SERVICE",
+      "group": "data",
+      "technology": "Python API"
+    },
+    {
+      "id": "profile_db",
+      "label": "Customer data",
+      "kind": "DATABASE",
+      "group": "edge",
+      "technology": "SQL"
+    },
+    {
+      "id": "kafka",
+      "label": "Event broker",
+      "kind": "MESSAGE_QUEUE",
+      "group": "messaging",
+      "technology": "Kafka"
+    },
+    {
+      "id": "external_sms",
+      "label": "External message provider",
+      "kind": "EXTERNAL_SERVICE",
+      "group": "messaging",
+      "technology": "HTTP API"
+    },
+    {
+      "id": "business_db",
+      "label": "Business records",
+      "kind": "DATABASE",
+      "group": "commerce",
+      "technology": "SQL"
+    }
+  ],
+  "edges": [
+    {
+      "from": "edge_gateway",
+      "to": "customer_profile",
+      "label": "contact update",
+      "mode": "sync"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "identity_access",
+      "label": "session validation",
+      "mode": "sync"
+    },
+    {
+      "from": "customer_profile",
+      "to": "consent_registry",
+      "label": "contact purpose",
+      "mode": "sync"
+    },
+    {
+      "from": "customer_profile",
+      "to": "profile_db",
+      "label": "contact storage",
+      "mode": "sync"
+    },
+    {
+      "from": "customer_profile",
+      "to": "contact_events",
+      "label": "contact.changed",
+      "mode": "async"
+    },
+    {
+      "from": "contact_events",
+      "to": "kafka",
+      "label": "delivery.requested",
+      "mode": "async"
+    },
+    {
+      "from": "kafka",
+      "to": "notification_dispatch",
+      "label": "delivery.requested",
+      "mode": "async"
+    },
+    {
+      "from": "notification_dispatch",
+      "to": "sms_gateway",
+      "label": "sms.requested",
+      "mode": "async"
+    },
+    {
+      "from": "sms_gateway",
+      "to": "external_sms",
+      "label": "message delivery",
+      "mode": "sync"
+    },
+    {
+      "from": "sms_gateway",
+      "to": "audit_archive",
+      "label": "delivery.completed",
+      "mode": "async"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "product_catalog",
+      "label": "product browse",
+      "mode": "sync"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "order_fulfillment",
+      "label": "order request",
+      "mode": "sync"
+    },
+    {
+      "from": "product_catalog",
+      "to": "search_index",
+      "label": "product.published",
+      "mode": "async"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "inventory_reservation",
+      "label": "order.accepted",
+      "mode": "async"
+    },
+    {
+      "from": "inventory_reservation",
+      "to": "shipment_tracking",
+      "label": "inventory.reserved",
+      "mode": "async"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "billing_ledger",
+      "label": "order.accepted",
+      "mode": "async"
+    },
+    {
+      "from": "billing_ledger",
+      "to": "payment_settlement",
+      "label": "invoice.posted",
+      "mode": "async"
+    },
+    {
+      "from": "payment_settlement",
+      "to": "fraud_review",
+      "label": "payment.settled",
+      "mode": "async"
+    },
+    {
+      "from": "payment_settlement",
+      "to": "analytics_rollup",
+      "label": "payment.settled",
+      "mode": "async"
+    },
+    {
+      "from": "shipment_tracking",
+      "to": "loyalty_rewards",
+      "label": "shipment.delivered",
+      "mode": "async"
+    },
+    {
+      "from": "loyalty_rewards",
+      "to": "analytics_rollup",
+      "label": "reward.accrued",
+      "mode": "async"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "business_db",
+      "label": "order persistence",
+      "mode": "sync"
+    },
+    {
+      "from": "support_case",
+      "to": "returns_case",
+      "label": "return authorization",
+      "mode": "sync"
+    },
+    {
+      "from": "marketing_campaign",
+      "to": "consent_registry",
+      "label": "audience permission",
+      "mode": "sync"
+    },
+    {
+      "from": "merchant_registry",
+      "to": "document_archive",
+      "label": "onboarding records",
+      "mode": "sync"
+    },
+    {
+      "from": "partner_webhook",
+      "to": "shipment_tracking",
+      "label": "carrier status",
+      "mode": "sync"
+    }
+  ],
+  "notes": [
+    "Logical async edges may pass through the shared broker.",
+    "This diagram is not a security verdict or an exhaustive job inventory."
+  ]
+}

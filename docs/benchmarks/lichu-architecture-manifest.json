@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "kind": "manually_source_derived_diagram",
+  "repository_name": "Lichu",
+  "commit": "95345dbd8ba45fe77ea8cd926c84e40e4d16f83a",
+  "diagram": "lichu-architecture.png",
+  "diagram_source": "lichu-architecture.svg",
+  "svg_sha256": "c04df292a01a9209ef17712a510e00acef726b6c73c8d9db27eb8fbd8f9399c7",
+  "components": [
+    {
+      "id": "browser",
+      "title": "Vue browser application",
+      "paths": [
+        "frontend/src/api/client.ts",
+        "frontend/src/stores/auth.ts",
+        "frontend/src/views/AuthView.vue"
+      ],
+      "role": "Employee signup / login / license requests"
+    },
+    {
+      "id": "api",
+      "title": "FastAPI entry / validation",
+      "paths": [
+        "backend/app/main.py",
+        "backend/app/api/routes.py",
+        "backend/app/schemas/dto.py"
+      ],
+      "role": "JSON requests and responses"
+    },
+    {
+      "id": "auth",
+      "title": "Identity / role boundary",
+      "paths": [
+        "backend/app/api/deps.py",
+        "backend/app/core/security.py",
+        "backend/app/core/config.py"
+      ],
+      "role": "Bearer identity + employee / master role"
+    },
+    {
+      "id": "lab",
+      "title": "Conditional signup lab module",
+      "paths": [
+        "backend/app/core/csi_signup.py"
+      ],
+      "role": "Called when CSI_LAB_MODE is enabled"
+    },
+    {
+      "id": "service",
+      "title": "Application services",
+      "paths": [
+        "backend/app/services/hub.py"
+      ],
+      "role": "Signup, login, profile, request decision, assignment, dashboard"
+    },
+    {
+      "id": "repo",
+      "title": "SQLAlchemy repositories",
+      "paths": [
+        "backend/app/repositories/hub.py"
+      ],
+      "role": "Queries / counts / row locks"
+    },
+    {
+      "id": "db",
+      "title": "Models / DB session",
+      "paths": [
+        "backend/app/models/entities.py",
+        "backend/app/db/session.py"
+      ],
+      "role": "Users, contact, license, request, assignment, lab profile"
+    }
+  ],
+  "reviewed_source_files": [
+    {
+      "path": "backend/app/api/deps.py",
+      "sha256": "073e3b5e66904cad325388827edd1584d927ea91b0078b23cb1390363d9e3006",
+      "bytes": 1407
+    },
+    {
+      "path": "backend/app/api/routes.py",
+      "sha256": "9d8b2aadcff7ce1ab0227fe73c3b668f33d05f0776db12f6f20a196ec8260716",
+      "bytes": 7303
+    },
+    {
+      "path": "backend/app/core/config.py",
+      "sha256": "04e887daee71d48e05f975abf335fc13de42770354fb166620bb722485ed0c5f",
+      "bytes": 626
+    },
+    {
+      "path": "backend/app/core/csi_signup.py",
+      "sha256": "05fe8ed573c0786f6638401b3ab9f44a5315610a0f601469f33288fb4f67371d",
+      "bytes": 1580
+    },
+    {
+      "path": "backend/app/core/security.py",
+      "sha256": "e5fed62ae234a117097303703b130783417f958b905e87443754ecf2fccda5c8",
+      "bytes": 812
+    },
+    {
+      "path": "backend/app/db/session.py",
+      "sha256": "414538133a0fa9bcf1f9cb9452a7e29ae4084352597b439644fde2f11674c30d",
+      "bytes": 436
+    },
+    {
+      "path": "backend/app/main.py",
+      "sha256": "e18f2491ca0dcc578c9d80e2679c8a483496425f6caa8bc641423d1914ff02ad",
+      "bytes": 2724
+    },
+    {
+      "path": "backend/app/models/entities.py",
+      "sha256": "7b4c75c6b547c229becb91ea2cd90cdfb71f9e8426de7291404732c3737a72b2",
+      "bytes": 5500
+    },
+    {
+      "path": "backend/app/repositories/hub.py",
+      "sha256": "8b28092a480a95c6065c91a0a852b98fdddf39868eb93543c151af9d7fda495b",
+      "bytes": 1460
+    },
+    {
+      "path": "backend/app/schemas/dto.py",
+      "sha256": "bf2d49c21652855ec2d57673a4e0d1f258a30ea11b3c57eefbf22a2a21ff20a7",
+      "bytes": 6738
+    },
+    {
+      "path": "backend/app/services/hub.py",
+      "sha256": "e1e624d9e818bc3d4872123438c38867dc1de2413d6e95249981ee8a22851dc4",
+      "bytes": 9490
+    },
+    {
+      "path": "frontend/src/api/client.ts",
+      "sha256": "7031ae8a8c1aa7981c8c194e3efcc6252f8bf62e17bc5330b831ef158239d945",
+      "bytes": 929
+    },
+    {
+      "path": "frontend/src/stores/auth.ts",
+      "sha256": "8bddac48eadda9e29ac30f4fd254fe97c8b17d12164543f3495327cd7ffb7156",
+      "bytes": 676
+    },
+    {
+      "path": "frontend/src/views/AuthView.vue",
+      "sha256": "583aa023e26df2be6fe6146c333fd5877dc8ca779a91b54bf65c45187ac98f30",
+      "bytes": 8866
+    }
+  ],
+  "limitations": [
+    "Source-derived path labels favor retrieval compared with unlabeled diagrams.",
+    "Manually summarized source; not the user-attached workflow image and not an original architecture document.",
+    "Omitted migrations, tests, deployment details and external-service configuration.",
+    "Does not encode or establish security findings; analyze actual source to validate."
+  ]
+}

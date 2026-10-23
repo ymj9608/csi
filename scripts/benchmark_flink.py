@@ -1,0 +1,248 @@
+"""Reproducible, isolated public Flink mutation benchmark; never builds/runs Flink.
+
+prepare creates synthetic overlays and evaluator-only labels; scan calls the unchanged
+CSI scanner. No network calls are made by this file. See benchmark_flink_models.py.
+"""
+import argparse
+import difflib
+import hashlib
+import json
+import os
+import platform
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
+from scan import scan, snapshot
+
+PIN = '8d01380ff5bf9892462ef9808b1b56fd9723f54d'
+WORK = ROOT / '.runtime/flink-benchmark'
+UPSTREAM = WORK / 'upstream'
+OUT = ROOT / os.environ.get('CSI_FLINK_BENCHMARK_OUTPUT', 'docs/benchmarks/flink')
+RUNTIME = 'flink-runtime/src/main/java/org/apache/flink/runtime/'
+S3 = 'flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/'
+SSL = RUNTIME + 'net/SSLUtils.java'
+TOKENS = RUNTIME + 'security/token/DelegationTokenReceiverRepository.java'
+PROVIDER = S3 + 'AbstractS3DelegationTokenProvider.java'
+RECEIVER = S3 + 'AbstractS3DelegationTokenReceiver.java'
+TARGETS = [SSL, TOKENS, PROVIDER, RECEIVER]
+CORPUS = sorted(TARGETS + [RUNTIME + 'security/token/' + f + '.java' for f in
+    ['DelegationTokenContainer', 'NoOpDelegationTokenManager', 'DefaultDelegationTokenManagerFactory']]
+    + [S3 + 'DynamicTemporaryAWSCredentialsProvider.java'])
+SKIP = {'.git', 'node_modules', 'target', 'fixtures', '.venv', 'venv', '.scanner-venv', '.runtime', '__pycache__', 'dist'}
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
+
+
+def emit(value, name='measurements.jsonl'):
+    with (OUT / name).open('a') as f:
+        f.write(json.dumps(value, ensure_ascii=False) + '\n')
+    print(json.dumps({k: v for k, v in value.items() if k not in {'findings', 'selectedPaths'}}, ensure_ascii=False), flush=True)
+
+
+def source(path, variant):
+    overlay = WORK / variant / path
+    return overlay.read_bytes() if variant != 'original' and overlay.exists() else (UPSTREAM / path).read_bytes()
+
+
+def prepare():
+    if (OUT / 'protocol.json').exists():
+        raise SystemExit('Protocol exists; preserve the recorded experiment.')
+    commit = subprocess.check_output(['git', '-C', str(UPSTREAM), 'rev-parse', 'HEAD'], text=True).strip()
+    assert commit == PIN, 'Wrong upstream revision'
+    assert not subprocess.check_output(['git', '-C', str(UPSTREAM), 'status', '--porcelain'])
+    started = time.perf_counter()
+    inventory = []
+    for p in sorted(UPSTREAM.rglob('*')):
+        rel = p.relative_to(UPSTREAM)
+        if p.is_file() and p.suffix in {'.java', '.py'} and not set(rel.parts) & SKIP:
+            assert not p.is_symlink()
+            data = p.read_bytes()
+            inventory.append({'path': str(rel), 'bytes': len(data), 'sha256': digest(data)})
+    cases = []
+    patches = []
+    texts = {p: source(p, 'original').decode() for p in TARGETS}
+    def replace(path, old, new):
+        assert texts[path].count(old) == 1, (path, old)
+        texts[path] = texts[path].replace(old, new)
+    replace(TOKENS, '        DelegationTokenContainer container =',
+        '        String accessToken = java.util.Base64.getEncoder().encodeToString(containerBytes);\n'
+        '        LOG.info("Delegation payload: {}", accessToken);\n'
+        '        LOG.info("Delegation payload byte count: {}", containerBytes.length);\n'
+        '        DelegationTokenContainer container =')
+    replace(RECEIVER, '        LOG.info(\n                "Session credentials updated successfully',
+        '        String accessToken = credentials.getSessionToken();\n'
+        '        LOG.info("Session credential: {}", accessToken);\n'
+        '        LOG.info("Session credential refresh complete");\n'
+        '        LOG.info(\n                "Session credentials updated successfully')
+    replace(PROVIDER, '+ GlobalConfiguration.HIDDEN_CONTENT', '+ secretKey')
+    replace(SSL, 'public class SSLUtils {', 'public class SSLUtils {\n'
+        '    private static final org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(SSLUtils.class);')
+    replace(SSL, '        String certPassword =',
+        '        {\n            String password = keystorePassword;\n'
+        '            LOG.info("Keystore password: {}", password);\n        }\n'
+        '        {\n            String password = "[REDACTED]";\n'
+        '            LOG.info("Keystore diagnostic: {}", password);\n        }\n'
+        '        String certPassword =')
+    replace(SSL, 'config.get(SecurityOptions.SSL_REST_VERIFY_HOSTNAME) ? "HTTPS" : null', 'null')
+    definitions = [
+        ('V1', TOKENS, 'LOG.info("Delegation payload: {}", accessToken);', True, 'Delegation token bytes encoded to Base64 then logged', 'SEC-05'),
+        ('V2', RECEIVER, 'LOG.info("Session credential: {}", accessToken);', True, 'AWS session token logged', 'SEC-05'),
+        ('V3', PROVIDER, '+ secretKey', True, 'AWS secret key replaces upstream redaction', 'SEC-05'),
+        ('V4', SSL, 'sslContextBuilder.endpointIdentificationAlgorithm(', True, 'REST hostname verification unconditionally disabled', None),
+        ('V5', SSL, 'LOG.info("Keystore password: {}", password);', True, 'Keystore password logged', 'SEC-05'),
+        ('N1', TOKENS, 'LOG.info("Delegation payload byte count: {}", containerBytes.length);', False, 'Only byte count logged', None),
+        ('N2', RECEIVER, 'LOG.info("Session credential refresh complete");', False, 'Only event name logged', None),
+        ('N3', SSL, 'LOG.info("Keystore diagnostic: {}", password);', False, 'Variable named password holds a constant redaction marker', None),
+    ]
+    for identifier, path, needle, positive, reason, rule in definitions:
+        lines = texts[path].splitlines()
+        matches = [i + 1 for i, line in enumerate(lines) if needle in line]
+        assert len(matches) == 1
+        cases.append({'id': identifier, 'path': path, 'startLine': matches[0],
+                      'endLine': matches[0] + (1 if identifier == 'V4' else 0),
+                      'positive': positive, 'reason': reason, 'expectedRule': rule})
+    for path, text in texts.items():
+        original = source(path, 'original').decode()
+        dest = WORK / 'mutated' / path
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(text)
+        # Remediation is an explicit reversal of this experiment, not an AI patch.
+        dest = WORK / 'remediated' / path
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(original)
+        patches.extend(difflib.unified_diff(original.splitlines(True), text.splitlines(True),
+                                           fromfile='a/' + path, tofile='b/' + path))
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / 'synthetic-mutations.patch').write_text(''.join(patches))
+    (OUT / 'remediation.patch').write_text(''.join(
+        line for p in TARGETS for line in difflib.unified_diff(texts[p].splitlines(True),
+        source(p, 'original').decode().splitlines(True), fromfile='a/' + p, tofile='b/' + p)))
+    for original, name in [('docs/static/fig/processes.svg', 'architecture.svg'),
+                           ('LICENSE', 'APACHE-LICENSE'), ('NOTICE', 'APACHE-NOTICE')]:
+        shutil.copyfile(UPSTREAM / original, OUT / name)
+    write(OUT / 'source-inventory.json', inventory)
+    write(OUT / 'ground-truth.json', cases)
+    write(OUT / 'protocol.json', {
+        'repository': 'https://github.com/apache/flink', 'commit': PIN,
+        'createdAt': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+        'architectureSource': f'https://github.com/apache/flink/blob/{PIN}/docs/static/fig/processes.svg',
+        'architectureSha256': digest((OUT / 'architecture.svg').read_bytes()),
+        'sourceFiles': len(inventory), 'sourceBytes': sum(f['bytes'] for f in inventory),
+        'inventoryWallMs': round((time.perf_counter() - started) * 1000, 3),
+        'scannerSha256': digest((ROOT / 'scripts/scan.py').read_bytes()),
+        'rulesSha256': {n: digest((ROOT / 'rules' / n).read_bytes()) for n in ['java-security.yml', 'python-security.yml']},
+        'runnerSha256': digest(Path(__file__).read_bytes()), 'platform': platform.platform(),
+        'changedPaths': TARGETS, 'modelCorpusPaths': CORPUS,
+        'variants': ['original', 'mutated', 'remediated'],
+        'staticArms': ['native_whole_repository', 'batched_whole_repository', 'runtime_security_scope', 'runtime_scope_plus_changed'],
+        'modelArms': ['architecture_route', 'broad_code', 'vision_selected_code', 'remediated_code'],
+        'modelInputPolicy': 'Only public Flink files and synthetic modifications. Labels and private CSI policies never enter prompts.',
+        'limitations': ['Synthetic mutations are NOT upstream vulnerabilities.',
+            'No Flink build, cluster execution, exploit, legal compliance verdict or production backend integration.',
+            'Whole scanner includes tests; model corpus is eight selected production files, not the whole repository.',
+            'Architecture mapping uses filenames plus diagram, so selection benefit cannot be attributed solely to vision.',
+            'Existing production coding profile is Lichu-only. Remediation restores upstream bytes; it is not an AI-generated fix.',
+            'Model trials are one sample per arm; no significance or general accuracy claim.']})
+    print('Prepared pinned source, evaluator labels and isolated overlays.', flush=True)
+
+
+def evaluate(findings, cases):
+    matched = {c['id'] for c in cases if any(f['filePath'] == c['path'] and
+        f['startLine'] <= c['endLine'] and f['endLine'] >= c['startLine'] for f in findings)}
+    positives = {c['id'] for c in cases if c['positive']}
+    negatives = {c['id'] for c in cases if not c['positive']}
+    tp, fp = len(matched & positives), len(matched & negatives)
+    return {'truePositiveIds': sorted(matched & positives), 'falseNegativeIds': sorted(positives - matched),
+            'falsePositiveIds': sorted(matched & negatives), 'truePositive': tp,
+            'falseNegative': len(positives) - tp, 'falsePositive': fp,
+            'trueNegative': len(negatives) - fp, 'recall': tp / len(positives),
+            'labeledPrecision': tp / (tp + fp) if tp + fp else None}
+
+
+def configure_scanner():
+    import certifi
+    os.environ.update(SEMGREP_BIN=str(ROOT / '.scanner-venv/bin/semgrep'),
+        SSL_CERT_FILE=certifi.where(), SEMGREP_LOG_FILE=str(WORK / 'semgrep.log'),
+        SEMGREP_SETTINGS_FILE=str(WORK / 'semgrep-settings.yml'))
+
+
+def scan_paths(paths, variant):
+    findings, batches, total = [], [], 0
+    current = []
+    for path in paths:
+        n = len(source(path, variant))
+        if current and total + n > 12_000_000:
+            batches.append(current); current = []; total = 0
+        current.append(path); total += n
+    if current:
+        batches.append(current)
+    for i, batch in enumerate(batches):
+        with tempfile.TemporaryDirectory(prefix='csi-flink-') as temp:
+            for path in batch:
+                target = Path(temp) / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(source(path, variant))
+            findings.extend(scan(temp))
+        print(f'{variant}: batch {i+1}/{len(batches)}, {len(batch)} files', flush=True)
+    return findings, len(batches)
+
+
+def run_scans():
+    configure_scanner()
+    if (OUT / 'measurements.jsonl').exists():
+        raise SystemExit('Measurements exist; do not overwrite.')
+    inventory = json.loads((OUT / 'source-inventory.json').read_text())
+    cases = json.loads((OUT / 'ground-truth.json').read_text())
+    all_paths = [f['path'] for f in inventory]
+    t = time.perf_counter()
+    try:
+        # Reproduce the production entry limit; do not silently remove it.
+        with tempfile.TemporaryDirectory() as tmp:
+            snapshot(UPSTREAM, Path(tmp))
+        error = None
+    except (ValueError, OSError) as e:
+        error = str(e)
+    emit({'event': 'native_preflight', 'arm': 'native_whole_repository',
+          'complete': error is None, 'error': error, 'wallMs': (time.perf_counter()-t)*1000})
+    runtime = [p for p in all_paths if p.startswith((RUNTIME + 'security/', RUNTIME + 'net/'))]
+    arms = {'batched_whole_repository': all_paths,
+            'runtime_security_scope': runtime,
+            'runtime_scope_plus_changed': sorted(set(runtime) | set(TARGETS))}
+    for variant in ['original', 'mutated', 'remediated']:
+        for arm, paths in arms.items():
+            t = time.perf_counter()
+            try:
+                findings, batch_count = scan_paths(paths, variant)
+                write(OUT / f'{variant}-{arm}-findings.json', findings)
+                counts = Counter(f['ruleId'] for f in findings)
+                emit({'event': 'scan', 'variant': variant, 'arm': arm, 'repeat': 1,
+                    'complete': True, 'wallMs': round((time.perf_counter()-t)*1000, 3),
+                    'files': len(paths), 'bytes': sum(len(source(p, variant)) for p in paths),
+                    'batches': batch_count, 'findingCount': len(findings), 'ruleCounts': dict(counts),
+                    'quality': evaluate(findings, cases) if variant == 'mutated' else None,
+                    'modelTokens': 0, 'apiCostUsd': 0})
+            except Exception as e:
+                emit({'event': 'scan', 'variant': variant, 'arm': arm, 'complete': False,
+                      'error': type(e).__name__ + ': ' + str(e), 'wallMs': (time.perf_counter()-t)*1000})
+    emit({'event': 'finished'})
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action', choices=['prepare', 'scan'])
+    args = parser.parse_args()
+    prepare() if args.action == 'prepare' else run_scans()

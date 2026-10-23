@@ -1,0 +1,25 @@
+{
+  "localModelDigests": {
+    "qwen3-vl:8b": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+    "ministral-3:8b-instruct-2512-q4_K_M": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+    "qwen2.5-coder:7b-instruct-q4_K_M": "dae161e27b0e90dd1856c8bb3209201fd6736d8eb66298e75ed87571486f4364",
+    "qwen2.5:0.5b": "a8b0c51577010a279d933d14c2a8ab4b268079d44c5c8830c0a93900f1827c67",
+    "qwen3:4b-instruct-2507-q4_K_M": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "qwen3:8b-q4_K_M": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "qwen3:4b-q4_K_M": "2bfd38a7daaf4b1037efe517ccb73d1a3bbd4822cf89f1a82be1569050a114e0",
+    "qwen3:1.7b-q4_K_M": "8f68893c685c3ddff2aa3fffce2aa60a30bb2da65ca488b61fff134a4d1730e7",
+    "qwen3:0.6b-q8_0": "f6358994266d548dc070c564d49588fa3a6fac0cccd196bef38128aaa6ed22f3",
+    "qwen3.5:2b-q4_K_M": "124a03c347777e8e4e5955c33610ae01d9d90d8c2a718bfba069c498d5c7f3c9",
+    "qwen3.5:0.8b-q8_0": "f3817196d142eaf72ce79dfebe53dcb20bd21da87ce13e138a8f8e10a866b3a4",
+    "qwen3.5:9b-q4_K_M": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "qwen3.5:4b-q4_K_M": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+    "qwen3:8b": "500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41",
+    "qwen3.5:4b": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
+  },
+  "codingModelDigest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "ollamaVersion": "0.32.1",
+  "validationImageId": "sha256:1a352420f7aba21f5ad08df31bab55f74c013fb491f1ae8ab1dd7ff9ed698584",
+  "modelWarmup": "Model load included. If this is an amended run, see amendment provenance for preceding compatibility calls."
+}

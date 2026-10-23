@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "channel": "r3",
+      "status": "CONFIRMED",
+      "path": "recovery.py/emit",
+      "evidence": "The `relay.emit()` function in recovery.py publishes the original event (including phone) to channel 'r3' without modification. This violates the requirement to omit the phone while preserving delivery, id, and kind for external messages. The deployment context confirms this as an external exposure since it is not part of internal SMS/replay flows or analytics (r2)."
+    },
+    {
+      "channel": "r1",
+      "status": "POTENTIAL",
+      "path": "",
+      "evidence": "The `notification.send()` function in notification.py publishes to channel 'r1' but lacks explicit evidence of external exposure. The deployment context does not confirm whether 'r1' is internal or external, so this remains unconfirmed."
+    }
+  ],
+  "path": "recovery.py",
+  "function": "emit",
+  "functionCode": "def emit(event):\n    event_copy = deepcopy(event)\n    del event_copy['phone']\n    publish('r3', event_copy)"
+}

@@ -1,0 +1,26 @@
+{
+  "name": "1-full_code-3-inspect",
+  "provider": "ollama",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T05:12:48Z",
+  "inputSha256": "d8be0d95100fd2a562352bc6dc0e1eb5b676adc9e43fa06f6699be3efcea5e69",
+  "inputTokens": 11442,
+  "outputTokens": 140,
+  "httpStatus": 200,
+  "loadNs": 537809917,
+  "prefillNs": 59734151000,
+  "generationNs": 17587517000,
+  "returnedModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "answerText": "{\n  \"notes\": \"**Constraints for Repairing Credential/Token/Password Disclosure and REST Hostname Verification Regressions**\",\n\n  \"readPaths\": [\n    \"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\n    \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\n    \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java\"\n  ] }",
+  "answer": {
+    "notes": "**Constraints for Repairing Credential/Token/Password Disclosure and REST Hostname Verification Regressions**",
+    "readPaths": [
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java"
+    ]
+  },
+  "wallMs": 81533.946,
+  "finishedAtUtc": "2026-10-23T05:14:09Z"
+}

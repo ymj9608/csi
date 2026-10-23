@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:23:24.284559Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n    \"findings\": [\n        {\n            \"filePath\": \"services/order_fulfillment/service.py\",\n            \"line\": 13,\n            \"evidence\": \"\\\"order accepted id=%s\\\"\",\n            \"category\": \"sensitive_logging\",\n            \"reason\": \"Raw order record ID logged in plaintext without redaction or masking. The `record_id` is a sensitive identifier that may\",\n            \"support\": [\n                {\n                    \"filePath\": \"services/order_fulfillment/models.py\",\n                    \"line\": 7,\n                    \"evidence\": \"\\\"record_id: str\\\"\"\n                }\n            ]\n        },\n        {\n            \"filePath\": \"services/product_catalog/api.py\",\n            \"line\": 1,\n            \"evidence\": \"None (no evidence of contact data handling in provided source)\",\n            \"category\": \"plaintext_pii_export\",\n            \"reason\": \"No evidence of external HTTP transfers containing raw contact or telephone data without TLS encryption. The provided `*_\",\n            \"support\": []\n        }\n    ],\n    \"needs\": [\n        \"services/customer_profile/**/*.py\"\n    ],\n    \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 24933899042,
+  "load_duration": 109869250,
+  "prompt_eval_count": 4748,
+  "prompt_eval_duration": 11546458000,
+  "eval_count": 247,
+  "eval_duration": 12763886000
+}

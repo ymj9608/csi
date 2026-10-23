@@ -1,0 +1,256 @@
+{
+  "arms": {
+    "full_code": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 17561.079,
+      "firstUseTotalMs": 17561.079,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null,
+      "verificationExecutedTrials": 0,
+      "securityTestsPassedPerVerifiedTrial": [],
+      "functionTestsPassedPerVerifiedTrial": [],
+      "medianRequestMs": 825.891,
+      "meanRequestMs": 5853.693,
+      "outputTokens": null,
+      "selection": [
+        {
+          "files": 20,
+          "bytes": 173112,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 20,
+          "bytes": 173112,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 20,
+          "bytes": 173112,
+          "extraVisionPaths": []
+        }
+      ],
+      "failures": [
+        {
+          "repeat": 1,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 2,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 3,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        }
+      ],
+      "modelCalls": 3,
+      "stagesMs": {
+        "selectionMs": 50.33916699994734,
+        "inspectionMs": 0,
+        "patchGenerationMs": 0
+      },
+      "validationMs": 0,
+      "apiCostUsd": 0,
+      "meanInputTokens": null,
+      "modelWallMs": 17486.923
+    },
+    "code_index": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 3756.5260000000003,
+      "firstUseTotalMs": 3756.5260000000003,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null,
+      "verificationExecutedTrials": 0,
+      "securityTestsPassedPerVerifiedTrial": [],
+      "functionTestsPassedPerVerifiedTrial": [],
+      "medianRequestMs": 898.57,
+      "meanRequestMs": 1252.1753333333334,
+      "outputTokens": null,
+      "selection": [
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        }
+      ],
+      "failures": [
+        {
+          "repeat": 1,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 2,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 3,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        }
+      ],
+      "modelCalls": 3,
+      "stagesMs": {
+        "selectionMs": 73.59749999977794,
+        "inspectionMs": 0,
+        "patchGenerationMs": 0
+      },
+      "validationMs": 0,
+      "apiCostUsd": 0,
+      "meanInputTokens": null,
+      "modelWallMs": 3672.983
+    },
+    "vision_index": {
+      "scheduled": 3,
+      "recorded": 3,
+      "cohortComplete": true,
+      "accepted": 0,
+      "passRate": 0.0,
+      "inputTokens": null,
+      "requestWallMs": 2531.641,
+      "firstUseTotalMs": 11845.520209000333,
+      "acceptedRepeats": [],
+      "firstUseInputTokens": null,
+      "verificationExecutedTrials": 0,
+      "securityTestsPassedPerVerifiedTrial": [],
+      "functionTestsPassedPerVerifiedTrial": [],
+      "medianRequestMs": 703.937,
+      "meanRequestMs": 843.8803333333334,
+      "outputTokens": null,
+      "selection": [
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        },
+        {
+          "files": 9,
+          "bytes": 99354,
+          "extraVisionPaths": []
+        }
+      ],
+      "failures": [
+        {
+          "repeat": 1,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 2,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        },
+        {
+          "repeat": 3,
+          "status": "FAILED",
+          "error": "MODEL_CALL_FAILED"
+        }
+      ],
+      "modelCalls": 3,
+      "stagesMs": {
+        "selectionMs": 134.14274999922782,
+        "inspectionMs": 0,
+        "patchGenerationMs": 0
+      },
+      "validationMs": 0,
+      "apiCostUsd": 0.00636675,
+      "meanInputTokens": null,
+      "modelWallMs": 2386.608
+    }
+  },
+  "comparison": {
+    "arms": {
+      "full_code": {
+        "scheduled": 3,
+        "recorded": 3,
+        "cohortComplete": true,
+        "accepted": 0,
+        "passRate": 0.0,
+        "inputTokens": null,
+        "requestWallMs": 17561.079,
+        "firstUseTotalMs": 17561.079,
+        "acceptedRepeats": [],
+        "firstUseInputTokens": null
+      },
+      "code_index": {
+        "scheduled": 3,
+        "recorded": 3,
+        "cohortComplete": true,
+        "accepted": 0,
+        "passRate": 0.0,
+        "inputTokens": null,
+        "requestWallMs": 3756.5260000000003,
+        "firstUseTotalMs": 3756.5260000000003,
+        "acceptedRepeats": [],
+        "firstUseInputTokens": null
+      },
+      "vision_index": {
+        "scheduled": 3,
+        "recorded": 3,
+        "cohortComplete": true,
+        "accepted": 0,
+        "passRate": 0.0,
+        "inputTokens": null,
+        "requestWallMs": 2531.641,
+        "firstUseTotalMs": 11845.520209000333,
+        "acceptedRepeats": [],
+        "firstUseInputTokens": null
+      }
+    },
+    "comparisons": {
+      "full_code": {
+        "observedQualityPreserved": false,
+        "observedQualityImproved": false,
+        "firstUseTimeImproved": true,
+        "requestTokensReduced": false,
+        "conclusion": "QUALITY_GATE_FAILED",
+        "attributableToSuccessfulVisionPipeline": true
+      },
+      "code_index": {
+        "observedQualityPreserved": false,
+        "observedQualityImproved": false,
+        "firstUseTimeImproved": false,
+        "requestTokensReduced": false,
+        "conclusion": "QUALITY_GATE_FAILED",
+        "attributableToSuccessfulVisionPipeline": true
+      }
+    },
+    "statisticalNoninferiorityProven": false,
+    "visionSetupMs": 9313.879209000334,
+    "taskCount": 1,
+    "note": "Cold total includes actual image setup once; warm request totals are measured disk-cache reads + inspection + patch + validation. No quality claim before complete paired results.",
+    "visionSetupInputTokens": 1115,
+    "visionSetupOutputTokens": 1229,
+    "visionInferenceCompleted": true
+  },
+  "calibrationStatus": "READY"
+}

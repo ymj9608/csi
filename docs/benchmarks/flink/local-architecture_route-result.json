@@ -1,0 +1,27 @@
+{
+  "provider": "local",
+  "model": "qwen3-vl:8b",
+  "arm": "architecture_route",
+  "complete": false,
+  "requestTextBytes": 2457,
+  "imageBytes": 90528,
+  "messageKeys": [
+    "content",
+    "role",
+    "thinking"
+  ],
+  "structuredOutput": false,
+  "total_duration": 159045320166,
+  "load_duration": 16694056875,
+  "prompt_eval_duration": 5240991000,
+  "eval_duration": 136984359999,
+  "prompt_eval_count": 1615,
+  "eval_count": 2800,
+  "done_reason": "length",
+  "inputTokens": 1615,
+  "outputTokens": 2800,
+  "estimatedApiCostUsd": 0,
+  "answerText": "{\n  \"selectedPaths\": [\n    \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java\",\n    \"flink-filesystems/flink-s3-fs-base/src/main/java",
+  "error": "INCOMPLETE_OUTPUT",
+  "wallMs": 159171.258
+}

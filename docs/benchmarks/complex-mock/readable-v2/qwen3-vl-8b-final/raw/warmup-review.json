@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:15:49.456062Z",
+  "message": {
+    "role": "assistant",
+    "content": "Understood! How"
+  },
+  "done": true,
+  "done_reason": "length",
+  "total_duration": 4337642375,
+  "load_duration": 3039591209,
+  "prompt_eval_count": 556,
+  "prompt_eval_duration": 1159860000,
+  "eval_count": 4,
+  "eval_duration": 134519000
+}

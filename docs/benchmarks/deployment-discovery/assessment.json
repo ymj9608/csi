@@ -1,0 +1,51 @@
+{
+  "evaluationMethod": "Manual evidence review of saved model answers against frozen source and deployment ground truth; no LLM judge.",
+  "scoringRules": {
+    "supportedDetection": "Correct r3 data flow PLUS supplied external-recipient evidence; guessing an absent deployment fact is not supported confirmation.",
+    "falsePositive": "Confirmed phone exposure on r1 or r2; r1 is internal-required and r2 excludes phone in source.",
+    "patch": "Separate from diagnostic localization. Empty fields mean no patch. correctFile/correctFunction in comparison.json refer to the proposed edit only."
+  },
+  "facts": {
+    "realRisk": "app.signup -> recovery.retain -> relay.emit -> broker r3 -> external support vendor receives raw phone",
+    "safeMetrics": "analytics.emit publishes only {'id': event['id'], 'kind': event['kind']} on r2",
+    "noCodeOnlyDeploymentEvidence": true
+  },
+  "arms": [
+    {
+      "arm": "code_only",
+      "r3Mentioned": true,
+      "supportedConfirmation": false,
+      "incorrectEvidence": "Claims deployment context confirms external r3 despite deploymentContext=null",
+      "diagnosticLocalization": "Wrong: identifies emit in recovery.py; actual definition in relay.py",
+      "patch": "Rejected FUNCTION_NOT_FOUND. No candidate tests executed."
+    },
+    {
+      "arm": "architecture_text",
+      "r3Mentioned": true,
+      "supportedConfirmation": true,
+      "diagnosticLocalization": "Evidence correctly cites relay.py emit; flow string also includes a spurious recovery.py:emit",
+      "confirmedFalsePositives": 0,
+      "patch": "No patch produced; unchanged source tests 6/8."
+    },
+    {
+      "arm": "architecture_vision",
+      "r3Mentioned": true,
+      "supportedConfirmation": true,
+      "diagnosticLocalization": "Correct r3 flow and relay.py emit",
+      "confirmedFalsePositives": 1,
+      "falsePositiveChannel": "r2",
+      "patch": "No patch produced; unchanged source tests 6/8."
+    }
+  ],
+  "limits": [
+    "One fixed-seed trial per condition on seven small Python files; not a large-repository search experiment.",
+    "Additional deployment information is the manipulated variable. Text also supplies it.",
+    "Qwen output contains an additional generic validation suggestion; the image-vs-text comparison is pipeline-level, not a pure representation-only ablation.",
+    "No new-risk-over-baseline claim: code-only also mentioned r3, but without supporting deployment evidence.",
+    "No code-quality gain, time saving or general vision superiority demonstrated."
+  ],
+  "totalModelSeconds": 66.21210162499928,
+  "freshModelCalls": 4,
+  "retries": 0,
+  "replayedResponses": 0
+}

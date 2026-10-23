@@ -1,3 +1,110 @@
+/** API boundary for the upcoming architecture upload page. Images are advisory. */
+import { api, ApiError } from "./api";
+
+export type ArchitectureStatus = "QUEUED" | "RUNNING" | "READY" | "FAILED";
+export interface ArchitectureResult {
+  schemaVersion: 1;
+  imageSha256: string;
+  model: string;
+  promptVersion: string;
+  diagramType: "ARCHITECTURE" | "WORKFLOW" | "UNKNOWN";
+  components: Array<{ id: string; label: string; kind: string }>;
+  flows: Array<{ from: string; to: string; data: string; protection: string }>;
+  trustBoundaries: string[];
+  codeHints: string[];
+  assumptions: string[];
+  uncertainties: string[];
+  summary: string;
+  /** Ollama duration keys use nanoseconds; wallDurationMs uses milliseconds. */
+  metrics: Record<string, number>;
+}
+
+export interface ArchitectureVersion {
+  id: string;
+  projectId: string;
+  repository: string;
+  version: number;
+  imageSha256: string;
+  imageContentType: string;
+  imageWidth: number;
+  imageHeight: number;
+  model: string;
+  promptVersion: string;
+  sourceCommitSha: string | null;
+  status: ArchitectureStatus;
+  result: ArchitectureResult | null;
+  errorCode: string | null;
+  createdBy: string;
+  createdAt: string;
+  finishedAt: string | null;
+}
+
+export interface ProjectArchitectureContext {
+  available: boolean;
+  status: ArchitectureStatus | "NOT_PROVIDED";
+  advisoryOnly: true;
+  codeVerificationRequired: true;
+  sourceCommitMatches: boolean | null;
+  staleness: "UNKNOWN" | "MATCHED" | "COMMIT_MISMATCH";
+  architecture: ArchitectureVersion | null;
+}
+
+const path = (projectId: string) =>
+  `/projects/${encodeURIComponent(projectId)}/architectures`;
+
+export function listArchitectures(projectId: string) {
+  return api<{ items: ArchitectureVersion[]; advisoryOnly: true }>(path(projectId));
+}
+
+export function getArchitecture(projectId: string, architectureId: string) {
+  return api<ArchitectureVersion>(`${path(projectId)}/${encodeURIComponent(architectureId)}`);
+}
+
+export function getArchitectureContext(projectId: string, commitSha?: string) {
+  const query = commitSha ? `?commitSha=${encodeURIComponent(commitSha)}` : "";
+  return api<ProjectArchitectureContext>(
+    `/projects/${encodeURIComponent(projectId)}/architecture-context${query}`,
+  );
+}
+
+export function retryArchitecture(projectId: string, architectureId: string) {
+  return api<ArchitectureVersion>(
+    `${path(projectId)}/${encodeURIComponent(architectureId)}/retry`, "POST",
+  );
+}
+
+export function architectureImageUrl(projectId: string, architectureId: string) {
+  return `/api${path(projectId)}/${encodeURIComponent(architectureId)}/image`;
+}
+
+/** Browser creates the multipart boundary; never set Content-Type manually. */
+export async function uploadArchitecture(
+  projectId: string,
+  file: File,
+  sourceCommitSha?: string,
+  signal?: AbortSignal,
+): Promise<ArchitectureVersion & { reused: boolean }> {
+  if (!file.size || file.size > 5 * 1024 * 1024)
+    throw Error("아키텍처 이미지는 5 MiB 이하의 PNG 또는 JPEG 파일이어야 합니다.");
+  const { token } = await api<{ token: string }>("/auth/csrf");
+  const body = new FormData();
+  body.append("file", file);
+  if (sourceCommitSha) body.append("sourceCommitSha", sourceCommitSha);
+  const response = await fetch(`/api${path(projectId)}`, {
+    method: "POST", credentials: "same-origin", signal,
+    headers: { "X-CSRF-TOKEN": token }, body,
+  });
+  if (response.status === 401) {
+    window.dispatchEvent(new Event("session-expired"));
+    throw new ApiError("로그인이 필요합니다.", 401);
+  }
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw Error(error.message || `이미지 등록 실패 (${response.status})`);
+  }
+  return response.json();
+}
+
 // 아키텍처 이미지는 서버 업로드 없이 브라우저 IndexedDB에 프로젝트별 폴더 목록으로 보관합니다.
 const DB = "csi",
   STORE = "architecture";
@@ -124,4 +231,11 @@ export async function addFolder(project: string, name: string, files: File[]) {
   const folders = await loadFolders(project, name);
   const images = await toImages(files, now);
   await saveFolders(project, [...folders, { id: newId(), name, createdAt: now, seenAt: now, images }]);
+}
+
+/** Select a server image for new proposals; queued jobs keep their pinned version. */
+export function selectCodingArchitecture(projectId: string, architectureId: string) {
+  return api<{ architectureId: string; selected: true }>(
+    `${path(projectId)}/${encodeURIComponent(architectureId)}/select-for-coding`, "POST",
+  );
 }

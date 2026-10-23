@@ -1,0 +1,16 @@
+{
+  "repeat": 1,
+  "seed": 42,
+  "arm": "full_code",
+  "accepted": false,
+  "status": "FAILED",
+  "startedAtUtc": "2026-10-23T05:06:54Z",
+  "architectureContextUsed": false,
+  "selectionFallback": null,
+  "selectionMs": 9.366917000079411,
+  "error": "MODEL_CALL_FAILED",
+  "modelCalls": 1,
+  "wallMs": 16036.475,
+  "inputTokens": null,
+  "outputTokens": null
+}

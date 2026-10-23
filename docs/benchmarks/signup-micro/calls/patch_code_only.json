@@ -1,0 +1,32 @@
+{
+  "name": "patch_code_only",
+  "provider": "openai",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T06:15:21Z",
+  "inputSha256": "3d70cd92ccb53466fe662fa4dd51effef77c6cd95924a51bc3f0d6255bc0d35a",
+  "inputTokens": 440,
+  "outputTokens": 636,
+  "httpStatus": 200,
+  "usage": {
+    "input_tokens": 440,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 636,
+    "output_tokens_details": {
+      "reasoning_tokens": 109
+    },
+    "total_tokens": 1076
+  },
+  "returnedModel": "gpt-5.4-mini-2026-03-17",
+  "answerText": "{\"app\":\"import sqlite3\\nfrom audit import emit\\n\\n\\ndef _ensure_users_schema(conn):\\n    conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)')\\n    cols = {row[1] for row in conn.execute('PRAGMA table_info(users)')}\\n    if 'phone' not in cols:\\n        conn.execute('ALTER TABLE users ADD COLUMN phone TEXT')\\n\\n\\ndef init(conn):\\n    _ensure_users_schema(conn)\\n\\n\\ndef _validate_phone(phone):\\n    if phone is None:\\n        return None\\n    if not isinstance(phone, str):\\n        raise ValueError('invalid phone')\\n    if len(phone) != 11 or not phone.startswith('010'):\\n        raise ValueError('invalid phone')\\n    if not phone.isascii() or not phone[3:].isdigit():\\n        raise ValueError('invalid phone')\\n    return phone\\n\\n\\ndef signup(conn, payload):\\n    name = payload['name']\\n    phone = _validate_phone(payload.get('phone'))\\n\\n    if phone is None:\\n        cur = conn.execute('INSERT INTO users(name) VALUES (?)', (name,))\\n    else:\\n        cur = conn.execute('INSERT INTO users(name, phone) VALUES (?, ?)', (name, phone))\\n\\n    emit({'event': 'signup', 'user_id': cur.lastrowid})\\n    return {'id': cur.lastrowid}\\n\\n\\ndef profile(conn, actor_id, user_id):\\n    if actor_id != user_id:\\n        raise PermissionError('forbidden')\\n    row = conn.execute('SELECT id, name, phone FROM users WHERE id=?', (user_id,)).fetchone()\\n    return {'id': row[0], 'name': row[1], 'phone': row[2]}\\n\",\"audit\":\"# Simulates a third-party telemetry sink outside the member service.\\nEVENTS = []\\n\\ndef emit(event):\\n    EVENTS.append(dict(event))\\n\",\"reason\":\"Added optional phone support with strict ASCII 010+8 digit validation before any insert or telemetry emission, preserved parameterized SQL and owner-only access, kept name handling unchanged, and made schema initialization idempotent by conditionally adding the phone column only when absent. The profile now returns phone only to the authorized owner.\"}",
+  "answer": {
+    "app": "import sqlite3\nfrom audit import emit\n\n\ndef _ensure_users_schema(conn):\n    conn.execute('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT NOT NULL)')\n    cols = {row[1] for row in conn.execute('PRAGMA table_info(users)')}\n    if 'phone' not in cols:\n        conn.execute('ALTER TABLE users ADD COLUMN phone TEXT')\n\n\ndef init(conn):\n    _ensure_users_schema(conn)\n\n\ndef _validate_phone(phone):\n    if phone is None:\n        return None\n    if not isinstance(phone, str):\n        raise ValueError('invalid phone')\n    if len(phone) != 11 or not phone.startswith('010'):\n        raise ValueError('invalid phone')\n    if not phone.isascii() or not phone[3:].isdigit():\n        raise ValueError('invalid phone')\n    return phone\n\n\ndef signup(conn, payload):\n    name = payload['name']\n    phone = _validate_phone(payload.get('phone'))\n\n    if phone is None:\n        cur = conn.execute('INSERT INTO users(name) VALUES (?)', (name,))\n    else:\n        cur = conn.execute('INSERT INTO users(name, phone) VALUES (?, ?)', (name, phone))\n\n    emit({'event': 'signup', 'user_id': cur.lastrowid})\n    return {'id': cur.lastrowid}\n\n\ndef profile(conn, actor_id, user_id):\n    if actor_id != user_id:\n        raise PermissionError('forbidden')\n    row = conn.execute('SELECT id, name, phone FROM users WHERE id=?', (user_id,)).fetchone()\n    return {'id': row[0], 'name': row[1], 'phone': row[2]}\n",
+    "audit": "# Simulates a third-party telemetry sink outside the member service.\nEVENTS = []\n\ndef emit(event):\n    EVENTS.append(dict(event))\n",
+    "reason": "Added optional phone support with strict ASCII 010+8 digit validation before any insert or telemetry emission, preserved parameterized SQL and owner-only access, kept name handling unchanged, and made schema initialization idempotent by conditionally adding the phone column only when absent. The profile now returns phone only to the authorized owner."
+  },
+  "wallMs": 4133.313,
+  "finishedAtUtc": "2026-10-23T06:15:25Z"
+}

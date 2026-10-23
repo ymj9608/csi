@@ -1,0 +1,12 @@
+{
+  "prompt": "Read the diagram. In at most 100 words name the normal and failure paths and which receiver is external. Give a short coding-agent inspection instruction using the shown filenames. Do not invent code or vulnerabilities.",
+  "imageSha256": "9e07ad162e00f2ddc397d4f1126c527d3fad0e4059772b50d6bb02129bf00d37",
+  "model": "qwen3-vl:8b",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "think": true
+}

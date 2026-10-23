@@ -112,7 +112,7 @@ DLQ/DLT 토픽은 존재하지만 전용 관리 화면·자동 재전송·소비
 
 ## Sandbox와 데이터 출처
 
-[`frontend/compose.yml`](../frontend/compose.yml)의 `scanner`는 tools profile로 실행합니다. `/target:ro`, `network_mode: none`, 읽기 전용 루트 파일시스템, 비루트 UID 65532, capability 제거, no-new-privileges, CPU·메모리·PID 제한을 적용합니다. 실행되는 것은 승인된 Semgrep/AST 분석기이며 대상 앱·Maven·Gradle·셸 스크립트는 실행하지 않습니다. 기본 로컬 CLI와 GitHub Hosted Runner가 이 Compose 컨테이너를 자동으로 사용하지도 않습니다.
+[`compose.yml`](../compose.yml)의 `scanner`는 tools profile로 실행합니다. `/target:ro`, `network_mode: none`, 읽기 전용 루트 파일시스템, 비루트 UID 65532, capability 제거, no-new-privileges, CPU·메모리·PID 제한을 적용합니다. 실행되는 것은 승인된 Semgrep/AST 분석기이며 대상 앱·Maven·Gradle·셸 스크립트는 실행하지 않습니다. 기본 로컬 CLI와 GitHub Hosted Runner가 이 Compose 컨테이너를 자동으로 사용하지도 않습니다.
 
 RAG 데이터는 `rag/documents/`의 제공 PDF 두 개이며 `rag/catalog.json`에 PG-POL 28개, PG-REF 19개가 있습니다. Qdrant `csi-guidelines-v1`의 point 47개와 카탈로그 일치는 2026-10-19 실행 기록입니다. 참조집 안의 OWASP/NIST 관련 설명을 인용할 수는 있으나, OWASP 공식 원문 사이트를 직접 수집·색인한 corpus로 표현하면 안 됩니다. `docs/`로 옮긴 개인정보 보호법 PDF와 Capstone 자료는 이 색인 대상이 아닙니다.
 
@@ -137,7 +137,7 @@ Capstone 평가표의 **“ISO/IEC 25010 품질평가를 고려한 아키텍처 
 | QA-05 신뢰성 | 중복 전달·일시 장애에도 업무 기록이 중복되거나 실패가 성공으로 표시되지 않는다 | [KafkaPipeline](../backend/src/main/java/com/csi/KafkaPipeline.java)의 Outbox·멱등 소비·유한 재시도·stale 검사 종료, [Worker](../agent/csi_agent/app.py)의 PostgresSaver·동일 scanId 재개·DLQ | V1: 메모리 체크포인터 기반 재개/반복 시험. V3: DB checkpoint·승인/거절·중복 이벤트·Kafka 중단 기록. **부분 검증**; 프로세스 강제 종료·DB 복구·다중 Worker·DLQ 재처리 검증은 부족 |
 | QA-06 보안성 | 사용자·외부 스캐너·내부 서비스의 권한 경계를 나누고 민감정보·임의 도구 호출을 제한한다 | [Security](../backend/src/main/java/com/csi/Security.java)의 세션/CSRF/역할, Intake의 HMAC·시간창·allowlist, [MCP 토큰 검증](../mcp_servers/common.py), [Planner](../agent/csi_agent/planner.py)의 읽기 도구 allowlist와 인자 검증 | V1·V2: 마스킹·서명 변조·경로·도구 검증. V3: 익명/잘못된 토큰/CSRF 거부. **부분 검증**; 단일 조직 권한이며 침투 시험·종합 프롬프트 인젝션 평가·내부 TLS는 없음 |
 | QA-07 유지보수성 | 규칙·정책·프롬프트·업무 API를 분리해 변경 영향을 추적하고 회귀를 확인한다 | [버전 관리 프롬프트](../agent/prompts), [규칙](../rules), [DB 마이그레이션](../backend/src/main/resources/db/migration), [Python 테스트](../tests), [Java 테스트](../backend/src/test/java/com/csi) | V1·V2: Python 40개·Java 8개 통과. **부분 검증**; 테스트 수는 커버리지나 유지보수 비용을 뜻하지 않음. 변경 영향·리뷰 시간·전체 분기 커버리지 미측정 |
-| QA-08 유연성 | 배포 환경과 설정을 바꿀 수 있게 구성하되 지원 범위를 명확히 한다 | [Compose](../frontend/compose.yml)의 서비스 분리·볼륨·환경 변수와 [설정 예시](../.env.example). LLM 주소·모델은 설정으로 주입 | V3: 로컬 Compose 빌드·기동 기록. **부분 검증**; 깨끗한 Linux/macOS에서의 재현, 임의 LLM 호환, 다중 Worker 확장·고가용성은 미검증 |
+| QA-08 유연성 | 배포 환경과 설정을 바꿀 수 있게 구성하되 지원 범위를 명확히 한다 | [Compose](../compose.yml)의 서비스 분리·볼륨·환경 변수와 [설정 예시](../.env.example). LLM 주소·모델은 설정으로 주입 | V3: 로컬 Compose 빌드·기동 기록. **부분 검증**; 깨끗한 Linux/macOS에서의 재현, 임의 LLM 호환, 다중 Worker 확장·고가용성은 미검증 |
 | QA-09 안전성 | 진단 시스템의 오판이나 자동 실행이 운영 변경으로 이어지는 위험을 줄인다 | [Graph](../agent/csi_agent/graph.py)의 검토 요청·interrupt, [내부 API](../backend/src/main/java/com/csi/ApiController.java)의 승인 재검증. 추가 코딩 Worker는 격리 테스트·별도 승인·새 worktree 준비로 제한하며 운영 배포 없음 | V1: 쓰기 도구를 모델 선택에서 제외, 증거 없는 확정 방지. V3: 기존 승인 시 내부 이슈 1건·거절 시 0건. 코딩 Worker 검증은 별도 문서 참조. **제한된 위험 통제 근거**; 정식 위해 분석이나 안전성 보증을 수행한 것은 아님 |
 
 ### 검증 근거와 유효 범위
@@ -175,7 +175,7 @@ V1·V2는 문서 보완 직전 동일 코드에서 실행한 결과입니다. �
 | QA-06·09 실행 통제 | 권한 없는 세션/토큰, 변조된 보고서·도구 인자, 정책 문서 내 명령 삽입, 승인 없는 이슈 생성 요청 | 준비한 악성 사례에서 비인가 쓰기·임의 코드 실행·민감 값 노출 0건. 시험 목록 밖의 공격까지 방어한다고 일반화하지 않음 |
 | QA-07 변경 용이성 | 새 탐지 규칙 1개 추가 시 수정 파일·개발 시간·실패 테스트 기록 | Python·Java·관련 E2E 통과 및 문서/정책 매핑 갱신. 시간 지표는 기준선을 먼저 측정하고 이후 개선 판단 |
 
-시험 실행 시 commit SHA, 환경, 입력 fixture, assertion 결과, scanId/traceId, 실패 사례를 함께 보관합니다. 오래된 검증 스크립트의 bare `docker compose` 명령은 현재 파일 위치인 `frontend/compose.yml`과 루트 `.env`를 사용하도록 확인한 뒤 별도 실습 환경에서 실행해야 합니다. 장애 주입 스크립트를 일반 문서 검증으로 실행하지 않습니다.
+시험 실행 시 commit SHA, 환경, 입력 fixture, assertion 결과, scanId/traceId, 실패 사례를 함께 보관합니다. 오래된 검증 스크립트의 bare `docker compose` 명령은 현재 파일 위치인 `compose.yml`과 루트 `.env`를 사용하도록 확인한 뒤 별도 실습 환경에서 실행해야 합니다. 장애 주입 스크립트를 일반 문서 검증으로 실행하지 않습니다.
 
 ## 구현 근거와 검증
 
@@ -183,7 +183,7 @@ V1·V2는 문서 보완 직전 동일 코드에서 실행한 결과입니다. �
 |---|---|
 | `.github/workflows/csi-security-scan.yml` | CSI 저장소용 opt-in Actions 예시; 실제 대상 Lichu는 자체 workflow 사용 |
 | `scripts/scan.py`, `scan_changes.py`, `scan_repository.py`, `submit.py` | 정적 검사 / Local Demo / HMAC 전송 |
-| `frontend/compose.yml`, `rules/Dockerfile` | 선택적 격리 정적 스캐너 |
+| `compose.yml`, `rules/Dockerfile` | 선택적 격리 정적 스캐너 |
 | `backend/.../Intake.java`, `ApiController.java` | 검사 접수, 승인 결정, 같은 scan.request Outbox |
 | `backend/.../KafkaConfig.java`, `KafkaPipeline.java` | 8개 업무 토픽, DLT와 Outbox/소비/timeout 처리 |
 | `agent/csi_agent/app.py`, `graph.py` | 두 이벤트 유형 소비, DLQ, interrupt와 승인 재개 |

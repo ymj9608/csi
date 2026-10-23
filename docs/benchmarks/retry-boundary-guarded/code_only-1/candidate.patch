@@ -1,0 +1,24 @@
+--- a/notification.py
++++ b/notification.py
+@@ -2,6 +2,6 @@
+ from storage import NOTIFICATIONS
+ 
+ def notify(event, fail=False):
+-    if fail:
++    if fail or 'phone' in event.get('member', {}):
+         raise RuntimeError('notification_unavailable')
+     NOTIFICATIONS.append(deepcopy(event))
+--- a/retry.py
++++ b/retry.py
+@@ -4,7 +4,10 @@
+ from deadletter import archive
+ 
+ def schedule(event, error):
+-    RETRY.append({'event': deepcopy(event), 'error': error, 'attempts': 0})
++    if 'phone' in event.get('member', {}):
++        archive({'event': deepcopy(event), 'error': error, 'attempts': 0})
++    else:
++        RETRY.append({'event': deepcopy(event), 'error': error, 'attempts': 0})
+ 
+ def drain(fail=False):
+     while RETRY:

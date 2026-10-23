@@ -1,0 +1,128 @@
+{
+  "provider": "local",
+  "route": {
+    "provider": "local",
+    "model": "qwen3-vl:8b",
+    "arm": "architecture_route",
+    "complete": false,
+    "requestTextBytes": 2457,
+    "imageBytes": 90528,
+    "messageKeys": [
+      "content",
+      "role",
+      "thinking"
+    ],
+    "structuredOutput": false,
+    "total_duration": 159045320166,
+    "load_duration": 16694056875,
+    "prompt_eval_duration": 5240991000,
+    "eval_duration": 136984359999,
+    "prompt_eval_count": 1615,
+    "eval_count": 2800,
+    "done_reason": "length",
+    "inputTokens": 1615,
+    "outputTokens": 2800,
+    "estimatedApiCostUsd": 0,
+    "answerText": "{\n  \"selectedPaths\": [\n    \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java\",\n    \"flink-filesystems/flink-s3-fs-base/src/main/java",
+    "error": "INCOMPLETE_OUTPUT",
+    "wallMs": 159171.258
+  },
+  "reviews": [
+    {
+      "provider": "local",
+      "model": "qwen3-vl:8b",
+      "arm": "broad_code",
+      "complete": false,
+      "requestTextBytes": 55867,
+      "imageBytes": 0,
+      "requestOptions": {
+        "num_ctx": 32768,
+        "num_predict": 6000,
+        "temperature": 0,
+        "seed": 42
+      },
+      "messageKeys": [
+        "content",
+        "role",
+        "thinking"
+      ],
+      "structuredOutput": false,
+      "total_duration": 450285895708,
+      "load_duration": 153379625,
+      "prompt_eval_duration": 55684228000,
+      "eval_duration": 393968421000,
+      "prompt_eval_count": 14577,
+      "eval_count": 6000,
+      "done_reason": "length",
+      "inputTokens": 14577,
+      "outputTokens": 6000,
+      "estimatedApiCostUsd": 0,
+      "answerText": "{\n  \"findings\": [\n    {\n      \"filePath\": \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\n      \"line\": 62,\n      \"evidence\": \"LOG.debug(\\\"Access key: \\\" + accessKey);\",\n      \"reason\": \"Logs the access key (secret) at DEBUG level, which is a leak.\",\n      \"fix\": \"Do not log the access key. Instead, log only the length or a redacted version.\"\n    },\n    {\n      \"filePath\": \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\n      \"line\": 70,\n      \"evidence\": \"LOG.debug(\\\"Secret key: \\\" + secretKey + \\\" (sensitive information)\\\");\",\n      \"reason\": \"Logs the secret key (secret) at DEBUG level, which is a leak.\",\n      \"fix\": \"Do not log the secret key. Instead, log only the length or a redacted version.\"\n    },\n    {\n      \"filePath\": \"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java\",\n      \"line\": 92,\n      \"evidence\": \"LOG.info(\\\"Session credential: {}\\\", accessToken);\",\n      \"reason\": \"Logs the session token (secret) at INFO level, which is a leak.\",\n      \"fix\": \"Do not log the session token. Instead, log only the length or a redacted version.\"\n    },\n    {\n      \"filePath\": \"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\n      \"line\": 293,\n      \"evidence\": \"LOG.info(\\\"Keystore password: {}\\\", password);\",\n      \"reason\": \"Logs the keystore password (secret) at INFO level, which is a leak.\",\n      \"fix\": \"Do not log the keystore password. Instead, log only the length or a redacted version.\"\n    },\n    {\n      \"filePath\": \"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\n      \"line\": 448,\n      \"evidence\": \"sslContextBuilder.endpointIdentificationAlgorithm(null);\",\n      \"reason\": \"Disables hostname verification for REST client connections, making them vulnerable to MITM attacks.\",\n      \"fix\": \"Enable hostname verification by setting endpointIdentificationAlgorithm to \\\"TLSv1.2\\\" or similar (or use the default).\"\n    }\n  ],\n  \"verificationSteps\": [\n    \"Check logs during S3 token provider initialization for DEBUG level messages containing 'Access key' and 'Secret key'.\",\n    \"Check logs during S3 token receiver operation for INFO level messages containing 'Session credential'.\",\n    \"Check logs during SSL context creation for INFO level messages containing 'Keystore password'.\",\n    \"Test REST client connections to external endpoints using self-signed certificates; verify if hostname verification is bypassed.\"\n  ],\n  \"uncertainties\": [\n    \"Whether secrets are actually provided in the configuration (",
+      "error": "INCOMPLETE_OUTPUT",
+      "wallMs": 450487.052,
+      "selectedPaths": [
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java"
+      ],
+      "sourceBytes": 47901,
+      "variant": "mutated",
+      "quality": null
+    },
+    {
+      "provider": "local",
+      "model": "qwen3-vl:8b",
+      "arm": "remediated_code",
+      "complete": false,
+      "requestTextBytes": 55123,
+      "imageBytes": 0,
+      "requestOptions": {
+        "num_ctx": 32768,
+        "num_predict": 6000,
+        "temperature": 0,
+        "seed": 42
+      },
+      "messageKeys": [
+        "content",
+        "role",
+        "thinking"
+      ],
+      "structuredOutput": false,
+      "total_duration": 436607099000,
+      "load_duration": 174063875,
+      "prompt_eval_duration": 51730142000,
+      "eval_duration": 383811128000,
+      "prompt_eval_count": 14371,
+      "eval_count": 6000,
+      "done_reason": "length",
+      "inputTokens": 14371,
+      "outputTokens": 6000,
+      "estimatedApiCostUsd": 0,
+      "answerText": "",
+      "error": "INCOMPLETE_OUTPUT",
+      "wallMs": 436675.992,
+      "selectedPaths": [
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java"
+      ],
+      "sourceBytes": 47244,
+      "variant": "remediated",
+      "quality": null
+    }
+  ],
+  "status": "ROUTE_FAILED_CODE_ONLY_FINISHED",
+  "commit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "runnerSha256": "895d4529c58312b3bd3e6b486fafe13fb3c7c027b73b70339ab5edfec2ace15e",
+  "note": "Vision failed. Independent broad and restored code trials are not a successful vision pipeline. Local review output cap raised to 6000 after observed truncation; no additional OpenAI calls."
+}

@@ -1,0 +1,13 @@
+{
+  "name": "3-full_code-0-inspect",
+  "provider": "ollama",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "status": "FAILED",
+  "startedAtUtc": "2026-10-23T05:07:16Z",
+  "inputSha256": "3856990283562301b0dc5ad0cf8c77444c5c82e9ef374e5ec603de40cb05f043",
+  "inputTokens": null,
+  "outputTokens": null,
+  "error": "HTTPStatusError",
+  "wallMs": 787.699,
+  "finishedAtUtc": "2026-10-23T05:07:17Z"
+}

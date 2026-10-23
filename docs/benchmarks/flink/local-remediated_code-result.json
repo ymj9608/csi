@@ -1,0 +1,46 @@
+{
+  "provider": "local",
+  "model": "qwen3-vl:8b",
+  "arm": "remediated_code",
+  "complete": false,
+  "requestTextBytes": 55123,
+  "imageBytes": 0,
+  "requestOptions": {
+    "num_ctx": 32768,
+    "num_predict": 6000,
+    "temperature": 0,
+    "seed": 42
+  },
+  "messageKeys": [
+    "content",
+    "role",
+    "thinking"
+  ],
+  "structuredOutput": false,
+  "total_duration": 436607099000,
+  "load_duration": 174063875,
+  "prompt_eval_duration": 51730142000,
+  "eval_duration": 383811128000,
+  "prompt_eval_count": 14371,
+  "eval_count": 6000,
+  "done_reason": "length",
+  "inputTokens": 14371,
+  "outputTokens": 6000,
+  "estimatedApiCostUsd": 0,
+  "answerText": "",
+  "error": "INCOMPLETE_OUTPUT",
+  "wallMs": 436675.992,
+  "selectedPaths": [
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java"
+  ],
+  "sourceBytes": 47244,
+  "variant": "remediated",
+  "quality": null
+}

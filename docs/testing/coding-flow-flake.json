@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-22",
+  "baseBranch": "origin/dev",
+  "baseCommit": "97f2cb3e6eabdc360e4d5dc8ed3a72c5858228bf",
+  "workingBranch": "ai/architecture-context",
+  "test": "frontend/e2e/coding-flow.spec.ts risk analysis",
+  "before": {
+    "command": "npx playwright test e2e/coding-flow.spec.ts --grep \"risk analysis\" --repeat-each=5",
+    "passed": 4,
+    "failed": 1,
+    "failure": "strict mode violation: getByText matched screen-reader copy and animated visible copy"
+  },
+  "after": {
+    "command": "npx playwright test e2e/coding-flow.spec.ts --grep \"risk analysis\" --repeat-each=10",
+    "passed": 10,
+    "failed": 0
+  },
+  "fix": "Select .verdict.red .report-text > [aria-hidden=\"true\"], wait visible and exact text; preserve screen-reader copy and animation. No .first(), arbitrary sleep or reduced-motion workaround.",
+  "limits": "Repeated local Chrome runs, not proof of absence of every possible race. Teammate fe/architecture-upload uncommitted files are not present in this workspace."
+}

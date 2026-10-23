@@ -1,0 +1,4 @@
+Risk evidence:
+- **`topology.json`** (sha256: `00bd3dc9c4a76c27d8e6c15737ffd4c67cea47e92c0d57ace94cde9e2317dd97`) explicitly forbids phone exposure in external zones (`"phoneAllowed": false` under `archive_export`).
+- **Original function** (sha256: `4fc73a1b58e43e55804bafae8c2f0e24942a9e0eafd63f0b507676c3ed5d686c`) blindly copies entire envelope, including phone data.
+- **`deadletter.py`** (sha256: `0c04aee81e9be273b4dba409c59721da6ec0f041a905c39f4e4b19778f3ef6c3`) preserves phone data in internal replay paths, confirming no need to alter those flows.

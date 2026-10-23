@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1060" viewBox="0 0 1400 1060">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="#476988"/></marker></defs>
+<rect width="1400" height="1060" fill="white"/><g font-family="Arial,sans-serif" fill="#21364b">
+<text x="35" y="40" font-size="27" font-weight="700">Lichu web application: manually summarized source snapshot</text>
+<text x="35" y="73" font-size="17">Commit 95345dbd8ba45fe77ea8cd926c84e40e4d16f83a. Not an original architecture document.</text>
+<rect x="25" y="305" width="1350" height="625" rx="14" fill="#fafcff" stroke="#94a7ba" stroke-dasharray="8 6"/>
+<text x="43" y="333" font-size="16">Backend application boundary (runtime infrastructure / trust configuration is not shown)</text>
+<rect x="380" y="120" width="640" height="135" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="396" y="148" font-size="21" font-weight="700">Vue browser application</text>
+<text x="396" y="173" font-size="15">frontend/src/api/client.ts</text>
+<text x="396" y="195" font-size="15">frontend/src/stores/auth.ts</text>
+<text x="396" y="217" font-size="15">frontend/src/views/AuthView.vue</text>
+<text x="396" y="239" font-size="15">Employee signup / login / license requests</text>
+<rect x="45" y="350" width="415" height="150" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="61" y="378" font-size="21" font-weight="700">FastAPI entry / validation</text>
+<text x="61" y="403" font-size="15">backend/app/main.py</text>
+<text x="61" y="425" font-size="15">backend/app/api/routes.py</text>
+<text x="61" y="447" font-size="15">backend/app/schemas/dto.py</text>
+<text x="61" y="469" font-size="15">JSON requests and responses</text>
+<rect x="495" y="350" width="415" height="150" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="511" y="378" font-size="21" font-weight="700">Identity / role boundary</text>
+<text x="511" y="403" font-size="15">backend/app/api/deps.py</text>
+<text x="511" y="425" font-size="15">backend/app/core/security.py</text>
+<text x="511" y="447" font-size="15">backend/app/core/config.py</text>
+<text x="511" y="469" font-size="15">Bearer identity + employee / master role</text>
+<rect x="945" y="350" width="410" height="150" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="961" y="378" font-size="21" font-weight="700">Conditional signup lab module</text>
+<text x="961" y="403" font-size="15">backend/app/core/csi_signup.py</text>
+<text x="961" y="425" font-size="15">Called when CSI_LAB_MODE is enabled</text>
+<rect x="285" y="595" width="830" height="115" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="301" y="623" font-size="21" font-weight="700">Application services</text>
+<text x="301" y="648" font-size="15">backend/app/services/hub.py</text>
+<text x="301" y="670" font-size="15">Signup, login, profile, request decision, assignment, dashboard</text>
+<rect x="45" y="790" width="600" height="115" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="61" y="818" font-size="21" font-weight="700">SQLAlchemy repositories</text>
+<text x="61" y="843" font-size="15">backend/app/repositories/hub.py</text>
+<text x="61" y="865" font-size="15">Queries / counts / row locks</text>
+<rect x="695" y="790" width="660" height="115" rx="12" fill="#f1f6ff" stroke="#57799a" stroke-width="2"/>
+<text x="711" y="818" font-size="21" font-weight="700">Models / DB session</text>
+<text x="711" y="843" font-size="15">backend/app/models/entities.py</text>
+<text x="711" y="865" font-size="15">backend/app/db/session.py</text>
+<text x="711" y="887" font-size="15">Users, contact, license, request, assignment, lab profile</text>
+<path d="M580,255 L250,350" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M700,255 L700,350" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M250,500 L500,595" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M700,500 L700,595" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1115,650 L1150,500" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M520,710 L350,790" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M880,710 L1010,790" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M645,845 L695,845" stroke="#476988" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1030" y="560" font-size="15">conditional call</text>
+<text x="35" y="970" font-size="18">Scope: source-level web paths only. Tests, migrations, deployment and external services are omitted.</text>
+<text x="35" y="1000" font-size="18">No statement about security controls is implied. Inspect selected source and verify missing components.</text>
+<text x="35" y="1030" font-size="17">Manually curated path labels assist retrieval; this is not a blind test of an unlabeled production diagram.</text>
+</g></svg>

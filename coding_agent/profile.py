@@ -35,6 +35,8 @@ SYSTEM += '\nKeep a non-sensitive signup event in logs; never disable or reconfi
 
 def repair_guidance(code, failed_tests):
     guidance = [IMPORT_CONTRACT]
+    if code == 'INPUT_CONTRACT_MISMATCH':
+        guidance.append('Use sourceCallContracts and diagnostics.conflicts: the named caller passes the observed keys directly. Do not assume an output wrapper exists in the input. Preserve caller argument nesting and required outputs; regenerate within the same original scope.')
     if code == 'UNDEFINED_GLOBAL':
         guidance.append('Restore the missing import or definition. In particular bcrypt.hashpw and bcrypt.gensalt require import bcrypt; bcrypt is explicitly allowed.')
     if code == 'LEGACY_USES_NEW_HASH' or 'test_old_lab_accounts_still_login_only_in_lab_mode' in failed_tests:

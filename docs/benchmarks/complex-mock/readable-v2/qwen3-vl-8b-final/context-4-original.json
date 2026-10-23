@@ -1,0 +1,272 @@
+{
+  "diagramType": "ARCHITECTURE",
+  "components": [
+    {
+      "id": "edge_gateway",
+      "label": "Request admission",
+      "kind": "gateway"
+    },
+    {
+      "id": "identity_access",
+      "label": "Identity and sessions",
+      "kind": "auth"
+    },
+    {
+      "id": "consent_registry",
+      "label": "Contact preferences",
+      "kind": "registry"
+    },
+    {
+      "id": "customer_profile",
+      "label": "Customer contact records",
+      "kind": "profile"
+    },
+    {
+      "id": "profile_db",
+      "label": "Customer data",
+      "kind": "db"
+    },
+    {
+      "id": "contact_events",
+      "label": "Contact change events",
+      "kind": "event"
+    },
+    {
+      "id": "notification_dispatch",
+      "label": "Delivery scheduling",
+      "kind": "scheduler"
+    },
+    {
+      "id": "sms_gateway",
+      "label": "SMS provider adapter",
+      "kind": "adapter"
+    },
+    {
+      "id": "audit_archive",
+      "label": "Event retention",
+      "kind": "archive"
+    },
+    {
+      "id": "kafka",
+      "label": "Event broker",
+      "kind": "broker"
+    },
+    {
+      "id": "external_sms",
+      "label": "External message provider",
+      "kind": "provider"
+    },
+    {
+      "id": "product_catalog",
+      "label": "Product publication",
+      "kind": "catalog"
+    },
+    {
+      "id": "inventory_reservation",
+      "label": "Stock reservation",
+      "kind": "reservation"
+    },
+    {
+      "id": "order_fulfillment",
+      "label": "Order orchestration",
+      "kind": "orchestration"
+    },
+    {
+      "id": "business_db",
+      "label": "Business records",
+      "kind": "db"
+    },
+    {
+      "id": "billing_ledger",
+      "label": "Invoice accounting",
+      "kind": "ledger"
+    },
+    {
+      "id": "payment_settlement",
+      "label": "Settlement batches",
+      "kind": "settlement"
+    },
+    {
+      "id": "fraud_review",
+      "label": "Transaction review",
+      "kind": "review"
+    },
+    {
+      "id": "merchant_registry",
+      "label": "Merchant onboarding",
+      "kind": "registry"
+    },
+    {
+      "id": "returns_case",
+      "label": "Return authorization",
+      "kind": "case"
+    },
+    {
+      "id": "support_case",
+      "label": "Support assignment",
+      "kind": "case"
+    },
+    {
+      "id": "loyalty_rewards",
+      "label": "Reward accrual",
+      "kind": "rewards"
+    },
+    {
+      "id": "marketing_campaign",
+      "label": "Campaign planning",
+      "kind": "campaign"
+    },
+    {
+      "id": "analytics_rollup",
+      "label": "Aggregate reporting",
+      "kind": "reporting"
+    },
+    {
+      "id": "search_index",
+      "label": "Product search",
+      "kind": "index"
+    },
+    {
+      "id": "document_archive",
+      "label": "Document lifecycle",
+      "kind": "archive"
+    },
+    {
+      "id": "partner_webhook",
+      "label": "Partner callbacks",
+      "kind": "webhook"
+    }
+  ],
+  "flows": [
+    {
+      "from": "edge_gateway",
+      "to": "identity_access",
+      "data": "session validation",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "identity_access",
+      "to": "customer_profile",
+      "data": "contact update",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "customer_profile",
+      "to": "consent_registry",
+      "data": "contact storage",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "edge_gateway",
+      "to": "consent_registry",
+      "data": "contact purpose",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "contact_events",
+      "to": "notification_dispatch",
+      "data": "delivery requested",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "notification_dispatch",
+      "to": "sms_gateway",
+      "data": "sms requested",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "sms_gateway",
+      "to": "external_sms",
+      "data": "message delivery",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "kafka",
+      "to": "audit_archive",
+      "data": "delivery completed",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "product_catalog",
+      "to": "order_fulfillment",
+      "data": "order request",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "inventory_reservation",
+      "to": "order_fulfillment",
+      "data": "inventory reserved",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "order_fulfillment",
+      "to": "business_db",
+      "data": "order persistence",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "product_catalog",
+      "to": "business_db",
+      "data": "product published",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "billing_ledger",
+      "to": "payment_settlement",
+      "data": "invoice posted",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "payment_settlement",
+      "to": "fraud_review",
+      "data": "payment settled",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "merchant_registry",
+      "to": "returns_case",
+      "data": "onboarding records",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "returns_case",
+      "to": "support_case",
+      "data": "return authorization",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "loyalty_rewards",
+      "to": "marketing_campaign",
+      "data": "reward accrued",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "analytics_rollup",
+      "to": "search_index",
+      "data": "product published",
+      "protection": "UNKNOWN"
+    },
+    {
+      "from": "document_archive",
+      "to": "partner_webhook",
+      "data": "carrier status",
+      "protection": "UNKNOWN"
+    }
+  ],
+  "trustBoundaries": [
+    "edge boundary",
+    "messaging boundary",
+    "commerce boundary",
+    "finance boundary",
+    "engagement boundary",
+    "data boundary"
+  ],
+  "codeHints": [],
+  "assumptions": [
+    "Dashed panels represent logical responsibility boundaries; no explicit security labels on components or flows"
+  ],
+  "uncertainties": [
+    "Missing component details like internal files, functions, background tasks; unclear if all routes are visible; potential for unlisted dependencies"
+  ],
+  "summary": "Synthetic commerce platform architecture showing service and data flow with 28 components and 26 routes. Key boundaries include edge, messaging, commerce, finance, engagement, and data. Flows show synchronous calls (solid lines) and asynchronous events/jobs (dashed lines)."
+}

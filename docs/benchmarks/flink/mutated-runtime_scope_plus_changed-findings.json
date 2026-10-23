@@ -1,0 +1,54 @@
+[
+  {
+    "findingId": "0d5280840a861ddda87b51e4",
+    "ruleId": "SEC-05",
+    "category": "SECURITY",
+    "severity": "HIGH",
+    "filePath": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "startLine": 93,
+    "endLine": 93,
+    "maskedCodeEvidence": "        LOG.info(\"[REDACTED]\", accessToken);",
+    "fingerprint": "0d5280840a861ddda87b51e4d3b906cfdb41a6c69a01042153ee61aac18e2790",
+    "confidence": "MEDIUM",
+    "evidenceStatus": "SUSPECTED"
+  },
+  {
+    "findingId": "47ef36facd5ac0e98dd04e7d",
+    "ruleId": "SEC-05",
+    "category": "SECURITY",
+    "severity": "HIGH",
+    "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "startLine": 292,
+    "endLine": 292,
+    "maskedCodeEvidence": "            LOG.info(\"[REDACTED]\", password);",
+    "fingerprint": "47ef36facd5ac0e98dd04e7d98dea7188c9a00f5bde3d8047a91a4a07f8ffcea",
+    "confidence": "MEDIUM",
+    "evidenceStatus": "SUSPECTED"
+  },
+  {
+    "findingId": "e0e1149e82b1fed17ec83564",
+    "ruleId": "SEC-05",
+    "category": "SECURITY",
+    "severity": "HIGH",
+    "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "startLine": 296,
+    "endLine": 296,
+    "maskedCodeEvidence": "            LOG.info(\"[REDACTED]\", password);",
+    "fingerprint": "e0e1149e82b1fed17ec83564faa1cf75526dc84f40cdab9face7c60c7690b373",
+    "confidence": "MEDIUM",
+    "evidenceStatus": "SUSPECTED"
+  },
+  {
+    "findingId": "bfd93a1ff709e0310396632e",
+    "ruleId": "SEC-05",
+    "category": "SECURITY",
+    "severity": "HIGH",
+    "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "startLine": 130,
+    "endLine": 130,
+    "maskedCodeEvidence": "        LOG.info(\"[REDACTED]\", accessToken);",
+    "fingerprint": "bfd93a1ff709e0310396632ea47cfce5f3184cf6a210adf96d5cbf9310f44f19",
+    "confidence": "MEDIUM",
+    "evidenceStatus": "SUSPECTED"
+  }
+]

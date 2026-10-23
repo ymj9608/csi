@@ -1,0 +1,75 @@
+{
+  "rows": [
+    {
+      "arm": "code_only",
+      "selectionRecovery": "Original valid response reused after harness rejected array type; no model retry.",
+      "status": "VALIDATION_FAILED",
+      "selected": [
+        "deadletter.py",
+        "retry.py"
+      ],
+      "validation": {
+        "exitCode": 1,
+        "seconds": 0.33325916700050584,
+        "cases": {
+          "test_01_normal_notification": "ERROR",
+          "test_02_normal_analytics": "ERROR",
+          "test_03_retry_recovery": "ERROR",
+          "test_04_archive_preserved": "ERROR",
+          "test_05_external_export_no_phone": "ERROR",
+          "test_06_external_diagnostics_preserved": "ERROR",
+          "test_07_member_not_mutated": "ERROR",
+          "test_08_export_copy_isolation": "FAIL"
+        },
+        "passed": 0,
+        "total": 8
+      },
+      "modelSeconds": 35.636964,
+      "inputTokens": 1079,
+      "outputTokens": 554,
+      "exporterRead": false,
+      "topologyRead": false
+    },
+    {
+      "arm": "vision_context",
+      "selectionRecovery": "Original valid response reused after harness rejected array type; no model retry.",
+      "status": "VALIDATION_FAILED",
+      "selected": [
+        "storage.py",
+        "retry.py"
+      ],
+      "validation": {
+        "exitCode": 1,
+        "seconds": 0.3107777920013177,
+        "cases": {
+          "test_01_normal_notification": "ok",
+          "test_02_normal_analytics": "ok",
+          "test_03_retry_recovery": "ERROR",
+          "test_04_archive_preserved": "ERROR",
+          "test_05_external_export_no_phone": "ERROR",
+          "test_06_external_diagnostics_preserved": "ERROR",
+          "test_07_member_not_mutated": "ERROR",
+          "test_08_export_copy_isolation": "FAIL"
+        },
+        "passed": 2,
+        "total": 8
+      },
+      "modelSeconds": 61.626312582999184,
+      "inputTokens": 2478,
+      "outputTokens": 1027,
+      "exporterRead": false,
+      "topologyRead": false
+    }
+  ],
+  "modelCalls": 5,
+  "retries": 0,
+  "referencePassed": 8,
+  "vulnerablePassed": 6,
+  "perceptionReview": {
+    "failurePath": "correct",
+    "externalReceivers": "correct",
+    "normalPath": "incorrect added notification -> exporter path"
+  },
+  "interpretation": "Neither arm read exporter.py or topology.json. Neither repaired external leakage. 0/8 vs 2/8 is not evidence of security improvement. Single synthetic case; favorable scenario selection disclosed.",
+  "harnessCorrection": "Array selections were initially rejected by string-only validator. Original responses preserved and reused, no resampling. Raw call status FAILED reflects that harness error; patch calls completed."
+}

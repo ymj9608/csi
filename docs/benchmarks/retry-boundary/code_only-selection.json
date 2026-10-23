@@ -1,0 +1,14 @@
+{
+  "paths": [
+    "deadletter.py",
+    "retry.py"
+  ],
+  "reason": "Files likely contain raw phone exposure handling (e.g., retry logic, dead-letter queues) and external diagnostics evidence.",
+  "visible": [
+    "service.py",
+    "analysis.py",
+    "notification.py",
+    "deadletter.py",
+    "retry.py"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "findings": [
+    {
+      "channel": "r2",
+      "status": "CONFIRMED",
+      "path": "app.py → analytics.py → r2",
+      "evidence": "The `emit` function in `analytics.py` publishes the raw phone number (`event['phone']`) to channel **'r2'** (external metrics vendor). This violates the requirement to omit the phone from external messages while preserving delivery metadata (`id`, `kind`). The deployment context explicitly labels **'r2'** as an external recipient for analytics, confirming exposure. No validation or sanitization occurs before publishing to this channel."
+    },
+    {
+      "channel": "r3",
+      "status": "CONFIRMED",
+      "path": "app.py → recovery.py → relay.py → r3",
+      "evidence": "The `retain` function in `recovery.py` and the `emit` function in `relay.py` publish the raw phone number (`event['phone']`) to channel **'r3'** (external support vendor). The deployment context labels **'r3'** as an external recipient for support, confirming exposure. No sanitization occurs before publishing."
+    }
+  ],
+  "path": "",
+  "function": "",
+  "functionCode": ""
+}

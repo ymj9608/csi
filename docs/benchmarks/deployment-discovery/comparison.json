@@ -1,0 +1,85 @@
+[
+  {
+    "arm": "code_only",
+    "r3Statuses": [
+      "CONFIRMED"
+    ],
+    "selectedPath": "recovery.py",
+    "selectedFunction": "emit",
+    "correctFile": false,
+    "correctFunction": true,
+    "confirmedOtherChannels": [],
+    "status": "BLOCKED",
+    "error": "ScopeError: FUNCTION_NOT_FOUND",
+    "modelMs": 16522.026,
+    "inputTokens": 600,
+    "outputTokens": 265
+  },
+  {
+    "arm": "architecture_text",
+    "r3Statuses": [
+      "CONFIRMED"
+    ],
+    "selectedPath": "",
+    "selectedFunction": "",
+    "correctFile": false,
+    "correctFunction": false,
+    "confirmedOtherChannels": [],
+    "status": "EVALUATED",
+    "validation": {
+      "exitCode": 1,
+      "seconds": 0.33084429199880105,
+      "cases": {
+        "test_01_normal_sms_keeps_phone": "ok",
+        "test_02_safe_metrics_unchanged": "ok",
+        "test_03_failure_archive_keeps_phone": "ok",
+        "test_04_external_failure_no_phone": "FAIL",
+        "test_05_failure_diagnostics_preserved": "ok",
+        "test_06_member_record_unchanged": "ok",
+        "test_07_direct_relay_copy_isolation": "FAIL",
+        "test_08_normal_path_no_failure_export": "ok"
+      },
+      "passed": 6,
+      "total": 8
+    },
+    "modelMs": 10772.141,
+    "inputTokens": 708,
+    "outputTokens": 182
+  },
+  {
+    "arm": "architecture_vision",
+    "r3Statuses": [
+      "CONFIRMED"
+    ],
+    "selectedPath": "",
+    "selectedFunction": "",
+    "correctFile": false,
+    "correctFunction": false,
+    "confirmedOtherChannels": [
+      "r2"
+    ],
+    "status": "EVALUATED",
+    "validation": {
+      "exitCode": 1,
+      "seconds": 0.3105324579992157,
+      "cases": {
+        "test_01_normal_sms_keeps_phone": "ok",
+        "test_02_safe_metrics_unchanged": "ok",
+        "test_03_failure_archive_keeps_phone": "ok",
+        "test_04_external_failure_no_phone": "FAIL",
+        "test_05_failure_diagnostics_preserved": "ok",
+        "test_06_member_record_unchanged": "ok",
+        "test_07_direct_relay_copy_isolation": "FAIL",
+        "test_08_normal_path_no_failure_export": "ok"
+      },
+      "passed": 6,
+      "total": 8
+    },
+    "modelMs": 15708.63,
+    "inputTokens": 737,
+    "outputTokens": 280,
+    "visionMs": 23209.304624999277,
+    "visionInputTokens": 1157,
+    "visionOutputTokens": 311
+  }
+]

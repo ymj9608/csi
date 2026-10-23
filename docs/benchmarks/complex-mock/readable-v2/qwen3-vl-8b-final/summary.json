@@ -1,0 +1,973 @@
+{
+  "schemaVersion": 1,
+  "metadata": {
+    "event": "metadata",
+    "timestamp": "2026-10-22T08:11:22.136297+00:00",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "models": {
+      "qwen3-vl:8b": {
+        "name": "qwen3-vl:8b",
+        "model": "qwen3-vl:8b",
+        "modified_at": "2026-10-22T17:02:55.467194184+09:00",
+        "size": 6190971699,
+        "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M"
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "thinking",
+          "vision"
+        ]
+      },
+      "ministral-3:8b-instruct-2512-q4_K_M": {
+        "name": "ministral-3:8b-instruct-2512-q4_K_M",
+        "model": "ministral-3:8b-instruct-2512-q4_K_M",
+        "modified_at": "2026-10-22T11:52:25.710696115+09:00",
+        "size": 6022236616,
+        "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "mistral3",
+          "families": [
+            "mistral3"
+          ],
+          "parameter_size": "8.9B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096
+        },
+        "capabilities": [
+          "vision",
+          "completion",
+          "tools"
+        ]
+      }
+    },
+    "ollamaVersion": {
+      "version": "0.32.1"
+    },
+    "protocolSha256": "580e335e8c68583410919fffd56efd0b956a6bf9daf952e865b3e828e8f78afe",
+    "sourceSha256": "69a197f6491ab5d6f1f4b4b1aed17648923951a2d79bca8ca717b0f40f9afc1b"
+  },
+  "protocolSha256": "580e335e8c68583410919fffd56efd0b956a6bf9daf952e865b3e828e8f78afe",
+  "logSha256": "5c38be38c29e11452dff13f68da2054de854ba4180ff0fc462d617ed7f8685f1",
+  "visionModel": "qwen3-vl:8b",
+  "reviewModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "vision": {
+    "original": {
+      "runs": [
+        {
+          "event": "vision_result",
+          "variant": "original",
+          "sequence": 1,
+          "complete": true,
+          "quality": {
+            "componentsExpected": 28,
+            "componentsReturned": 27,
+            "componentIdentitiesMatched": 27,
+            "componentInstancesMatched": 27,
+            "edgesExpected": 26,
+            "edgesReturned": 19,
+            "edgesMatched": 7,
+            "unexpectedMappedEdges": [
+              [
+                "analytics_rollup",
+                "search_index"
+              ],
+              [
+                "contact_events",
+                "notification_dispatch"
+              ],
+              [
+                "document_archive",
+                "partner_webhook"
+              ],
+              [
+                "edge_gateway",
+                "consent_registry"
+              ],
+              [
+                "identity_access",
+                "customer_profile"
+              ],
+              [
+                "inventory_reservation",
+                "order_fulfillment"
+              ],
+              [
+                "kafka",
+                "audit_archive"
+              ],
+              [
+                "loyalty_rewards",
+                "marketing_campaign"
+              ],
+              [
+                "merchant_registry",
+                "returns_case"
+              ],
+              [
+                "product_catalog",
+                "business_db"
+              ],
+              [
+                "product_catalog",
+                "order_fulfillment"
+              ],
+              [
+                "returns_case",
+                "support_case"
+              ]
+            ],
+            "missingEdges": [
+              [
+                "contact_events",
+                "kafka"
+              ],
+              [
+                "customer_profile",
+                "contact_events"
+              ],
+              [
+                "customer_profile",
+                "profile_db"
+              ],
+              [
+                "edge_gateway",
+                "customer_profile"
+              ],
+              [
+                "edge_gateway",
+                "order_fulfillment"
+              ],
+              [
+                "edge_gateway",
+                "product_catalog"
+              ],
+              [
+                "inventory_reservation",
+                "shipment_tracking"
+              ],
+              [
+                "kafka",
+                "notification_dispatch"
+              ],
+              [
+                "loyalty_rewards",
+                "analytics_rollup"
+              ],
+              [
+                "marketing_campaign",
+                "consent_registry"
+              ],
+              [
+                "merchant_registry",
+                "document_archive"
+              ],
+              [
+                "order_fulfillment",
+                "billing_ledger"
+              ],
+              [
+                "order_fulfillment",
+                "inventory_reservation"
+              ],
+              [
+                "partner_webhook",
+                "shipment_tracking"
+              ],
+              [
+                "payment_settlement",
+                "analytics_rollup"
+              ],
+              [
+                "product_catalog",
+                "search_index"
+              ],
+              [
+                "shipment_tracking",
+                "loyalty_rewards"
+              ],
+              [
+                "sms_gateway",
+                "audit_archive"
+              ],
+              [
+                "support_case",
+                "returns_case"
+              ]
+            ],
+            "method": "Literal component IDs or visible identifier tokens; directed endpoints only; no semantic role/protection scoring."
+          },
+          "responseField": "message.thinking",
+          "phaseWallMs": 64490.25149999943,
+          "metrics": {
+            "prompt_eval_count": 4311,
+            "eval_count": 1283,
+            "total_duration": 64468248000,
+            "load_duration": 225460416,
+            "prompt_eval_duration": 66291000,
+            "eval_duration": 63890751000,
+            "prompt_eval_cached_count": null,
+            "wallDurationMs": 64484.031,
+            "doneReason": "stop",
+            "requestSha256": "1ad327cdd5b7c363c87eda578f17b1be5b63831459940c9e37b69b9168705390"
+          },
+          "rawDiagnostic": {
+            "literalComponentIdsMatched": 27,
+            "literalDirectedEndpointsMatched": 7,
+            "undeclaredEndpointIds": [],
+            "modeMisclassifiedAsProtection": 0,
+            "scope": "Post-run literal comparison against graph IDs, even for schema-invalid output; not an accepted or repaired context."
+          }
+        },
+        {
+          "event": "vision_result",
+          "variant": "original",
+          "sequence": 4,
+          "complete": true,
+          "quality": {
+            "componentsExpected": 28,
+            "componentsReturned": 27,
+            "componentIdentitiesMatched": 27,
+            "componentInstancesMatched": 27,
+            "edgesExpected": 26,
+            "edgesReturned": 19,
+            "edgesMatched": 7,
+            "unexpectedMappedEdges": [
+              [
+                "analytics_rollup",
+                "search_index"
+              ],
+              [
+                "contact_events",
+                "notification_dispatch"
+              ],
+              [
+                "document_archive",
+                "partner_webhook"
+              ],
+              [
+                "edge_gateway",
+                "consent_registry"
+              ],
+              [
+                "identity_access",
+                "customer_profile"
+              ],
+              [
+                "inventory_reservation",
+                "order_fulfillment"
+              ],
+              [
+                "kafka",
+                "audit_archive"
+              ],
+              [
+                "loyalty_rewards",
+                "marketing_campaign"
+              ],
+              [
+                "merchant_registry",
+                "returns_case"
+              ],
+              [
+                "product_catalog",
+                "business_db"
+              ],
+              [
+                "product_catalog",
+                "order_fulfillment"
+              ],
+              [
+                "returns_case",
+                "support_case"
+              ]
+            ],
+            "missingEdges": [
+              [
+                "contact_events",
+                "kafka"
+              ],
+              [
+                "customer_profile",
+                "contact_events"
+              ],
+              [
+                "customer_profile",
+                "profile_db"
+              ],
+              [
+                "edge_gateway",
+                "customer_profile"
+              ],
+              [
+                "edge_gateway",
+                "order_fulfillment"
+              ],
+              [
+                "edge_gateway",
+                "product_catalog"
+              ],
+              [
+                "inventory_reservation",
+                "shipment_tracking"
+              ],
+              [
+                "kafka",
+                "notification_dispatch"
+              ],
+              [
+                "loyalty_rewards",
+                "analytics_rollup"
+              ],
+              [
+                "marketing_campaign",
+                "consent_registry"
+              ],
+              [
+                "merchant_registry",
+                "document_archive"
+              ],
+              [
+                "order_fulfillment",
+                "billing_ledger"
+              ],
+              [
+                "order_fulfillment",
+                "inventory_reservation"
+              ],
+              [
+                "partner_webhook",
+                "shipment_tracking"
+              ],
+              [
+                "payment_settlement",
+                "analytics_rollup"
+              ],
+              [
+                "product_catalog",
+                "search_index"
+              ],
+              [
+                "shipment_tracking",
+                "loyalty_rewards"
+              ],
+              [
+                "sms_gateway",
+                "audit_archive"
+              ],
+              [
+                "support_case",
+                "returns_case"
+              ]
+            ],
+            "method": "Literal component IDs or visible identifier tokens; directed endpoints only; no semantic role/protection scoring."
+          },
+          "responseField": "message.thinking",
+          "phaseWallMs": 65498.665417002485,
+          "metrics": {
+            "prompt_eval_count": 4311,
+            "eval_count": 1283,
+            "total_duration": 65478674708,
+            "load_duration": 120779875,
+            "prompt_eval_duration": 63442000,
+            "eval_duration": 64787332000,
+            "prompt_eval_cached_count": null,
+            "wallDurationMs": 65491.319,
+            "doneReason": "stop",
+            "requestSha256": "1ad327cdd5b7c363c87eda578f17b1be5b63831459940c9e37b69b9168705390"
+          },
+          "rawDiagnostic": {
+            "literalComponentIdsMatched": 27,
+            "literalDirectedEndpointsMatched": 7,
+            "undeclaredEndpointIds": [],
+            "modeMisclassifiedAsProtection": 0,
+            "scope": "Post-run literal comparison against graph IDs, even for schema-invalid output; not an accepted or repaired context."
+          }
+        }
+      ],
+      "validRuns": 2,
+      "expectedRuns": 2,
+      "meanMatchedComponents": 27,
+      "meanMatchedEdges": 7,
+      "meanInputTokens": 4311,
+      "meanOutputTokens": 1283,
+      "meanWallMs": 64994.45845850096,
+      "firstValidSequence": 1
+    },
+    "readable": {
+      "runs": [
+        {
+          "event": "vision_result",
+          "variant": "readable",
+          "sequence": 2,
+          "complete": false,
+          "error": "CONTEXT_FLOW_REFERENCE_INVALID",
+          "phaseWallMs": 66419.10116600047,
+          "metrics": {
+            "prompt_eval_count": 4311,
+            "eval_count": 1298,
+            "total_duration": 66386286958,
+            "load_duration": 197811333,
+            "prompt_eval_duration": 68738000,
+            "eval_duration": 65020462000,
+            "prompt_eval_cached_count": null,
+            "wallDurationMs": 66408.546,
+            "doneReason": "stop",
+            "requestSha256": "b17b526fcc063abdf75ebada9445a2aded31fca4c0193308df12af9ca7880ac2"
+          },
+          "rawDiagnostic": {
+            "literalComponentIdsMatched": 23,
+            "literalDirectedEndpointsMatched": 23,
+            "undeclaredEndpointIds": [
+              "document_archive",
+              "fraud_review",
+              "loyalty_rewards",
+              "order_fulfillment",
+              "sms_gateway"
+            ],
+            "modeMisclassifiedAsProtection": 23,
+            "scope": "Post-run literal comparison against graph IDs, even for schema-invalid output; not an accepted or repaired context."
+          }
+        },
+        {
+          "event": "vision_result",
+          "variant": "readable",
+          "sequence": 3,
+          "complete": false,
+          "error": "CONTEXT_FLOW_REFERENCE_INVALID",
+          "phaseWallMs": 65819.34954100143,
+          "metrics": {
+            "prompt_eval_count": 4311,
+            "eval_count": 1298,
+            "total_duration": 65794177208,
+            "load_duration": 127606292,
+            "prompt_eval_duration": 68487000,
+            "eval_duration": 65480851000,
+            "prompt_eval_cached_count": null,
+            "wallDurationMs": 65810.749,
+            "doneReason": "stop",
+            "requestSha256": "b17b526fcc063abdf75ebada9445a2aded31fca4c0193308df12af9ca7880ac2"
+          },
+          "rawDiagnostic": {
+            "literalComponentIdsMatched": 23,
+            "literalDirectedEndpointsMatched": 23,
+            "undeclaredEndpointIds": [
+              "document_archive",
+              "fraud_review",
+              "loyalty_rewards",
+              "order_fulfillment",
+              "sms_gateway"
+            ],
+            "modeMisclassifiedAsProtection": 23,
+            "scope": "Post-run literal comparison against graph IDs, even for schema-invalid output; not an accepted or repaired context."
+          }
+        }
+      ],
+      "validRuns": 0,
+      "expectedRuns": 2,
+      "meanMatchedComponents": null,
+      "meanMatchedEdges": null,
+      "meanInputTokens": 4311,
+      "meanOutputTokens": 1298,
+      "meanWallMs": 66119.22535350095,
+      "firstValidSequence": null
+    }
+  },
+  "reviews": {
+    "code_index": {
+      "complete": true,
+      "initialFiles": 96,
+      "effectiveFiles": 97,
+      "initialRequiredSelected": 10,
+      "totals": {
+        "prompt_eval_count": 20185,
+        "eval_count": 2411,
+        "wallDurationMs": 179733.62300000002,
+        "total_duration": 179653617958,
+        "load_duration": 691578084,
+        "prompt_eval_duration": 54284583000,
+        "eval_duration": 123725540000
+      },
+      "endToEndWallMs": 179852.62525000144,
+      "quality": {
+        "expected": 4,
+        "candidateMatches": [
+          "PHONE-LOG-2"
+        ],
+        "verifiedMatches": [],
+        "missingRequiredContext": [
+          "services/sms_gateway/consumer.py",
+          "services/sms_gateway/provider.py"
+        ],
+        "requiredSelected": 10,
+        "requiredTotal": 12,
+        "extraCandidates": 12,
+        "negativeControlFlags": [
+          "SAFE-LOG-2"
+        ],
+        "invalidEvidence": 3
+      },
+      "responseAudit": {
+        "followupResponseNeeds": [
+          {
+            "batch": 4,
+            "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+            "inManifest": false,
+            "doneReason": "stop"
+          },
+          {
+            "batch": 5,
+            "path": "Exact relative path for `repository.py` in both services to confirm if contact data is stored or exposed via raw persistence.",
+            "inManifest": false,
+            "doneReason": "stop"
+          }
+        ],
+        "invalidSupportEvidence": 6,
+        "meaning": "Source-line matching and outstanding model requests, not a runtime security proof."
+      },
+      "decision": {
+        "useVisionContext": false,
+        "reason": "DISABLED"
+      },
+      "mappingCount": {
+        "matched": 0,
+        "ambiguous": 0,
+        "unmatched": 0,
+        "total": 0
+      },
+      "missingContextReasons": [
+        {
+          "path": "services/sms_gateway/consumer.py",
+          "bytes": 409,
+          "reason": "FILE_BUDGET"
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "bytes": 559,
+          "reason": "FILE_BUDGET"
+        }
+      ],
+      "chosenVisionSequence": null,
+      "visionAvailable": false,
+      "unmappedExactServiceIds": [],
+      "unresolvedNeeds": [],
+      "rejectedNeeds": [
+        {
+          "path": "Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact relative path for `repository.py` in both services to confirm if contact data is stored or exposed via raw persistence.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ],
+      "errors": [],
+      "error": null,
+      "initialRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205"
+      ],
+      "allRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205",
+        "23476692932dfa0c711a1f54aace28708f4d9ffee728a1ca7a717e0c3dcb918c",
+        "cb73ed5ed67b2d2cf0168e36730f24d00d7693551166db3160fbb16e9eb067db"
+      ],
+      "allMeasuredChecksPass": false,
+      "firstUse": null,
+      "failedFirstAttemptCombined": null
+    },
+    "original": {
+      "complete": true,
+      "initialFiles": 96,
+      "effectiveFiles": 96,
+      "initialRequiredSelected": 10,
+      "totals": {
+        "prompt_eval_count": 19133,
+        "eval_count": 1697,
+        "wallDurationMs": 90768.57,
+        "total_duration": 90724964000,
+        "load_duration": 539619335,
+        "prompt_eval_duration": 251519000,
+        "eval_duration": 88063462000
+      },
+      "endToEndWallMs": 90889.98433400047,
+      "quality": {
+        "expected": 4,
+        "candidateMatches": [
+          "PHONE-LOG-2"
+        ],
+        "verifiedMatches": [],
+        "missingRequiredContext": [
+          "services/sms_gateway/consumer.py",
+          "services/sms_gateway/provider.py"
+        ],
+        "requiredSelected": 10,
+        "requiredTotal": 12,
+        "extraCandidates": 9,
+        "negativeControlFlags": [],
+        "invalidEvidence": 4
+      },
+      "responseAudit": {
+        "followupResponseNeeds": [
+          {
+            "batch": 4,
+            "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+            "inManifest": false,
+            "doneReason": "stop"
+          }
+        ],
+        "invalidSupportEvidence": 3,
+        "meaning": "Source-line matching and outstanding model requests, not a runtime security proof."
+      },
+      "decision": {
+        "useVisionContext": false,
+        "reason": "NO_MATCHING_ANCHOR_COMPONENT"
+      },
+      "mappingCount": {
+        "matched": 0,
+        "ambiguous": 0,
+        "unmatched": 27,
+        "total": 27
+      },
+      "missingContextReasons": [
+        {
+          "path": "services/sms_gateway/consumer.py",
+          "bytes": 409,
+          "reason": "FILE_BUDGET"
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "bytes": 559,
+          "reason": "FILE_BUDGET"
+        }
+      ],
+      "chosenVisionSequence": 1,
+      "visionAvailable": true,
+      "unmappedExactServiceIds": [
+        "edge_gateway",
+        "identity_access",
+        "consent_registry",
+        "customer_profile",
+        "contact_events",
+        "notification_dispatch",
+        "sms_gateway",
+        "audit_archive",
+        "product_catalog",
+        "inventory_reservation",
+        "order_fulfillment",
+        "billing_ledger",
+        "payment_settlement",
+        "fraud_review",
+        "merchant_registry",
+        "returns_case",
+        "support_case",
+        "loyalty_rewards",
+        "marketing_campaign",
+        "analytics_rollup",
+        "search_index",
+        "document_archive",
+        "partner_webhook"
+      ],
+      "unresolvedNeeds": [],
+      "rejectedNeeds": [
+        {
+          "path": "Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the external HTTP client used for sending contact data (e.g., SMS gateway or email service) in `services/notification_dispatch/events.py`",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ],
+      "errors": [],
+      "error": null,
+      "initialRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205"
+      ],
+      "allRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205",
+        "23476692932dfa0c711a1f54aace28708f4d9ffee728a1ca7a717e0c3dcb918c"
+      ],
+      "allMeasuredChecksPass": false,
+      "firstUse": {
+        "wallMs": 155380.2358339999,
+        "inputTokens": 23444,
+        "outputTokens": 2980,
+        "scope": "Sum of first valid image extraction/validation/persistence and downstream planning/review. Not one integrated API request."
+      },
+      "failedFirstAttemptCombined": null
+    },
+    "readable": {
+      "complete": true,
+      "initialFiles": 96,
+      "effectiveFiles": 96,
+      "initialRequiredSelected": 10,
+      "totals": {
+        "prompt_eval_count": 19133,
+        "eval_count": 1697,
+        "wallDurationMs": 91127.151,
+        "total_duration": 91101352043,
+        "load_duration": 541419875,
+        "prompt_eval_duration": 245478000,
+        "eval_duration": 89057545000
+      },
+      "endToEndWallMs": 91243.59033299697,
+      "quality": {
+        "expected": 4,
+        "candidateMatches": [
+          "PHONE-LOG-2"
+        ],
+        "verifiedMatches": [],
+        "missingRequiredContext": [
+          "services/sms_gateway/consumer.py",
+          "services/sms_gateway/provider.py"
+        ],
+        "requiredSelected": 10,
+        "requiredTotal": 12,
+        "extraCandidates": 9,
+        "negativeControlFlags": [],
+        "invalidEvidence": 4
+      },
+      "responseAudit": {
+        "followupResponseNeeds": [
+          {
+            "batch": 4,
+            "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+            "inManifest": false,
+            "doneReason": "stop"
+          }
+        ],
+        "invalidSupportEvidence": 3,
+        "meaning": "Source-line matching and outstanding model requests, not a runtime security proof."
+      },
+      "decision": {
+        "useVisionContext": false,
+        "reason": "DISABLED"
+      },
+      "mappingCount": {
+        "matched": 0,
+        "ambiguous": 0,
+        "unmatched": 0,
+        "total": 0
+      },
+      "missingContextReasons": [
+        {
+          "path": "services/sms_gateway/consumer.py",
+          "bytes": 409,
+          "reason": "FILE_BUDGET"
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "bytes": 559,
+          "reason": "FILE_BUDGET"
+        }
+      ],
+      "chosenVisionSequence": null,
+      "visionAvailable": false,
+      "unmappedExactServiceIds": [],
+      "unresolvedNeeds": [],
+      "rejectedNeeds": [
+        {
+          "path": "Exact path to the external HTTP client or broker transport layer (e.g., `services/edge_gateway/bus.py` or similar) for TLS validation.",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "Exact path to the external HTTP client used for sending contact data (e.g., SMS gateway or email service) in `services/notification_dispatch/events.py`",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "A full log file or logging configuration to confirm if raw telephone numbers are logged in plaintext.",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ],
+      "errors": [],
+      "error": null,
+      "initialRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205"
+      ],
+      "allRequestHashes": [
+        "ab05ec91fc594a208a34ef8b418df773004fcf57c9b62c404ba6d617882e38ef",
+        "c1e652e27a194dd3e1bbc5becc4e457270aa27954d02a323eb5e8387e8ba5530",
+        "de228ffa89d48fd9a6b4f28d66592abbc6f480dd1a65a768b47b99eb5b09b205",
+        "23476692932dfa0c711a1f54aace28708f4d9ffee728a1ca7a717e0c3dcb918c"
+      ],
+      "allMeasuredChecksPass": false,
+      "firstUse": null,
+      "failedFirstAttemptCombined": {
+        "wallMs": 157662.69149899745,
+        "inputTokens": 23444,
+        "scope": "First failed image attempt plus fallback review cost, not successful architecture-assisted latency."
+      }
+    },
+    "oracle": {
+      "complete": true,
+      "initialFiles": 96,
+      "effectiveFiles": 96,
+      "initialRequiredSelected": 9,
+      "totals": {
+        "prompt_eval_count": 25782,
+        "eval_count": 1437,
+        "wallDurationMs": 109512.60900000001,
+        "total_duration": 109479566584,
+        "load_duration": 534091666,
+        "prompt_eval_duration": 29737537000,
+        "eval_duration": 77426730000
+      },
+      "endToEndWallMs": 109614.54991600112,
+      "quality": {
+        "expected": 4,
+        "candidateMatches": [
+          "PHONE-HTTP-2"
+        ],
+        "verifiedMatches": [],
+        "missingRequiredContext": [
+          "services/notification_dispatch/consumer.py",
+          "services/sms_gateway/consumer.py",
+          "services/sms_gateway/provider.py"
+        ],
+        "requiredSelected": 9,
+        "requiredTotal": 12,
+        "extraCandidates": 9,
+        "negativeControlFlags": [],
+        "invalidEvidence": 5
+      },
+      "responseAudit": {
+        "followupResponseNeeds": [
+          {
+            "batch": 4,
+            "path": "jobs/legacy_export.py:lines 1–9 (full function body for context)",
+            "inManifest": false,
+            "doneReason": "stop"
+          }
+        ],
+        "invalidSupportEvidence": 6,
+        "meaning": "Source-line matching and outstanding model requests, not a runtime security proof."
+      },
+      "decision": {
+        "useVisionContext": true,
+        "reason": "CACHED_ARCHITECTURE_NEIGHBORS"
+      },
+      "mappingCount": {
+        "matched": 24,
+        "ambiguous": 0,
+        "unmatched": 4,
+        "total": 28
+      },
+      "missingContextReasons": [
+        {
+          "path": "services/notification_dispatch/consumer.py",
+          "bytes": 513,
+          "reason": "FILE_BUDGET"
+        },
+        {
+          "path": "services/sms_gateway/consumer.py",
+          "bytes": 409,
+          "reason": "FILE_BUDGET"
+        },
+        {
+          "path": "services/sms_gateway/provider.py",
+          "bytes": 559,
+          "reason": "FILE_BUDGET"
+        }
+      ],
+      "chosenVisionSequence": null,
+      "visionAvailable": true,
+      "unmappedExactServiceIds": [],
+      "unresolvedNeeds": [],
+      "rejectedNeeds": [
+        {
+          "path": "services/customer_profile/**/*",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "services/customer_profile/**/*.py",
+          "reason": "NOT_IN_MANIFEST"
+        },
+        {
+          "path": "jobs/legacy_export.py:lines 1–9 (full function body for context)",
+          "reason": "NOT_IN_MANIFEST"
+        }
+      ],
+      "errors": [],
+      "error": null,
+      "initialRequestHashes": [
+        "7eb22be364d7655a60f89c9719de517f28f3c57538aff81d63ccc3519a27b8e9",
+        "9a5b0a2cf18df64a7a3653006212b3cbfd84a1a663a877059d855c996136c29a",
+        "5f4a52954e1bd836daca47e8fdf23e778ec6399eccdde8d60102f5e878d6e2db"
+      ],
+      "allRequestHashes": [
+        "7eb22be364d7655a60f89c9719de517f28f3c57538aff81d63ccc3519a27b8e9",
+        "9a5b0a2cf18df64a7a3653006212b3cbfd84a1a663a877059d855c996136c29a",
+        "5f4a52954e1bd836daca47e8fdf23e778ec6399eccdde8d60102f5e878d6e2db",
+        "48ecefd3b2d955ef0118166377dfd330632e41ac142f0e08cc782ca8d4332e54"
+      ],
+      "allMeasuredChecksPass": false,
+      "firstUse": null,
+      "failedFirstAttemptCombined": null
+    }
+  },
+  "comparisons": [
+    {
+      "left": "code_index",
+      "right": "original",
+      "sameInitialRequests": true,
+      "sameAllRequests": false
+    },
+    {
+      "left": "code_index",
+      "right": "readable",
+      "sameInitialRequests": true,
+      "sameAllRequests": false
+    },
+    {
+      "left": "original",
+      "right": "readable",
+      "sameInitialRequests": true,
+      "sameAllRequests": true
+    },
+    {
+      "left": "readable",
+      "right": "oracle",
+      "sameInitialRequests": false,
+      "sameAllRequests": false
+    }
+  ],
+  "protocolLimits": [
+    "Two image runs per variant, one downstream review per arm, no statistical significance claim.",
+    "ABBA order partly balances order; no cache flush or independent cold-start repeats.",
+    "Kind labels and endpoint repetition make existing graph semantics explicit; no source/evaluator answers added.",
+    "Frozen review runner has at most two follow-ups and no cross-batch memory. Raw follow-up needs are audited separately.",
+    "No code patches, privacy compliance verdict, production deployment, or real personal data.",
+    "Previous Ministral-only vision/full-code results are historical references, not a controlled Qwen model comparison."
+  ]
+}
