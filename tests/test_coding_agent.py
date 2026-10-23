@@ -1,6 +1,7 @@
 """Safety boundaries use isolated Git fixtures; no inference/network/container required."""
 import copy
 import json
+import os
 import subprocess
 from pathlib import Path
 import httpx
@@ -79,7 +80,10 @@ def test_downloaded_patch_handles_missing_final_newline(repo):
     assert result.returncode==0,result.stderr
 
 def test_symlink_is_not_followed(repo,tmp_path):
-    link=repo/'backend/app/leak.py';link.symlink_to('/etc/passwd');git(repo,'add','.')
+    # Commit an actual Git symlink entry without requiring Windows symlink privileges.
+    target=tmp_path/'link-target';target.write_text('/etc/passwd')
+    blob=git(repo,'hash-object','-w',str(target)).decode().strip()
+    git(repo,'update-index','--add','--cacheinfo',f'120000,{blob},backend/app/leak.py')
     git(repo,'-c','user.name=Test','-c','user.email=test@example.invalid','commit','-qm','link')
     with pytest.raises(Rejected,match='REGULAR_SOURCE_FILE_REQUIRED'):
         snapshot(repo,context(repo)['commitSha'],tmp_path/'snapshot')
@@ -97,6 +101,21 @@ def test_ready_requires_fixed_verifier_and_preserves_repository(repo):
     assert result['files'][0]['afterSha256']==digest(AFTER)
     assert (repo/TARGET).read_text()==BEFORE and not git(repo,'status','--porcelain')
     assert 'PRIVATE_FIXTURE' not in json.dumps(requests)
+
+
+def test_saved_architecture_reaches_prompt_result_and_progress_without_demo_sleep(repo,monkeypatch):
+    from test_coding_architecture_context import fixture
+    job=context(repo) | fixture()
+    phases=[];requests=[];checks=[]
+    def verify(_):checks.append(True);return report(len(checks)>1)
+    def model(payload):requests.append(payload);return chat(response())
+    monkeypatch.setattr(engine.time,'sleep',lambda _:pytest.fail('generation must not sleep for UI polling'))
+    result=engine.generate(repo,job,verifier=verify,chat=model,progress=phases.append)
+    assert result['status']=='READY'
+    saved=result['architectureContext']
+    assert saved['components'][0]['name']=='Signup demo'
+    assert phases[0]['phase']=='ARCHITECTURE_CONTEXT' and phases[0]['note']==saved['note']
+    assert json.loads(requests[0]['messages'][1]['content'])['architectureContext']==saved
 
 def test_failed_verification_is_bounded_and_never_publishable(repo):
     result=engine.generate(repo,context(repo),verifier=lambda _:report(False),chat=lambda _:chat(response()))
@@ -185,8 +204,10 @@ def test_real_failure_import_feedback_does_not_remove_allowed_bcrypt(repo,tmp_pa
     feedback=json.loads(calls[1]['messages'][-1]['content'])
     assert feedback['diagnostics']['module']=='app.core.security'
     assert 'import bcrypt' in feedback['repairGuidance'][0]
-    assert [p['phase'] for p in phases]==['BASELINE','GENERATING','VALIDATING','RETRYING','GENERATING','VALIDATING','VERIFYING']
-    assert (tmp_path/'private/attempt-1.json').stat().st_mode & 0o777 == 0o600
+    assert [p['phase'] for p in phases]==['ARCHITECTURE_CONTEXT','BASELINE','GENERATING','VALIDATING','RETRYING','GENERATING','VALIDATING','VERIFYING']
+    assert (tmp_path/'private/attempt-1.json').is_file()
+    if os.name == 'posix':
+        assert (tmp_path/'private/attempt-1.json').stat().st_mode & 0o777 == 0o600
     assert result['attempts'][0]['diagnostics']['module']=='app.core.security'
     assert 'modelResponse' not in json.dumps(result)
 
@@ -269,7 +290,7 @@ def test_vlm_replans_across_repair_and_keeps_guardrails(repo):
     assert 'PRIVATE_FIXTURE' not in json.dumps(vlm+coder)
     assert coder[0]['messages'][-1]['content'].endswith(TEXT)
     assert result['handoff']['instruction']==TEXT
-    assert [p['phase'] for p in phases][:3]==['BASELINE','VLM_PLANNING','VLM_READING']
+    assert [p['phase'] for p in phases][:4]==['ARCHITECTURE_CONTEXT','BASELINE','VLM_PLANNING','VLM_READING']
     assert (repo/TARGET).read_text()==BEFORE
 
 

@@ -17,6 +17,7 @@ GitHub Actions 또는 로컬 스캐너가 Java/Python 코드를 정적으로 검
 | 근거 기반 리뷰 | 검사 당시 정책 snapshot, 사내 규정·외부 참조집 검색, 사실·문서 인용 검증, 개선 권고 |
 | 코드 변경 리뷰 | 두 Git 커밋의 마스킹된 좌우 diff, 지원하는 Python 선언의 추가·삭제 요약, 연결된 보안 후보 |
 | 로컬 코딩 Agent (선택) | Lichu 회원가입 보완 코드·근거 생성, 격리 전후 테스트, 별도 관리자 승인과 새 worktree 준비. [실행 안내](docs/CODING_AGENT.md) |
+| 아키텍처 참고·Slack 알림 (선택) | 저장된 프로젝트 분석의 관련 컴포넌트 후보 조회, 수정안 승인 DM, Socket Mode/HTTP 보안 검토 버튼. [설정과 검증 범위](docs/SLACK_APPROVALS.md) |
 | 아키텍처 비전 맥락 (연동 준비) | 프로젝트 이미지 버전·로컬 비전 해석·재사용 API. 코드 검증을 대체하지 않으며 기존 리뷰 자동 연결은 별도입니다. [검증 결과와 연동](docs/ARCHITECTURE_VISION.md) |
 | 콘솔 | 프로젝트별 현황, 검사 이력, 위험 항목 상세, 정책 조회, 실행 로그, 검토 상태 변경 |
 | 사람의 검토와 실행 통제 | 승인 대기, PostgreSQL checkpoint, 동일 검사 재개, 승인 후 CSI 내부 검토 이슈 생성 |
@@ -402,6 +403,7 @@ RAG의 주 색인은 [rag/documents](rag/documents)의 **PrivacyGuard PDF 2종, 
 
 ```sh
 mkdir -p .runtime
+.venv/bin/python -m pip install -r coding_agent/requirements.txt -r slack_bot/requirements.txt
 .venv/bin/python -m pytest tests -q
 mvn -f backend/pom.xml test
 npm --prefix frontend ci

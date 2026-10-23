@@ -76,6 +76,8 @@ class CodingProposalsTest {
   assertThrows(ResponseStatusException.class,()->service.leased(id,"valid"));
  }
  @Test void progressOnlyAcceptsBoundedKnownStages(){
+  assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","ARCHITECTURE_CONTEXT",0,0,"저장된 분석 결과 참고")));
+  assertThrows(ResponseStatusException.class,()->CodingProposals.validateProgress(new CodingProposals.Progress("token","ARCHITECTURE_CONTEXT",0,0,"x".repeat(201))));
   assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","GENERATING",2,120000)));
   for(var p:List.of(new CodingProposals.Progress("token","arbitrary source text",1,0),
       new CodingProposals.Progress("token","VERIFYING",3,0),new CodingProposals.Progress("token","VERIFYING",1,900001)))

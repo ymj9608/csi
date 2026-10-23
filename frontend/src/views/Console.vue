@@ -1888,7 +1888,7 @@ async function logout() {
           <button class="close" @click="drawer = null" aria-label="닫기">
             <X :size="20" />
           </button>
-          <h2>승인 요청</h2>
+          <h2>{{ drawer.action === 'CODING_PROPOSAL_APPROVED' ? '수정안 승인 알림' : '승인 요청' }}</h2>
           <Badge :value="drawer.status" />
             <h3>{{ drawer.action }}</h3>
             <dl>
@@ -1905,11 +1905,14 @@ async function logout() {
               @click="drawer = null"
               >관련 검사와 근거 확인 <ArrowUpRight :size="14"
             /></RouterLink>
-            <p class="note">
+            <p v-if="drawer.action === 'CODING_PROPOSAL_APPROVED'" class="note">
+              검토자가 승인한 수정안의 알림입니다. 관련 검사에서 수정안을 확인할 수 있으며, 원본 코드 반영은 별도 작업입니다.
+            </p>
+            <p v-else class="note">
               승인하면 CSI 내부 보안 검토 이슈가 생성됩니다. 코드 수정이나 운영
               배포는 수행하지 않습니다.
             </p>
-            <div v-if="drawer.status === 'PENDING'" class="drawer-actions">
+            <div v-if="drawer.status === 'PENDING' && drawer.action === 'CREATE_SECURITY_REVIEW_ISSUE'" class="drawer-actions">
               <button @click="decide(drawer, 'REJECTED')">거절</button
               ><button class="primary" @click="decide(drawer, 'APPROVED')">
                 승인

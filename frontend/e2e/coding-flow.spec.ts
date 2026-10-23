@@ -29,7 +29,7 @@ test('OpenAI orchestration trace is visible and model text is escaped',async({pa
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
 
-async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result:any}) {
+async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result:any;progress?:any}) {
   const finding:any={id:'finding',scanId:'scan',repository:'ymj9608/Lichu',ruleId:rule,title:'비밀번호 저장 보완',status:'OPEN',severity:'HIGH',evidenceStatus:'SUSPECTED',confidence:'MEDIUM',filePath:rule==='POL-01'?'backend/app/models/entities.py':'backend/app/core/csi_signup.py',startLine:1,endLine:2,commitSha:'a'.repeat(40),maskedCodeEvidence:'hashlib.sha256(password.encode())',analysis:{red:'빠른 해시 저장 위험',blue:'회원가입 경로 확인',references:[{chunkId:'reference',sectionId:'POL-04',sectionTitle:'비밀번호 저장 정책',documentId:'POLICY',documentVersion:'1',pageNumber:4,content:'bcrypt 비용 12와 개별 salt를 사용합니다.'}]}};
   const result=verifiedResult();
   const state:any={job:initial?{id:'proposal',createdAt:new Date().toISOString(),commitSha:'a'.repeat(40),...initial}:null,requests:0,decisions:[]};
@@ -55,11 +55,19 @@ async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result
   return {state,result};
 }
 
+test('architecture context remains visible after the fast lookup phase and escapes extracted text',async({page})=>{
+  const note='저장된 아키텍처 관련 후보: <img src=x onerror="window.injected=true"> Signup demo';
+  await mockFlow(page,'SEC-02',{status:'RUNNING',result:null,progress:{phase:'GENERATING',attempt:1,architectureNote:note}});
+  await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
+  const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
+  await expect(region.getByTestId('architecture-context')).toHaveText(note);
+  await expect(region).toContainText('VLM 지시에 따른 로컬 코드 생성');
+  await expect(region.getByTestId('architecture-context').locator('img')).toHaveCount(0);
+});
+
 test('risk analysis → generate → progress polling without SSE → evidence → approve',async({page})=>{
   const {state,result}=await mockFlow(page);
-  // ReportText has a screen-reader copy as well as animated visible text.
-  // Wait for the visible copy to finish, without matching both DOM nodes.
-  const riskText=page.locator('.verdict.red .report-text > [aria-hidden="true"]');
+  const riskText=page.locator('.verdict.red').getByText('빠른 해시 저장 위험',{exact:true});
   await expect(riskText).toBeVisible();
   await expect(riskText).toHaveText('빠른 해시 저장 위험');
   await page.getByRole('button',{name:'수정안 생성·검토로 이동',exact:true}).click();
