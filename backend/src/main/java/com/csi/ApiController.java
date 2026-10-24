@@ -1,4 +1,5 @@
 package com.csi;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;import org.springframework.http.*;import org.springframework.web.server.ResponseStatusException;import org.springframework.transaction.annotation.Transactional;import org.springframework.beans.factory.annotation.Value;import org.springframework.security.core.Authentication;import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;import java.util.*;
 @RestController public class ApiController {
  final Db db;final Events events;final PolicyCatalog catalog;final Set<String> allowed;
@@ -9,7 +10,27 @@ import org.springframework.web.bind.annotation.*;import org.springframework.http
  @GetMapping("/api/projects") public Object projects(){String latest="f.status<>'RESOLVED' AND f.scan_id IN (SELECT DISTINCT ON(branch) id FROM scans WHERE project_id=p.id AND status='COMPLETED' ORDER BY branch,created_at DESC)";return db.list("SELECT p.*,pp.version policy_version,s.status latest_status,s.created_at last_scan_at,(SELECT count(*) FROM findings f WHERE f.scan_id=s.id) finding_count,(SELECT count(*) FROM scans c WHERE c.project_id=p.id AND c.status='COMPLETED') completed_scans,(SELECT count(*) FROM findings f WHERE "+latest+") open_findings,(SELECT count(*) FROM findings f WHERE f.severity IN ('CRITICAL','HIGH') AND "+latest+") open_critical_high FROM projects p JOIN project_policies pp ON pp.project_id=p.id LEFT JOIN LATERAL (SELECT * FROM scans WHERE project_id=p.id ORDER BY created_at DESC LIMIT 1) s ON true ORDER BY p.created_at DESC");}
  @GetMapping("/api/projects/{id}") public Object project(@PathVariable UUID id){return db.one("SELECT p.*,pp.version policy_version FROM projects p JOIN project_policies pp ON pp.project_id=p.id WHERE p.id=?",id);}
  public record NewProject(String repository,String defaultBranch){}
- @PostMapping("/api/projects") @Transactional public Object project(@RequestBody NewProject p){if(p.repository()==null||!p.repository().matches("[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")||!allowed.contains(p.repository()))throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Repository Allowlist를 확인하세요.");if(p.defaultBranch()==null||!p.defaultBranch().matches("[A-Za-z0-9_./-]{1,100}"))throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"유효하지 않은 브랜치입니다.");UUID id=UUID.randomUUID();db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,?)",id,p.repository(),p.defaultBranch());db.jdbc.update("INSERT INTO project_policies VALUES(?,?,?::jsonb)",id,catalog.policy.get("version"),db.encode(catalog.policy));return Map.of("id",id);}
+ @PostMapping(value="/api/projects",consumes=MediaType.APPLICATION_JSON_VALUE)
+ public Object project(@RequestBody NewProject p){
+  throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"아키텍처 이미지를 필수로 첨부하세요. multipart/form-data로 등록해야 합니다.");
+ }
+ @PostMapping(value="/api/projects",consumes=MediaType.MULTIPART_FORM_DATA_VALUE) @Transactional
+ public Object project(@RequestParam String repository,@RequestParam String defaultBranch,
+                       @RequestParam(required=false) MultipartFile architecture){
+  if(repository==null||!repository.matches("[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")||!allowed.contains(repository))
+   throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Repository Allowlist를 확인하세요.");
+  if(defaultBranch==null||!defaultBranch.matches("[A-Za-z0-9_./-]{1,100}"))
+   throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"유효하지 않은 브랜치입니다.");
+  if(architecture==null||architecture.isEmpty())
+   throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"아키텍처 이미지를 필수로 첨부하세요.");
+  var image=ArchitectureContexts.inspect(architecture);
+  UUID id=UUID.randomUUID(),diagramId=UUID.randomUUID();
+  // A failed image validation or insert must not leave a project without its diagram.
+  db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,?)",id,repository,defaultBranch);
+  db.jdbc.update("INSERT INTO project_policies VALUES(?,?,?::jsonb)",id,catalog.policy.get("version"),db.encode(catalog.policy));
+  db.jdbc.update("INSERT INTO architecture_diagrams(id,project_id,image,content_type,status,components,summary,confirmed) VALUES(?,?,?,?,'QUEUED',null,null,false)",diagramId,id,image.bytes(),image.contentType());
+  return Map.of("id",id,"diagramId",diagramId,"architectureStatus","QUEUED");
+ }
  @GetMapping("/api/scans") public Object scans(@RequestParam(required=false)UUID projectId){return projectId==null?db.list(SCANS+"ORDER BY created_at DESC LIMIT 1000"):db.list(SCANS+"WHERE project_id=? ORDER BY created_at DESC LIMIT 1000",projectId);}
  @GetMapping({"/api/scans/{id}","/internal/scans/{id}"}) public Object scan(@PathVariable UUID id){return db.one(SCANS+"WHERE s.id=?",id);}
  @GetMapping({"/api/scans/{id}/findings","/internal/scans/{id}/findings"}) public Object scanFindings(@PathVariable UUID id){db.one("SELECT id FROM scans WHERE id=?",id);return db.list(FINDINGS+"WHERE scan_id=? ORDER BY start_line",id);}

@@ -41,6 +41,7 @@ import Pager from "../components/Pager.vue";
 import { buildTimeline, elapsed } from "../lib/timeline";
 import ArchitectureUpload from "../components/ArchitectureUpload.vue";
 import { ACCEPTED_TYPES, acceptable, addFolder } from "../lib/architecture";
+import { registerProject } from "../lib/projectRegistration";
 import { PROJECT_SCOPED, rememberProject, rememberedProject } from "../lib/project";
 const route = useRoute(),
   router = useRouter(),
@@ -708,13 +709,13 @@ async function decide(a: any, decision: string) {
     session.notify(e.message);
   }
 }
-// 프로젝트 등록 시 아키텍처 파일은 선택 사항입니다. 넣으면 프로젝트 이름의 폴더로 저장합니다.
+// 첫 첨부를 서버 분석용 이미지로 저장해야 프로젝트 등록이 완료됩니다.
 const archFiles = ref<File[]>([]),
   archInput = ref<HTMLInputElement>(),
   registering = ref(false);
 function chooseArchFiles(files?: FileList | null) {
   const all = Array.from(files || []);
-  const accepted = all.filter(acceptable);
+  const accepted = all.filter((file) => file.size > 0 && acceptable(file));
   if (archInput.value) archInput.value.value = "";
   if (accepted.length < all.length)
     session.notify(`형식이나 크기가 맞지 않는 ${all.length - accepted.length}개 파일은 제외했습니다.`);
@@ -725,23 +726,19 @@ function closeProjectModal() {
   archFiles.value = [];
 }
 async function addProject() {
+  if (registering.value) return;
+  if (!archFiles.value.length) return session.notify("아키텍처 파일을 필수로 첨부하세요.");
   registering.value = true;
   try {
     const repository = repo.value;
-    const created = await api<{ id: string }>("/projects", "POST", {
-      repository,
-      defaultBranch: defaultBranch.value,
-    });
-    let message = "프로젝트를 등록했습니다.";
-    if (archFiles.value.length)
-      try {
-        await addFolder(created.id, repository, archFiles.value);
-        message = `프로젝트와 아키텍처 파일 ${archFiles.value.length}개를 등록했습니다.`;
-      } catch {
-        // 프로젝트 등록은 이미 끝났으므로 아키텍처만 다시 올리도록 안내합니다.
-        message =
-          "프로젝트는 등록했지만 아키텍처를 저장하지 못했습니다. 프로젝트 화면의 아키텍처에서 다시 올려 주세요.";
-      }
+    const files = [...archFiles.value];
+    const created = await registerProject(repository, defaultBranch.value, files[0]);
+    let message = "프로젝트와 아키텍처를 등록했습니다. 아키텍처 분석 대기 중입니다.";
+    try {
+      await addFolder(created.id, repository, files);
+    } catch {
+      message = "프로젝트와 분석용 이미지는 서버에 등록했습니다. 브라우저의 이미지 폴더 저장은 실패했습니다.";
+    }
     closeProjectModal();
     repo.value = "";
     session.notify(message);
@@ -1936,7 +1933,7 @@ async function logout() {
             <X :size="20" />
           </button>
           <h2>프로젝트 등록</h2>
-          <p>허용 목록에 있는 GitHub 저장소를 연결합니다.</p>
+          <p>GitHub 저장소를 등록하고, 아키텍처 이미지를 필수로 첨부합니다.</p>
           <label
             >저장소<input
               v-model="repo"
@@ -1949,7 +1946,7 @@ async function logout() {
               required
               placeholder="develop" /></label
           ><div class="arch-field">
-            <span class="arch-field-label">아키텍처 <small>선택 사항</small></span>
+            <span class="arch-field-label">아키텍처 <small>필수 첨부</small></span>
             <button type="button" class="arch-pick" @click="archInput?.click()">
               <ImagePlus :size="15" />아키텍처 파일 선택
             </button>
@@ -1976,11 +1973,11 @@ async function logout() {
               </li>
             </ul>
             <small class="arch-hint"
-              >넣지 않아도 프로젝트를 등록할 수 있습니다. 넣으면 프로젝트 이름의 폴더로 저장됩니다.
-              PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB</small
+              >아키텍처 파일을 1개 이상 첨부해야 등록할 수 있습니다. 첫 번째 파일을 분석하며, PDF는 첫 페이지를 사용합니다.
+              PNG·JPEG·WebP·GIF·PDF, 파일당 최대 30MB. 분석용 변환 이미지는 5 MiB·16MP 이하입니다.</small
             >
           </div
-          ><button class="primary" :disabled="registering">
+          ><button class="primary" :disabled="registering || !archFiles.length">
             {{ registering ? "등록 중…" : "프로젝트 등록" }}
           </button>
         </form>

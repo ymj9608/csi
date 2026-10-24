@@ -482,4 +482,4 @@ csi/
 
 발표자료의 텍스트·설명 도식은 PowerPoint에서 편집할 수 있으며 Keynote에서 13장 가져오기와 PDF 내보내기를 확인했습니다. 재생성 소스는 [build_evaluation_deck.py](scripts/build_evaluation_deck.py)입니다. 발표자료용 `python-pptx`, `Pillow`는 서비스 런타임 의존성과 분리해 사용합니다.
 
-아키텍처는 선택 사항이며, 이미지가 없으면 코드·정책 근거로 수정안을 생성합니다. 제공자 선택과 데이터셋 설명은 [Perception & Reasoning](docs/PERCEPTION_REASONING.md)을 확인하세요.
+새 프로젝트 등록 시 아키텍처 이미지는 필수입니다. 프로젝트·정책·분석용 이미지를 한 트랜잭션으로 저장하고 분석 대기 상태로 등록합니다. 실제 분석은 Worker가 실행 중일 때 진행됩니다. 기존 프로젝트와 과거 코드 전용 실험 결과는 유지합니다. 제공자 선택과 데이터셋 설명은 [Perception & Reasoning](docs/PERCEPTION_REASONING.md)을 확인하세요.
