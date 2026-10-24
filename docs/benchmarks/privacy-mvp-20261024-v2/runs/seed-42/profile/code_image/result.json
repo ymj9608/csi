@@ -1,0 +1,80 @@
+{
+  "case": "profile",
+  "arm": "code_image",
+  "seed": 42,
+  "status": "PASSED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to strip 'phone' and 'email' fields from payload before returning, but only for external recipients (r2 and r3). Preserve all other fields, including nested objects. Do not alter the list of channels or the structure of the return value. Use deepcopy to avoid mutating the original payload.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1",
+          "r2"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "FAIL",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 2,
+        "total": 4,
+        "seconds": 4.237,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    },
+    {
+      "number": 2,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to preserve the original event payload for internal channels (r1) and for storage/archive, but sanitize only external payloads (r2 and r3) by removing 'phone' and 'email' fields. Do not mutate the original event or stored data. Use deepcopy to avoid side effects. Keep the list of (channel, payload) pairs unchanged in structure and order. Do not change any other logic or imports.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1",
+          "r2"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 0,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+        },
+        "passed": 4,
+        "total": 4,
+        "seconds": 4.159,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 4,
+  "selectedCandidate": "candidate-2",
+  "wallSeconds": 480.699,
+  "vlmSeconds": 226.102,
+  "coderSeconds": 246.142,
+  "inputTokens": 7384,
+  "outputTokens": 846,
+  "usageComplete": true
+}

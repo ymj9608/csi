@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETED",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "inputSha256": "6df53c7490c0bcd8dd7ad4d986c43859604930b5684e129a7d7dbdf376625117",
+  "answerText": "{\n  \"files\": [\n    {\n      \"path\": \"adapter.py\",\n      \"source\": \"from copy import deepcopy\\n\\ndef sanitize_external_payload(payload):\\n    \\\"\\\"\\\"Remove 'phone' and 'email' fields from payload, recursively.\\\"\\\"\\\"\\n    if isinstance(payload, dict):\\n        if 'phone' in payload:\\n            del payload['phone']\\n        if 'email' in payload:\\n            del payload['email']\\n        for key, value in list(payload.items()):\\n            payload[key] = sanitize_external_payload(value)\\n    elif isinstance(payload, list):\\n        return [sanitize_external_payload(item) for item in payload]\\n    return payload\\n\\ndef build_deliveries(event, failed, routes):\\n    channels = ['r1', 'r3'] if failed else ['r1', 'r2']\\n    original_payload = deepcopy(event)\\n    deliveries = []\\n    \\n    for channel in channels:\\n        payload = deepcopy(original_payload)\\n        if routes[channel]['boundary'] == 'EXTERNAL':\\n            payload = sanitize_external_payload(payload)\\n        deliveries.append((channel, payload))\\n    \\n    return deliveries\"\n    }\n  ]\n}",
+  "thinkingPresent": false,
+  "inputTokens": 1962,
+  "outputTokens": 286,
+  "loadNs": 22904554400,
+  "promptNs": 22989737000,
+  "generationNs": 94324917000,
+  "doneReason": "stop",
+  "answer": {
+    "files": [
+      {
+        "path": "adapter.py",
+        "source": "from copy import deepcopy\n\ndef sanitize_external_payload(payload):\n    \"\"\"Remove 'phone' and 'email' fields from payload, recursively.\"\"\"\n    if isinstance(payload, dict):\n        if 'phone' in payload:\n            del payload['phone']\n        if 'email' in payload:\n            del payload['email']\n        for key, value in list(payload.items()):\n            payload[key] = sanitize_external_payload(value)\n    elif isinstance(payload, list):\n        return [sanitize_external_payload(item) for item in payload]\n    return payload\n\ndef build_deliveries(event, failed, routes):\n    channels = ['r1', 'r3'] if failed else ['r1', 'r2']\n    original_payload = deepcopy(event)\n    deliveries = []\n    \n    for channel in channels:\n        payload = deepcopy(original_payload)\n        if routes[channel]['boundary'] == 'EXTERNAL':\n            payload = sanitize_external_payload(payload)\n        deliveries.append((channel, payload))\n    \n    return deliveries"
+      }
+    ]
+  },
+  "wallSeconds": 140.276
+}

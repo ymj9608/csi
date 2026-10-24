@@ -1,0 +1,13 @@
+{
+  "regressionTestsPassed": 86,
+  "beforeComparisonInference": true,
+  "checks": [
+    "scope and displayed coder permissions agree",
+    "retry includes prior candidate and actual verifier error",
+    "failed new attempt cannot reuse old successful verification",
+    "all arms share import index and source pool",
+    "only image arm receives image; text arm receives same facts",
+    "WASI host filesystem/write/network/environment isolation",
+    "known unsafe controls fail; known-correct controls8/8"
+  ]
+}

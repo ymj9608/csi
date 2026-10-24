@@ -1,0 +1,29 @@
+[
+  {
+    "model": "qwen3-vl:8b-instruct-q4_K_M",
+    "actionPassed": true,
+    "perceptionStatus": "COMPLETED",
+    "matchedNodes": 1,
+    "matchedEdges": 0,
+    "missingEdges": 3,
+    "extraEdges": 3
+  },
+  {
+    "model": "ministral-3:8b-instruct-2512-q4_K_M",
+    "actionPassed": true,
+    "perceptionStatus": "COMPLETED",
+    "matchedNodes": 4,
+    "matchedEdges": 3,
+    "missingEdges": 0,
+    "extraEdges": 1
+  },
+  {
+    "model": "qwen3-vl:8b",
+    "actionPassed": true,
+    "perceptionStatus": "FAILED",
+    "matchedNodes": 0,
+    "matchedEdges": 0,
+    "missingEdges": 3,
+    "extraEdges": 0
+  }
+]

@@ -1,2 +1,2 @@
-# Benchmark manifests hash original file bytes; do not rewrite line endings.
-docs/benchmarks/** -text
+# Benchmark manifests hash original bytes, including model-generated whitespace.
+docs/benchmarks/** -text -whitespace

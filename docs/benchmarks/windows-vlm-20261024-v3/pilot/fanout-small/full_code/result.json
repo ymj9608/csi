@@ -1,0 +1,78 @@
+{
+  "case": "fanout-small",
+  "arm": "full_code",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 2,
+  "trace": [
+    {
+      "action": "read",
+      "path": "deployment.json",
+      "query": "boundary: \"EXTERNAL\"",
+      "instruction": "Identify external recipients to prevent raw phone disclosure."
+    },
+    {
+      "action": "delegate",
+      "path": "app.py",
+      "query": "signup(phone, fail=False)",
+      "instruction": "Modify signup to avoid exposing raw phone to external recipients r2 and r3. Keep phone in MEMBERS and ARCHIVE, but sanitize event before publishing to external channels."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup(phone, fail=False)",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "dispatcher.py",
+      "query": "from deployment import get_recipient_boundary",
+      "instruction": "Import deployment.json directly to avoid module dependency. Use literal lookup for external channels."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup(phone, fail=False)",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "app.py",
+      "query": "signup(phone, fail=False)",
+      "instruction": "Preserve phone in internal channels (r1) by not sanitizing for r1. Ensure phone remains intact in internal storage and replay archives."
+    }
+  ],
+  "error": "ValueError: CODING_BUDGET",
+  "wallSeconds": 438.525,
+  "readPaths": [
+    "app.py",
+    "broker.py",
+    "deployment.json",
+    "dispatcher.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 903,
+  "sourceFileCount": 5,
+  "verification": {
+    "exitCode": 1,
+    "error": null,
+    "cases": {
+      "test_deliveries": "ok",
+      "test_external_failure": "ok",
+      "test_external_normal": "ok",
+      "test_failure_diagnostics": "ok",
+      "test_input_not_mutated": "ok",
+      "test_internal_phone": "ERROR",
+      "test_replay": "ok",
+      "test_store": "ok"
+    },
+    "passed": 7,
+    "total": 8,
+    "log": "test_deliveries (test_contract.Contract.test_deliveries) ... ok\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ERROR\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nERROR: test_internal_phone (test_contract.Contract.test_internal_phone)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 11, in test_internal_phone\n    signup(P); self.assertEqual(self.route('r1')[0]['phone'],P)\n                                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nKeyError: 'phone'\n\n----------------------------------------------------------------------\nRan 8 tests in 0.007s\n\nFAILED (errors=1)\n",
+    "seconds": 3.887,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  },
+  "inputTokens": 9894,
+  "outputTokens": 987,
+  "failedCalls": 0
+}

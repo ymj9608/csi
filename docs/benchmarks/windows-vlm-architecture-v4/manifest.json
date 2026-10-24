@@ -1,0 +1,35 @@
+{
+  "revision": 4,
+  "used_in_v3_experiment": false,
+  "scope": "Synthetic source-derived component diagrams; not production infrastructure.",
+  "generator": "scripts/build_windows_vlm_architecture.py",
+  "diagrams": {
+    "retry": {
+      "source_sha256": {
+        "state.py": "44ae88eede77f0cf3da2ac98f52a7463502d1e9004e36af921e32b0c352f02ad",
+        "broker.py": "7753dac1e712b679bcd89b94b9a5e415263caa535b94cab6cc0a8ba058ca61d8",
+        "deployment.json": "2f9ea6132a83b94f83d65dccde03b398cbbfc75f7646c27698c606a44fb65076",
+        "app.py": "471427cf373150484c43b3492cb0ed1fe1af6c54308d364acacf1ccceb6e9066",
+        "notification.py": "acc88252b81f45de1a7a6007518f3ba8aa36eed89ad718bc8d9a9407c580d565",
+        "analytics.py": "b857210525be532e0a66115384448dd6c7d35fe791d1a81f82a29f6a6fa0f813",
+        "recovery.py": "4e97af3962661d8185e3aea78bbdcfb0062cfebaed0af540ef54a8b83d83c5c9",
+        "relay.py": "fba9fbf660312e500041afa34a99931097a5ec2c3e007317846a4eb6ff8aa457"
+      },
+      "svg_sha256": "53f39ab4774e080ef4887c84138c6e3b08286a2dd9dc17f68067d74c9197cf3b",
+      "expanded_variant": "Same topology; 48 isolated catalog files omitted.",
+      "png_sha256": "deff41454c9990807e084fcbde51ea3e32407753d6f5875bc234477db10e67ac"
+    },
+    "fanout": {
+      "source_sha256": {
+        "state.py": "44ae88eede77f0cf3da2ac98f52a7463502d1e9004e36af921e32b0c352f02ad",
+        "broker.py": "7753dac1e712b679bcd89b94b9a5e415263caa535b94cab6cc0a8ba058ca61d8",
+        "deployment.json": "2f9ea6132a83b94f83d65dccde03b398cbbfc75f7646c27698c606a44fb65076",
+        "app.py": "e918d9b4fc1784fd4fbe6f18cefa6687fb6dc2e9b0830f6f8bd7ae6a1ff04fa3",
+        "dispatcher.py": "1515899403301c7012a1e5cbe977e2f365ce5ccd1891ff205ab3d55a6438feb8"
+      },
+      "svg_sha256": "2abdcfc5a106f571c7254263a5a1288810344d72112dc0066eaeb45287fa0842",
+      "expanded_variant": "Same topology; 48 isolated catalog files omitted.",
+      "png_sha256": "c07d71aa18c38b3a2a51eaa94963e6fc746dd8d7e919d103c6fe5606b1a3542b"
+    }
+  }
+}

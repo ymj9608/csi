@@ -1,0 +1,1164 @@
+{
+  "kind": "POST_RUN_DIAGNOSTICS",
+  "notes": [
+    "Reference repair file coverage is evaluator-only and does not prove correct reasoning.",
+    "Alternative repairs may exist; reference file coverage is not a pass criterion.",
+    "Token and model timing sums include failed calls when usage was returned.",
+    "Missing usage on timeouts is unmeasured, not zero; token sums are lower bounds if callsWithoutUsage is nonzero.",
+    "Provider load/prompt/generation timing is not an exact wall-time decomposition.",
+    "Resource samples describe the whole desktop, not isolated process memory."
+  ],
+  "conditions": [
+    {
+      "case": "fanout-small",
+      "arm": "image_search",
+      "status": "PASSED",
+      "error": null,
+      "wallSeconds": 520.928,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 2,
+        "verify": 2,
+        "finish": 1
+      },
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 4.109,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 0,
+          "passed": 8,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.97,
+          "exceptionLines": []
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 313.612,
+          "loadSeconds": 56.674,
+          "promptSeconds": 133.433,
+          "generationSeconds": 123.046,
+          "inputTokens": 14054,
+          "outputTokens": 360
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 199.173,
+          "loadSeconds": 45.804,
+          "promptSeconds": 20.638,
+          "generationSeconds": 132.627,
+          "inputTokens": 1725,
+          "outputTokens": 534
+        }
+      }
+    },
+    {
+      "case": "fanout-small",
+      "arm": "code_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 498.775,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 5,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "FAIL",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 4.055,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: 0 != 1",
+            "KeyError: 'phone'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ERROR",
+            "test_external_failure": "ERROR",
+            "test_external_normal": "ERROR",
+            "test_failure_diagnostics": "ERROR",
+            "test_input_not_mutated": "ERROR",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ERROR",
+            "test_store": "ERROR"
+          },
+          "seconds": 4.071,
+          "exceptionLines": [
+            "NameError: name 'json' is not defined. Did you forget to import 'json'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 223.344,
+          "loadSeconds": 56.645,
+          "promptSeconds": 69.271,
+          "generationSeconds": 97.174,
+          "inputTokens": 9756,
+          "outputTokens": 334
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 267.225,
+          "loadSeconds": 45.822,
+          "promptSeconds": 24.206,
+          "generationSeconds": 197.11,
+          "inputTokens": 2078,
+          "outputTokens": 714
+        }
+      }
+    },
+    {
+      "case": "fanout-small",
+      "arm": "text_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 462.632,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.995,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 6,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "FAIL",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 4.028,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: Lists differ: [{'id': 1, 'kind': 'signup'}] != []"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 217.934,
+          "loadSeconds": 56.381,
+          "promptSeconds": 63.254,
+          "generationSeconds": 98.058,
+          "inputTokens": 9578,
+          "outputTokens": 335
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 236.617,
+          "loadSeconds": 45.319,
+          "promptSeconds": 21.538,
+          "generationSeconds": 169.651,
+          "inputTokens": 1746,
+          "outputTokens": 662
+        }
+      }
+    },
+    {
+      "case": "fanout-small",
+      "arm": "full_code",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 438.525,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 5,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.933,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 7,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.887,
+          "exceptionLines": [
+            "KeyError: 'phone'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 190.907,
+          "loadSeconds": 56.587,
+          "promptSeconds": 52.58,
+          "generationSeconds": 81.493,
+          "inputTokens": 8167,
+          "outputTokens": 306
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 239.739,
+          "loadSeconds": 46.069,
+          "promptSeconds": 20.645,
+          "generationSeconds": 172.91,
+          "inputTokens": 1727,
+          "outputTokens": 681
+        }
+      }
+    },
+    {
+      "case": "fanout-expanded",
+      "arm": "image_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 724.355,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ERROR",
+            "test_external_failure": "ERROR",
+            "test_external_normal": "ERROR",
+            "test_failure_diagnostics": "ERROR",
+            "test_input_not_mutated": "ERROR",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ERROR",
+            "test_store": "ERROR"
+          },
+          "seconds": 4.182,
+          "exceptionLines": [
+            "NameError: name 'deepcopy' is not defined"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 7,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 4.049,
+          "exceptionLines": [
+            "AssertionError: Lists differ: [{'id': 1, 'kind': 'signup', 'phone': '***PHONE_REDACTED***'}] != []"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 450.444,
+          "loadSeconds": 56.138,
+          "promptSeconds": 220.829,
+          "generationSeconds": 172.941,
+          "inputTokens": 26062,
+          "outputTokens": 342
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 265.543,
+          "loadSeconds": 46.201,
+          "promptSeconds": 30.285,
+          "generationSeconds": 188.952,
+          "inputTokens": 2568,
+          "outputTokens": 684
+        }
+      }
+    },
+    {
+      "case": "fanout-expanded",
+      "arm": "text_search",
+      "status": "FAILED",
+      "error": "ValueError: ReadTimeout: timed out",
+      "wallSeconds": 300.079,
+      "attempts": 0,
+      "actions": {},
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 0,
+      "referenceRepairFilesReadBeforeFirstDelegation": null,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [
+        {
+          "call": "action-0",
+          "error": "ReadTimeout: timed out",
+          "wallSeconds": 300.044
+        }
+      ],
+      "candidateValidations": [],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 1,
+          "failedCalls": 1,
+          "callsWithoutUsage": 1,
+          "wallSeconds": 300.044,
+          "loadSeconds": 0.0,
+          "promptSeconds": 0.0,
+          "generationSeconds": 0.0,
+          "inputTokens": 0,
+          "outputTokens": 0
+        }
+      }
+    },
+    {
+      "case": "fanout-expanded",
+      "arm": "code_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 519.604,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 4,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 4.023,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 6,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "FAIL",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 4.094,
+          "exceptionLines": [
+            "AssertionError: 0 != 1"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 281.914,
+          "loadSeconds": 55.432,
+          "promptSeconds": 110.678,
+          "generationSeconds": 115.489,
+          "inputTokens": 17381,
+          "outputTokens": 298
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 229.44,
+          "loadSeconds": 45.591,
+          "promptSeconds": 20.531,
+          "generationSeconds": 163.227,
+          "inputTokens": 1725,
+          "outputTokens": 649
+        }
+      }
+    },
+    {
+      "case": "fanout-expanded",
+      "arm": "full_code",
+      "status": "FAILED",
+      "error": "ValueError: INPUT_BYTE_LIMIT",
+      "wallSeconds": 712.025,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 2,
+        "verify": 2
+      },
+      "initialReadFiles": 53,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 7,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.86,
+          "exceptionLines": [
+            "KeyError: 'phone'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 7,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.968,
+          "exceptionLines": [
+            "KeyError: 'phone'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 5,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 428.301,
+          "loadSeconds": 56.502,
+          "promptSeconds": 217.191,
+          "generationSeconds": 154.297,
+          "inputTokens": 25565,
+          "outputTokens": 272
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 275.76,
+          "loadSeconds": 45.669,
+          "promptSeconds": 85.277,
+          "generationSeconds": 144.63,
+          "inputTokens": 6837,
+          "outputTokens": 330
+        }
+      }
+    },
+    {
+      "case": "retry-small",
+      "arm": "code_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 571.529,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": false,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.982,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 3,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ERROR",
+            "test_external_failure": "FAIL",
+            "test_external_normal": "ERROR",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ERROR",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.99,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "NameError: name 'deepcopy' is not defined"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 235.968,
+          "loadSeconds": 64.887,
+          "promptSeconds": 70.47,
+          "generationSeconds": 100.327,
+          "inputTokens": 10266,
+          "outputTokens": 327
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 327.531,
+          "loadSeconds": 46.192,
+          "promptSeconds": 22.965,
+          "generationSeconds": 258.262,
+          "inputTokens": 1948,
+          "outputTokens": 964
+        }
+      }
+    },
+    {
+      "case": "retry-small",
+      "arm": "full_code",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 533.358,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 8,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.896,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 5,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "FAIL",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 4.06,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: 2 != 1"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 213.446,
+          "loadSeconds": 56.74,
+          "promptSeconds": 67.732,
+          "generationSeconds": 88.68,
+          "inputTokens": 10138,
+          "outputTokens": 293
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 311.898,
+          "loadSeconds": 45.638,
+          "promptSeconds": 24.68,
+          "generationSeconds": 241.474,
+          "inputTokens": 2086,
+          "outputTokens": 897
+        }
+      }
+    },
+    {
+      "case": "retry-small",
+      "arm": "image_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 729.845,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": false,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 4.235,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 5,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "FAIL",
+            "test_external_normal": "FAIL",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.971,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 395.478,
+          "loadSeconds": 56.334,
+          "promptSeconds": 153.857,
+          "generationSeconds": 184.817,
+          "inputTokens": 16973,
+          "outputTokens": 464
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 326.098,
+          "loadSeconds": 45.604,
+          "promptSeconds": 24.899,
+          "generationSeconds": 255.488,
+          "inputTokens": 2131,
+          "outputTokens": 954
+        }
+      }
+    },
+    {
+      "case": "retry-small",
+      "arm": "text_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 514.528,
+      "attempts": 2,
+      "actions": {
+        "read": 1,
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 1,
+      "referenceRepairFilesReadBeforeFirstDelegation": false,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 4.035,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.908,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 6,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 218.876,
+          "loadSeconds": 56.861,
+          "promptSeconds": 65.314,
+          "generationSeconds": 96.404,
+          "inputTokens": 10424,
+          "outputTokens": 323
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 287.632,
+          "loadSeconds": 45.617,
+          "promptSeconds": 22.341,
+          "generationSeconds": 219.565,
+          "inputTokens": 1897,
+          "outputTokens": 828
+        }
+      }
+    },
+    {
+      "case": "retry-expanded",
+      "arm": "full_code",
+      "status": "FAILED",
+      "error": "ValueError: MODEL_BLOCKED: The deployment.json file must be imported as a module. Since the delegate timed out, we must manually fix the import in notification.py to load deployment.json as a module.",
+      "wallSeconds": 931.993,
+      "attempts": 2,
+      "actions": {
+        "delegate": 2,
+        "verify": 1,
+        "block": 1
+      },
+      "initialReadFiles": 56,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 0,
+      "referenceRepairFilesReadBeforeFirstDelegation": true,
+      "referenceRepairFilesReadByEnd": true,
+      "failedModelCalls": [
+        {
+          "call": "coder-2",
+          "error": "ReadTimeout: timed out",
+          "wallSeconds": 300.035
+        }
+      ],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.841,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 4,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 411.112,
+          "loadSeconds": 57.081,
+          "promptSeconds": 209.329,
+          "generationSeconds": 144.429,
+          "inputTokens": 21110,
+          "outputTokens": 251
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 1,
+          "callsWithoutUsage": 1,
+          "wallSeconds": 516.955,
+          "loadSeconds": 22.745,
+          "promptSeconds": 40.519,
+          "generationSeconds": 153.565,
+          "inputTokens": 3282,
+          "outputTokens": 350
+        }
+      }
+    },
+    {
+      "case": "retry-expanded",
+      "arm": "text_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 701.814,
+      "attempts": 2,
+      "actions": {
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 0,
+      "referenceRepairFilesReadBeforeFirstDelegation": false,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 4.083,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 0,
+          "total": 0,
+          "cases": {},
+          "seconds": 3.998,
+          "exceptionLines": [
+            "ModuleNotFoundError: No module named 'deployment'"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 5,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 384.254,
+          "loadSeconds": 61.671,
+          "promptSeconds": 122.17,
+          "generationSeconds": 200.11,
+          "inputTokens": 16974,
+          "outputTokens": 468
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 309.347,
+          "loadSeconds": 46.368,
+          "promptSeconds": 24.62,
+          "generationSeconds": 238.257,
+          "inputTokens": 2063,
+          "outputTokens": 886
+        }
+      }
+    },
+    {
+      "case": "retry-expanded",
+      "arm": "code_search",
+      "status": "FAILED",
+      "error": "ValueError: CODING_BUDGET",
+      "wallSeconds": 897.602,
+      "attempts": 2,
+      "actions": {
+        "delegate": 3,
+        "verify": 2
+      },
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 0,
+      "referenceRepairFilesReadBeforeFirstDelegation": false,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [],
+      "candidateValidations": [
+        {
+          "candidate": "candidate-1",
+          "exitCode": 1,
+          "passed": 4,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "FAIL",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "FAIL",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.976,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}, {\"id\": 1, \"kind\": \"signup\"}, {\"id\": 1, \"kind\": \"signup\"}]'",
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: 2 != 1",
+            "AssertionError: 3 != 1"
+          ]
+        },
+        {
+          "candidate": "candidate-2",
+          "exitCode": 1,
+          "passed": 5,
+          "total": 8,
+          "cases": {
+            "test_deliveries": "FAIL",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "FAIL",
+            "test_input_not_mutated": "FAIL",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "seconds": 3.975,
+          "exceptionLines": [
+            "AssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'",
+            "AssertionError: 0 != 1",
+            "AssertionError: 2 != 1"
+          ]
+        }
+      ],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 5,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 458.138,
+          "loadSeconds": 55.877,
+          "promptSeconds": 141.299,
+          "generationSeconds": 260.654,
+          "inputTokens": 18859,
+          "outputTokens": 551
+        },
+        "ministral-3:8b-instruct-2512-q4_K_M": {
+          "calls": 2,
+          "failedCalls": 0,
+          "callsWithoutUsage": 0,
+          "wallSeconds": 431.382,
+          "loadSeconds": 45.813,
+          "promptSeconds": 35.196,
+          "generationSeconds": 350.252,
+          "inputTokens": 2971,
+          "outputTokens": 1152
+        }
+      }
+    },
+    {
+      "case": "retry-expanded",
+      "arm": "image_search",
+      "status": "FAILED",
+      "error": "ValueError: ReadTimeout: timed out",
+      "wallSeconds": 300.062,
+      "attempts": 0,
+      "actions": {},
+      "initialReadFiles": 6,
+      "newlyReadPaths": [],
+      "readActionsOnAlreadySuppliedFiles": 0,
+      "referenceRepairFilesReadBeforeFirstDelegation": null,
+      "referenceRepairFilesReadByEnd": false,
+      "failedModelCalls": [
+        {
+          "call": "action-0",
+          "error": "ReadTimeout: timed out",
+          "wallSeconds": 300.023
+        }
+      ],
+      "candidateValidations": [],
+      "byModel": {
+        "qwen3-vl:8b-instruct-q4_K_M": {
+          "calls": 1,
+          "failedCalls": 1,
+          "callsWithoutUsage": 1,
+          "wallSeconds": 300.023,
+          "loadSeconds": 0.0,
+          "promptSeconds": 0.0,
+          "generationSeconds": 0.0,
+          "inputTokens": 0,
+          "outputTokens": 0
+        }
+      }
+    }
+  ],
+  "minimumAvailableRamGiB": 4.196,
+  "maximumSystemMemoryLoadPercent": 73
+}

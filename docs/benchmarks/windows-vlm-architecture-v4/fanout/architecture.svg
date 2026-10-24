@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1180" viewBox="0 0 1800 1180">
+<defs>
+  <marker id="normal" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#2563eb"/></marker>
+  <marker id="failure" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#b45309"/></marker>
+  <marker id="storage" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#64748b"/></marker>
+</defs>
+<rect width="1800" height="1180" fill="#f8fafc"/>
+<g font-family="Segoe UI, Arial, sans-serif" fill="#0f172a">
+<text x="48" y="49" font-size="15" fill="#2563eb" font-weight="700">MEMBER EVENT DELIVERY</text>
+<text x="48" y="96" font-size="34" fill="#0f172a" font-weight="700">Multi-recipient delivery architecture</text>
+<text x="48" y="128" font-size="17" fill="#64748b" font-weight="400">Component and data-flow view  /  synthetic Python service  /  documentation revision 4</text>
+<rect x="40" y="160" width="1260" height="820" rx="20" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="64" y="195" font-size="17" fill="#1d4ed8" font-weight="700">INTERNAL TRUST BOUNDARY</text>
+<text x="64" y="222" font-size="15" fill="#64748b" font-weight="400">Application modules, internal recipient and in-memory state</text>
+<rect x="1340" y="160" width="420" height="820" rx="20" fill="#fff7ed" stroke="#fed7aa" stroke-width="1.5"/>
+<text x="1364" y="195" font-size="17" fill="#9a3412" font-weight="700">EXTERNAL RECIPIENTS</text>
+<text x="1364" y="222" font-size="15" fill="#9a3412" font-weight="400">Trust classification: deployment.json</text>
+<rect x="850" y="174" width="420" height="51" rx="10" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="870" y="205" font-size="16" fill="#475569" font-weight="400">Transport abstraction: broker.py / publish()</text>
+<text x="1320" y="1040" font-size="14" fill="#64748b" font-weight="600">LOGICAL VIEW · NO DEPLOYMENT CLAIM</text>
+<path d="M360 510 L470 510" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#normal)"/>
+<text x="385" y="494" font-size="15" fill="#2563eb" font-weight="600">event</text>
+<path d="M230 570 L230 800" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#storage)"/>
+<text x="245" y="637" font-size="15" fill="#64748b" font-weight="600">store</text>
+<path d="M750 475 L830 475 L830 300 L950 300" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#normal)"/>
+<text x="790" y="282" font-size="15" fill="#2563eb" font-weight="600">r1 · normal only</text>
+<path d="M750 510 L1420 510" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#normal)"/>
+<text x="1020" y="492" font-size="15" fill="#2563eb" font-weight="600">r2 · normal + failure</text>
+<path d="M750 550 L830 550 L830 740 L1420 740" fill="none" stroke="#b45309" stroke-width="2.5" stroke-dasharray="10 7" marker-end="url(#failure)"/>
+<text x="1030" y="722" font-size="15" fill="#b45309" font-weight="600">r3 · failure only</text>
+<path d="M360 550 L405 550 L405 860 L480 860" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#storage)"/>
+<text x="430" y="778" font-size="15" fill="#64748b" font-weight="600">archive on failure</text>
+<rect x="470" y="450" width="280" height="120" rx="12" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5"/>
+<rect x="471" y="466" width="5" height="88" rx="2" fill="#2563eb"/>
+<text x="490" y="482" font-size="21" fill="#0f172a" font-weight="600">Event dispatcher</text>
+<text x="490" y="511" font-size="17" fill="#2563eb" font-weight="600">dispatcher.py</text>
+<text x="490" y="541" font-size="15" fill="#64748b" font-weight="400">publish_event(event, fail)</text>
+<rect x="480" y="800" width="280" height="120" rx="12" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+<rect x="481" y="816" width="5" height="88" rx="2" fill="#0f766e"/>
+<text x="500" y="832" font-size="21" fill="#0f172a" font-weight="600">Replay archive</text>
+<text x="500" y="861" font-size="17" fill="#0f766e" font-weight="600">state.ARCHIVE</text>
+<text x="500" y="891" font-size="15" fill="#64748b" font-weight="400">In-memory event copies</text>
+<rect x="880" y="800" width="350" height="145" rx="12" fill="white" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="900" y="834" font-size="19" fill="#0f172a" font-weight="600">Route selection</text>
+<text x="900" y="868" font-size="18" fill="#2563eb" font-weight="400">Normal: r1 + r2</text>
+<text x="900" y="902" font-size="18" fill="#b45309" font-weight="400">Failure: r2 + r3</text>
+<text x="900" y="929" font-size="15" fill="#64748b" font-weight="400">Same event enters the dispatcher</text>
+<rect x="100" y="450" width="260" height="120" rx="12" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5"/>
+<rect x="101" y="466" width="5" height="88" rx="2" fill="#2563eb"/>
+<text x="120" y="482" font-size="21" fill="#0f172a" font-weight="600">Signup application</text>
+<text x="120" y="511" font-size="17" fill="#2563eb" font-weight="600">app.py</text>
+<text x="120" y="541" font-size="15" fill="#64748b" font-weight="400">signup(phone, fail)</text>
+<rect x="100" y="800" width="260" height="120" rx="12" fill="#f0fdfa" stroke="#5eead4" stroke-width="1.5"/>
+<rect x="101" y="816" width="5" height="88" rx="2" fill="#0f766e"/>
+<text x="120" y="832" font-size="21" fill="#0f172a" font-weight="600">Member records</text>
+<text x="120" y="861" font-size="17" fill="#0f766e" font-weight="600">state.MEMBERS</text>
+<text x="120" y="891" font-size="15" fill="#64748b" font-weight="400">In-memory event copies</text>
+<rect x="950" y="240" width="280" height="120" rx="12" fill="#ffffff" stroke="#93c5fd" stroke-width="1.5"/>
+<rect x="951" y="256" width="5" height="88" rx="2" fill="#2563eb"/>
+<text x="970" y="272" font-size="21" fill="#0f172a" font-weight="600">SMS recipient</text>
+<text x="970" y="301" font-size="17" fill="#2563eb" font-weight="600">r1 / INTERNAL</text>
+<text x="970" y="331" font-size="15" fill="#64748b" font-weight="400">Simulated internal delivery</text>
+<rect x="1420" y="450" width="280" height="120" rx="12" fill="#ffffff" stroke="#fdba74" stroke-width="1.5"/>
+<rect x="1421" y="466" width="5" height="88" rx="2" fill="#c2410c"/>
+<text x="1440" y="482" font-size="21" fill="#0f172a" font-weight="600">Metrics recipient</text>
+<text x="1440" y="511" font-size="17" fill="#c2410c" font-weight="600">r2 / EXTERNAL</text>
+<text x="1440" y="541" font-size="15" fill="#64748b" font-weight="400">Simulated analytics destination</text>
+<rect x="1420" y="680" width="280" height="120" rx="12" fill="#ffffff" stroke="#fdba74" stroke-width="1.5"/>
+<rect x="1421" y="696" width="5" height="88" rx="2" fill="#c2410c"/>
+<text x="1440" y="712" font-size="21" fill="#0f172a" font-weight="600">Support recipient</text>
+<text x="1440" y="741" font-size="17" fill="#c2410c" font-weight="600">r3 / EXTERNAL</text>
+<text x="1440" y="771" font-size="15" fill="#64748b" font-weight="400">Simulated failure destination</text>
+<path d="M55 1030 L115 1030" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#normal)"/>
+<text x="130" y="1036" font-size="16" fill="#0f172a" font-weight="400">Normal / unconditional flow</text>
+<path d="M420 1030 L480 1030" fill="none" stroke="#b45309" stroke-width="2.5" stroke-dasharray="10 7" marker-end="url(#failure)"/>
+<text x="495" y="1036" font-size="16" fill="#0f172a" font-weight="400">Failure-only flow</text>
+<path d="M720 1030 L780 1030" fill="none" stroke="#64748b" stroke-width="2.5" marker-end="url(#storage)"/>
+<text x="795" y="1036" font-size="16" fill="#0f172a" font-weight="400">In-memory state write</text>
+<text x="48" y="1090" font-size="17" fill="#475569" font-weight="400">Each delivery route uses broker.publish(); broker.py records messages in state.MESSAGES (no actual network or queue).</text>
+<text x="48" y="1120" font-size="17" fill="#475569" font-weight="400">Boxes represent code modules or simulated recipients, not independently deployed services. Inspect source for payload handling.</text>
+<text x="48" y="1150" font-size="17" fill="#475569" font-weight="400">Small and expanded variants share this topology; the 48 unrelated catalog files are omitted. Not used in the completed V3 results.</text>
+</g></svg>

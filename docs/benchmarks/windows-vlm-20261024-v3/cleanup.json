@@ -1,0 +1,8 @@
+{
+    "serverPid":  3788,
+    "modelsRetained":  true,
+    "at":  "2026-10-24T03:08:51.7082488Z",
+    "serverStopped":  true,
+    "reason":  "All 16 trials completed; owned server identity checked and no loaded models remained.",
+    "toolsRetained":  true
+}

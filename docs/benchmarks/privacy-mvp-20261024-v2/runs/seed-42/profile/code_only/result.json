@@ -1,0 +1,78 @@
+{
+  "case": "profile",
+  "arm": "code_only",
+  "seed": 42,
+  "status": "PASSED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to strip 'phone' and 'email' fields from payload before returning, but only for channels marked as EXTERNAL in deployment.json. Preserve all other fields and behavior. Do not alter build_deliveries’ return structure or any other logic.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "FAIL",
+          "test_02_failure_external_contract": "FAIL",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 1,
+        "total": 4,
+        "seconds": 3.783,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    },
+    {
+      "number": 2,
+      "plan": {
+        "instruction": "In adapter.py, before returning the list of (channel, payload) pairs, for each channel that is EXTERNAL (r2 or r3), strip the 'phone' and 'email' keys from the payload *only* if they exist. Do not modify payloads for INTERNAL channels (r1). Preserve all other fields and do not mutate the original event or any stored data. Do not change the structure of build_deliveries or its return value format.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1"
+        ],
+        "failure_recipients": [
+          "r2",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 0,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+        },
+        "passed": 4,
+        "total": 4,
+        "seconds": 4.218,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 4,
+  "selectedCandidate": "candidate-2",
+  "wallSeconds": 393.728,
+  "vlmSeconds": 142.534,
+  "coderSeconds": 243.137,
+  "inputTokens": 5283,
+  "outputTokens": 776,
+  "usageComplete": true
+}

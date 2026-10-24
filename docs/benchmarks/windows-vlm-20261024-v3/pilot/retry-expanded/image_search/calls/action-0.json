@@ -1,0 +1,7 @@
+{
+  "status": "FAILED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "5c121be75eaca300227db431923d19c951321dd5d9008d99982724a00d145cff",
+  "error": "ReadTimeout: timed out",
+  "wallSeconds": 300.023
+}

@@ -1,0 +1,33 @@
+{
+  "case": "calibration",
+  "arm": "direct_coder",
+  "seed": 42,
+  "status": "PASSED",
+  "attempts": [
+    {
+      "number": 1,
+      "verification": {
+        "exitCode": 0,
+        "error": null,
+        "cases": {
+          "test_email": "ok",
+          "test_fields": "ok",
+          "test_input": "ok",
+          "test_phone": "ok"
+        },
+        "passed": 4,
+        "total": 4,
+        "seconds": 3.765,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 4,
+  "selectedCandidate": "candidate-1",
+  "wallSeconds": 43.009,
+  "vlmSeconds": 0,
+  "coderSeconds": 39.201,
+  "inputTokens": 206,
+  "outputTokens": 63,
+  "usageComplete": true
+}

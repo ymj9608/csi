@@ -1,0 +1,20 @@
+[
+  {
+    "archive": "windows-vlm-20261024.zip",
+    "files": 464,
+    "sha256": "4b92ef8ab2fe9ec36d9733b5fd04a3c1742f35c26fa64ce14551794042b3975d",
+    "originalDirectory": "windows-vlm-20261024"
+  },
+  {
+    "archive": "windows-vlm-20261024-v2.zip",
+    "files": 471,
+    "sha256": "e888fcc138bb621f938292c22a510a3fe1f92973814bf905369ad37c41bcc737",
+    "originalDirectory": "windows-vlm-20261024-v2"
+  },
+  {
+    "archive": "privacy-mvp-20261024-v1.zip",
+    "files": 165,
+    "sha256": "81ac68c7f3d0e7d1e6cccc894961a7cac196774471b862f7f531a84332ff5c96",
+    "originalDirectory": "privacy-mvp-20261024-v1"
+  }
+]

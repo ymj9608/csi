@@ -1,0 +1,15 @@
+{
+  "exitCode": 0,
+  "error": null,
+  "cases": {
+    "test_01_normal_external_contract": "ok",
+    "test_02_failure_external_contract": "ok",
+    "test_03_internal_and_stored_data": "ok",
+    "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+  },
+  "passed": 4,
+  "total": 4,
+  "log": "test_01_normal_external_contract (test_contract.PrivacyContract.test_01_normal_external_contract) ... ok\ntest_02_failure_external_contract (test_contract.PrivacyContract.test_02_failure_external_contract) ... ok\ntest_03_internal_and_stored_data (test_contract.PrivacyContract.test_03_internal_and_stored_data) ... ok\ntest_04_direct_call_no_mutation_and_delivery_integrity (test_contract.PrivacyContract.test_04_direct_call_no_mutation_and_delivery_integrity) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.008s\n\nOK\n",
+  "seconds": 4.159,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

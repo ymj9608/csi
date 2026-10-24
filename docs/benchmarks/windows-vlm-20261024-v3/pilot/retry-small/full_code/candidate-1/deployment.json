@@ -1,0 +1,14 @@
+{
+  "r1": {
+    "recipient": "SMS",
+    "boundary": "INTERNAL"
+  },
+  "r2": {
+    "recipient": "Metrics",
+    "boundary": "EXTERNAL"
+  },
+  "r3": {
+    "recipient": "Support",
+    "boundary": "EXTERNAL"
+  }
+}
