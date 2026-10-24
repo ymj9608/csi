@@ -1,0 +1,46 @@
+{
+  "case": "recovery",
+  "arm": "code_image",
+  "seed": 42,
+  "status": "PASSED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to strip 'phone' and 'email' fields from payload before returning, but only for external recipients (r3). Preserve all other fields, including nested objects. Do not alter r1 payloads or any other logic.",
+        "external_recipients": [
+          "r2 / EXTERNAL Analytics",
+          "r3 / EXTERNAL Support"
+        ],
+        "normal_recipients": [
+          "r1 / INTERNAL Internal notification"
+        ],
+        "failure_recipients": [
+          "r3 / EXTERNAL Support"
+        ]
+      },
+      "verification": {
+        "exitCode": 0,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+        },
+        "passed": 4,
+        "total": 4,
+        "seconds": 3.81,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 4,
+  "selectedCandidate": "candidate-1",
+  "wallSeconds": 195.919,
+  "vlmSeconds": 97.626,
+  "coderSeconds": 94.429,
+  "inputTokens": 2375,
+  "outputTokens": 390,
+  "usageComplete": true
+}

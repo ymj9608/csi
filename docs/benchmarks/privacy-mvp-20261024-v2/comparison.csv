@@ -1,0 +1,9 @@
+seed,case,arm,status,bestPassed,attempts,vlmSeconds,coderSeconds,wallSeconds,inputTokens,outputTokens,usageComplete
+42,audit,code_image,FAILED,2,2,236.848,287.659,532.745,7887,941,True
+42,audit,code_only,PASSED,4,1,51.056,100.026,155.294,1203,387,True
+42,fanout,code_image,PASSED,4,2,228.087,204.575,440.751,7208,698,True
+42,fanout,code_only,FAILED,2,2,151.086,198.025,356.96,4671,681,True
+42,profile,code_image,PASSED,4,2,226.102,246.142,480.699,7384,846,True
+42,profile,code_only,PASSED,4,2,142.534,243.137,393.728,5283,776,True
+42,recovery,code_image,PASSED,4,1,97.626,94.429,195.919,2375,390,True
+42,recovery,code_only,FAILED,1,2,141.437,187.69,337.735,4763,659,True

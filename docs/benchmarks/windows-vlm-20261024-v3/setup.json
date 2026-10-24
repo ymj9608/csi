@@ -1,0 +1,32 @@
+{
+  "ollama": {
+    "version": "0.40.10",
+    "url": "https://github.com/ollama/ollama/releases/download/v0.40.10/ollama-windows-amd64.zip",
+    "sha256": "d52aea2d323bdd324bf66a4b1226844aa5fb665cc5974fbcceceda1ce3d934eb"
+  },
+  "pythonWasi": {
+    "version": "3.12.0+20231211-040d5a6",
+    "sha256": "6c1cddbb69ae09e87eee2906bdc70539bff5f2969818a6f8457d4e6a6eb67d4d",
+    "url": "https://github.com/vmware-labs/webassembly-language-runtimes/releases/download/python/3.12.0%2B20231211-040d5a6/python-3.12.0-wasi-sdk-20.0.tar.gz"
+  },
+  "pythonPackages": {
+    "wasmtime": "50.0.1",
+    "pillow": "13.0.0"
+  },
+  "setupExcludedFromInferenceTiming": true,
+  "verification": {
+    "regressionTests": 84,
+    "existingReferenceCandidates": [
+      10,
+      10
+    ],
+    "authoredControlCandidates": [
+      8,
+      8,
+      8,
+      8
+    ],
+    "generatedAiCandidatesTested": 0
+  },
+  "branch": "experiment/windows-vlm-orchestration"
+}

@@ -1,0 +1,286 @@
+{
+  "ollama": {
+    "version": "0.40.10"
+  },
+  "tags": {
+    "models": [
+      {
+        "name": "qwen3-vl:8b",
+        "model": "qwen3-vl:8b",
+        "modified_at": "2026-10-24T08:47:22.9298006+09:00",
+        "size": 6190971699,
+        "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools",
+          "thinking"
+        ]
+      },
+      {
+        "name": "qwen3-vl:8b-instruct-q4_K_M",
+        "model": "qwen3-vl:8b-instruct-q4_K_M",
+        "modified_at": "2026-10-24T08:39:43.8911133+09:00",
+        "size": 6190971795,
+        "digest": "70e58e37beb15464e19aa903dedb2cba828b89c0fb186f75ff2738c7347b96eb",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-instruct-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      },
+      {
+        "name": "ministral-3:8b-instruct-2512-q4_K_M",
+        "model": "ministral-3:8b-instruct-2512-q4_K_M",
+        "modified_at": "2026-10-24T08:37:54.2407966+09:00",
+        "size": 6022236616,
+        "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "mistral3",
+          "families": [
+            "mistral3"
+          ],
+          "parameter_size": "8.9B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      }
+    ]
+  },
+  "models": {
+    "qwen3-vl:8b-instruct-q4_K_M": {
+      "details": {
+        "parent_model": "dhiltgen/qwen3-vl:8b-instruct-q4_K_M-llamacpp",
+        "format": "gguf",
+        "family": "qwen3vl",
+        "families": [
+          "qwen3vl",
+          "clip"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "runner": "llamacpp"
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools"
+      ],
+      "thinking": {
+        "values": [
+          false
+        ],
+        "default": false
+      },
+      "model_info": {
+        "general.architecture": "qwen3vl",
+        "general.file_type": 15,
+        "general.parameter_count": 8190735360,
+        "general.quantization_version": 2,
+        "qwen3vl.attention.head_count": 32,
+        "qwen3vl.attention.head_count_kv": 8,
+        "qwen3vl.attention.key_length": 128,
+        "qwen3vl.attention.layer_norm_rms_epsilon": 1e-06,
+        "qwen3vl.attention.value_length": 128,
+        "qwen3vl.block_count": 36,
+        "qwen3vl.context_length": 262144,
+        "qwen3vl.embedding_length": 4096,
+        "qwen3vl.feed_forward_length": 12288,
+        "qwen3vl.n_deepstack_layers": 3,
+        "qwen3vl.rope.dimension_sections": [
+          24,
+          20,
+          20,
+          0
+        ],
+        "qwen3vl.rope.freq_base": 5000000,
+        "tokenizer.ggml.add_eos_token": false,
+        "tokenizer.ggml.add_padding_token": false,
+        "tokenizer.ggml.eos_token_id": 151645,
+        "tokenizer.ggml.eos_token_ids": [
+          151645,
+          151643
+        ],
+        "tokenizer.ggml.merges": [],
+        "tokenizer.ggml.model": "gpt2",
+        "tokenizer.ggml.padding_token_id": 151643,
+        "tokenizer.ggml.pre": "qwen2",
+        "tokenizer.ggml.scores": [],
+        "tokenizer.ggml.token_type": [],
+        "tokenizer.ggml.tokens": []
+      }
+    },
+    "ministral-3:8b-instruct-2512-q4_K_M": {
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "mistral3",
+        "families": [
+          "mistral3"
+        ],
+        "parameter_size": "8.9B",
+        "quantization_level": "Q4_K_M"
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools"
+      ],
+      "thinking": null,
+      "model_info": {
+        "general.architecture": "mistral3",
+        "general.file_type": 15,
+        "general.parameter_count": 8918026240,
+        "general.quantization_version": 2,
+        "mistral3.attention.head_count": 32,
+        "mistral3.attention.head_count_kv": 8,
+        "mistral3.attention.key_length": 128,
+        "mistral3.attention.layer_norm_rms_epsilon": 1e-05,
+        "mistral3.attention.value_length": 128,
+        "mistral3.block_count": 34,
+        "mistral3.context_length": 262144,
+        "mistral3.embedding_length": 4096,
+        "mistral3.feed_forward_length": 14336,
+        "mistral3.image_token_index": 10,
+        "mistral3.mm.projector_bias": false,
+        "mistral3.mm.projector_hidden_act": "gelu",
+        "mistral3.rope.dimension_count": 128,
+        "mistral3.rope.freq_base": 1000000,
+        "mistral3.rope.scaling.beta_fast": 32,
+        "mistral3.rope.scaling.beta_slow": 1,
+        "mistral3.rope.scaling.factor": 16,
+        "mistral3.rope.scaling.mscale": 1,
+        "mistral3.rope.scaling.mscale_all_dim": 1,
+        "mistral3.rope.scaling.original_context_length": 16384,
+        "mistral3.rope.scaling.type": "yarn",
+        "mistral3.rope.scaling_beta": 0.1,
+        "mistral3.spatial_merge_size": 2,
+        "mistral3.vision.attention.head_count": 16,
+        "mistral3.vision.attention.key_length": 64,
+        "mistral3.vision.block_count": 24,
+        "mistral3.vision.embedding_length": 1024,
+        "mistral3.vision.feed_forward_length": 4096,
+        "mistral3.vision.image_size": 1540,
+        "mistral3.vision.num_channels": 3,
+        "mistral3.vision.patch_size": 14,
+        "mistral3.vision.rope.freq_base": 10000,
+        "mistral3.vocab_size": 131072,
+        "tokenizer.ggml.add_bos_token": true,
+        "tokenizer.ggml.add_eos_token": false,
+        "tokenizer.ggml.add_padding_token": false,
+        "tokenizer.ggml.add_unknown_token": false,
+        "tokenizer.ggml.bos_token_id": 1,
+        "tokenizer.ggml.eos_token_id": 2,
+        "tokenizer.ggml.merges": [],
+        "tokenizer.ggml.model": "gpt2",
+        "tokenizer.ggml.padding_token_id": 11,
+        "tokenizer.ggml.pre": "default",
+        "tokenizer.ggml.scores": [],
+        "tokenizer.ggml.token_type": [],
+        "tokenizer.ggml.tokens": [],
+        "tokenizer.ggml.unknown_token_id": 0
+      }
+    },
+    "qwen3-vl:8b": {
+      "details": {
+        "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+        "format": "gguf",
+        "family": "qwen3vl",
+        "families": [
+          "qwen3vl",
+          "clip"
+        ],
+        "parameter_size": "8.2B",
+        "quantization_level": "Q4_K_M",
+        "runner": "llamacpp"
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools",
+        "thinking"
+      ],
+      "thinking": {
+        "values": [
+          false,
+          true
+        ],
+        "default": true
+      },
+      "model_info": {
+        "general.architecture": "qwen3vl",
+        "general.file_type": 15,
+        "general.parameter_count": 8190735360,
+        "general.quantization_version": 2,
+        "qwen3vl.attention.head_count": 32,
+        "qwen3vl.attention.head_count_kv": 8,
+        "qwen3vl.attention.key_length": 128,
+        "qwen3vl.attention.layer_norm_rms_epsilon": 1e-06,
+        "qwen3vl.attention.value_length": 128,
+        "qwen3vl.block_count": 36,
+        "qwen3vl.context_length": 262144,
+        "qwen3vl.embedding_length": 4096,
+        "qwen3vl.feed_forward_length": 12288,
+        "qwen3vl.n_deepstack_layers": 3,
+        "qwen3vl.rope.dimension_sections": [
+          24,
+          20,
+          20,
+          0
+        ],
+        "qwen3vl.rope.freq_base": 5000000,
+        "tokenizer.ggml.add_eos_token": false,
+        "tokenizer.ggml.add_padding_token": false,
+        "tokenizer.ggml.eos_token_id": 151645,
+        "tokenizer.ggml.eos_token_ids": [
+          151645,
+          151643
+        ],
+        "tokenizer.ggml.merges": [],
+        "tokenizer.ggml.model": "gpt2",
+        "tokenizer.ggml.padding_token_id": 151643,
+        "tokenizer.ggml.pre": "qwen2",
+        "tokenizer.ggml.scores": [],
+        "tokenizer.ggml.token_type": [],
+        "tokenizer.ggml.tokens": []
+      }
+    }
+  }
+}

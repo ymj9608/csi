@@ -1,0 +1,24 @@
+{
+  "case": "retry-expanded",
+  "arm": "image_search",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 0,
+  "trace": [],
+  "error": "ValueError: ReadTimeout: timed out",
+  "wallSeconds": 300.062,
+  "readPaths": [
+    "analytics.py",
+    "app.py",
+    "deployment.json",
+    "notification.py",
+    "recovery.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 1039,
+  "sourceFileCount": 56,
+  "verification": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "failedCalls": 1
+}

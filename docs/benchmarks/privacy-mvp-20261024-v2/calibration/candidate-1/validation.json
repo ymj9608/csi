@@ -1,0 +1,15 @@
+{
+  "exitCode": 0,
+  "error": null,
+  "cases": {
+    "test_email": "ok",
+    "test_fields": "ok",
+    "test_input": "ok",
+    "test_phone": "ok"
+  },
+  "passed": 4,
+  "total": 4,
+  "log": "test_email (test_contract.Calibration.test_email) ... ok\ntest_fields (test_contract.Calibration.test_fields) ... ok\ntest_input (test_contract.Calibration.test_input) ... ok\ntest_phone (test_contract.Calibration.test_phone) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.004s\n\nOK\n",
+  "seconds": 3.765,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

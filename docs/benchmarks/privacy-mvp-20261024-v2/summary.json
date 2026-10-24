@@ -1,0 +1,15 @@
+{
+  "conditions": 8,
+  "scores": {
+    "42": {
+      "code_only": 2,
+      "code_image": 3
+    },
+    "43": {
+      "code_only": 0,
+      "code_image": 0
+    }
+  },
+  "integrationGatePassed": false,
+  "totalWallSeconds": 2893.831
+}

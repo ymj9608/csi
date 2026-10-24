@@ -1,0 +1,77 @@
+{
+  "case": "fanout-small",
+  "arm": "text_search",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 2,
+  "trace": [
+    {
+      "action": "read",
+      "path": "deployment.json",
+      "query": "boundary: \"EXTERNAL\"",
+      "instruction": "Identify external recipients to prevent raw phone disclosure."
+    },
+    {
+      "action": "delegate",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Modify signup to prevent raw phone disclosure to external recipients r2 and r3. Keep phone in MEMBERS and ARCHIVE. Preserve event id/kind and all delivery paths including failures. Public delivery functions must also prevent external raw-phone disclosure when called directly."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Verify that raw phone is not disclosed to external recipients r2 and r3, while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "dispatcher.py",
+      "query": "import deployment",
+      "instruction": "Fix the import error by adding 'deployment' to imports in dispatcher.py and ensure it correctly references deployment.json."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Verify that raw phone is not disclosed to external recipients r2 and r3, while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "dispatcher.py",
+      "query": "publish_event function",
+      "instruction": "Fix the test failures by ensuring external recipients (r2, r3) receive sanitized events without phone, and internal recipients (r1) receive full events. Preserve all delivery paths including failures."
+    }
+  ],
+  "error": "ValueError: CODING_BUDGET",
+  "wallSeconds": 462.632,
+  "readPaths": [
+    "app.py",
+    "deployment.json",
+    "dispatcher.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 772,
+  "sourceFileCount": 5,
+  "verification": {
+    "exitCode": 1,
+    "error": null,
+    "cases": {
+      "test_deliveries": "FAIL",
+      "test_external_failure": "FAIL",
+      "test_external_normal": "ok",
+      "test_failure_diagnostics": "ok",
+      "test_input_not_mutated": "ok",
+      "test_internal_phone": "ok",
+      "test_replay": "ok",
+      "test_store": "ok"
+    },
+    "passed": 6,
+    "total": 8,
+    "log": "test_deliveries (test_contract.Contract.test_deliveries) ... FAIL\ntest_external_failure (test_contract.Contract.test_external_failure) ... FAIL\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nFAIL: test_deliveries (test_contract.Contract.test_deliveries)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 23, in test_deliveries\n    self.assertEqual(self.route('r3'),[])\nAssertionError: Lists differ: [{'id': 1, 'kind': 'signup'}] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n{'id': 1, 'kind': 'signup'}\n\n- [{'id': 1, 'kind': 'signup'}]\n+ []\n\n======================================================================\nFAIL: test_external_failure (test_contract.Contract.test_external_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 15, in test_external_failure\n    signup(P,True); self.assertNotIn(P,json.dumps(self.route('r2')+self.route('r3')))\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n----------------------------------------------------------------------\nRan 8 tests in 0.010s\n\nFAILED (failures=2)\n",
+    "seconds": 4.028,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  },
+  "inputTokens": 11324,
+  "outputTokens": 997,
+  "failedCalls": 0
+}

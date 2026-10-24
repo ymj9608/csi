@@ -1,8 +1,14 @@
-# VLM 총괄 · Lichu 코딩 Agent
+# VLM 총괄 · 프로젝트별 코딩 Agent
+
+새 작업은 공통 엔진 버전 5와 프로젝트별 검증 프로필을 사용합니다. 설정·등록·실행 방법은 [프로젝트별 검증 설정](PROJECT_VERIFICATION_DESIGN.md)의 구현과 운영 방법을 따르세요. 현재 범위는 Python/pytest, 개인정보 로그 유출, 단일 파일 수정입니다. 다른 디렉터리·함수 구조를 가진 Python 프로젝트에 같은 엔진과 검증 팩을 적용합니다.
+
+프로젝트마다 수정 경로·동작 계약·테스트·드라이버·격리 이미지가 고정됩니다. 새 Lichu 프로필은 현재 전화번호 필수 입력과 약한 기존 해시 거부 정책을 보존합니다. 원본 취약점 재현 후 최대 두 후보를 검증하고, 필수 테스트를 모두 통과한 현재 후보만 READY로 제공합니다. 활성 프로필·이미지·모델이 준비되지 않은 작업은 예전 전용 프로필로 되돌아가지 않습니다.
+
+아래 `lichu-signup-v1`, 고정된 13개 보안 테스트와 40개 통과 기준은 엔진 버전 3/4의 **기존 결과·실습 재현용 기록**입니다. 새 프로젝트 프로필 작업에는 적용하지 않습니다.
 
 `ai/coding-agent` 브랜치는 보안 리뷰에 **수정 코드 생성 → 격리 검증 → 관리자 승인 → 새 로컬 브랜치에 반영 준비**를 추가합니다. 모델은 이 Mac(Apple M5, 16GB)에서 비교한 후보 중 전체 코드와 설명을 함께 생성하는 과제에 가장 적합했던 `ministral-3:8b-instruct-2512-q4_K_M`입니다. 전체 오픈소스 모델의 최고 성능을 의미하지 않습니다. 파인튜닝은 사용하지 않습니다.
 
-## 현재 지원 범위
+## 이전 전용 프로필의 지원 범위
 
 - 저장소: 기본 `ymj9608/Lichu`. 코드 프로필: `lichu-signup-v1`.
 - 수정 파일: `backend/app/core/csi_signup.py` 하나. `SEC-02`, `SEC-03`, `SEC-05` 탐지와 연결합니다.
@@ -48,7 +54,7 @@ VLM에 초기 전체 소스는 보내지 않습니다. 이미지와 검사 맥�
 
 VLM은 생성 실패·정적 검사 오류·실행 테스트 결과를 받아 추가 조회, 재수정 또는 보류를 선택합니다. 첫 후보가 통과하지 않았다고 코드가 자동으로 다음 생성을 실행하지 않습니다. VLM이 두 번째 위임을 명시적으로 선택해야 합니다. 후보를 바꾸면 이전 테스트 통과 기록은 무효화되며 새 검증이 필요합니다.
 
-서버 한도는 최대 14 VLM 턴, 코딩 위임 2회, 총괄 루프 540초(진행 중인 호출은 별도 timeout 적용), 누적 토큰 사전 추정 및 실제 usage 120,000입니다. API 호출 timeout은 60초이고 자동 HTTP 재시도는 없습니다. API 입력에는 이미지 토큰도 포함되므로 이 토큰 한도는 정확한 금액 상한을 보장하지 않습니다. 한도를 넘거나 API가 실패하면 BLOCKED로 끝내며 다른 모델로 조용히 대체하지 않습니다. 코드 경로가 5,000개를 넘는 저장소도 명시적으로 차단합니다.
+서버 한도는 최대 14 VLM 턴, 코딩 위임 2회, 총괄 루프 2,100초, 누적 토큰 사전 추정 및 실제 usage 120,000입니다. OpenAI 호출 timeout은 60초, 로컬 Ollama는 기본 600초이며 로컬 호출은 남은 총괄 시간 이내로 제한합니다. 자동 HTTP 재시도는 없습니다. API 입력에는 이미지 토큰도 포함되므로 이 토큰 한도는 정확한 금액 상한을 보장하지 않습니다. 한도를 넘거나 API가 실패하면 BLOCKED로 끝내며 다른 모델로 조용히 대체하지 않습니다. 코드 경로가 5,000개를 넘는 저장소도 명시적으로 차단합니다.
 
 수정 범위는 여전히 Lichu 실습 파일 하나입니다. VLM의 관련 코드 검색은 추가됐지만 범용 다중 파일 수정이나 임의 shell 실행은 제공하지 않습니다. 이미지·문서 속 명령은 신뢰하지 않으며, VLM도 관리자 승인·원본 반영 조건을 해제할 수 없습니다.
 
@@ -247,4 +253,48 @@ RAG의 제한적 완료는 정책 스냅샷을 확보했을 때만 허용합니�
 
 ## 메모리와 빠른 비교
 
-로컬 VLM과 코딩 모델은 매 응답 후 `keep_alive=0`으로 해제합니다. 모델을 다시 불러오는 시간이 추가될 수 있지만 검증 컨테이너와 모델이 동시에 상주하는 메모리를 줄입니다. 로컬 Qwen 선택 기능은 자동 테스트로 확인했으며 이번 빠른 실험에서는 실행하지 않았습니다. [모델 선택·데이터 수집·팀원용 설명](PERCEPTION_REASONING.md), [OpenAI 빠른 비교](benchmarks/flink/openai-quick/RESULTS.md)를 참고하세요.
+로컬 총괄 VLM은 응답 후 기본 300초 동안 메모리에 유지하도록 요청합니다. 반복 조회 때 모델을 다시 불러오는 비용을 줄이기 위한 설정이며, 실제 상주는 Ollama의 메모리 관리에 따릅니다. 메모리가 부족하면 `CSI_LOCAL_VLM_KEEP_ALIVE_SECONDS=0`으로 변경할 수 있습니다. 코딩 모델과 독립 아키텍처 추출은 응답 후 해제합니다. [모델 선택·데이터 수집·팀원용 설명](PERCEPTION_REASONING.md), [OpenAI 빠른 비교](benchmarks/flink/openai-quick/RESULTS.md)를 참고하세요.
+
+## Windows·Mac 공통 로컬 실행 설정 (2026-10-24)
+
+공통 엔진의 시간 설정은 `coding_agent/runtime_settings.py`와 `.env`에서 관리합니다. 장비 이름이나 특정 프로젝트 경로로 분기하지 않습니다. 백엔드 lease는 45분, 공통 프로젝트 엔진 실행은 최대 44분, 총괄 루프는 35분입니다. 이는 종료 상한이며 고정 대기 시간이 아닙니다. 코딩 위임 최대 2회, 고정 보안·기능 테스트와 승인 조건은 그대로입니다. 실행 한도 변경 시 백엔드와 Worker를 함께 갱신해야 합니다. 이미 BLOCKED인 요청은 자동 재개하지 않습니다.
+
+| `.env` 설정 | 기본값 | 허용 범위 |
+|---|---:|---:|
+| `CSI_LOCAL_VLM_TIMEOUT_SECONDS` | 600초 | 30–900초 |
+| `CSI_LOCAL_VLM_NUM_CTX` | 16384 | 8192–32768 |
+| `CSI_LOCAL_VLM_NUM_PREDICT` | 1024 | 256–2048 |
+| `CSI_LOCAL_VLM_KEEP_ALIVE_SECONDS` | 300초 | 0–600초 |
+| `CSI_ARCHITECTURE_TIMEOUT_SECONDS` | 900초 | 60–1800초 |
+| `CSI_ARCHITECTURE_NUM_PREDICT` | 1536 | 512–4096 |
+
+로컬 응답은 도구별 JSON 객체 형식으로 제한하며 근거 ID·수정 범위·검증 결과는 호스트에서 다시 확인합니다. 응답 시간 초과도 API 대기 시간으로 기록하고, 미수신 토큰 수를 0으로 해석하지 않도록 표시합니다. 제한을 늘리는 것만으로 실제 생성 성공이나 속도가 보장되지는 않습니다.
+
+### Mac에서 기존 환경 갱신
+
+기존 Mac의 CSI 백엔드·프런트엔드를 이 소스로 재빌드하고, Python 가상환경은 Mac에서 별도로 생성합니다. Windows의 `.venv`·`.runtime/tools`는 복사하지 않습니다. Docker Desktop의 Linux 엔진, Git, 네이티브 Ollama가 실행되어 있어야 합니다. 동일 모델을 설치하고 `.env`에 `CSI_VLM_PROVIDER=ollama`, `CSI_VLM_MODEL=qwen3-vl:8b` 및 위 공통 설정을 사용합니다. 인증 값은 Mac의 기존 값을 유지합니다.
+
+```sh
+ollama pull qwen3-vl:8b
+ollama pull ministral-3:8b-instruct-2512-q4_K_M
+docker info
+docker build -f coding_agent/verification/Dockerfile -t csi-coding-verifier:local .
+docker build -f coding_agent/verification/Project.Dockerfile -t csi-project-verifier:v1 .
+```
+
+프로젝트 검증 설정의 Docker 이미지 ID는 장비에서 빌드한 실제 이미지에 고정합니다. 특히 Apple Silicon에서는 Windows의 prepared JSON을 그대로 활성화하지 않고 Mac에서 다시 준비합니다. 다음 명령의 `BASELINE_SHA`는 검증하려는 원본 취약점이 재현되는 전체 커밋 SHA로 지정합니다. 일반화된 엔진은 유지하며 예시만 Lichu 설정을 사용합니다.
+
+```sh
+export PYTHONUTF8=1
+.venv/bin/python -m coding_agent.project_setup --repo ../Lichu --commit "$BASELINE_SHA" \
+  --config coding_agent/project_profiles/lichu/draft.json --output .runtime/lichu-profile-prepared.json
+```
+
+`.runtime/local-automation.json`에 `{"preparedProfiles":["lichu-profile-prepared.json"]}`을 저장하고 `.env`에 `CSI_LOCAL_AUTOMATION_CONFIG=.runtime/local-automation.json`을 설정합니다. CSI 로그인 API와 서버에 접근 가능한 상태에서 아래를 실행합니다. 프로젝트 등록 후 프로필 연결과 QUEUED 이미지의 아키텍처 Worker 실행은 자동화 서비스가 처리합니다. 코딩 Worker는 별도 터미널에서 대기하며 사용자가 생성 버튼을 누를 때 작업을 받습니다.
+
+```sh
+.venv/bin/python -m scripts.start_local_automation
+.venv/bin/python -m coding_agent.worker --repo ../Lichu --repository ymj9608/Lichu --env-file .env
+```
+
+기존 프로젝트에 다른 장비의 프로필이 이미 활성화되어 있다면 자동화는 덮어쓰지 않습니다. Mac에서 준비한 설정을 `scripts/register_verification_profile.py --help`의 명시적 등록 절차로 활성화해야 합니다. 같은 백엔드에 같은 저장소의 Windows·Mac 코딩 Worker를 동시에 연결하면 먼저 claim한 장비가 실행하므로 비교 실험에서는 하나만 실행합니다. `.runtime/start_local_backend.py`는 Windows 전용 개발 편의 스크립트이며 Mac에서는 기존 서버 실행 방법을 사용합니다. 이번 변경의 Mac 실장비 실행은 아직 검증하지 않았습니다.

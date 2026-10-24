@@ -39,7 +39,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--backend", default="http://127.0.0.1:8080")
     p.add_argument("--env-file", default=".env")
-    p.add_argument("--project-id", required=True)
+    selection = p.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--project-id")
+    selection.add_argument("--repository")
     p.add_argument("--ollama-url", default=extractor.DEFAULT_OLLAMA_URL)
     p.add_argument("--model", default=extractor.DEFAULT_MODEL)
     p.add_argument("--once", action="store_true")
@@ -49,9 +51,17 @@ def main():
 
 def run(args):
     from .worker import backend_url
-    with client(backend_url(args.backend), args.env_file) as api:
+    from coding_agent.runtime_settings import load_environment
+    load_environment(dotenv_values(args.env_file))
+    backend = backend_url(args.backend)
+    project_id = args.project_id
+    if getattr(args, 'repository', None):
+        from coding_agent.project_lookup import lookup_project
+        project_id = lookup_project(backend, args.env_file, args.repository)
+        print({'repository': args.repository, 'projectId': project_id}, flush=True)
+    with client(backend, args.env_file) as api:
         while True:
-            processed = run_once(api, args.project_id, ollama_url=args.ollama_url, model=args.model)
+            processed = run_once(api, project_id, ollama_url=args.ollama_url, model=args.model)
             if args.once:
                 return
             if not processed:

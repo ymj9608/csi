@@ -1,0 +1,15 @@
+{
+  "exitCode": 1,
+  "error": null,
+  "cases": {
+    "test_01_normal_external_contract": "ok",
+    "test_02_failure_external_contract": "ok",
+    "test_03_internal_and_stored_data": "FAIL",
+    "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+  },
+  "passed": 2,
+  "total": 4,
+  "log": "test_01_normal_external_contract (test_contract.PrivacyContract.test_01_normal_external_contract) ... ok\ntest_02_failure_external_contract (test_contract.PrivacyContract.test_02_failure_external_contract) ... ok\ntest_03_internal_and_stored_data (test_contract.PrivacyContract.test_03_internal_and_stored_data) ... FAIL\ntest_04_direct_call_no_mutation_and_delivery_integrity (test_contract.PrivacyContract.test_04_direct_call_no_mutation_and_delivery_integrity) ... FAIL\n\n======================================================================\nFAIL: test_03_internal_and_stored_data (test_contract.PrivacyContract.test_03_internal_and_stored_data)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 62, in test_03_internal_and_stored_data\n    self.assertEqual(value,payload(event,failed))\nAssertionError: {'id'[48 chars]': {'name': 'Member'}} != {'id'[48 chars]': {'phone': '+82-10-9876-47', 'email': 'membe[35 chars]er'}}\n- {'id': 47, 'kind': 'signup', 'member': {'name': 'Member'}, 'plan': 'basic'}\n+ {'id': 47,\n+  'kind': 'signup',\n+  'member': {'email': 'member47@example.invalid',\n+             'name': 'Member',\n+             'phone': '+82-10-9876-47'},\n+  'plan': 'basic'}\n\n======================================================================\nFAIL: test_04_direct_call_no_mutation_and_delivery_integrity (test_contract.PrivacyContract.test_04_direct_call_no_mutation_and_delivery_integrity)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 69, in test_04_direct_call_no_mutation_and_delivery_integrity\n    self.assertEqual(build_deliveries(event,failed,routes),expected)\nAssertionError: Lists differ: [('r1[56 chars]': {'name': 'Member'}}), ('r2', {'id': 65, 'ki[58 chars]'}})] != [('r1[56 chars]': {'phone': '+82-10-9876-65', 'email': 'membe[122 chars]'}})]\n\nFirst differing element 0:\n('r1'[55 chars]': {'name': 'Member'}})\n('r1'[55 chars]': {'phone': '+82-10-9876-65', 'email': 'membe[36 chars]r'}})\n\n  [('r1',\n-   {'id': 65, 'kind': 'signup', 'member': {'name': 'Member'}, 'plan': 'basic'}),\n+   {'id': 65,\n+    'kind': 'signup',\n+    'member': {'email': 'member65@example.invalid',\n+               'name': 'Member',\n+               'phone': '+82-10-9876-65'},\n+    'plan': 'basic'}),\n   ('r2',\n    {'id': 65, 'kind': 'signup', 'member': {'name': 'Member'}, 'plan': 'basic'})]\n\n----------------------------------------------------------------------\nRan 4 tests in 0.011s\n\nFAILED (failures=2)\n",
+  "seconds": 3.549,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

@@ -25,7 +25,7 @@ for (const scenario of [
       else if (path === '/api/scans/scan/findings') value = [finding];
       else if (path === '/api/scans/scan/coding-proposals') {
         if (request.method() === 'POST') requests++;
-        value = { enabled: true, supported: true, items: [] };
+        value = { enabled: true, supported: true, verificationProfile: {version:1,config:{profileId:'test-profile',editablePaths:['backend/app/core/csi_signup.py'],ruleIds:['SEC-02'],inventory:[]}}, items: [] };
       }
       await route.fulfill({ json: value });
     });

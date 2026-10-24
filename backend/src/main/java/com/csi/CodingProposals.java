@@ -14,6 +14,7 @@ import java.util.*;
 
 @RestController
 public class CodingProposals {
+ static final int JOB_SECONDS=2700;
  static final String TARGET="backend/app/core/csi_signup.py";
  static final String MODEL="ministral-3:8b-instruct-2512-q4_K_M";
  static final Set<String> SECURITY_TESTS=Set.of(
@@ -22,7 +23,7 @@ public class CodingProposals {
   "test_synthetic_input_guard_remains","test_full_signup_storage_logs_login","test_password_inputs_round_trip",
   "test_new_hash_login_outside_lab_mode","test_password_length_limit","test_sensitive_logs_for_varied_inputs",
   "test_legacy_hash_rejects_malformed_values","test_legacy_login_keeps_existing_hash_before_migration");
- static final String SELECT="SELECT c.*,s.repository,s.commit_sha FROM coding_proposals c JOIN scans s ON s.id=c.scan_id ";
+ static final String SELECT="SELECT c.*,s.repository,s.commit_sha,s.project_id FROM coding_proposals c JOIN scans s ON s.id=c.scan_id ";
  final Db db; final Events events; final boolean enabled; final Set<String> repositories;
  @Value("${CSI_VLM_PROVIDER:openai}") String vlmProvider="openai";
  @Value("${CSI_VLM_MODEL:}") String vlmModel="";
@@ -32,10 +33,11 @@ public class CodingProposals {
   this.db=db;this.events=events;this.enabled=enabled;this.repositories=Set.of(repositories.split(","));
  }
  @GetMapping("/api/scans/{id}/coding-proposals") public Object list(@PathVariable UUID id){
-  var scan=db.one("SELECT repository,status FROM scans WHERE id=?",id);
-  boolean supported=repositories.contains(scan.get("repository")) && applicable(id);
+  var scan=db.one("SELECT repository,status,project_id FROM scans WHERE id=?",id);
+  var profiles=new ProjectVerification(db);var profile=profiles.active(scan.get("projectId"));
+  boolean supported=repositories.contains(scan.get("repository")) && profile!=null && db.list("SELECT file_path,rule_id FROM findings WHERE scan_id=?",id).stream().anyMatch(f->ProjectVerification.matches(profile.path("config"),f));
   var items=db.list(SELECT+"WHERE scan_id=? ORDER BY c.created_at DESC LIMIT 20",id);
-  return Map.of("enabled",enabled,"supported",supported,"orchestratorModel",configuredVlmModel(),"orchestratorProvider",vlmProvider,"architectureRequired",false,"items",items.stream().map(CodingProposals::publicJob).toList());
+  var value=new LinkedHashMap<String,Object>();value.put("enabled",enabled);value.put("supported",supported);value.put("orchestratorModel",configuredVlmModel());value.put("orchestratorProvider",vlmProvider);value.put("architectureRequired",false);value.put("items",items.stream().map(CodingProposals::publicJob).toList());value.put("verificationProfile",profile);value.put("capabilities",profiles.capabilities(UUID.fromString(scan.get("projectId").toString())));return value;
  }
  static Map<String,Object> publicJob(Map<String,Object> job){
   var visible=new LinkedHashMap<>(job);visible.remove("leaseToken");visible.remove("leaseUntil");return visible;
@@ -44,34 +46,41 @@ public class CodingProposals {
  @PostMapping("/api/scans/{id}/coding-proposals") @Transactional public Object request(@PathVariable UUID id){return queue(id,true);}
  @Transactional public Map<String,Object> queue(UUID id,boolean explicit){
   var scan=db.one("SELECT * FROM scans WHERE id=? FOR UPDATE",id);
-  if(!enabled || !repositories.contains(scan.get("repository")) || !"COMPLETED".equals(scan.get("status")) || !applicable(id)){
-   if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"완료된 Lichu 실습 검사와 코딩 Agent 활성화가 필요합니다.");
+  var profiles=new ProjectVerification(db);var profile=profiles.active(scan.get("projectId"));
+  var selected=profile==null?List.<Map<String,Object>>of():db.list("SELECT id,file_path,rule_id FROM findings WHERE scan_id=? ORDER BY id",id).stream().filter(f->ProjectVerification.matches(profile.path("config"),f)).toList();
+  if(!enabled || !repositories.contains(scan.get("repository")) || !"COMPLETED".equals(scan.get("status")) || profile==null || selected.isEmpty()){
+   if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"완료된 검사와 적용 가능한 활성 검증 프로필이 필요합니다.");
    return Map.of();
   }
-  var existing=db.list(SELECT+"WHERE scan_id=? AND c.status IN ('QUEUED','RUNNING','READY','APPROVED')",id);
-  if(!existing.isEmpty())return publicJob(existing.getFirst());
   var images=db.list("SELECT a.id,a.source_commit_sha FROM projects p JOIN project_architectures a ON a.id=p.coding_architecture_id AND a.project_id=p.id WHERE p.id=?",UUID.fromString((String)scan.get("projectId")));
   var image=images.isEmpty()?Map.<String,Object>of():images.getFirst();String source=Objects.toString(image.get("sourceCommitSha"),"");
   if(!source.isEmpty() && !source.equals(scan.get("commitSha"))){
    if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"아키텍처의 기준 커밋이 검사 커밋과 다릅니다. 현재 검사에 맞는 이미지를 연결하세요.");
    return Map.of();
   }
+  var plan=db.json.createObjectNode();plan.set("config",profile.path("config"));plan.set("profileVersion",profile.path("version"));plan.put("commitSha",scan.get("commitSha").toString());plan.set("policy",db.json.valueToTree(scan.get("policy")));plan.set("findingIds",db.json.valueToTree(selected.stream().map(f->f.get("id").toString()).sorted().toList()));
+  if(!image.isEmpty()){plan.put("architectureId",image.get("id").toString());plan.put("imageSha256",db.one("SELECT image_sha256 FROM project_architectures WHERE id=?",UUID.fromString(image.get("id").toString())).get("imageSha256").toString());}
+  String planDigest=ProjectVerification.digest(plan);
+  var existing=db.list(SELECT+"WHERE scan_id=? AND plan_digest=? AND c.status IN ('QUEUED','RUNNING','READY','APPROVED')",id,planDigest);
+  if(!existing.isEmpty())return publicJob(existing.getFirst());
   UUID proposal=UUID.randomUUID();
-  db.jdbc.update("INSERT INTO coding_proposals(id,scan_id,status,architecture_id) VALUES(?,?,'QUEUED',?)",proposal,id,image.isEmpty()?null:UUID.fromString((String)image.get("id")));
+  db.jdbc.update("INSERT INTO coding_proposals(id,scan_id,status,architecture_id,profile,execution_plan,plan_digest) VALUES(?,?,'QUEUED',?,?,?::jsonb,?)",proposal,id,image.isEmpty()?null:UUID.fromString((String)image.get("id")),profile.path("config").path("profileId").asText(),plan.toString(),planDigest);
   db.log(id,"CODING_QUEUED","coding-agent","INFO","Local coding proposal queued for immutable scan commit");events.publish(id.toString());
   return publicJob(db.one(SELECT+"WHERE c.id=?",proposal));
  }
- public record Claim(String repository){}
+ public record Claim(String repository,List<String> adapters,List<String> imageIds,List<String> models){public Claim(String repository){this(repository,List.of(),List.of(),List.of());}}
  @PostMapping("/internal/coding-proposals/claim") @Transactional public Object claim(@RequestBody Claim claim){
   if(!enabled || !repositories.contains(claim.repository()))throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-  var rows=db.list("SELECT c.id FROM coding_proposals c JOIN scans s ON s.id=c.scan_id WHERE c.status='QUEUED' AND s.repository=? ORDER BY c.created_at LIMIT 1 FOR UPDATE OF c SKIP LOCKED",claim.repository());
+  var rows=db.list("SELECT c.id,c.execution_plan FROM coding_proposals c JOIN scans s ON s.id=c.scan_id WHERE c.status='QUEUED' AND s.repository=? ORDER BY c.created_at FOR UPDATE OF c SKIP LOCKED",claim.repository()).stream().filter(r->r.get("executionPlan")==null||ProjectVerification.ready(db.json.valueToTree(r.get("executionPlan")).path("config"),db.json.valueToTree(claim))).toList();
   if(rows.isEmpty())return Map.of("available",false);
   UUID id=UUID.fromString((String)rows.getFirst().get("id")),token=UUID.randomUUID();
-  db.jdbc.update("UPDATE coding_proposals SET status='RUNNING',lease_token=?,lease_until=now()+interval '15 minutes' WHERE id=?",token,id);
+  db.jdbc.update("UPDATE coding_proposals SET status='RUNNING',lease_token=?,lease_until=now()+interval '45 minutes' WHERE id=?",token,id);
   var job=db.one(SELECT+"WHERE c.id=?",id);UUID scan=UUID.fromString((String)job.get("scanId"));
   job.put("policy",db.one("SELECT policy FROM scans WHERE id=?",scan).get("policy"));
-  job.put("findings",db.list("SELECT id,rule_id,file_path,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET));
+  if(job.get("executionPlan")!=null){var ids=ProjectVerification.strings(db.json.valueToTree(job.get("executionPlan")).path("findingIds"));job.put("findings",db.list("SELECT id,rule_id,file_path,title,category,analysis FROM findings WHERE scan_id=?",scan).stream().filter(f->ids.contains(f.get("id"))).toList());}
+  else job.put("findings",db.list("SELECT id,rule_id,file_path,title,category,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET));
   job.put("vlmModel",configuredVlmModel());job.put("vlmProvider",vlmProvider);
+  job.put("architectureDiagram",architectureDiagram(job));
   if(job.get("architectureId")!=null){
    var image=new LinkedHashMap<>(db.one("SELECT a.id,a.version,a.image_sha256,a.image_content_type,a.source_commit_sha,a.image_bytes FROM project_architectures a JOIN scans s ON s.project_id=a.project_id WHERE a.id=? AND s.id=?",UUID.fromString((String)job.get("architectureId")),scan));
    image.put("imageBase64",Base64.getEncoder().encodeToString((byte[])image.remove("imageBytes")));
@@ -81,16 +90,33 @@ public class CodingProposals {
   return Map.of("available",true,"job",job);
  }
  @GetMapping("/internal/coding-proposals/{id}") public Object internal(@PathVariable UUID id){return db.one(SELECT+"WHERE c.id=?",id);}
- public record Progress(String leaseToken,String phase,int attempt,long elapsedMs){}
+ Map<String,Object> architectureDiagram(Map<String,Object> job){
+  // Only completed extraction for this scan's project; never borrow another project's diagram.
+  String sql="SELECT d.id,d.project_id,d.status,d.components,d.summary,d.confirmed,d.updated_at FROM architecture_diagrams d WHERE d.project_id=? AND d.status='EXTRACTED'";
+  UUID project=UUID.fromString((String)job.get("projectId"));
+  List<Map<String,Object>> rows;
+  if(job.get("architectureId")!=null){
+   rows=db.list(sql+" AND EXISTS (SELECT 1 FROM project_architectures a WHERE a.id=? AND a.project_id=d.project_id AND a.image_bytes=d.image)",project,UUID.fromString((String)job.get("architectureId")));
+  }else rows=db.list(sql,project);
+  return rows.isEmpty()?Map.of():rows.getFirst();
+ }
+ public record Progress(String leaseToken,String phase,int attempt,long elapsedMs,String note){
+  public Progress(String leaseToken,String phase,int attempt,long elapsedMs){this(leaseToken,phase,attempt,elapsedMs,null);}
+ }
  static void validateProgress(Progress progress){
-  if(!Set.of("VLM_PLANNING","VLM_READING","BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
-     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>900000)
+  if(!Set.of("ARCHITECTURE_CONTEXT","VLM_PLANNING","VLM_READING","BASELINE","GENERATING","VALIDATING","VERIFYING","RETRYING").contains(String.valueOf(progress.phase())) ||
+     progress.attempt()<0 || progress.attempt()>2 || progress.elapsedMs()<0 || progress.elapsedMs()>JOB_SECONDS*1000L ||
+     (progress.note()!=null && progress.note().length()>200))
    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid coding progress");
  }
  @PostMapping("/internal/coding-proposals/{id}/progress") @Transactional public Object progress(@PathVariable UUID id,@RequestBody Progress progress){
   validateProgress(progress);var job=leased(id,progress.leaseToken());
-  String value=db.encode(Map.of("phase",progress.phase(),"attempt",progress.attempt(),"elapsedMs",progress.elapsedMs()));
-  db.jdbc.update("UPDATE coding_proposals SET progress=?::jsonb || jsonb_build_object('updatedAt',now()) WHERE id=?",value,id);
+  var fields=new LinkedHashMap<String,Object>();
+  fields.put("phase",progress.phase());fields.put("attempt",progress.attempt());fields.put("elapsedMs",progress.elapsedMs());
+  if(progress.note()!=null)fields.put("note",progress.note());
+  if("ARCHITECTURE_CONTEXT".equals(progress.phase()) && progress.note()!=null)fields.put("architectureNote",progress.note());
+  String value=db.encode(fields);
+  db.jdbc.update("UPDATE coding_proposals SET progress=coalesce(progress,'{}'::jsonb)-'note' || ?::jsonb || jsonb_build_object('updatedAt',now()) WHERE id=?",value,id);
   events.publish((String)job.get("scanId"));return Map.of("status","RUNNING");
  }
  Map<String,Object> leased(UUID id,String token){
@@ -171,17 +197,22 @@ public class CodingProposals {
    return Map.of("status",job.get("status"),"replayed",true);
   requireLease(id,token,job);UUID scan=UUID.fromString((String)job.get("scanId"));
   Set<String> findings=new HashSet<>(),references=new HashSet<>();
-  for(var row:db.list("SELECT id,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET)){
+  for(var row:job.get("executionPlan")!=null?db.list("SELECT id,analysis FROM findings WHERE scan_id=?",scan):db.list("SELECT id,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET)){
    findings.add((String)row.get("id"));for(var ref:db.json.valueToTree(row.get("analysis")).path("references"))references.add(ref.path("chunkId").asText());
   }
   try{
-   validateResult(result,job,findings,references);
-   if(job.get("architectureId")!=null){
+   if(job.get("executionPlan")!=null)ProjectVerification.validateResult(result,job,findings,references,db.json);
+   else validateResult(result,job,findings,references);
+   if(job.get("architectureId")!=null && (job.get("executionPlan")==null || result.has("handoff"))){
     var image=db.one("SELECT image_sha256 FROM project_architectures WHERE id=?",UUID.fromString((String)job.get("architectureId")));
     if(!Objects.equals(image.get("imageSha256"),result.path("handoff").path("imageSha256").asText()))throw new IllegalArgumentException("Architecture digest mismatch");
    }
   }catch(IllegalArgumentException e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());}
   db.jdbc.update("UPDATE coding_proposals SET status=?,result=?::jsonb,finished_at=now(),lease_until=null WHERE id=?",result.path("status").asText(),result.toString(),id);
+  if(job.get("executionPlan")!=null){
+   db.jdbc.update("INSERT INTO coding_verification_runs(proposal_id,attempt,report) VALUES(?,0,?::jsonb)",id,result.path("baseline").toString());
+   int number=0;for(var attempt:result.path("attempts")){number++;if(attempt.has("verification"))db.jdbc.update("INSERT INTO coding_verification_runs(proposal_id,attempt,report) VALUES(?,?,?::jsonb)",id,number,attempt.path("verification").toString());}
+  }
   db.log(scan,"CODING_FINISHED","coding-agent","INFO","Coding proposal "+result.path("status").asText());events.publish(scan.toString());return Map.of("status",result.path("status").asText());
  }
  public record Failure(String leaseToken,String errorCode){}
@@ -196,7 +227,12 @@ public class CodingProposals {
   var job=db.one(SELECT+"WHERE c.id=? FOR UPDATE OF c",id);
   if(!"READY".equals(job.get("status")))throw new ResponseStatusException(HttpStatus.CONFLICT,"검증을 통과한 검토 대기 수정안만 결정할 수 있습니다.");
   db.jdbc.update("UPDATE coding_proposals SET status=?,decided_by=?,decided_at=now() WHERE id=?",decision.decision(),auth.getName(),id);
-  db.log(UUID.fromString((String)job.get("scanId")),"CODING_DECIDED","backend","INFO",decision.decision());events.publish((String)job.get("scanId"));return Map.of("status",decision.decision());
+  UUID scanId=UUID.fromString((String)job.get("scanId"));
+  db.log(scanId,"CODING_DECIDED","backend","INFO",decision.decision());
+  // A decided proposal is an informational notification, not another Agent approval.
+  if("APPROVED".equals(decision.decision()))
+   db.jdbc.update("INSERT INTO approvals(id,scan_id,action,proposal_id,status,decided_by,decided_at) VALUES(?,?,'CODING_PROPOSAL_APPROVED',?,'APPROVED',?,now()) ON CONFLICT(proposal_id,action) WHERE proposal_id IS NOT NULL DO NOTHING",UUID.randomUUID(),scanId,id,auth.getName());
+  events.publish(scanId.toString());return Map.of("status",decision.decision());
  }
  @Scheduled(fixedDelay=30000) public void expire(){
   for(var row:db.list("UPDATE coding_proposals SET status='FAILED',error_code='WORKER_LEASE_EXPIRED',finished_at=now(),lease_token=null,lease_until=null WHERE status='RUNNING' AND lease_until<now() RETURNING scan_id"))events.publish((String)row.get("scanId"));

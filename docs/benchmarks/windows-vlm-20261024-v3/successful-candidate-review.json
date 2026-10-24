@@ -1,0 +1,15 @@
+{
+  "kind": "MANUAL_CODE_REVIEW_NOT_AN_ADDITIONAL_MODEL_TRIAL",
+  "candidate": "pilot\\fanout-small\\image_search\\candidate-2",
+  "changedPaths": [
+    "dispatcher.py"
+  ],
+  "sourceSha256": "22e83454ed2fd0d9d6c68adf1695f7b9f844ce431d1026ae0097da23897ffc8a",
+  "observations": [
+    "Original normal/failure channel lists and order retained.",
+    "Only external recipients receive a copied event with phone removed.",
+    "Internal recipient gets original phone; input object is not mutated.",
+    "Original app storage/archive logic unchanged; no test or verifier manipulation."
+  ],
+  "limit": "Review is limited to the authored synthetic contract; no production integration claim."
+}

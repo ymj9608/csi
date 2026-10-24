@@ -136,6 +136,34 @@ def test_full_identifier_inside_display_label_matches_but_substrings_do_not():
     assert result["mapping"][2]["status"] == "UNMATCHED"
 
 
+def test_literal_component_id_maps_when_display_label_only_describes_role():
+    value = architecture()
+    value["components"][2].update(id="archive", label="Long-term export worker")
+    value["flows"][1]["to"] = "archive"
+    result = plan(architecture=value, use_vision_context=True)
+    assert result["mapping"][2]["status"] == "MATCHED"
+    assert ARCHIVE in result["selectedPaths"]
+
+
+def test_conflicting_id_and_label_are_ambiguous_not_arbitrarily_selected():
+    value = architecture()
+    value["components"][2].update(id="catalog", label="archive")
+    value["flows"][1]["to"] = "catalog"
+    result = plan(architecture=value, use_vision_context=True)
+    assert result["mapping"][2]["status"] == "AMBIGUOUS"
+    assert ARCHIVE not in result["selectedPaths"]
+    assert "services/catalog/service.py" not in result["selectedPaths"]
+
+
+def test_infrastructure_id_does_not_impersonate_source_module():
+    value = architecture()
+    value["components"][2].update(id="archive", label="archive", kind="database")
+    value["flows"][1]["to"] = "archive"
+    result = plan(architecture=value, use_vision_context=True)
+    assert result["mapping"][2]["status"] == "UNMATCHED"
+    assert ARCHIVE not in result["selectedPaths"]
+
+
 @pytest.mark.parametrize("kind", ["WORKFLOW", "UNKNOWN"])
 def test_non_architecture_falls_back_without_expansion(kind):
     value = {**architecture(), "diagramType": kind}

@@ -90,3 +90,21 @@ test("projects waiting for approval are marked on the project list only", async 
   await page.waitForTimeout(300);
   await page.screenshot({ path: "test-results/projects-pending.png" });
 });
+
+test("approved coding notification does not offer another approval or Agent execution", async ({ page }) => {
+  await mockApprovals(page);
+  await page.route('**/api/approvals', route=>route.fulfill({json:[{
+    id:'notification',scanId:'scan',repository:'team/waiting',status:'APPROVED',
+    action:'CODING_PROPOSAL_APPROVED',proposalId:'proposal',commitSha:'a'.repeat(40),
+    createdAt:'2026-10-24T01:00:00Z',decidedAt:'2026-10-24T01:00:00Z',decidedBy:'reviewer'
+  }]}));
+  await page.goto('/approvals');
+  const folder=page.locator('.approval-folder',{hasText:'team/waiting'});
+  await folder.locator('.approval-folder-bar').click();
+  await folder.locator('.approval-row').click();
+  const dialog=page.getByRole('dialog',{name:'상세 정보'});
+  await expect(dialog.getByRole('heading',{name:'수정안 승인 알림'})).toBeVisible();
+  await expect(dialog).toContainText('원본 코드 반영은 별도 작업');
+  await expect(dialog.getByRole('button',{name:'승인',exact:true})).toHaveCount(0);
+  await expect(dialog.getByRole('button',{name:'거절',exact:true})).toHaveCount(0);
+});

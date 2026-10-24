@@ -1,0 +1,36 @@
+{
+  "analysis": "POST_HOC_SUPPLEMENTAL; primary compatibility.json retained unchanged",
+  "rule": "Only exact printed box labels may replace IDs; no response modification or model reinference.",
+  "limits": "Single four-node image. Relation correctness does not establish general architecture/security accuracy.",
+  "results": [
+    {
+      "model": "qwen3-vl:8b-instruct-q4_K_M",
+      "status": "COMPLETED",
+      "exactVisibleLabelAliasesUsed": {
+        "r1: INTERNAL SMS": "r1",
+        "r2: EXTERNAL Metrics": "r2",
+        "r3: EXTERNAL Support": "r3"
+      },
+      "matchedNodes": 4,
+      "extraNodes": 0,
+      "matchedDirectedStyledEdges": 3,
+      "missingEdges": 0,
+      "extraEdges": 0
+    },
+    {
+      "model": "ministral-3:8b-instruct-2512-q4_K_M",
+      "status": "COMPLETED",
+      "exactVisibleLabelAliasesUsed": {},
+      "matchedNodes": 4,
+      "extraNodes": 0,
+      "matchedDirectedStyledEdges": 3,
+      "missingEdges": 0,
+      "extraEdges": 1
+    },
+    {
+      "model": "qwen3-vl:8b",
+      "status": "FAILED",
+      "semanticScore": null
+    }
+  ]
+}

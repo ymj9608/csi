@@ -1,0 +1,70 @@
+{
+  "case": "retry-small",
+  "arm": "text_search",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 2,
+  "trace": [
+    {
+      "action": "read",
+      "path": "deployment.json",
+      "query": "boundary: \"EXTERNAL\"",
+      "instruction": "Identify external recipients to prevent raw phone disclosure."
+    },
+    {
+      "action": "delegate",
+      "path": "app.py",
+      "query": "signup(phone, fail=False) sends phone to external recipients",
+      "instruction": "Modify signup to avoid sending raw phone to external recipients r2 and r3, while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup(phone, fail=False) should not send raw phone to external recipients",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "analytics.py",
+      "query": "emit(event) sends raw phone to external recipients",
+      "instruction": "Modify emit to remove phone field when destination is external, while preserving event id/kind and delivery paths."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup(phone, fail=False) should not send raw phone to external recipients",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving internal storage and delivery paths."
+    },
+    {
+      "action": "delegate",
+      "path": "deployment.py",
+      "query": "get_recipient_boundary() not found",
+      "instruction": "Create deployment.py to expose get_recipient_boundary() for use in analytics.py, notification.py, and recovery.py."
+    }
+  ],
+  "error": "ValueError: CODING_BUDGET",
+  "wallSeconds": 514.528,
+  "readPaths": [
+    "analytics.py",
+    "app.py",
+    "deployment.json",
+    "notification.py",
+    "recovery.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 1039,
+  "sourceFileCount": 8,
+  "verification": {
+    "exitCode": 1,
+    "error": null,
+    "cases": {},
+    "passed": 0,
+    "total": 0,
+    "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from notification import send\n  File \"/case/notification.py\", line 2, in <module>\n    from deployment import get_recipient_boundary\nModuleNotFoundError: No module named 'deployment'\n",
+    "seconds": 3.908,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  },
+  "inputTokens": 12321,
+  "outputTokens": 1151,
+  "failedCalls": 0
+}

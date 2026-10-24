@@ -1,0 +1,9 @@
+{
+  "command": ".venv/Scripts/python.exe -m pytest tests/test_privacy_mvp.py -q",
+  "passed": 7,
+  "executedBeforePairedInference": true,
+  "deterministicControls": 20,
+  "controlsSource": "controls-provenance.json",
+  "artifactAudit": "diagnostics.json",
+  "gitDiffCheckPassed": true
+}

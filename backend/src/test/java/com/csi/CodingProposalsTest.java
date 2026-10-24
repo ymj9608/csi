@@ -76,9 +76,12 @@ class CodingProposalsTest {
   assertThrows(ResponseStatusException.class,()->service.leased(id,"valid"));
  }
  @Test void progressOnlyAcceptsBoundedKnownStages(){
+  assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","ARCHITECTURE_CONTEXT",0,0,"저장된 분석 결과 참고")));
+  assertThrows(ResponseStatusException.class,()->CodingProposals.validateProgress(new CodingProposals.Progress("token","ARCHITECTURE_CONTEXT",0,0,"x".repeat(201))));
   assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","GENERATING",2,120000)));
+  assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","VLM_PLANNING",1,CodingProposals.JOB_SECONDS*1000L)));
   for(var p:List.of(new CodingProposals.Progress("token","arbitrary source text",1,0),
-      new CodingProposals.Progress("token","VERIFYING",3,0),new CodingProposals.Progress("token","VERIFYING",1,900001)))
+      new CodingProposals.Progress("token","VERIFYING",3,0),new CodingProposals.Progress("token","VERIFYING",1,CodingProposals.JOB_SECONDS*1000L+1)))
    assertThrows(ResponseStatusException.class,()->CodingProposals.validateProgress(p));
  }
 
@@ -108,12 +111,12 @@ class CodingProposalsTest {
   assertDoesNotThrow(()->CodingProposals.validateProgress(new CodingProposals.Progress("token","VLM_PLANNING",0,150000)));
  }
  @Test void staleImageDoesNotQueueNewProposal(){
-  Db db=mock(Db.class);var service=new CodingProposals(db,mock(Events.class),true,"ymj9608/Lichu");
+  Db db=spy(new Db(mock(org.springframework.jdbc.core.JdbcTemplate.class),json));var service=new CodingProposals(db,mock(Events.class),true,"ymj9608/Lichu");
   UUID id=UUID.randomUUID(),project=UUID.randomUUID();
-  when(db.one(anyString(),eq(id))).thenReturn(Map.of("projectId",project.toString(),"repository","ymj9608/Lichu","status","COMPLETED","commitSha","a".repeat(40)));
-  when(db.count(anyString(),eq(id),eq(CodingProposals.TARGET))).thenReturn(1L);
-  when(db.list(anyString(),eq(id))).thenReturn(List.of());
-  when(db.list(anyString(),eq(project))).thenReturn(List.of(Map.of("id",UUID.randomUUID().toString(),"sourceCommitSha","b".repeat(40))));
+  doReturn(Map.of("projectId",project.toString(),"repository","ymj9608/Lichu","status","COMPLETED","commitSha","a".repeat(40))).when(db).one(anyString(),eq(id));
+  doReturn(List.of(Map.of("id",UUID.randomUUID().toString(),"filePath",CodingProposals.TARGET,"ruleId","SEC-05"))).when(db).list(anyString(),eq(id));
+  doReturn(List.of(Map.of("id",UUID.randomUUID().toString(),"sourceCommitSha","b".repeat(40)))).when(db).list(anyString(),eq(project));
+  doReturn(List.of(Map.of("version",1,"config",Map.of("editablePaths",List.of(CodingProposals.TARGET),"ruleIds",List.of("SEC-05"))))).when(db).list(startsWith("SELECT v.*"),eq(project));
   assertEquals(409,assertThrows(ResponseStatusException.class,()->service.queue(id,true)).getStatusCode().value());
  }
  @Test void missingImageQueuesCodeOnlyProposal(){
@@ -124,7 +127,10 @@ class CodingProposalsTest {
   doReturn(Map.of("status","QUEUED")).when(db).one(startsWith(CodingProposals.SELECT),any(UUID.class));
   doReturn(1L).when(db).count(anyString(),eq(id),eq(CodingProposals.TARGET));
   doReturn(List.of()).when(db).list(anyString(),any(UUID.class));
+  doReturn(List.of()).when(db).list(startsWith(CodingProposals.SELECT),eq(id),anyString());
+  doReturn(List.of(Map.of("id",UUID.randomUUID().toString(),"filePath",CodingProposals.TARGET,"ruleId","SEC-05"))).when(db).list(startsWith("SELECT id,file_path,rule_id"),eq(id));
+  doReturn(List.of(Map.of("version",1,"config",Map.of("profileId","test-profile","editablePaths",List.of(CodingProposals.TARGET),"ruleIds",List.of("SEC-05"))))).when(db).list(startsWith("SELECT v.*"),eq(project));
   assertEquals("QUEUED",service.queue(id,true).get("status"));
-  verify(jdbc).update(startsWith("INSERT INTO coding_proposals"),any(UUID.class),eq(id),isNull());
+  verify(jdbc).update(startsWith("INSERT INTO coding_proposals"),any(UUID.class),eq(id),isNull(),eq("test-profile"),anyString(),anyString());
  }
 }

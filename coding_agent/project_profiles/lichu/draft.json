@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "profileId": "lichu-privacy-v1",
+  "repository": "ymj9608/Lichu",
+  "runtime": {"adapter": "python-pytest-v1", "imageId": "PREPARE", "workingDirectory": "backend"},
+  "snapshotPaths": ["backend/app", "backend/tests", "backend/pytest.ini", "docs/CLASS_NAME_Lichu-API.yml"],
+  "editablePaths": ["backend/app/core/csi_signup.py"],
+  "contextPaths": ["backend/app/core/csi_signup.py", "backend/app/core/security.py", "backend/app/services/hub.py", "backend/app/schemas/dto.py"],
+  "testPaths": ["tests"],
+  "pack": {},
+  "driver": {"path": "project_profiles/lichu/driver.py", "sha256": "PREPARE"},
+  "contracts": [
+    "Preserve current signup validation including mandatory synthetic phone, synthetic username/name/email/password and forbidden profile images.",
+    "Preserve bcrypt cost 12, per-password salts, correct/wrong password behavior and rejection of obsolete legacy hashes. Do not add record_signup or restore legacy login.",
+    "Store synthetic contact information internally; do not expose password, email or phone values in logs. Preserve safe DB_COMMITTED operational events."
+  ],
+  "ruleIds": ["SEC-05"],
+  "reproductionTests": ["tests/test_csi_privacy_pack.py::test_no_sensitive_logs"],
+  "relatedFailures": ["tests/test_business_context.py::test_signup_context_commit_trace_and_no_values[True]", "tests/test_csi_lab.py::test_lab_signup_persists_logs_and_login"],
+  "allowedSkips": ["tests/test_workflow.py::test_concurrent_last_seat"],
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "generationTimeoutSeconds": 300
+}

@@ -2,7 +2,6 @@
 import argparse
 import base64
 import binascii
-import fcntl
 import hashlib
 import json
 import os
@@ -17,6 +16,20 @@ import httpx
 from dotenv import dotenv_values
 
 from .vision import ArchitectureError, DEFAULT_MODEL, MAX_IMAGE_BYTES, PROMPT_VERSION, analyze_image
+
+
+def lock_worker(stream):
+    """Nonblocking process lock on Windows and POSIX; released when the file closes."""
+    if os.name == 'nt':
+        import msvcrt
+        stream.seek(0, os.SEEK_END)
+        if stream.tell() == 0:
+            stream.write('0'); stream.flush()
+        stream.seek(0)
+        msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
 
 
 def backend_url(value):
@@ -183,7 +196,9 @@ def process(api, job, output, ollama_url, model=DEFAULT_MODEL):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project-id", help="Process the project upload UI diagram queue instead of the legacy context queue")
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument("--project-id", help="Process the project upload UI diagram queue instead of the legacy context queue")
+    selection.add_argument("--repository", help="Resolve the registered project UUID from owner/repository")
     parser.add_argument("--backend", default="http://127.0.0.1:8080")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     parser.add_argument("--ollama-url", default="http://127.0.0.1:11434")
@@ -191,7 +206,7 @@ def main():
     parser.add_argument("--output", type=Path, default=Path(".runtime/architecture"))
     parser.add_argument("--once", action="store_true")
     args = parser.parse_args()
-    if args.project_id:
+    if args.project_id or args.repository:
         from .diagram_worker import run
         from .extractor import DEFAULT_MODEL as DIAGRAM_MODEL
         args.model = args.model or DIAGRAM_MODEL
@@ -201,8 +216,8 @@ def main():
     args.output.mkdir(parents=True, exist_ok=True)
     with open(args.output / "worker.lock", "a") as lock, client(args) as api:
         try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
+            lock_worker(lock)
+        except OSError as exc:
             raise ArchitectureError("WORKER_ALREADY_RUNNING") from exc
         while True:
             try:

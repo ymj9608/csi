@@ -19,6 +19,15 @@ __pycache__/
 # Screenshots written by local Playwright runs.
 frontend/test-results/
 vlm_eval/
-Lichu/
+/Lichu/
 .venv-slack/
 .worktrees/
+
+# Local editor backups and generated browser reports.
+.env copy*
+.env.*.bak
+*.tmp
+*.bak
+*.orig
+*.rej
+frontend/playwright-report/

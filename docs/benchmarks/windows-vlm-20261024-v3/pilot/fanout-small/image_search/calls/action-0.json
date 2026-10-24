@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "75b070603bf69bc7daa849891dbedfb699fd8efac96215d7a3cc99e26df8c723",
+  "answerText": "{\"action\": \"read\", \"path\": \"deployment.json\", \"query\": \"boundary: EXTERNAL\", \"instruction\": \"Read deployment.json to establish recipient trust.\"}",
+  "thinkingPresent": false,
+  "inputTokens": 1689,
+  "outputTokens": 36,
+  "loadNs": 11719234300,
+  "promptNs": 33128227000,
+  "generationNs": 10446413000,
+  "doneReason": "stop",
+  "answer": {
+    "action": "read",
+    "path": "deployment.json",
+    "query": "boundary: EXTERNAL",
+    "instruction": "Read deployment.json to establish recipient trust."
+  },
+  "wallSeconds": 55.37
+}

@@ -1,9 +1,11 @@
 """Local Qwen action adapter; same host tool/evidence/verification gates as OpenAI."""
 import json
 import uuid
+import copy
 import httpx
 from architecture_agent.vision import local_url
 from .repository import Rejected
+from .runtime_settings import integer
 
 
 class LocalActionsClient:
@@ -13,8 +15,9 @@ class LocalActionsClient:
     def __call__(self, payload):
         messages = [{'role': 'system', 'content': payload['instructions'] +
                      '\nSelect exactly one allowed action. Return JSON with name and arguments; '
-                     'arguments is a JSON-encoded object matching that tool parameters. Tools: ' +
-                     json.dumps(payload['tools'], ensure_ascii=False)}]
+                     'arguments must be an OBJECT matching that tool parameters. '
+                     'Use concise instructions; do not repeat supplied code or policy. Tools: ' +
+                     json.dumps(payload['tools'], ensure_ascii=False, separators=(',', ':'))}]
         for item in payload['input']:
             if item.get('type') == 'reasoning':
                 continue
@@ -30,15 +33,32 @@ class LocalActionsClient:
                                  'content': json.dumps(item, ensure_ascii=False)})
         if sum(len(m['content'].encode()) for m in messages) > 40_000:
             raise Rejected('VLM_CONTEXT_TOO_LARGE')
-        schema = {'type': 'object', 'properties': {
-            'name': {'type': 'string', 'enum': [t['name'] for t in payload['tools']]},
-            'arguments': {'type': 'string'}}, 'required': ['name', 'arguments'], 'additionalProperties': False}
+        alternatives = []
+        for tool in payload['tools']:
+            parameters = copy.deepcopy(tool['parameters'])
+            for field in parameters['properties'].values():
+                if field.get('type') == 'string':
+                    field['maxLength'] = 1800
+                elif field.get('type') == 'array':
+                    field['maxItems'] = 16
+            alternatives.append({'type':'object', 'additionalProperties':False,
+                'required':['name','arguments'], 'properties':{
+                    'name':{'const':tool['name']}, 'arguments':parameters}})
+        schema = {'anyOf': alternatives}
+        context_size = integer('CSI_LOCAL_VLM_NUM_CTX', 16384, 8192, 32768)
+        timeout = min(integer('CSI_LOCAL_VLM_TIMEOUT_SECONDS', 600, 30, 900),
+                      payload.get('_timeout_seconds', 900))
+        if timeout <= 0:
+            raise Rejected('VLM_TIME_BUDGET')
         try:
-            with httpx.Client(timeout=180, trust_env=False, transport=self.transport) as client:
+            with httpx.Client(timeout=timeout, trust_env=False, transport=self.transport) as client:
                 response = client.post(self.url + '/api/chat', json={
                     'model': payload['model'], 'messages': messages, 'format': schema,
-                    'stream': False, 'think': False, 'keep_alive': 0,
-                    'options': {'num_ctx': 16384, 'num_predict': 2048, 'temperature': 0}})
+                    'stream': False, 'think': False,
+                    'keep_alive': integer('CSI_LOCAL_VLM_KEEP_ALIVE_SECONDS', 300, 0, 600),
+                    'options': {'num_ctx': context_size,
+                                'num_predict': integer('CSI_LOCAL_VLM_NUM_PREDICT', 1024, 256, 2048),
+                                'temperature': 0}})
                 response.raise_for_status()
                 raw = response.json()
             if raw.get('done_reason') != 'stop':
@@ -47,12 +67,14 @@ class LocalActionsClient:
             if not isinstance(content, str) or not content.strip():
                 raise Rejected('VLM_EMPTY_FINAL_CONTENT')
             action = json.loads(content)
-            if set(action) != {'name', 'arguments'} or not isinstance(action['arguments'], str):
+            if set(action) != {'name', 'arguments'} or not isinstance(action['arguments'], (str, dict)):
                 raise Rejected('VLM_TOOL_ARGUMENTS')
+            if isinstance(action['arguments'], dict):
+                action['arguments'] = json.dumps(action['arguments'], ensure_ascii=False)
             counts = [raw.get('prompt_eval_count'), raw.get('eval_count')]
             if any(type(n) is not int or n < 0 for n in counts):
                 raise Rejected('VLM_USAGE_MISSING')
-            if sum(counts) >= 16384:
+            if sum(counts) >= context_size:
                 raise Rejected('VLM_CONTEXT_TOO_LARGE')
             return {'status': 'completed', 'output': [{'type': 'function_call',
                     'call_id': str(uuid.uuid4()), **action}],

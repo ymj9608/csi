@@ -49,7 +49,7 @@ def test_extract_calls_ollama_with_image_and_parses_result(monkeypatch):
 
     def handler(request):
         captured["payload"] = json.loads(request.content)
-        return httpx.Response(200, json={"message": {"content": json.dumps(WELL_FORMED)}})
+        return httpx.Response(200, json={"done_reason": "stop", "message": {"content": json.dumps(WELL_FORMED)}})
 
     real_client = httpx.Client
     monkeypatch.setattr(
@@ -63,6 +63,16 @@ def test_extract_calls_ollama_with_image_and_parses_result(monkeypatch):
     assert sent["keep_alive"] == 0
     assert sent["model"] == extractor.DEFAULT_MODEL
     assert sent["messages"][0]["images"] == [base64.b64encode(b"fake-png-bytes").decode("ascii")]
+
+
+def test_extract_rejects_token_limit_even_with_parseable_json(monkeypatch):
+    real_client = httpx.Client
+    def handler(request):
+        return httpx.Response(200, json={"done_reason": "length", "message": {"content": json.dumps(WELL_FORMED)}})
+    monkeypatch.setattr(extractor.httpx, "Client", lambda **kwargs: real_client(
+        transport=httpx.MockTransport(handler), **{k: v for k, v in kwargs.items() if k != "trust_env"}))
+    with pytest.raises(ValueError, match="did not complete"):
+        extractor.extract(b"fake-png-bytes")
 
 
 def test_prompt_never_asks_for_file_paths():

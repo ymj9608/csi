@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETED",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "inputSha256": "c28825911fc4e6426c9c333806a3527637d2a202e356252d428b0ab2bb9f9e8b",
+  "answerText": "{\n  \"files\": [\n    {\n      \"path\": \"adapter.py\",\n      \"source\": \"def public_profile(record):\\n    result = dict(record)\\n    result.pop('phone', None)\\n    result.pop('email', None)\\n    return result\"\n    }\n  ]\n}",
+  "thinkingPresent": false,
+  "inputTokens": 206,
+  "outputTokens": 63,
+  "loadNs": 21293008100,
+  "promptNs": 3600857000,
+  "generationNs": 14271145000,
+  "doneReason": "stop",
+  "answer": {
+    "files": [
+      {
+        "path": "adapter.py",
+        "source": "def public_profile(record):\n    result = dict(record)\n    result.pop('phone', None)\n    result.pop('email', None)\n    return result"
+      }
+    ]
+  },
+  "wallSeconds": 39.201
+}

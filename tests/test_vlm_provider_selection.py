@@ -21,16 +21,23 @@ def test_provider_defaults_and_cross_provider_model_rejection(monkeypatch):
         provider_name()
 
 
-def test_local_adapter_preserves_image_and_releases_model():
+@pytest.mark.parametrize('arguments', [{'reason':'Insufficient evidence'}, json.dumps({'reason':'Insufficient evidence'})])
+def test_local_adapter_preserves_image_and_bounds_runtime(monkeypatch, arguments):
+    monkeypatch.setenv('CSI_LOCAL_VLM_KEEP_ALIVE_SECONDS', '300')
+    monkeypatch.setenv('CSI_LOCAL_VLM_TIMEOUT_SECONDS', '600')
+    monkeypatch.setenv('CSI_LOCAL_VLM_NUM_PREDICT', '1024')
     def handle(request):
         body = json.loads(request.content)
-        assert body['keep_alive'] == 0 and body['think'] is False
+        assert body['keep_alive'] == 300 and body['think'] is False
+        assert body['options']['num_predict'] == 1024
+        assert request.extensions['timeout']['read'] == 55
+        assert body['format']['anyOf'][0]['properties']['arguments']['type'] == 'object'
         assert body['messages'][1]['images'] == ['aGVsbG8=']
         assert request.headers.get('authorization') is None
         return httpx.Response(200, json={'done_reason':'stop', 'prompt_eval_count':100, 'eval_count':20,
-            'message':{'content':json.dumps({'name':'block','arguments':json.dumps({'reason':'Insufficient evidence'})})}})
+            'message':{'content':json.dumps({'name':'block','arguments':arguments})}})
     client=LocalActionsClient(transport=httpx.MockTransport(handle))
-    raw=client({'instructions':'rules','model':'qwen3-vl:8b','tools':TOOLS,
+    raw=client({'instructions':'rules','model':'qwen3-vl:8b','tools':TOOLS,'_timeout_seconds':55,
                 'input':[{'role':'user','content':[{'type':'input_text','text':'evidence'},
                           {'type':'input_image','image_url':'data:image/png;base64,aGVsbG8='}]}]})
     assert validate_args(raw['output'][0]) == {'reason':'Insufficient evidence'}

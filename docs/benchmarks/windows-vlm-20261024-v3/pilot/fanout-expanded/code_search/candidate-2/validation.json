@@ -1,0 +1,19 @@
+{
+  "exitCode": 1,
+  "error": null,
+  "cases": {
+    "test_deliveries": "FAIL",
+    "test_external_failure": "ok",
+    "test_external_normal": "ok",
+    "test_failure_diagnostics": "FAIL",
+    "test_input_not_mutated": "ok",
+    "test_internal_phone": "ok",
+    "test_replay": "ok",
+    "test_store": "ok"
+  },
+  "passed": 6,
+  "total": 8,
+  "log": "test_deliveries (test_contract.Contract.test_deliveries) ... FAIL\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... FAIL\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nFAIL: test_deliveries (test_contract.Contract.test_deliveries)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 22, in test_deliveries\n    self.assertEqual([k for k,v in state.MESSAGES].count('r2'),1)\nAssertionError: 0 != 1\n\n======================================================================\nFAIL: test_failure_diagnostics (test_contract.Contract.test_failure_diagnostics)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 25, in test_failure_diagnostics\n    uid=signup(P,True); self.assertEqual(len(self.route('r3')),1)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 1\n\n----------------------------------------------------------------------\nRan 8 tests in 0.008s\n\nFAILED (failures=2)\n",
+  "seconds": 4.094,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

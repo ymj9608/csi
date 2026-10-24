@@ -1,0 +1,48 @@
+[
+  {
+    "reference": "docs\\benchmarks\\signup-events\\code_only",
+    "expectedPreviousTestsPassed": 10,
+    "exitCode": 0,
+    "error": null,
+    "cases": {
+      "test_function_analytics": "ok",
+      "test_function_internal": "ok",
+      "test_function_isolation": "ok",
+      "test_function_legacy": "ok",
+      "test_function_persist": "ok",
+      "test_security_external": "ok",
+      "test_security_newline": "ok",
+      "test_security_oversize": "ok",
+      "test_security_type": "ok",
+      "test_security_unicode": "ok"
+    },
+    "passed": 10,
+    "total": 10,
+    "log": "test_function_analytics (test_contract.Contract.test_function_analytics) ... ok\ntest_function_internal (test_contract.Contract.test_function_internal) ... ok\ntest_function_isolation (test_contract.Contract.test_function_isolation) ... ok\ntest_function_legacy (test_contract.Contract.test_function_legacy) ... ok\ntest_function_persist (test_contract.Contract.test_function_persist) ... ok\ntest_security_external (test_contract.Contract.test_security_external) ... ok\ntest_security_newline (test_contract.Contract.test_security_newline) ... ok\ntest_security_oversize (test_contract.Contract.test_security_oversize) ... ok\ntest_security_type (test_contract.Contract.test_security_type) ... ok\ntest_security_unicode (test_contract.Contract.test_security_unicode) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.005s\n\nOK\n",
+    "seconds": 3.902,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  },
+  {
+    "reference": "docs\\benchmarks\\signup-events\\oracle_context",
+    "expectedPreviousTestsPassed": 10,
+    "exitCode": 0,
+    "error": null,
+    "cases": {
+      "test_function_analytics": "ok",
+      "test_function_internal": "ok",
+      "test_function_isolation": "ok",
+      "test_function_legacy": "ok",
+      "test_function_persist": "ok",
+      "test_security_external": "ok",
+      "test_security_newline": "ok",
+      "test_security_oversize": "ok",
+      "test_security_type": "ok",
+      "test_security_unicode": "ok"
+    },
+    "passed": 10,
+    "total": 10,
+    "log": "test_function_analytics (test_contract.Contract.test_function_analytics) ... ok\ntest_function_internal (test_contract.Contract.test_function_internal) ... ok\ntest_function_isolation (test_contract.Contract.test_function_isolation) ... ok\ntest_function_legacy (test_contract.Contract.test_function_legacy) ... ok\ntest_function_persist (test_contract.Contract.test_function_persist) ... ok\ntest_security_external (test_contract.Contract.test_security_external) ... ok\ntest_security_newline (test_contract.Contract.test_security_newline) ... ok\ntest_security_oversize (test_contract.Contract.test_security_oversize) ... ok\ntest_security_type (test_contract.Contract.test_security_type) ... ok\ntest_security_unicode (test_contract.Contract.test_security_unicode) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.005s\n\nOK\n",
+    "seconds": 3.879,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  }
+]

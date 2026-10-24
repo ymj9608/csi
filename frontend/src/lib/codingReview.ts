@@ -48,6 +48,18 @@ export function previousVerificationPassed(result: any): boolean {
 
 export function finalVerificationPassed(result: any, status: string): boolean {
   const verification = result?.verification;
+  if (result?.schemaVersion === 2) {
+    const inventory = result.testInventory;
+    const checks = verification?.checks;
+    const files = result.files;
+    return ['READY', 'APPROVED', 'REJECTED'].includes(status) && verification?.exitCode === 0 &&
+      verification?.planDigest === result.planDigest && verification?.sourceManifestDigest === result.sourceManifestDigest &&
+      Array.isArray(inventory) && inventory.length > 0 && Array.isArray(checks) && checks.length === inventory.length &&
+      new Set(checks.map((c: any) => c.id)).size === inventory.length &&
+      checks.every((c: any) => inventory.includes(c.id) && (c.status === 'PASS' ||
+        c.status === 'SKIP' && result.allowedSkips?.includes(c.id))) &&
+      Array.isArray(files) && files.length === 1 && files[0].afterSha256 === verification.candidateSha256;
+  }
   if (!['READY', 'APPROVED', 'REJECTED'].includes(status) || verification?.suiteVersion !== 2 ||
     verification.exitCode !== 0 || verification.failed !== 0 || !Number.isInteger(verification.securityTotal) ||
     verification.securityTotal <= 0 || verification.securityPassed !== verification.securityTotal) return false;
