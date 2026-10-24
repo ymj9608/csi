@@ -1,3 +1,2 @@
-# Preserve diagram assets without text diffing or line-ending conversion.
-docs/diagrams/*.png binary
-docs/diagrams/*.pdf binary
+# Benchmark manifests hash original file bytes; do not rewrite line endings.
+docs/benchmarks/** -text

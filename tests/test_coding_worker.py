@@ -1,6 +1,8 @@
 """Result transport retries must not discard successful, immutable generation."""
 import json
 import stat
+import os
+import subprocess
 from pathlib import Path
 
 import httpx
@@ -32,6 +34,15 @@ def generated(monkeypatch):
     return calls
 
 
+def assert_private(path):
+    if os.name!='nt':
+        assert stat.S_IMODE(path.stat().st_mode)==0o600
+    else:
+        # Windows ACLs, not POSIX mode bits, enforce private receipts.
+        acl=subprocess.run(['icacls',str(path)],capture_output=True,text=True,check=True).stdout
+        assert '(I)' not in acl and acl.count('(F)')==1
+
+
 def test_lost_ack_retries_identical_result_without_failure(monkeypatch,tmp_path):
     generations=generated(monkeypatch);requests=[]
     def handler(request):
@@ -45,7 +56,7 @@ def test_lost_ack_retries_identical_result_without_failure(monkeypatch,tmp_path)
     assert requests[0].content==requests[1].content
     assert all(r.url.path.endswith('/result') for r in requests)
     assert json.loads((tmp_path/(JOB_ID+'.json')).read_text())==RESULT
-    assert stat.S_IMODE((tmp_path/(JOB_ID+'.json')).stat().st_mode)==0o600
+    assert_private(tmp_path/(JOB_ID+'.json'))
     assert not (tmp_path/(JOB_ID+'.pending.json')).exists()
 
 
@@ -57,7 +68,7 @@ def test_outage_preserves_result_and_restart_resumes_without_inference(monkeypat
     assert not worker.process(api(unavailable),Path('.'),JOB,tmp_path,'http://localhost:11434')
     assert len(requests)==3 and all(r.url.path.endswith('/result') for r in requests)
     pending=tmp_path/(JOB_ID+'.pending.json')
-    assert stat.S_IMODE(pending.stat().st_mode)==0o600
+    assert_private(pending)
     assert (tmp_path/(JOB_ID+'.json')).exists()
     delivered=[]
     def available(request):

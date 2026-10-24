@@ -287,7 +287,13 @@ def plan_routed_context(sources, finding, *, architecture=None, use_vision_conte
                     kind = _infrastructure_kind(component["kind"])
                     if kind:
                         infrastructure[component["id"]] = kind
-                    matches = [] if kind else _names(component["label"], aliases)
+                    # Extractors often separate a literal service ID from its
+                    # human-readable label. Retain both as candidates; a
+                    # disagreement must stay ambiguous rather than silently
+                    # trusting either field. IDs only match as whole names.
+                    matches = [] if kind else sorted(
+                        set(_names(component["label"], aliases))
+                        | aliases.get(_normalize(component["id"]), set()))
                     status = "MATCHED" if len(matches) == 1 else "AMBIGUOUS" if matches else "UNMATCHED"
                     item = {"componentId": component["id"], "label": component["label"], "moduleRoots": matches, "status": status}
                     if kind:

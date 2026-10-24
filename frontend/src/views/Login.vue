@@ -101,3 +101,38 @@ async function submit() {
     </section>
   </main>
 </template>
+
+<style scoped>
+.login {
+  background:
+    radial-gradient(65% 55% at 8% 0%, rgb(104 86 240 / 0.45), transparent 72%),
+    radial-gradient(55% 65% at 100% 25%, rgb(63 94 232 / 0.3), transparent 72%),
+    radial-gradient(75% 55% at 45% 100%, rgb(124 90 236 / 0.3), transparent 72%),
+    #0c1738;
+}
+.login::before {
+  opacity: 0.2;
+}
+.wordmark-logo img {
+  filter: brightness(0) invert(1);
+}
+.wordmark,
+.wordmark-sub,
+.wordmark-sub span {
+  color: #f3f5ff;
+}
+.team {
+  color: #c7cff2;
+}
+.lede,
+.story-rule {
+  color: #b7c2e6;
+}
+.story-rule,
+.story-rule span + span {
+  border-color: rgb(255 255 255 / 0.18);
+}
+.login-panel form {
+  box-shadow: 0 20px 50px rgb(5 10 35 / 0.3);
+}
+</style>

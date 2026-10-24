@@ -6,6 +6,25 @@ function verifiedResult(){
   return {reason:'전체 정책을 준수하고 기존 계정 문제가 모두 해결되었습니다.',modelLimitations:['bcrypt로 생성된 해쉬는 레거시 계정과 호환되지 않습니다.'],citedIds:['finding'],baseline:{passed:30,failed:10,securityPassed:3,securityTotal:13,suiteVersion:2,skipped:1},verification:proof,durationMs:60000,attempts:[{number:1,generationMs:45000,verification:proof}],limitations:[],files:[{path:'backend/app/core/csi_signup.py',diff:'--- a/signup.py\n+++ b/signup.py\n+import bcrypt\n'}],review:{version:1,summary:'신규 비밀번호 저장과 로그 노출 개선을 테스트로 확인했습니다.',changes:[{id:'password',title:'신규 계정 비밀번호 저장',before:'공통 Salt와 빠른 SHA-256 해시를 사용했습니다.',after:'bcrypt 비용 12와 개별 무작위 Salt를 사용합니다.',status:'VERIFIED',tests:['check-1','check-2'],evidenceIds:['reference']},{id:'login',title:'기존·신규 계정 로그인',before:'SHA-256 실습 계정을 인증합니다.',after:'기존 SHA-256 계정과 신규 bcrypt 계정을 모두 인증합니다.',status:'VERIFIED',tests:['check-3']}],remainingRisks:[{id:'migration',title:'기존 계정 해시 전환',detail:'기존 SHA-256 해시는 그대로 남습니다.',nextStep:'로그인 성공 후 재해시하는 기능이 필요합니다.'},{id:'logs',title:'과거 민감정보 로그',detail:'이미 남은 로그는 삭제되지 않습니다.',nextStep:'보존 정책에 따라 정리 대상을 확인하세요.'}],scope:['Lichu 회원가입 실습 경로를 SQLite로 테스트했습니다.','PostgreSQL 동시성과 실제 배포는 검증하지 않았습니다.']}};
 }
 
+for(const broken of [false,true])test(`project profile verification ${broken?'rejects stale candidate':'allows complete required checks'}`,async({page})=>{
+  const result:any=verifiedResult();delete result.review;
+  const ids=['tests/test_privacy.py::test_no_values','tests/test_privacy.py::test_event','tests/test_db.py::test_postgres'];
+  result.schemaVersion=2;result.engineVersion='5';result.planDigest='a'.repeat(64);result.sourceManifestDigest='b'.repeat(64);
+  result.testInventory=ids;result.allowedSkips=[ids[2]];
+  result.files[0].afterSha256='c'.repeat(64);
+  result.verification={exitCode:0,passed:2,failed:0,skipped:1,securityTotal:2,securityPassed:2,
+    planDigest:result.planDigest,sourceManifestDigest:result.sourceManifestDigest,candidateSha256:(broken?'d':'c').repeat(64),
+    checks:ids.map((id,i)=>({id,status:i===2?'SKIP':'PASS'}))};
+  await mockFlow(page,'SEC-05',{status:'READY',result});
+  await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
+  const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
+  await expect(region).toContainText(broken?'프로젝트 검증 미완료':'프로젝트 검증 통과');
+  const approve=region.getByRole('button',{name:'검토 후 승인',exact:true});
+  if(broken)await expect(approve).toBeDisabled();else await expect(approve).toBeEnabled();
+  await region.getByText('고정 테스트별 결과',{exact:true}).click();
+  await expect(region).toContainText('tests/test_db.py::test_postgres');
+});
+
 test('OpenAI orchestration trace is visible and model text is escaped',async({page})=>{
   const result:any=verifiedResult();
   result.handoff={mode:'vlm-orchestrator-v1',provider:'openai',model:'gpt-6.1-sol',sourceCommitMatches:null,
@@ -45,7 +64,7 @@ async function mockFlow(page:Page, rule='SEC-02', initial?:{status:string;result
     else if(path==='/api/scans/scan/coding-proposals'){
       if(request.method()==='POST'){
         state.requests++;state.job={id:'proposal',status:'RUNNING',createdAt:new Date().toISOString(),commitSha:'a'.repeat(40),progress:{phase:'GENERATING',attempt:1}};value=state.job;
-      }else value={enabled:true,supported:true,items:state.job?[state.job]:[]};
+      }else value={enabled:true,supported:true,verificationProfile:{version:1,config:{profileId:'test-profile',editablePaths:['backend/app/core/csi_signup.py'],ruleIds:['SEC-02','SEC-03','SEC-05'],inventory:[]}},items:state.job?[state.job]:[]};
     }else if(path==='/api/coding-proposals/proposal/decision'){
       state.decisions.push(request.postDataJSON().decision);state.job.status=request.postDataJSON().decision;value={status:state.job.status};
     }
@@ -126,7 +145,7 @@ test('unrelated risk cannot generate the signup remediation',async({page})=>{
   await mockFlow(page,'POL-01');
   await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
   const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
-  await expect(region).toContainText('이 항목의 자동 수정안은 아직 지원하지 않습니다');
+  await expect(region).toContainText('이 항목에 적용 가능한 검증 프로필이 없습니다');
   await expect(region.getByRole('button',{name:'수정안 생성 요청',exact:true})).toHaveCount(0);
 });
 

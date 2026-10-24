@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "profileId": "contacts-privacy-v1",
+  "repository": "fixtures/contacts",
+  "runtime": {"adapter": "python-pytest-v1", "imageId": "PREPARE", "workingDirectory": "service"},
+  "snapshotPaths": ["service/contacts", "service/tests"],
+  "editablePaths": ["service/contacts/service.py"],
+  "contextPaths": ["service/contacts/service.py"],
+  "testPaths": ["tests"],
+  "pack": {},
+  "driver": {"path": "project_profiles/contact_service/driver.py", "sha256": "PREPARE"},
+  "contracts": ["Retain internal email/phone records, invalid-input rejection and CONTACT_STORED events. Omit email/phone values from logs."],
+  "ruleIds": ["SEC-05"],
+  "reproductionTests": ["tests/test_csi_privacy_pack.py::test_no_sensitive_logs"],
+  "relatedFailures": [],
+  "allowedSkips": [],
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "generationTimeoutSeconds": 300
+}

@@ -2,6 +2,8 @@
 import argparse
 import json
 import os
+import subprocess
+import threading
 import tempfile
 import time
 import uuid
@@ -36,6 +38,12 @@ def write_private(path,value):
     descriptor,temporary_name=tempfile.mkstemp(prefix='.'+path.name+'.',dir=path.parent)
     temporary=Path(temporary_name)  # mkstemp creates a fresh file with mode 0600.
     try:
+        if os.name=='nt':
+            # Windows ignores POSIX 0600: restrict the empty file before writing a lease/result.
+            import csv
+            identity=subprocess.run(['whoami','/user','/fo','csv','/nh'],capture_output=True,text=True,check=True,timeout=10)
+            sid=next(csv.reader([identity.stdout.strip()]))[1]
+            subprocess.run(['icacls',str(temporary),'/inheritance:r','/grant:r','*'+sid+':F'],capture_output=True,check=True,timeout=10)
         with os.fdopen(descriptor,'w',encoding='utf-8') as stream:
             json.dump(value,stream,ensure_ascii=False,indent=2)
             stream.flush();os.fsync(stream.fileno())
@@ -94,6 +102,14 @@ def resume_deliveries(api,output,repository):
 
 def process(api,repo,job,output,ollama_url):
     job_id=str(uuid.UUID(job['id']))
+    stopped=threading.Event()
+    def heartbeat():
+        from .project_setup import capabilities
+        while not stopped.wait(15):
+            try:post(api,'/internal/coding-workers/heartbeat',{'repository':job['repository'],**capabilities(ollama_url)})
+            except (httpx.HTTPError,ValueError):pass
+    pulse=threading.Thread(target=heartbeat,daemon=True) if job.get('executionPlan') else None
+    if pulse:pulse.start()
     try:
         def progress(value):
             print(json.dumps({'proposalId':job_id,**value}),flush=True)
@@ -103,7 +119,9 @@ def process(api,repo,job,output,ollama_url):
                 response.raise_for_status()
             except httpx.HTTPError:
                 print(json.dumps({'proposalId':job_id,'status':'PROGRESS_UNAVAILABLE'}),flush=True)
-        result=generate(repo,job,ollama_url=ollama_url,progress=progress,diagnostics_dir=output/job_id)
+        from .project_engine import generate as project_generate
+        run = project_generate if job.get('executionPlan') else generate
+        result=run(repo,job,ollama_url=ollama_url,progress=progress,diagnostics_dir=output/job_id)
         write_private(output/(job_id+'.json'),result)
         write_private(output/(job_id+'.pending.json'),{'leaseToken':job['leaseToken'],
             'repository':job['repository'],'backend':str(api.base_url)})
@@ -113,6 +131,9 @@ def process(api,repo,job,output,ollama_url):
         except httpx.HTTPError:pass  # Lease expiry makes an unreachable worker visible in CSI.
         print(json.dumps({'proposalId':job_id,'status':'FAILED','errorCode':code}),flush=True)
         return False
+    finally:
+        stopped.set()
+        if pulse:pulse.join(timeout=1)
     return deliver_result(api,output,job_id,job['leaseToken'],result) and result['status']=='READY'
 
 def apply_approved(api,repo,proposal_id,destination,repository='ymj9608/Lichu'):
@@ -125,22 +146,27 @@ def apply_approved(api,repo,proposal_id,destination,repository='ymj9608/Lichu'):
     if git(repo,'rev-parse','HEAD').decode().strip()!=sha or git(repo,'status','--porcelain'):
         raise Rejected('STALE_OR_DIRTY_CHECKOUT')
     files=result['files']
-    if len(files)!=1 or files[0]['path']!=TARGET:raise Rejected('EDIT_SCOPE')
-    item=files[0];before=read(repo,sha,TARGET)
+    target = job['executionPlan']['config']['editablePaths'][0] if job.get('executionPlan') else TARGET
+    if len(files)!=1 or files[0]['path']!=target:raise Rejected('EDIT_SCOPE')
+    item=files[0];before=read(repo,sha,target)
     if digest(before)!=item['beforeSha256'] or digest(item['content'])!=item['afterSha256']:raise Rejected('CONTENT_DIGEST_MISMATCH')
-    validate_code(before,item['content'])
+    if job.get('executionPlan'):
+        from .project_verification import validate_candidate
+        validate_candidate(before,item['content'])
+    else:
+        validate_code(before,item['content'])
     destination=destination.resolve()
     if destination.exists():raise Rejected('DESTINATION_EXISTS')
     branch='csi/coding-'+proposal_id
     git(repo,'worktree','add','-b',branch,str(destination),sha)
-    (destination/TARGET).write_text(item['content'])
+    (destination/target).write_text(item['content'],encoding='utf-8')
     # No hooks, commits, pushes, merges, or execution of the candidate occurs here.
     return {'branch':branch,'worktree':str(destination),'baseCommit':sha,'status':'PREPARED_FOR_REVIEW'}
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--backend',default='http://127.0.0.1:8080');p.add_argument('--env-file',type=Path,default=Path('.env'))
-    p.add_argument('--repository',default='ymj9608/Lichu');p.add_argument('--repo',type=Path,required=True)
+    p.add_argument('--repository',required=True);p.add_argument('--repo',type=Path,required=True)
     p.add_argument('--ollama-url',default='http://127.0.0.1:11434');p.add_argument('--once',action='store_true')
     p.add_argument('--vlm-provider',choices=['openai','ollama'])
     p.add_argument('--vlm-model')
@@ -149,6 +175,8 @@ def main():
     args=p.parse_args();repo=args.repo.resolve(strict=True)
     # Keep provider credentials in this native worker, never the frontend or result payload.
     values=dotenv_values(args.env_file)
+    from .runtime_settings import load_environment
+    load_environment(values)
     for key in ('OPENAI_API_KEY','CSI_VLM_PROVIDER','CSI_VLM_MODEL'):
         if values.get(key) and key not in os.environ:
             os.environ[key]=values[key]
@@ -168,7 +196,10 @@ def main():
                     if args.once:raise SystemExit(1)
                     time.sleep(5)
                     continue
-                claim=post(api,'/internal/coding-proposals/claim',{'repository':args.repository})
+                from .project_setup import capabilities
+                available = capabilities(args.ollama_url)
+                post(api,'/internal/coding-workers/heartbeat',{'repository':args.repository, **available})
+                claim=post(api,'/internal/coding-proposals/claim',{'repository':args.repository, **available})
                 if claim['available']:
                     success=process(api,repo,claim['job'],args.output,args.ollama_url)
                     if args.once and not success:raise SystemExit(1)

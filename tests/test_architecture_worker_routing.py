@@ -52,3 +52,24 @@ def test_diagram_empty_queue_does_not_load_model(monkeypatch):
     monkeypatch.setattr(diagram_worker.extractor, "extract", lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("unexpected inference")))
     with httpx.Client(base_url="http://localhost:8080", transport=httpx.MockTransport(lambda _: httpx.Response(204))) as api:
         assert not diagram_worker.run_once(api, "project")
+
+
+def test_repository_cli_selects_project_queue_with_qwen(monkeypatch):
+    received = []
+    monkeypatch.setattr(sys, 'argv', ['worker', '--repository', 'org/demo', '--once'])
+    monkeypatch.setattr(diagram_worker, 'run', lambda args: received.append(args))
+    worker.main()
+    assert received[0].repository == 'org/demo'
+    assert received[0].model == 'qwen3-vl:8b'
+
+
+def test_repository_resolves_before_claim_without_inference(monkeypatch):
+    from argparse import Namespace
+    from coding_agent import project_lookup
+    claims = []
+    monkeypatch.setattr(project_lookup, 'lookup_project', lambda backend, env, repo: 'resolved-id')
+    monkeypatch.setattr(diagram_worker, 'client', lambda *_: httpx.Client(base_url='http://localhost:8080'))
+    monkeypatch.setattr(diagram_worker, 'run_once', lambda api, project_id, **kw: claims.append(project_id))
+    diagram_worker.run(Namespace(backend='http://localhost:8080', env_file='.env', project_id=None,
+        repository='org/demo', once=True, model='qwen3-vl:8b', ollama_url='http://localhost:11434'))
+    assert claims == ['resolved-id']

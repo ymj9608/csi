@@ -8,3 +8,9 @@ frontend/node_modules
 frontend/dist
 backend/target
 .git
+.venv-slack
+.worktrees
+**/__pycache__
+**/*.log
+frontend/test-results
+frontend/playwright-report

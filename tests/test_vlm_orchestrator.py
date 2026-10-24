@@ -123,6 +123,20 @@ def test_budget_stop_preserves_trace(repo, monkeypatch):
     assert result['failureReason'] == 'VLM_TOKEN_BUDGET' and not coder
 
 
+def test_timeout_records_wait_and_marks_usage_unknown(repo, monkeypatch):
+    clock = [100.0]
+    monkeypatch.setattr(orchestrator.time, 'monotonic', lambda: clock[0])
+    def timeout(_):
+        clock[0] += 600
+        raise Rejected('VLM_TIMEOUT')
+    result = engine.generate(repo, job(repo), verifier=lambda _: report(False), vlm_chat=timeout,
+                             chat=lambda _: pytest.fail('timeout must not delegate coding'))
+    assert result['status'] == 'BLOCKED' and result['files'] == []
+    assert result['handoff']['metrics']['apiDurationMs'] == 600000
+    assert result['handoff']['metrics']['usageIncomplete'] is True
+    assert result['handoff']['trace'][-1]['errorCode'] == 'VLM_TIMEOUT'
+
+
 @pytest.mark.parametrize('change,code', [
     (lambda r: r.update(status='incomplete'), 'VLM_OUTPUT_INCOMPLETE'),
     (lambda r: r.update(output=[]), 'VLM_SINGLE_TOOL_REQUIRED'),
@@ -196,8 +210,11 @@ def test_repeated_call_id_cannot_execute_coder_twice(repo):
 
 def test_source_tool_uses_commit_and_ignores_symlinks(repo):
     from coding_agent.repository import git
-    (repo / 'backend/app/leak.py').symlink_to('/etc/passwd')
-    git(repo, 'add', '.')
+    # Write a real Git symlink entry without requiring Windows symlink privileges.
+    (repo / 'link-content.txt').write_text('/etc/passwd', encoding='utf-8')
+    blob=git(repo,'hash-object','-w','link-content.txt').decode().strip()
+    (repo / 'link-content.txt').unlink()
+    git(repo,'update-index','--add','--cacheinfo','120000,'+blob+',backend/app/leak.py')
     git(repo, '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-qm', 'symlink')
     sources = orchestrator.SourceTools(repo, context(repo)['commitSha'])
     assert 'backend/app/leak.py' not in sources.paths and '.env' not in sources.paths

@@ -1,0 +1,5 @@
+# Optional calibration harness; not production Agent dependencies.
+httpx==0.28.1
+jsonschema==4.26.0
+Pillow==13.0.0
+wasmtime==50.0.1
