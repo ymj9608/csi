@@ -47,10 +47,7 @@ def run(source, repository, branch='develop', base='http://127.0.0.1:8080', subm
         response = client.get('/api/projects')
         response.raise_for_status()
         if not any(p['repository'] == repository for p in response.json()):
-            response = client.post('/api/projects', json={'repository': repository, 'defaultBranch': branch})
-            if response.status_code == 400:
-                raise SystemExit('Add the repository to CSI_REPOSITORY_ALLOWLIST and recreate the backend first.')
-            response.raise_for_status()
+            raise SystemExit('Register the repository with its required architecture image in the CSI console first.')
         payload = dict(repository=repository, branch=branch, commitSha=source_sha,
                        workflowRunId=str(time.time_ns()), runAttempt=1, triggerType='LOCAL_DEMO',
                        scannerSuccess=True, findings=findings)
