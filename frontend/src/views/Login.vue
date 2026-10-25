@@ -51,14 +51,14 @@ async function submit() {
       <h1 v-if="logoOk" class="wordmark-logo">
         <img
           :src="BRAND + 'csi-wordmark-full.png'"
-          alt="CSI Context-Aware Security Inspector"
+          alt="CSI Context-aware Security Inspector"
           @error="logoOk = false"
         />
       </h1>
       <template v-else>
         <h1 class="wordmark">CSI</h1>
         <p class="wordmark-sub">
-          CONTEXT-AWARE SECURITY <span>INSPECTOR</span>
+          Context-aware Security <span>Inspector</span>
         </p>
       </template>
       <p class="team">5조 : 노은서, 박지훈, 윤명진, 이기현, 장하은, 최현우</p>
