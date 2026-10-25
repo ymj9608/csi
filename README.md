@@ -1,4 +1,4 @@
-# CSI — Cyber Security Inspector
+# CSI — Context-aware Security Inspector
 
 **코드 변경을 사내 개인정보 처리 정책과 대조하고, 근거가 있는 보안 리뷰를 제공하는 B2B 보안 진단 Capstone 프로젝트입니다.**
 
