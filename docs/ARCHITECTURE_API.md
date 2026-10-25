@@ -21,9 +21,26 @@ WebP/GIF는 첫 프레임을 PNG로 변환하고 서버 이미지 제한을 적�
 이 분석 등록은 코딩용 이미지 버전 선택과 별도입니다. 아래 버전형 API와
 `select-for-coding` 경로는 그대로 유지합니다.
 
+## 업로드 이미지 분석의 실패·재시도
+
+프로젝트 화면의 `architecture_diagrams` 큐와 아래 버전형 `project_architectures` 큐는 별도입니다.
+
+- `GET /api/projects/{projectId}/architecture`는 `id`, `status`, `components`, `summary`, `confirmed`, `errorCode`를 반환합니다. 상태는 `QUEUED → LOADING_MODEL → ANALYZING → EXTRACTED` 또는 `FAILED`입니다.
+- Worker는 추론·조회·저장 오류를 `POST /internal/architecture/{diagramId}/failure`의 `{ "errorCode": "MODEL_TIMEOUT" }` 형식으로 보고합니다. 허용 코드는 `MODEL_TIMEOUT`, `MODEL_UNAVAILABLE`, `INVALID_RESULT`, `BACKEND_UNAVAILABLE`, `WORKER_ERROR`이며 원시 예외·모델 응답은 저장하지 않습니다. 통신 오류/5xx는 최대 3회 전송하고, 4xx는 반복하지 않습니다.
+- Backend는 30초마다, 그리고 상태 조회 시 장기 진행 작업을 `FAILED / WORKER_TIMEOUT`으로 전환합니다. `CSI_ARCHITECTURE_JOB_TIMEOUT_SECONDS` 기본값은 2100초(60~7200초 범위)이며, 정상 모델 요청 제한과 전송 시간을 감안해 설정합니다. 대기 중인 `QUEUED`는 만료하지 않습니다.
+- `POST /api/projects/{projectId}/architecture/retry` 입력은 `{ "diagramId": "현재 실패한 작업 UUID" }`입니다. Reviewer 세션·CSRF 인증을 사용하며 현재 실패한 작업만 재시도합니다. 저장된 이미지에 새 작업 ID를 부여하고 `QUEUED`로 돌립니다. 응답은 `{ "id": "새 UUID", "status": "QUEUED" }`입니다.
+- 완료·실패·교체된 작업에 도착한 늦은 결과는 거절합니다. 실패 보고도 완료된 결과를 덮어쓸 수 없습니다. 자동화 서비스가 관리하는 프로젝트는 다음 확인 시 재시도 작업을 실행하며, 그 밖의 프로젝트는 아키텍처 Worker를 실행해야 합니다.
+- 화면은 실패 이유와 **분석 다시 시도** 버튼을 표시하고 완료·실패 시 상태 폴링을 멈춥니다. 재시도하면 폴링을 재개합니다.
+
+반영 시 Backend 재빌드·재시작으로 Flyway `V12__architecture_diagram_failures.sql`을 적용하고 Frontend·Worker도 새 버전으로 갱신합니다. 기존 DB 초기화는 필요 없습니다. 중단된 과거 진행 작업도 만료 대상입니다. Windows·Mac에서 같은 API와 Python Worker 코드를 사용하지만 Mac 실장비 추론은 별도 확인해야 합니다.
+
+분석용 재업로드(`POST /api/projects/{projectId}/architecture`)도 등록과 같은 이미지 내용·크기 검사를 적용합니다. 잘못된 파일은 기존 이미지를 교체하지 않습니다. 화면의 재업로드와 코딩 연결 모두 PDF 첫 페이지·WebP/GIF를 PNG로 변환한 뒤 서버에 전달합니다.
+
+이 업로드 큐의 추출 결과는 summary 1~180자, components 1~6개, name 1~60자, role 1~40자이며 isolationStatus와 state는 정의된 열거값만 허용합니다. 잘못된 결과는 400으로 거절합니다. 아래 버전형 맥락의 그래프 스키마와 구분합니다.
+
 ## 버전형 아키텍처 맥락 API
 
-이미지 등록 때 비전 분석을 실행하고 구조화된 맥락을 보관하는 MVP API입니다. 이미지 해석은 **검증되지 않은 참고 정보**이며 코드 보안 검사 결과가 아닙니다. 기존 전체 정적 분석과 코드 근거 검증을 생략하거나 검사 상태를 변경하지 않습니다. 프론트엔드 페이지와 기존 리뷰 파이프라인에 연결할 준비 단계이며 자동 배선은 하지 않았습니다.
+이미지 등록 때 비전 분석을 실행하고 구조화된 맥락을 보관하는 MVP API입니다. 이미지 해석은 **검증되지 않은 참고 정보**이며 코드 보안 검사 결과가 아닙니다. 기존 전체 정적 분석과 코드 근거 검증을 생략하거나 검사 상태를 변경하지 않습니다. 화면에서 명시적으로 코딩 이미지를 선택할 수 있으며, 분석 등록만으로 코딩 이미지가 자동 선택되지는 않습니다.
 
 ## 저장과 버전
 

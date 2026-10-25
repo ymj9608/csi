@@ -11,7 +11,11 @@ def test_masking_removes_literals_comments():
     assert 'rawPassword' in result
 
 def test_snapshot_rejects_symlink_escape(tmp_path):
-    source=tmp_path/'src';source.mkdir();dest=tmp_path/'out';dest.mkdir();outside=tmp_path/'secret.java';outside.write_text('secret');(source/'Escape.java').symlink_to(outside)
+    source=tmp_path/'src';source.mkdir();dest=tmp_path/'out';dest.mkdir();outside=tmp_path/'secret.java';outside.write_text('secret')
+    try:(source/'Escape.java').symlink_to(outside)
+    except OSError as exc:
+        if getattr(exc,'winerror',None)==1314:pytest.skip('Windows symlink privilege unavailable; real symlink boundary remains unverified here')
+        raise
     with pytest.raises(ValueError,match='Symlinks'):snapshot(source,dest)
 
 def test_snapshot_never_copies_executables(tmp_path):

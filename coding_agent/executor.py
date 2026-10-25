@@ -36,7 +36,7 @@ class CandidateExecutor:
         self.result.pop('lastVerification', None)
         self.result.pop('review', None)
         # Every new candidate replaces the original target, never an unverified prior file.
-        (self.tree / TARGET).write_text(self.user['source'])
+        (self.tree / TARGET).write_text(self.user['source'], encoding='utf-8', newline='')
         attempt = {'number': self.attempt_count + 1}
         self.result['attempts'].append(attempt)
         selected = dict(selected_sources)
@@ -83,7 +83,7 @@ class CandidateExecutor:
             if after == self.user['source']:
                 raise Rejected('NO_CHANGE')
             self.candidate = value
-            (self.tree / TARGET).write_text(after)
+            (self.tree / TARGET).write_text(after, encoding='utf-8', newline='')
             diff = self.patch(self.user['source'], after)
             return {'status': 'CANDIDATE', 'attempt': attempt['number'], 'path': TARGET,
                     'afterSha256': digest(after), 'diff': diff[:12000], 'diffTruncated': len(diff) > 12000,
@@ -127,7 +127,7 @@ class CandidateExecutor:
         if not self.verified or self.candidate is None:
             raise Rejected('VLM_VERIFICATION_REQUIRED')
         after = self.candidate['files'][0]['content']
-        if (self.tree / TARGET).read_text() != after:
+        if (self.tree / TARGET).read_text(encoding='utf-8') != after:
             raise Rejected('CONTENT_DIGEST_MISMATCH')
         self.result.update(status='READY', reason=self.candidate['reason'], citedIds=self.candidate['evidence_ids'],
                            modelLimitations=self.candidate['limitations'], files=[{'path': TARGET,

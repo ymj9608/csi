@@ -18,7 +18,7 @@ class ArchitectureControllerTest {
 
  @Test void postArchitecture_storesQueuedDiagram() throws Exception {
   doReturn(Map.of("id",projectId.toString())).when(db).one(anyString(),eq(projectId));
-  byte[] png=new byte[]{(byte)0x89,'P','N','G',0x0d,0x0a};
+  byte[] png=ArchitectureContextsTest.image("png").getBytes();
   var file=new MockMultipartFile("file","diagram.png","image/png",png);
   var response=controller.upload(projectId,file);
   assertEquals(201,response.getStatusCode().value());
@@ -75,6 +75,7 @@ class ArchitectureControllerTest {
  @Test void postResult_setsExtractedAndStoresComponentsAndSummary(){
   UUID diagramId=UUID.randomUUID();
   var components=List.of(new ArchitectureController.Component("Isolated CSI Lab Mode","격리된 연습 환경","ISOLATED","OBSERVED"));
+  when(jdbc.update(contains("SET status='EXTRACTED'"),anyString(),anyString(),eq(diagramId))).thenReturn(1);
   var result=controller.result(diagramId,new ArchitectureController.Result(components,"Lichu는 라이선스 관리 서비스와 격리된 연습 환경으로 구성됩니다."));
   assertEquals("EXTRACTED",((Map<?,?>)result).get("status"));
   verify(jdbc).update(contains("SET status='EXTRACTED'"),anyString(),eq("Lichu는 라이선스 관리 서비스와 격리된 연습 환경으로 구성됩니다."),eq(diagramId));
@@ -85,5 +86,68 @@ class ArchitectureControllerTest {
   var error=assertThrows(ResponseStatusException.class,()->controller.result(diagramId,new ArchitectureController.Result(List.of(),"summary")));
   assertEquals(400,error.getStatusCode().value());
   verifyNoInteractions(jdbc);
+ }
+
+ @Test void uploadRejectsDisguisedOrOversizedImagesWithoutReplacingExistingResult() throws Exception {
+  doReturn(Map.of("id",projectId.toString())).when(db).one(anyString(),eq(projectId));
+  for(var file:List.of(new MockMultipartFile("file","x.png","image/png","not an image".getBytes()),
+      new MockMultipartFile("file","large.png","image/png",new byte[5*1024*1024+1]))){
+   assertThrows(ResponseStatusException.class,()->controller.upload(projectId,file));
+  }
+  verifyNoInteractions(jdbc);
+ }
+
+ @Test void invalidModelOutputIsAClientErrorWithoutSavingPartialData(){
+  var valid=new ArchitectureController.Component("API","service","UNKNOWN","OBSERVED");
+  var invalid=List.of(new ArchitectureController.Result(List.of(valid),"x".repeat(181)),
+    new ArchitectureController.Result(Collections.nCopies(7,valid),"summary"),
+    new ArchitectureController.Result(Arrays.asList((ArchitectureController.Component)null),"summary"),
+    new ArchitectureController.Result(List.of(new ArchitectureController.Component("API","role",null,"OBSERVED")),"summary"),
+    new ArchitectureController.Result(List.of(new ArchitectureController.Component("API","role","UNKNOWN",null)),"summary"));
+  for(var r:invalid)assertEquals(400,assertThrows(ResponseStatusException.class,()->controller.result(UUID.randomUUID(),r)).getStatusCode().value());
+  verifyNoInteractions(jdbc);
+ }
+
+ @Test void failure_doesNotPublishRawErrorOrOverwriteSuccess(){
+  UUID diagram=UUID.randomUUID();
+  var invalid=assertThrows(ResponseStatusException.class,()->controller.failure(diagram,new ArchitectureController.Failure("token=private")));
+  assertEquals(400,invalid.getStatusCode().value());
+  verifyNoInteractions(jdbc);
+  doReturn(Map.of("status","EXTRACTED")).when(db).one(anyString(),eq(diagram));
+  var conflict=assertThrows(ResponseStatusException.class,()->controller.failure(diagram,new ArchitectureController.Failure("MODEL_TIMEOUT")));
+  assertEquals(409,conflict.getStatusCode().value());
+  verify(jdbc).update(contains("status IN ('LOADING_MODEL','ANALYZING')"),eq("MODEL_TIMEOUT"),eq(diagram));
+ }
+
+ @Test void failure_isRecordedAndDuplicateDeliveryIsAccepted(){
+  UUID diagram=UUID.randomUUID();
+  when(jdbc.update(contains("SET status='FAILED'"),eq("INVALID_RESULT"),eq(diagram))).thenReturn(1,0);
+  doReturn(Map.of("status","FAILED")).when(db).one(anyString(),eq(diagram));
+  assertEquals(Map.of("status","FAILED"),controller.failure(diagram,new ArchitectureController.Failure("INVALID_RESULT")));
+  assertEquals(Map.of("status","FAILED"),controller.failure(diagram,new ArchitectureController.Failure("INVALID_RESULT")));
+ }
+
+ @Test void expiredOrReplacedJobCannotPublishLateSuccess(){
+  var result=new ArchitectureController.Result(List.of(new ArchitectureController.Component("API","service","UNKNOWN","OBSERVED")),"summary");
+  var error=assertThrows(ResponseStatusException.class,()->controller.result(UUID.randomUUID(),result));
+  assertEquals(409,error.getStatusCode().value());
+  verify(jdbc).update(contains("AND status='ANALYZING'"),anyString(),eq("summary"),any(UUID.class));
+ }
+
+ @Test void retryChangesJobIdAndOnlyAcceptsCurrentFailedJob(){
+  UUID old=UUID.randomUUID();
+  when(jdbc.update(contains("AND status='FAILED'"),any(UUID.class),eq(projectId),eq(old))).thenReturn(1,0);
+  var result=(Map<?,?>)controller.retry(projectId,new ArchitectureController.Retry(old));
+  assertEquals("QUEUED",result.get("status"));
+  assertNotEquals(old,result.get("id"));
+  assertEquals(409,assertThrows(ResponseStatusException.class,()->controller.retry(projectId,new ArchitectureController.Retry(old))).getStatusCode().value());
+ }
+
+ @Test void timeoutCoversOnlyActiveJobsAndAlsoRunsDuringStatusRead(){
+  controller.expire();
+  verify(jdbc).update(contains("status IN ('LOADING_MODEL','ANALYZING') AND updated_at <"),eq(2100));
+  doReturn(Map.of("status","FAILED","errorCode","WORKER_TIMEOUT")).when(db).one(anyString(),eq(projectId));
+  assertEquals("FAILED",((Map<?,?>)controller.get(projectId)).get("status"));
+  verify(jdbc).update(contains("project_id=? AND status IN ('LOADING_MODEL','ANALYZING')"),eq(projectId),eq(2100));
  }
 }

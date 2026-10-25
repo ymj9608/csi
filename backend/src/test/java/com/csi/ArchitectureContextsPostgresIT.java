@@ -94,12 +94,23 @@ class ArchitectureContextsPostgresIT {
   tx.execute(status->service.selectForCoding(project,original));
   db.jdbc.update("INSERT INTO scans(id,project_id,repository,branch,commit_sha,workflow_run_id,run_attempt,trigger_type,status,policy_version,policy) VALUES(?,?,?,'main',?,'direct-test',1,'TEST','COMPLETED','test','{\"bcryptMinCost\":12}'::jsonb)",scan,project,repo,"a".repeat(40));
   db.jdbc.update("INSERT INTO findings(id,scan_id,rule_id,title,category,severity,file_path,start_line,end_line,fingerprint,confidence,evidence_status) VALUES(?,?,'SEC-02','test','SECURITY','HIGH',?,1,1,'test','MEDIUM','SUSPECTED')",UUID.randomUUID(),scan,CodingProposals.TARGET);
+  // The current engine requires an activated profile and matching worker capabilities.
+  // Seed a test profile; this test verifies image pinning, not real code execution.
+  var profile=new ProjectVerificationTest().profile();profile.put("repository",repo);
+  profile.putArray("editablePaths").add(CodingProposals.TARGET);
+  profile.putArray("contextPaths").add(CodingProposals.TARGET);
+  profile.putArray("snapshotPaths").add("backend/app").add("backend/tests");
+  ((ObjectNode)profile.path("runtime")).put("workingDirectory","backend");
+  profile.putArray("ruleIds").add("SEC-02");
+  ProjectVerification.validateConfig(profile);
+  db.jdbc.update("INSERT INTO project_verification_profiles(project_id,version,config,config_digest,validated_at) VALUES(?,1,?::jsonb,?,now())",project,profile.toString(),ProjectVerification.digest(profile));
+  db.jdbc.update("UPDATE projects SET verification_profile_version=1 WHERE id=?",project);
   var coding=new CodingProposals(db,org.mockito.Mockito.mock(Events.class),true,repo);
   var queued=tx.execute(status->coding.queue(scan,true));
   assertEquals(original.toString(),queued.get("architectureId"));
   var newer=(Map<?,?>)tx.execute(status->service.upload(project,testImage,"b".repeat(40),auth));
   tx.execute(status->service.selectForCoding(project,UUID.fromString((String)newer.get("id"))));
-  var claim=(Map<?,?>)tx.execute(status->coding.claim(new CodingProposals.Claim(repo)));
+  var claim=(Map<?,?>)tx.execute(status->coding.claim(new CodingProposals.Claim(repo,List.of("python-pytest-v1"),List.of("sha256:"+"a".repeat(64)),List.of(CodingProposals.MODEL))));
   var job=(Map<?,?>)claim.get("job");var handed=(Map<?,?>)job.get("architecture");
   assertEquals(original.toString(),handed.get("id"));
   assertArrayEquals(ArchitectureContextsTest.image("png").getBytes(),Base64.getDecoder().decode((String)handed.get("imageBase64")));
@@ -107,5 +118,41 @@ class ArchitectureContextsPostgresIT {
   UUID another=UUID.randomUUID();
   db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,'main')",another,"test/"+another);
   assertThrows(org.springframework.web.server.ResponseStatusException.class,()->tx.execute(status->service.selectForCoding(another,original)));
+ }
+
+ @Test void uploadedDiagramFailureRetryAndExpiryPreserveStateBoundaries() throws Exception {
+  UUID project=UUID.randomUUID();
+  db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,'main')",project,"test/diagram");
+  var diagrams=new ArchitectureController(db);
+  var uploaded=diagrams.upload(project,ArchitectureContextsTest.image("png"));
+  UUID original=(UUID)((Map<?,?>)uploaded.getBody()).get("id");
+  tx.execute(status->diagrams.claim(project));
+  diagrams.progress(original,new ArchitectureController.Progress("ANALYZING"));
+  diagrams.failure(original,new ArchitectureController.Failure("MODEL_TIMEOUT"));
+  assertEquals("MODEL_TIMEOUT",((Map<?,?>)diagrams.get(project)).get("errorCode"));
+  var retry=(Map<?,?>)diagrams.retry(project,new ArchitectureController.Retry(original));
+  UUID next=(UUID)retry.get("id");
+  assertNotEquals(original,next);
+  var output=new ArchitectureController.Result(List.of(new ArchitectureController.Component("API","service","UNKNOWN","OBSERVED")),"summary");
+  assertThrows(org.springframework.web.server.ResponseStatusException.class,()->diagrams.result(original,output));
+  assertEquals("QUEUED",((Map<?,?>)diagrams.get(project)).get("status"));
+  tx.execute(status->diagrams.claim(project));
+  diagrams.progress(next,new ArchitectureController.Progress("ANALYZING"));
+  db.jdbc.update("UPDATE architecture_diagrams SET updated_at=now()-interval '40 minutes' WHERE id=?",next);
+  assertEquals("WORKER_TIMEOUT",((Map<?,?>)diagrams.get(project)).get("errorCode"));
+  assertThrows(org.springframework.web.server.ResponseStatusException.class,()->diagrams.result(next,output));
+  UUID finalId=(UUID)((Map<?,?>)diagrams.retry(project,new ArchitectureController.Retry(next))).get("id");
+  tx.execute(status->diagrams.claim(project));
+  diagrams.progress(finalId,new ArchitectureController.Progress("ANALYZING"));
+  diagrams.result(finalId,output);
+  assertThrows(org.springframework.web.server.ResponseStatusException.class,()->diagrams.failure(finalId,new ArchitectureController.Failure("BACKEND_UNAVAILABLE")));
+  diagrams.expire();
+  assertEquals("EXTRACTED",((Map<?,?>)diagrams.get(project)).get("status"));
+  UUID queued=UUID.randomUUID();
+  db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,'main')",queued,"test/queued");
+  diagrams.upload(queued,ArchitectureContextsTest.image("png"));
+  db.jdbc.update("UPDATE architecture_diagrams SET updated_at=now()-interval '1 day' WHERE project_id=?",queued);
+  diagrams.expire();
+  assertEquals("QUEUED",((Map<?,?>)diagrams.get(queued)).get("status"));
  }
 }
