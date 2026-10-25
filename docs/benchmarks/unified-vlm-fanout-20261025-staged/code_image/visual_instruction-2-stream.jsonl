@@ -1,0 +1,520 @@
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:48.7031846Z", "done": false, "content": "{"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:49.2534219Z", "done": false, "content": "\n  \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:49.5283441Z", "done": false, "content": "instructions"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:49.8021594Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:50.0719286Z", "done": false, "content": " ["}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:50.6775074Z", "done": false, "content": "\n    {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:51.2642238Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:51.592223Z", "done": false, "content": "find"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:51.8930535Z", "done": false, "content": "in"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:52.2085668Z", "done": false, "content": "g"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:52.4995971Z", "done": false, "content": "Id"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:52.7716Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:53.0472384Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:53.3203998Z", "done": false, "content": "fan"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:53.6104014Z", "done": false, "content": "out"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:53.8844011Z", "done": false, "content": "-phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:54.1638567Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:54.7855077Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:55.2848907Z", "done": false, "content": "text"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:55.5351931Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:55.8145982Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:56.088192Z", "done": false, "content": "dispatcher"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:56.4144491Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:56.8101491Z", "done": false, "content": " 파일"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:57.041888Z", "done": false, "content": "에서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:57.3327929Z", "done": false, "content": " fail"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:57.6407929Z", "done": false, "content": " 매"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:57.9239732Z", "done": false, "content": "개"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:58.1930494Z", "done": false, "content": "변"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:58.4630479Z", "done": false, "content": "수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:58.7869407Z", "done": false, "content": " 값"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:59.0708252Z", "done": false, "content": "이"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:59.393857Z", "done": false, "content": " True"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:59.6560787Z", "done": false, "content": "인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:21:59.9341726Z", "done": false, "content": " 경우"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:00.2178564Z", "done": false, "content": "에"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:00.4938521Z", "done": false, "content": "만"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:00.7638522Z", "done": false, "content": " event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:01.0496293Z", "done": false, "content": " 객체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:01.3667785Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:01.6397777Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:01.9146705Z", "done": false, "content": " 필"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:02.187975Z", "done": false, "content": "드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:02.463974Z", "done": false, "content": "를"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:02.7434723Z", "done": false, "content": " '*'"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:03.0135327Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:03.2926159Z", "done": false, "content": " 교"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:03.5699059Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:03.8489025Z", "done": false, "content": "하고"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:04.1289044Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:04.4069037Z", "done": false, "content": " 그"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:04.6859057Z", "done": false, "content": " 후"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:04.9588643Z", "done": false, "content": " publish"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:05.2298924Z", "done": false, "content": " 함수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:05.5088936Z", "done": false, "content": " 호출"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:05.7846116Z", "done": false, "content": " 시"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:06.058519Z", "done": false, "content": " 이"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:06.3406416Z", "done": false, "content": " 수정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:06.6686457Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:07.0213601Z", "done": false, "content": " 값을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:07.2997203Z", "done": false, "content": " 전"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:07.5822318Z", "done": false, "content": "송"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:07.8682322Z", "done": false, "content": "하도록"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:08.1805895Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:08.4605895Z", "done": false, "content": "를"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:08.7355892Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:09.0115897Z", "done": false, "content": "하세요"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:09.2901167Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:09.5971091Z", "done": false, "content": " fail"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:09.9158601Z", "done": false, "content": "=False"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:10.2016583Z", "done": false, "content": "일"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:10.4816587Z", "done": false, "content": " 때"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:10.7566589Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:11.0355567Z", "done": false, "content": " 원"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:11.3206487Z", "done": false, "content": "본"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:11.609508Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:11.8890133Z", "done": false, "content": " 필"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:12.1700562Z", "done": false, "content": "드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:12.4774133Z", "done": false, "content": "를"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:12.7562625Z", "done": false, "content": " 유지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:13.0347761Z", "done": false, "content": "합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:13.390779Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:13.6677584Z", "done": false, "content": " 이"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:13.944058Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:14.2180459Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:14.7738993Z", "done": false, "content": " 외"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:15.0500435Z", "done": false, "content": "부"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:15.3317943Z", "done": false, "content": " 수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:15.6184722Z", "done": false, "content": "신"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:15.9004726Z", "done": false, "content": "자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:16.1834249Z", "done": false, "content": "(r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:16.4659371Z", "done": false, "content": "2"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:16.7495596Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:17.0265621Z", "done": false, "content": " r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:17.3117739Z", "done": false, "content": "3"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:17.5888923Z", "done": false, "content": ")"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:17.8697188Z", "done": false, "content": "에게"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:18.7197941Z", "done": false, "content": " 휴"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:19.0017932Z", "done": false, "content": "대"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:19.2877947Z", "done": false, "content": "폰"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:19.5743551Z", "done": false, "content": " 번"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:19.8602537Z", "done": false, "content": "호"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:20.1428978Z", "done": false, "content": " 노"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:20.4634135Z", "done": false, "content": "출"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:20.7444133Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:21.0204127Z", "done": false, "content": " 방"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:21.3056783Z", "done": false, "content": "지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:21.5924318Z", "done": false, "content": "하면서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:21.8774363Z", "done": false, "content": "도"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:22.1581303Z", "done": false, "content": " 공"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:22.4459467Z", "done": false, "content": "식"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:22.7303493Z", "done": false, "content": " API"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:23.0148151Z", "done": false, "content": " 인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:23.3058161Z", "done": false, "content": "터"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:23.9947577Z", "done": false, "content": "페이"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:24.2865225Z", "done": false, "content": "스"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:24.5715239Z", "done": false, "content": "를"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:24.8625276Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:25.1614765Z", "done": false, "content": "하지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:25.5116627Z", "done": false, "content": " 않"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:25.8617818Z", "done": false, "content": "도록"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:26.1533787Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:26.5294965Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:26.8215Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:27.1557425Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:27.4956239Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:27.8014281Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:28.0844351Z", "done": false, "content": " deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:28.3704352Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:28.6575968Z", "done": false, "content": "에서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:28.9412244Z", "done": false, "content": " 정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:29.2290081Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:29.5238672Z", "done": false, "content": "한"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:29.8146574Z", "done": false, "content": " 경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:30.1037412Z", "done": false, "content": "계"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:30.3989212Z", "done": false, "content": "("}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:30.6939246Z", "done": false, "content": "INTERNAL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:30.9825521Z", "done": false, "content": "/"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:31.2734905Z", "done": false, "content": "EXTERNAL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:31.5577695Z", "done": false, "content": ")"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:31.8427707Z", "done": false, "content": "와"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:32.1275961Z", "done": false, "content": " 일"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:32.4133851Z", "done": false, "content": "치"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:32.6975249Z", "done": false, "content": "해야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:32.9844032Z", "done": false, "content": " 하"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:33.2722071Z", "done": false, "content": "며"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:33.5553768Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:33.8443778Z", "done": false, "content": " 내"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:34.1348967Z", "done": false, "content": "부"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:34.4288976Z", "done": false, "content": " 저장"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:34.7196679Z", "done": false, "content": "소"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:35.0074336Z", "done": false, "content": "(M"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:35.3014346Z", "done": false, "content": "EM"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:35.5843531Z", "done": false, "content": "BERS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:35.8703521Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:36.1575208Z", "done": false, "content": " ARCH"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:36.451429Z", "done": false, "content": "IVE"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:36.7455508Z", "done": false, "content": ")"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:37.0305495Z", "done": false, "content": " 및"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:37.3205695Z", "done": false, "content": " 재"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:37.6105631Z", "done": false, "content": "생"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:37.899526Z", "done": false, "content": "성"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:38.1885184Z", "done": false, "content": " 로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:38.4815168Z", "done": false, "content": "직"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:38.7752756Z", "done": false, "content": "에는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:39.0613246Z", "done": false, "content": " 영"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:39.3534216Z", "done": false, "content": "향"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:39.6373863Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:39.927384Z", "done": false, "content": " 주"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:40.2104654Z", "done": false, "content": "지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:40.5010347Z", "done": false, "content": " 않습니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:40.8540693Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:41.1420702Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:41.4333132Z", "done": false, "content": " 내용"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:41.724315Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:42.0077319Z", "done": false, "content": " 단"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:42.2989123Z", "done": false, "content": "순"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:42.5893118Z", "done": false, "content": "히"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:42.8832171Z", "done": false, "content": " 문자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:43.1705192Z", "done": false, "content": "열"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:43.4605815Z", "done": false, "content": " 대"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:43.748502Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:44.0325794Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:44.3255796Z", "done": false, "content": " 제"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:44.611985Z", "done": false, "content": "한"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:44.9012006Z", "done": false, "content": "되"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:45.1928018Z", "done": false, "content": "며"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:45.479799Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:45.770727Z", "done": false, "content": " hashlib"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:46.0607604Z", "done": false, "content": "이나"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:46.3552723Z", "done": false, "content": " 다른"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:46.9333347Z", "done": false, "content": " 암"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:47.3254208Z", "done": false, "content": "호"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:47.6257469Z", "done": false, "content": "화"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:48.2395133Z", "done": false, "content": " 라"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:48.533Z", "done": false, "content": "이"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:48.8251665Z", "done": false, "content": "브"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:49.1225823Z", "done": false, "content": "러"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:49.4133158Z", "done": false, "content": "리는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:49.7296287Z", "done": false, "content": " 사용"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:50.0245387Z", "done": false, "content": "하지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:50.32036Z", "done": false, "content": " 마"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:50.6064828Z", "done": false, "content": "세요"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:50.9654816Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:51.2594809Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:51.5444825Z", "done": false, "content": " 후"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:51.832838Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:52.1298381Z", "done": false, "content": " dispatcher"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:52.4228373Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:52.7147076Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:53.003884Z", "done": false, "content": " publish"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:53.2946272Z", "done": false, "content": "_event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:53.58145Z", "done": false, "content": " 함수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:53.87046Z", "done": false, "content": "가"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:54.1574517Z", "done": false, "content": " fail"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:54.4459061Z", "done": false, "content": "=True"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:54.7374742Z", "done": false, "content": "일"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:55.0275093Z", "done": false, "content": " 때"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:55.316956Z", "done": false, "content": "만"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:55.6062471Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:55.9000404Z", "done": false, "content": " 필"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:56.1902002Z", "done": false, "content": "드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:56.4870317Z", "done": false, "content": "를"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:57.0751459Z", "done": false, "content": " 숨"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:57.3672661Z", "done": false, "content": "기는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:57.6583042Z", "done": false, "content": " 방"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:57.9473047Z", "done": false, "content": "식"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:58.2363033Z", "done": false, "content": "으로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:58.5290859Z", "done": false, "content": " 동"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:58.8180857Z", "done": false, "content": "작"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:59.1050859Z", "done": false, "content": "하는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:59.3980867Z", "done": false, "content": "지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:59.6871166Z", "done": false, "content": " 확인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:22:59.982242Z", "done": false, "content": "하세요"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:00.3483205Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:00.6423056Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:00.9374753Z", "done": false, "content": " 전"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:01.2310655Z", "done": false, "content": "후"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:01.5220657Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:01.8153064Z", "done": false, "content": " 데이터"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:02.6891327Z", "done": false, "content": " 흐"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:02.981027Z", "done": false, "content": "름"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:03.2720239Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:03.5630284Z", "done": false, "content": " 동"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:03.8510523Z", "done": false, "content": "일"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:04.1510514Z", "done": false, "content": "하게"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:04.447794Z", "done": false, "content": " 유지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:04.7414375Z", "done": false, "content": "되어"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:05.0356575Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:05.3321705Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:05.6878822Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:05.9789082Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:06.2662456Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:06.5562762Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:06.8452682Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:07.1412449Z", "done": false, "content": " app"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:07.4342616Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:07.7805452Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:08.0635451Z", "done": false, "content": " signup"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:08.3610366Z", "done": false, "content": " 함수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:08.6550367Z", "done": false, "content": "와"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:08.9519183Z", "done": false, "content": " broker"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:09.2479194Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:09.5399187Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:09.8329178Z", "done": false, "content": " publish"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:10.1204014Z", "done": false, "content": " 함수"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:10.4144045Z", "done": false, "content": "에"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:10.7023621Z", "done": false, "content": " 영"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:10.9923612Z", "done": false, "content": "향"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:11.2853886Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:11.5749281Z", "done": false, "content": " 주"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:11.8677039Z", "done": false, "content": "지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:12.1647332Z", "done": false, "content": " 않"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:12.4993392Z", "done": false, "content": "아"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:12.8186026Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:13.1129314Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:13.4816923Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:13.773578Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:14.067097Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:14.3651419Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:14.6561345Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:14.947135Z", "done": false, "content": " 반드시"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:15.2431343Z", "done": false, "content": " '"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:15.5364052Z", "done": false, "content": "fan"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:15.8317142Z", "done": false, "content": "out"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:16.1320046Z", "done": false, "content": "-phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:16.4360043Z", "done": false, "content": "'"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:16.7374758Z", "done": false, "content": " 보"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:17.038896Z", "done": false, "content": "고"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:17.3350781Z", "done": false, "content": "서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:17.6296436Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:17.9222723Z", "done": false, "content": " 요구"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:18.2143031Z", "done": false, "content": "사항"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:18.5102994Z", "done": false, "content": "과"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:18.8053182Z", "done": false, "content": " deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:19.1008113Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:19.4037924Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:19.6987941Z", "done": false, "content": " 경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:19.9994742Z", "done": false, "content": "계"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:20.3010609Z", "done": false, "content": " 설정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:20.6000728Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:21.1951799Z", "done": false, "content": " 충"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:21.4928Z", "done": false, "content": "족"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:21.980346Z", "done": false, "content": "해야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:22.3830492Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:22.7361131Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:23.0203108Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:23.3397896Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:23.6578573Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:23.9672389Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:24.2721346Z", "done": false, "content": " 단"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:24.5830139Z", "done": false, "content": "순"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:24.8925236Z", "done": false, "content": "히"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:25.2021979Z", "done": false, "content": " 문자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:25.5182289Z", "done": false, "content": "열"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:25.8386207Z", "done": false, "content": " 교"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:26.1676804Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:26.4625075Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:26.757018Z", "done": false, "content": " 이루어"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:27.0514978Z", "done": false, "content": "져"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:27.3520101Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:27.7047545Z", "done": false, "content": " 하"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:28.0567534Z", "done": false, "content": "며"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:28.4127881Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:28.7784474Z", "done": false, "content": " 추가"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:29.0906184Z", "done": false, "content": "적인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:29.3966702Z", "done": false, "content": " 조"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:29.6946728Z", "done": false, "content": "건"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:30.0272684Z", "done": false, "content": " 분"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:30.3557387Z", "done": false, "content": "기"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:30.6615579Z", "done": false, "content": "나"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:31.2648935Z", "done": false, "content": " 복"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:31.5613387Z", "done": false, "content": "잡"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:31.8613398Z", "done": false, "content": "한"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:32.1603385Z", "done": false, "content": " 로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:32.4588325Z", "done": false, "content": "직"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:32.7620361Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:33.0672798Z", "done": false, "content": " 포함"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:33.370145Z", "done": false, "content": "되지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:33.6715458Z", "done": false, "content": " 않"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:33.9721939Z", "done": false, "content": "아"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:34.2772877Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:34.5779673Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:34.9517365Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:35.2544147Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:35.554069Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:35.8574383Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:36.1594381Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:36.462721Z", "done": false, "content": " 반드시"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:36.7702587Z", "done": false, "content": " '"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:37.0732603Z", "done": false, "content": "fan"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:37.383366Z", "done": false, "content": "out"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:37.6947471Z", "done": false, "content": "-phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:38.0057008Z", "done": false, "content": "'"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:38.3093327Z", "done": false, "content": " 보"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:38.61687Z", "done": false, "content": "고"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:38.9217628Z", "done": false, "content": "서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:39.2267636Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:39.5414762Z", "done": false, "content": " 요구"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:39.850476Z", "done": false, "content": "사항"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:40.158482Z", "done": false, "content": "과"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:40.4686139Z", "done": false, "content": " deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:40.9002762Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:41.2022087Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:41.5112293Z", "done": false, "content": " 경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:41.8262281Z", "done": false, "content": "계"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:42.2102198Z", "done": false, "content": " 설정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:42.4850997Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:43.1035102Z", "done": false, "content": " 충"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:43.4175111Z", "done": false, "content": "족"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:43.7253351Z", "done": false, "content": "해야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:44.0303363Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:44.4121506Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:44.7241504Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:45.0328022Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:45.3430587Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:45.6565784Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:45.9675784Z", "done": false, "content": " 단"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:46.2807062Z", "done": false, "content": "순"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:46.5891684Z", "done": false, "content": "히"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:46.8951691Z", "done": false, "content": " 문자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:47.2071274Z", "done": false, "content": "열"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:47.5111273Z", "done": false, "content": " 교"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:47.815894Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:48.1181536Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:48.4289072Z", "done": false, "content": " 이루어"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:48.7409325Z", "done": false, "content": "져"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:49.0509326Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:49.4479644Z", "done": false, "content": " 하"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:49.7690154Z", "done": false, "content": "며"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:50.1901928Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:50.4869426Z", "done": false, "content": " 추가"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:50.7940663Z", "done": false, "content": "적인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:51.1024091Z", "done": false, "content": " 조"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:51.4094076Z", "done": false, "content": "건"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:51.7144074Z", "done": false, "content": " 분"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:52.0197188Z", "done": false, "content": "기"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:52.3279946Z", "done": false, "content": "나"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:52.9354574Z", "done": false, "content": " 복"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:53.2435338Z", "done": false, "content": "잡"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:53.5595287Z", "done": false, "content": "한"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:53.870046Z", "done": false, "content": " 로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:54.1858826Z", "done": false, "content": "직"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:54.4959351Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:54.8028366Z", "done": false, "content": " 포함"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:55.1053481Z", "done": false, "content": "되지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:55.4118186Z", "done": false, "content": " 않"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:55.7173705Z", "done": false, "content": "아"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:56.0215984Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:56.3284129Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:56.7046414Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:57.0127632Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:57.3260769Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:57.6710789Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:58.0049579Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:58.3309551Z", "done": false, "content": " 반드시"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:58.6847594Z", "done": false, "content": " '"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:59.018773Z", "done": false, "content": "fan"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:59.3250442Z", "done": false, "content": "out"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:23:59.6423572Z", "done": false, "content": "-phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:00.0191868Z", "done": false, "content": "'"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:00.3517693Z", "done": false, "content": " 보"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:00.7050017Z", "done": false, "content": "고"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:01.0891471Z", "done": false, "content": "서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:01.4518208Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:01.8038409Z", "done": false, "content": " 요구"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:02.1210621Z", "done": false, "content": "사항"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:02.4330609Z", "done": false, "content": "과"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:02.7418764Z", "done": false, "content": " deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:03.0468762Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:03.3597031Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:03.6707022Z", "done": false, "content": " 경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:04.0268408Z", "done": false, "content": "계"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:04.3548595Z", "done": false, "content": " 설정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:04.6947801Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:05.4082013Z", "done": false, "content": " 충"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:05.7524636Z", "done": false, "content": "족"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:06.0717769Z", "done": false, "content": "해야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:06.3902892Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:06.7027676Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:07.0602625Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:07.5365746Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:07.7885735Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:08.1470013Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:08.4700462Z", "done": false, "content": " 단"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:08.788935Z", "done": false, "content": "순"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:09.0979339Z", "done": false, "content": "히"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:09.4079585Z", "done": false, "content": " 문자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:09.7289582Z", "done": false, "content": "열"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:10.0409584Z", "done": false, "content": " 교"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:10.3570791Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:10.6690801Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:10.9820797Z", "done": false, "content": " 이루어"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:11.2941901Z", "done": false, "content": "져"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:11.61242Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:11.9321945Z", "done": false, "content": " 하"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:12.281738Z", "done": false, "content": "며"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:12.8529681Z", "done": false, "content": ","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:13.1250006Z", "done": false, "content": " 추가"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:13.4944399Z", "done": false, "content": "적인"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:13.8481928Z", "done": false, "content": " 조"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:14.2256071Z", "done": false, "content": "건"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:14.5538237Z", "done": false, "content": " 분"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:14.9129032Z", "done": false, "content": "기"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:15.2210692Z", "done": false, "content": "나"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:15.8364462Z", "done": false, "content": " 복"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:16.1424463Z", "done": false, "content": "잡"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:16.4496762Z", "done": false, "content": "한"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:16.7616156Z", "done": false, "content": " 로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:17.0747527Z", "done": false, "content": "직"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:17.391752Z", "done": false, "content": "은"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:17.705321Z", "done": false, "content": " 포함"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:18.018144Z", "done": false, "content": "되지"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:18.3311421Z", "done": false, "content": " 않"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:18.6436329Z", "done": false, "content": "아"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:18.95619Z", "done": false, "content": "야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:19.2700968Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:19.652613Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:19.9608718Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:20.2763873Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:20.636388Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:20.9799842Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:21.305624Z", "done": false, "content": " 반드시"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:21.7309031Z", "done": false, "content": " '"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:22.0911507Z", "done": false, "content": "fan"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:22.4130812Z", "done": false, "content": "out"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:22.7300833Z", "done": false, "content": "-phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:23.0949991Z", "done": false, "content": "'"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:23.4698872Z", "done": false, "content": " 보"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:23.8449228Z", "done": false, "content": "고"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:24.2300942Z", "done": false, "content": "서"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:24.7081669Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:25.0982179Z", "done": false, "content": " 요구"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:25.4402137Z", "done": false, "content": "사항"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:25.8025448Z", "done": false, "content": "과"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:26.1534504Z", "done": false, "content": " deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:26.4812283Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:26.8216109Z", "done": false, "content": "의"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:27.169069Z", "done": false, "content": " 경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:27.5258828Z", "done": false, "content": "계"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:27.8754469Z", "done": false, "content": " 설정"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:28.2431752Z", "done": false, "content": "을"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:28.9341503Z", "done": false, "content": " 충"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:29.2502402Z", "done": false, "content": "족"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:29.6402701Z", "done": false, "content": "해야"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:29.9582982Z", "done": false, "content": " 합니다"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:30.436345Z", "done": false, "content": "."}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:30.7808625Z", "done": false, "content": " 변경"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:31.1361449Z", "done": false, "content": "된"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:31.4651882Z", "done": false, "content": " 코드"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:31.8120238Z", "done": false, "content": "는"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:32.121637Z", "done": false, "content": " 단"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:32.482638Z", "done": false, "content": "순"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:32.8220011Z", "done": false, "content": "히"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:33.1620076Z", "done": false, "content": " 문자"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:33.5091407Z", "done": false, "content": "열"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:33.8750881Z", "done": false, "content": " 교"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:34.2136131Z", "done": false, "content": "체"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:34.5556108Z", "done": false, "content": "로"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T11:24:34.9040625Z", "done": false, "content": " 이루어"}

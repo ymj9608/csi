@@ -1,0 +1,4 @@
+﻿condition,vlm_seconds,coding_seconds,verification_seconds,total_seconds,attempts,best_passed,final_passed,eight_test_contract_passed,production_approval,status,error
+full_code,643.3549999999999,218.676,11.073,873.411,2,5,,False,NOT_EVALUATED,FAILED,
+structured_text,571.8299999999999,228.267,8.748000000000001,808.951,2,6,,False,NOT_EVALUATED,FAILED,
+code_image,898.308,230.083,8.733,1137.271,2,6,6,False,NOT_EVALUATED,FAILED,

@@ -1,0 +1,8 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\nimport base64\nimport hashlib\nimport hmac\nimport os\n\ndef generate_hmac_key():\n    # Generate a fixed HMAC key for consistency (in practice, use a secure key)\n    return os.urandom(32)\n\nHMAC_KEY = generate_hmac_key()\n\ndef encrypt_phone(phone, fail=False):\n    if not fail:\n        return phone\n    # HMAC-based encryption (simplified for demonstration)\n    # In practice, use a proper encryption library like cryptography\n    salt = os.urandom(16)\n    hmac_digest = hmac.new(HMAC_KEY, phone.encode(), hashlib.sha256).digest()\n    encrypted_phone = base64.b64encode(salt + hmac_digest).decode()\n    return encrypted_phone\n\ndef publish_event(event, fail=False):\n    channels = ['r2', 'r3'] if fail else ['r1', 'r2']\n    for channel in channels:\n        event_copy = event.copy()\n        event_copy['phone'] = encrypt_phone(event_copy['phone'], fail)\n        publish(channel, event_copy)\n"
+    }
+  ]
+}

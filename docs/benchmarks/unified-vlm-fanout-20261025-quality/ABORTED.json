@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_CONTRACT_DIAGNOSTIC",
+  "reason": "Real responses mixed fact IDs with citation IDs and free-text evidence. Generation schema now restricts those metadata fields to the same valid IDs already required by host validation. Natural-language prompt and prose limits are unchanged. All three conditions rerun with the same corrected schema.",
+  "structured_text": "Response completed in 313.33 seconds; rejected for Invented fact before coding",
+  "full_code": "Interrupted after observing citation IDs inside factIds; incomplete response retained",
+  "code_image": "Not started"
+}

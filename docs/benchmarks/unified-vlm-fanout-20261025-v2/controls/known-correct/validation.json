@@ -1,0 +1,19 @@
+{
+  "exitCode": 0,
+  "error": null,
+  "cases": {
+    "test_deliveries": "ok",
+    "test_external_failure": "ok",
+    "test_external_normal": "ok",
+    "test_failure_diagnostics": "ok",
+    "test_input_not_mutated": "ok",
+    "test_internal_phone": "ok",
+    "test_replay": "ok",
+    "test_store": "ok"
+  },
+  "passed": 8,
+  "total": 8,
+  "log": "test_deliveries (test_contract.Contract.test_deliveries) ... ok\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.005s\n\nOK\n",
+  "seconds": 3.634,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

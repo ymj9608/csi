@@ -1,0 +1,9 @@
+{
+  "instructions": [
+    {
+      "findingId": "fanout-phone",
+      "text": "broker.py에서 publish 함수는 deepcopy를 사용해 이벤트를 복제하여 MESSAGES 리스트에 저장하므로, 원본 raw phone은 변경되지 않으며 외부로 노출되지 않습니다. 그러나 실패 경로(r3: EXTERNAL Support)에서는 전송이 명시적으로 이루어지지 않으며, deployment.json의 boundary 설정과 실제 통신 방식이 일치하는지 확인 불가합니다. 따라서, broker.py에 복제된 이벤트의 phone 필드를 암호화된 문자열로 변환하는 로직을 추가하여 external recipient에서 raw phone을 처리하지 못하도록 하세요. 예: 이벤트 내 phone 필드를 AES-256으로 암호화한 값으로 교체하고, decrypt 로직은 전송 대상이 아닌 internal 경로에만 포함되도록 하세요. 코드 수정 시, fail 파라미터가 true일 경우만 암호화를 적용하고, public interface는 변경 없이 유지하세요.",
+      "referenceIds": ["40e2f8e0484ffed0397362ab", "87791b300ca41ccb25fa171d"]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\nfrom deployment import load_deployment\n\n# Load deployment data once at module level\nDEPLOYMENT = load_deployment()\n\ndef publish_event(event, fail=False):\n    # Create sanitized event without phone for external channels\n    sanitized_event = {'id': event['id'], 'kind': event['kind']}\n    \n    # Only publish to internal channels (r1)\n    publish('r1', sanitized_event)\n    \n    # For external channels (r2, r3), publish sanitized event only if fail=False\n    # (per POL-06: no raw phone disclosure to external)\n    if fail:\n        # External channels get sanitized event only if explicitly allowed\n        # (per REF-01: minimal disclosure)\n        for channel in ['r2', 'r3']:\n            if DEPLOYMENT[channel]['boundary'] == 'EXTERNAL':\n                publish(channel, sanitized_event)\n"
+    },
+    {
+      "path": "app.py",
+      "source": "from copy import deepcopy\nfrom state import MEMBERS, ARCHIVE\nfrom dispatcher import publish_event\n\ndef signup(phone, fail=False):\n    event = {'id': len(MEMBERS)+1, 'kind': 'signup', 'phone': phone}\n    MEMBERS.append(deepcopy(event))\n    if fail:\n        ARCHIVE.append(deepcopy(event))\n    publish_event(event, fail)\n    return event['id']\n"
+    }
+  ]
+}

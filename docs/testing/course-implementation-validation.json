@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-25",
+  "submission": {
+    "type": "Phase 2",
+    "confirmedBy": "user",
+    "baselineCommit": null,
+    "baselineStatus": "Not yet agreed by team; no baseline tag created",
+    "benchmarkCaveat": "The vulnerable-original 5/8 result is not a confirmed Phase 1 baseline"
+  },
+  "timezone": "Asia/Seoul",
+  "branch": "fix/architecture-analysis-failure",
+  "source": "working tree based on 7f9cb51; revision must be recorded after commit",
+  "environment": "Windows; Python 3.11 UTF-8 mode; JDK 21; Node.js 22; PostgreSQL 17 temporary localhost cluster",
+  "checks": [
+    {
+      "name": "Backend unit and MockMvc tests",
+      "command": "mvn -f backend/pom.xml test",
+      "passed": 79,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "Python suite excluding real scanner",
+      "command": "python -X utf8 -m pytest tests -m \"not scanner\" -q",
+      "passed": 457,
+      "failed": 0,
+      "skipped": 3,
+      "deselected": 2,
+      "modelCalls": "mocked",
+      "skips": [
+        "Windows symlink creation privilege: 2 tests",
+        "Explicit Docker integration: 1 test"
+      ]
+    },
+    {
+      "name": "Additional receipt security regressions",
+      "command": "python -X utf8 -m pytest tests/test_private_files.py -q",
+      "passed": 2,
+      "failed": 0,
+      "scope": "Run separately after suite collection; UTF-8, actual Windows ACLs, fail-closed writes"
+    },
+    {
+      "name": "Browser registration, image selection and failure retry",
+      "workingDirectory": "frontend",
+      "command": "npx playwright test e2e/architecture-failure.spec.ts e2e/architecture-coding.spec.ts e2e/project-register.spec.ts",
+      "passed": 9,
+      "failed": 0,
+      "apiCalls": "mocked",
+      "baseUrl": "http://127.0.0.1:5188 (temporary Vite server)"
+    },
+    {
+      "name": "Real PostgreSQL integration",
+      "command": "mvn -f backend/pom.xml -Dtest=ArchitectureContextsPostgresIT test",
+      "requiredEnvironment": [
+        "CSI_ARCHITECTURE_TEST_DATABASE_URL",
+        "CSI_ARCHITECTURE_TEST_DATABASE_USER",
+        "CSI_ARCHITECTURE_TEST_DATABASE_PASSWORD"
+      ],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "isolation": "Temporary local PostgreSQL cluster and randomly named schema; existing application DB not used; cluster stopped after test",
+      "migration": "V1 through V12",
+      "initialFailureResolved": "Existing direct-coding test omitted the now-required active verification profile and worker capabilities. Its test fixture was updated; production checks were not weakened."
+    },
+    {
+      "name": "Frontend TypeScript and production build",
+      "command": "npm --prefix frontend run build",
+      "result": "passed",
+      "warning": "Bundle size warning remains"
+    }
+  ],
+  "covered": [
+    "Safe error codes without provider response or exception disclosure",
+    "Bounded failure delivery retries",
+    "Server expiry for abandoned active diagrams",
+    "New diagram ID on explicit retry with the existing image",
+    "Late results cannot overwrite failed, replaced or completed jobs",
+    "Frontend stops polling on failure and restarts after explicit retry",
+    "Image content, dimensions and byte limit on reupload; reject without replacing old image",
+    "Bounded schema and safe invalid-result rejection",
+    "Retry role/CSRF and worker bearer separation",
+    "PNG/PDF analysis upload and explicit coding-image selection",
+    "UTF-8 source/prompt/catalog/receipt handling; private receipt writes on Windows",
+    "Fixture contracts excluded from repository test discovery; benchmark runner tests retained",
+    "Unit tests do not load developer .env"
+  ],
+  "notCovered": [
+    "Real VLM or Coding Agent inference and model accuracy",
+    "Full clean-clone end-to-end service execution with cited response",
+    "Mac hardware execution",
+    "Submitted demonstration video",
+    "Real Semgrep execution (2 tests deselected)",
+    "Windows symlink privilege boundary (2 skipped)",
+    "Explicit Docker integration (1 skipped)",
+    "Phase 1 baseline and phase1-end tag",
+    "Confirmed teammate roles and merged PR attribution",
+    "At least 10 evaluation items with same-set before/after and presentation consistency"
+  ],
+  "rubricSource": {
+    "file": "00_AI서비스개발_Mini-project_교재.pdf",
+    "pages": [
+      6,
+      11,
+      13,
+      14,
+      15
+    ]
+  },
+  "fixes": [
+    "Unterminated architecture analysis failure state",
+    "Unvalidated reupload and invalid component/schema response",
+    "PDF accepted for analysis but rejected for coding-image connection",
+    "Windows encoding/receipt permission portability",
+    "Fixture cache directory incorrectly read as source and developer .env affecting tests"
+  ],
+  "scopeNote": "Implementation regression tests are separate from real-model benchmark accuracy. Existing experiment results and evaluation contracts were not modified. No user database reset, real model invocation, Slack notification, commit or push."
+}

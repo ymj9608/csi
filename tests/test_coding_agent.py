@@ -15,13 +15,16 @@ from coding_agent.verification.contract import SECURITY_TESTS, BASELINE_FAILURES
 from coding_agent.reporting import build_review
 from coding_agent.worker import apply_approved, backend_url
 
-BEFORE=(Path(__file__).parent/'fixtures/coding/signup_before.py').read_text()
+BEFORE=(Path(__file__).parent/'fixtures/coding/signup_before.py').read_text(encoding='utf-8')
 AFTER=BEFORE.replace("return 'before-fix'", "return 'after-fix'").replace(
     'hmac.compare_digest(hash_signup_password(password), hashed)',
     "hmac.compare_digest('csi-sha256$' + hashlib.sha256((password + 'lichu-csi-shared-salt').encode()).hexdigest(), hashed)")
 
 @pytest.fixture
-def repo(tmp_path):
+def repo(tmp_path,monkeypatch):
+    # Scripted provider responses must not depend on the developer's real .env.
+    monkeypatch.setenv('CSI_VLM_PROVIDER','openai')
+    monkeypatch.setenv('CSI_VLM_MODEL','gpt-5.4-mini-2026-03-17')
     root=tmp_path/'repository';root.mkdir()
     git(root,'init','-q')
     for path in CONTEXT_FILES:

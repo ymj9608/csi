@@ -128,7 +128,7 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', model=MODEL,
                 after=validate_response(value,before,{f['id'] for f in findings},allowed_refs)
                 validate_call_contracts(after,user['sourceCallContracts'])
                 if after==before:raise Rejected('NO_CHANGE')
-                (tree/TARGET).write_text(after)
+                (tree/TARGET).write_text(after, encoding='utf-8', newline='')
                 notify('VERIFYING',number)
                 check=verifier(tree);attempt['verification']=check
                 result['lastVerification']=check

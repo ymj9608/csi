@@ -1,0 +1,9 @@
+﻿test,label,full_code,structured_text,code_image
+test_internal_phone,내부 SMS,NOT_RUN,NOT_RUN,NOT_RUN
+test_external_normal,정상 경로 유출 차단,NOT_RUN,NOT_RUN,NOT_RUN
+test_external_failure,실패 경로 유출 차단,NOT_RUN,NOT_RUN,NOT_RUN
+test_store,회원 정보 보존,NOT_RUN,NOT_RUN,NOT_RUN
+test_replay,복구 기록 보존,NOT_RUN,NOT_RUN,NOT_RUN
+test_deliveries,정상 전송 유지,NOT_RUN,NOT_RUN,NOT_RUN
+test_failure_diagnostics,장애 진단 유지,NOT_RUN,NOT_RUN,NOT_RUN
+test_input_not_mutated,직접 호출·원본 보존,NOT_RUN,NOT_RUN,NOT_RUN

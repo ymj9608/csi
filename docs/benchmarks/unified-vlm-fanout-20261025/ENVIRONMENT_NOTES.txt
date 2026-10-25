@@ -1,0 +1,13 @@
+2026-10-25 execution notes
+
+The first (structured_text) assessment overlapped with implementation regression
+checks (Python and Maven). These checks completed during that assessment.
+MapleStory was also running; the user offered to close it after memory pressure
+was observed (about 160 MiB available at the sampled low point).
+Hardware: NVIDIA GTX 1060 3GB; approximately 16 GiB system RAM.
+
+Wall-clock times are diagnostic observations, NOT a controlled speed comparison.
+The three input conditions keep model, seed, prompt, source, document excerpts,
+verification tests and attempt budgets fixed. Runtime contention is a limitation.
+All failures and original measurements are retained; no previous successful
+candidate is substituted into this run.

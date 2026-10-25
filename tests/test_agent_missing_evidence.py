@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 from langgraph.checkpoint.memory import InMemorySaver
 
-from agent.csi_agent import graph as module
+from agent.csi_agent import legacy_graph as module
 from agent.csi_agent.planner import fallback_action
 
 

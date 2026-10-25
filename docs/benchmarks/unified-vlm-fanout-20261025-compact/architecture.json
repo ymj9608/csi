@@ -1,0 +1,45 @@
+{
+  "nodes": [
+    "app",
+    "r1",
+    "r2",
+    "r3"
+  ],
+  "edges": [
+    {
+      "from": "app",
+      "to": "r1",
+      "style": "solid"
+    },
+    {
+      "from": "app",
+      "to": "r2",
+      "style": "solid"
+    },
+    {
+      "from": "app",
+      "to": "r3",
+      "style": "dashed"
+    }
+  ],
+  "routes": {
+    "r1": {
+      "recipient": "SMS",
+      "boundary": "INTERNAL"
+    },
+    "r2": {
+      "recipient": "Metrics",
+      "boundary": "EXTERNAL"
+    },
+    "r3": {
+      "recipient": "Support",
+      "boundary": "EXTERNAL"
+    }
+  },
+  "facts": [
+    "app.py -> dispatcher.py -> r1 and r2 (normal delivery)",
+    "app.py -> dispatcher.py -> r2 and r3 (delivery failure)",
+    "app.py keeps the internal replay archive on failure."
+  ],
+  "legend": "solid: normal delivery; dashed: failure delivery. All channels use broker.py."
+}

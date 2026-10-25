@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-25",
+  "timezone": "Asia/Seoul",
+  "branch": "fix/architecture-analysis-failure",
+  "source": "working tree based on 7f9cb51; revision must be recorded after commit",
+  "environment": "Windows; Python 3.11 UTF-8 mode; JDK 21; Node.js 22; PostgreSQL 17 temporary localhost cluster",
+  "checks": [
+    {
+      "name": "Backend unit and MockMvc tests",
+      "command": "mvn -f backend/pom.xml test",
+      "passed": 74,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "name": "Diagram worker, extraction, automation and routing",
+      "command": "python -X utf8 -m pytest tests/test_architecture_worker_routing.py tests/test_architecture_extractor.py tests/test_local_automation.py tests/test_architecture_routing.py -q",
+      "passed": 61,
+      "failed": 0,
+      "modelCalls": "mocked"
+    },
+    {
+      "name": "Browser registration, image selection and failure retry",
+      "workingDirectory": "frontend",
+      "command": "npx playwright test e2e/architecture-failure.spec.ts e2e/architecture-coding.spec.ts e2e/project-register.spec.ts",
+      "passed": 8,
+      "failed": 0,
+      "apiCalls": "mocked",
+      "baseUrl": "http://127.0.0.1:5188 (temporary Vite server)"
+    },
+    {
+      "name": "Real PostgreSQL integration",
+      "command": "mvn -f backend/pom.xml -Dtest=ArchitectureContextsPostgresIT test",
+      "requiredEnvironment": ["CSI_ARCHITECTURE_TEST_DATABASE_URL", "CSI_ARCHITECTURE_TEST_DATABASE_USER", "CSI_ARCHITECTURE_TEST_DATABASE_PASSWORD"],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "isolation": "Temporary local PostgreSQL cluster and randomly named schema; existing application DB not used; cluster stopped after test",
+      "migration": "V1 through V12",
+      "initialFailureResolved": "Existing direct-coding test omitted the now-required active verification profile and worker capabilities. Its test fixture was updated; production checks were not weakened."
+    },
+    {
+      "name": "Frontend TypeScript and production build",
+      "command": "npm --prefix frontend run build",
+      "result": "passed",
+      "warning": "Bundle size warning remains"
+    }
+  ],
+  "covered": [
+    "Safe error codes without provider response or exception disclosure",
+    "Bounded failure delivery retries",
+    "Server expiry for abandoned active diagrams",
+    "New diagram ID on explicit retry with the existing image",
+    "Late results cannot overwrite failed, replaced or completed jobs",
+    "Frontend stops polling on failure and restarts after explicit retry"
+  ],
+  "notCovered": [
+    "Real VLM or Coding Agent inference and model accuracy",
+    "Full clean-clone end-to-end service execution with cited response",
+    "Mac hardware execution",
+    "Submitted demonstration video",
+    "All Python tests passing on Windows"
+  ]
+}

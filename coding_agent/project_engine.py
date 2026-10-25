@@ -247,7 +247,9 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', chat=None, v
                 'contextLimitations':'Only the complete editable source and statically linked caller/type excerpts are included. Other code is not implied to have been read.'}
             executor = ProjectExecutor(tree, packet, result, p, url=ollama_url.rstrip('/'), chat=chat,
                                        verifier=verifier, notify=notify, deadline=start+EXECUTION_SECONDS)
-            if context.get('architectureId'):
+            if plan.get('unifiedReview'):
+                execute_saved_review(plan['unifiedReview'], executor, result, packet, notify)
+            elif context.get('architectureId'):
                 if not context.get('architecture') or context['architecture']['id'] != context['architectureId']:
                     raise Rejected('ARCHITECTURE_REQUIRED')
                 result['handoff'] = orchestrate(repo, packet, context['architecture'], executor,
@@ -272,3 +274,29 @@ def generate(repo, context, *, ollama_url='http://127.0.0.1:11434', chat=None, v
         path.mkdir(parents=True, exist_ok=True)
         (path/'verification.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     return result
+
+
+def execute_saved_review(review, executor, result, packet, notify):
+    """Reuse the scan VLM's immutable natural-language tasks; no image re-inference."""
+    if review.get('mode') != 'unified-vlm-review-v1' or review.get('commitSha') != result['commitSha']:
+        raise Rejected('UNIFIED_REVIEW_MISMATCH')
+    tasks=review.get('instructions',[])
+    if sorted(t.get('findingId','') for t in tasks) != result['findingIds']:
+        raise Rejected('UNIFIED_INSTRUCTIONS_REQUIRED')
+    for task in tasks:
+        if (not isinstance(task.get('text'),str) or not 20 <= len(task['text']) <= 3000
+                or not task.get('referenceIds') or not set(task['referenceIds']) <= set(result['referenceIds'])):
+            raise Rejected('UNIFIED_INSTRUCTION_EVIDENCE')
+    instruction='\n\n'.join(t['findingId']+': '+t['text']+'\nReferences: '+', '.join(t['referenceIds']) for t in tasks)
+    result['handoff']={'mode':'unified-vlm-review-v1','instruction':instruction,
+        'reviewDigest':fingerprint(review),'imageSha256':review['imageSha256'],'commitSha':review['commitSha'],
+        'model':review['model'],'status':'BLOCKED','reusedScanAnalysis':True}
+    for _ in range(2):
+        if not executor.delegate(instruction,packet['sources']).get('errorCode'):
+            executor.verify()
+            if executor.verified:
+                executor.publish_for_review()
+                result['handoff']['status']='READY'
+                return
+        notify('RETRYING',executor.attempt_count)
+    result['failureReason']='ATTEMPTS_EXHAUSTED'

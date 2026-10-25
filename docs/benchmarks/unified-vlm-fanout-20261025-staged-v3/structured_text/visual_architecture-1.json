@@ -1,0 +1,82 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "prompt_eval_count": 1487,
+  "eval_count": 462,
+  "load_duration": 23182469700,
+  "prompt_eval_duration": 16870042000,
+  "eval_duration": 140822653000,
+  "total_duration": 180904631300,
+  "done_reason": "stop",
+  "answerText": "{\n  \"architecture\": {\n    \"summary\": \"App dispatches events to internal SMS and external metrics/support channels via broker; failure paths route to external channels.\",\n    \"components\": [\n      {\n        \"name\": \"app\",\n        \"role\": \"Signup handler\",\n        \"isolationStatus\": \"PRODUCTION\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r1\",\n        \"role\": \"SMS delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r2\",\n        \"role\": \"Metrics delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r3\",\n        \"role\": \"Support delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      }\n    ]\n  },\n  \"flows\": [\n    {\n      \"source\": \"app\",\n      \"target\": \"r1\",\n      \"condition\": \"Normal delivery\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"INTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"app\",\n      \"target\": \"r2\",\n      \"condition\": \"Normal delivery\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"EXTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"app\",\n      \"target\": \"r3\",\n      \"condition\": \"Failure path\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"EXTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"dispatcher.py\",\n      \"target\": \"broker.py\",\n      \"condition\": \"Publish event to channel\",\n      \"data\": \"Channel + deep-copied event\",\n      \"boundary\": \"UNKNOWN\",\n      \"state\": \"INFERRED\"\n    }\n  ],\n  \"uncertainties\": [\n    \"Deployment.json boundary labels not verified in runtime behavior.\",\n    \"Failure paths may expose raw phone to external recipients without mitigation.\"\n  ]\n}",
+  "answer": {
+    "architecture": {
+      "summary": "App dispatches events to internal SMS and external metrics/support channels via broker; failure paths route to external channels.",
+      "components": [
+        {
+          "name": "app",
+          "role": "Signup handler",
+          "isolationStatus": "PRODUCTION",
+          "state": "OBSERVED"
+        },
+        {
+          "name": "r1",
+          "role": "SMS delivery",
+          "isolationStatus": "ISOLATED",
+          "state": "OBSERVED"
+        },
+        {
+          "name": "r2",
+          "role": "Metrics delivery",
+          "isolationStatus": "ISOLATED",
+          "state": "OBSERVED"
+        },
+        {
+          "name": "r3",
+          "role": "Support delivery",
+          "isolationStatus": "ISOLATED",
+          "state": "OBSERVED"
+        }
+      ]
+    },
+    "flows": [
+      {
+        "source": "app",
+        "target": "r1",
+        "condition": "Normal delivery",
+        "data": "Event with phone number",
+        "boundary": "INTERNAL",
+        "state": "OBSERVED"
+      },
+      {
+        "source": "app",
+        "target": "r2",
+        "condition": "Normal delivery",
+        "data": "Event with phone number",
+        "boundary": "EXTERNAL",
+        "state": "OBSERVED"
+      },
+      {
+        "source": "app",
+        "target": "r3",
+        "condition": "Failure path",
+        "data": "Event with phone number",
+        "boundary": "EXTERNAL",
+        "state": "OBSERVED"
+      },
+      {
+        "source": "dispatcher.py",
+        "target": "broker.py",
+        "condition": "Publish event to channel",
+        "data": "Channel + deep-copied event",
+        "boundary": "UNKNOWN",
+        "state": "INFERRED"
+      }
+    ],
+    "uncertainties": [
+      "Deployment.json boundary labels not verified in runtime behavior.",
+      "Failure paths may expose raw phone to external recipients without mitigation."
+    ]
+  },
+  "seconds": 180.943
+}

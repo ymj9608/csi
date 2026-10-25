@@ -1,0 +1,1 @@
+{"architecture": {"summary": "사용자 가입 시 전화번호를 내부/외부 채널로 전송하는 시스템", "components": [{"name": "signup", "role": "회원가입 처리", "isolationStatus": "UNKNOW

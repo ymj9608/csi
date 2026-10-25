@@ -41,8 +41,9 @@ def load_profiles(config_path):
 
 
 class Automation:
-    def __init__(self, api, worker, profiles, launch):
+    def __init__(self, api, worker, profiles, launch, *, standalone_architecture=False):
         self.api, self.worker, self.profiles, self.launch = api, worker, profiles, launch
+        self.standalone_architecture = standalone_architecture
         self.child = None
         self.child_project = None
         self.reported = {}
@@ -69,7 +70,7 @@ class Automation:
                 if self.reported.get(project_id) != signature:
                     emit('PROFILE_SETUP', **result)
                     self.reported[project_id] = signature
-                if self.child is not None:
+                if not self.standalone_architecture or self.child is not None:
                     continue
                 response = self.api.get(f'/api/projects/{project_id}/architecture')
                 if response.status_code == 404:
@@ -104,6 +105,7 @@ class Automation:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--standalone-architecture', action='store_true', help='Legacy image-only extraction; unified scan analysis does not need this')
     parser.add_argument('--config', type=Path)
     parser.add_argument('--env-file', type=Path, default=ROOT / '.env')
     parser.add_argument('--backend', default='http://127.0.0.1:8080')
@@ -140,7 +142,7 @@ def main():
                     stdout=log, stderr=log, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         with httpx.Client(base_url=backend, timeout=30, trust_env=False) as api, httpx.Client(
                 base_url=backend, timeout=30, trust_env=False, headers={'Authorization': 'Bearer ' + token}) as worker:
-            automation = Automation(api, worker, profiles, launch)
+            automation = Automation(api, worker, profiles, launch, standalone_architecture=args.standalone_architecture)
             authenticated = False
             emit('AUTOMATION_STARTED', repositories=sorted(profiles))
             try:

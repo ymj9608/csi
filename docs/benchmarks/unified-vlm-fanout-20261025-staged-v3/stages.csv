@@ -1,0 +1,10 @@
+﻿condition,stage,call,status,seconds,input_tokens,output_tokens,output_limit,error
+full_code,visual_architecture,visual_architecture-1,COMPLETED,283.006,1331,757,2000,
+full_code,visual_security,visual_security-1,COMPLETED,238.2,2788,410,2000,
+full_code,visual_instruction,visual_instruction-1,COMPLETED,122.149,2102,187,2000,
+structured_text,visual_architecture,visual_architecture-1,COMPLETED,180.943,1487,462,2000,
+structured_text,visual_security,visual_security-1,COMPLETED,276.429,2517,525,2000,
+structured_text,visual_instruction,visual_instruction-1,COMPLETED,114.458,1946,190,2000,
+code_image,visual_architecture,visual_architecture-1,COMPLETED,407.501,2397,828,2000,
+code_image,visual_security,visual_security-1,COMPLETED,326.117,2802,600,2000,
+code_image,visual_instruction,visual_instruction-1,COMPLETED,164.69,2306,294,2000,

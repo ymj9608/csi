@@ -1,0 +1,10 @@
+{
+  "originalPacketCharacters": 5317,
+  "compactPacketCharacters": 4430,
+  "originalPacketBytes": 7030,
+  "compactPacketBytes": 6143,
+  "byteReductionPercent": 12.6,
+  "preserved": "All source files, image, policy excerpts, reference identities, editable scope and behavioral contract. Only duplicate task/code and JSON whitespace removed.",
+  "tokenCounts": "Use returned prompt_eval_count after successful completion; context size is not the number of input tokens.",
+  "kvCacheChanged": false
+}

@@ -137,6 +137,24 @@ def test_generic_engine_independent_layout_passes(repository):
     assert (repository/p['editablePaths'][0]).read_text()==BEFORE
 
 
+@pytest.mark.parametrize('succeeds',[True,False])
+def test_saved_unified_instruction_is_reused_without_second_vlm(repository,monkeypatch,succeeds):
+    p=profile();c=context(repository,p);calls=[];requests=[]
+    saved={'mode':'unified-vlm-review-v1','commitSha':c['commitSha'],'imageSha256':'b'*64,'model':'qwen3-vl:8b',
+           'instructions':[{'findingId':'finding','text':'Remove sensitive log values, preserve the contact event and stored records.','referenceIds':['ref']}]}
+    c['executionPlan']['unifiedReview']=saved;c['planDigest']=fingerprint(c['executionPlan'])
+    monkeypatch.setattr('coding_agent.project_engine.orchestrate',lambda *a,**kw:pytest.fail('Unexpected second VLM analysis'))
+    def verifier(tree,profile):
+        calls.append(True);return report(profile,len(calls)==1 or not succeeds)
+    def chat(payload):requests.append(payload);return coder(AFTER)(payload)
+    value=generate(repository,c,chat=chat,verifier=verifier)
+    assert value['handoff']['reusedScanAnalysis'] and value['handoff']['reviewDigest']==fingerprint(saved)
+    assert saved['instructions'][0]['text'] in json.dumps(requests,ensure_ascii=False)
+    assert len(requests)==(1 if succeeds else 2)
+    assert value['status']==('READY' if succeeds else 'BLOCKED')
+    if not succeeds:assert not value['files']
+
+
 def test_crlf_git_blobs_keep_byte_accurate_manifest(repository):
     p=profile();target=p['editablePaths'][0];crlf=BEFORE.replace('\n','\r\n')
     (repository/target).write_bytes(crlf.encode())

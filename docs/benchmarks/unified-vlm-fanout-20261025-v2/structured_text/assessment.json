@@ -1,0 +1,6 @@
+{
+  "status": "FAILED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "error": "ReadTimeout: timed out",
+  "seconds": 600.048
+}

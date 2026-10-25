@@ -22,7 +22,7 @@ class TruncatedOutput(RuntimeError): pass
 def prompt(name):
     if name not in {'planner', 'reviewer'}:
         raise ValueError('Unknown prompt')
-    return (PROMPTS / (name + '.md')).read_text()
+    return (PROMPTS / (name + '.md')).read_text(encoding='utf-8')
 
 
 def token_bound(value):

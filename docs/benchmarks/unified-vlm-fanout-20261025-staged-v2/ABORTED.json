@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-25T11:42:54.737665+00:00",
+  "reason": "Repetition recurred despite recommended sampling. Stop calibration to ground the output schema and field semantics in the actual model prompt; decoder grammar alone did not explain fields. Preserve first failed instruction and incomplete retry.",
+  "interruptedArm": "code_image",
+  "notStarted": [
+    "structured_text",
+    "full_code"
+  ],
+  "completedArms": []
+}

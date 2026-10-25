@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-test('diagram analysis upload and explicit coding selection coexist for the same project', async ({page}) => {
+for (const format of ['png', 'pdf']) {
+test(`${format} diagram upload and explicit coding selection coexist for the same project`, async ({page}) => {
   const project='11111111-1111-4111-8111-111111111111';
   const image='22222222-2222-4222-8222-222222222222';
   const writes:string[]=[];
@@ -23,6 +24,10 @@ test('diagram analysis upload and explicit coding selection coexist for the same
       if(path.endsWith('/architecture')){
         diagramUploaded=true;
         expect(req.headers()['content-type']).toContain('multipart/form-data');
+        const form=await new Response(req.postDataBuffer(),{headers:{'Content-Type':req.headers()['content-type']}}).formData();
+        const file=form.get('file') as File;
+        expect(file.type).toBe('image/png');
+        expect(Buffer.from(await file.arrayBuffer()).subarray(0,8)).toEqual(Buffer.from([137,80,78,71,13,10,26,10]));
         value={id:image,status:'QUEUED'};
       }else if(path.endsWith('/architectures')){
         expect(req.headers()['content-type']).toContain('multipart/form-data');
@@ -32,7 +37,7 @@ test('diagram analysis upload and explicit coding selection coexist for the same
     await route.fulfill({json:value});
   });
   await page.goto(`/dashboard?project=${project}&view=architecture`);
-  await page.locator('input[type=file]').setInputFiles({name:'diagram.png',mimeType:'image/png',
+  await page.locator('input[type=file]').setInputFiles(format==='pdf' ? '../docs/diagrams/CSI_MCP_Routing_Visual_v5.pdf' : {name:'diagram.png',mimeType:'image/png',
     buffer:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=','base64')});
   await page.locator('.folder-modal').getByRole('button',{name:'업로드',exact:true}).click();
   await expect.poll(()=>writes.length).toBe(1);
@@ -45,3 +50,4 @@ test('diagram analysis upload and explicit coding selection coexist for the same
   expect(writes).toEqual([`/api/projects/${project}/architecture`,`/api/projects/${project}/architectures`,`/api/projects/${project}/architectures/${image}/select-for-coding`]);
   await expect(page.getByText('아키텍처가 연결되었습니다.',{exact:false})).toBeVisible();
 });
+}

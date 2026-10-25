@@ -52,4 +52,4 @@ def snapshot(repo, sha, destination):
             raise Rejected('SNAPSHOT_TOO_LARGE')
         target = Path(destination)/path
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(content)
+        target.write_text(content, encoding='utf-8', newline='')

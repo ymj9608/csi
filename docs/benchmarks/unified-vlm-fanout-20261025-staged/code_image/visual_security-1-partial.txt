@@ -1,0 +1,12 @@
+{
+  "findings": [
+    {
+      "id": "fanout-phone",
+      "red": "POL-01",
+      "blue": "개인정보 전송 경로에서 외부 수신자에게 원본 휴대폰 번호를 노출하는 행위는 법적 처리 근거 및 최소 수집 원칙에 위반됩니다.",
+      "remediation": "외부 수신자(r2, r3)에게 전달되는 이벤트 내의 'phone' 필드를 암호화하거나 제거해야 합니다. 그러나 공식 API 인터페이스 변경 없이 수행하려면, dispatcher.py에서 fail=True일 때만 해당 필드를 제거하거나 변환하여 전달하도록 수정해야 합니다. 예: `event['phone'] = '*'` 또는 `hashlib.sha256(str(event['phone']).encode()).hexdigest()` 등으로 대체.",
+      "citationIds": ["40e2f8e0484ffed0397362ab", "87791b300ca41ccb25fa171d"],
+      "factIds": ["F1"]
+    }
+  ]
+}

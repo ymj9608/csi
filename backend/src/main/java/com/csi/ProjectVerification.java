@@ -116,6 +116,12 @@ public class ProjectVerification {
   for(String field:List.of("planDigest","sourceManifestDigest"))require(r.path(field).equals(r.path("baseline").path(field))&&r.path(field).equals(r.path("verification").path(field)),"Verification binding");
   var cites=strings(r.path("citedIds"));var allowed=new HashSet<>(findingIds);allowed.addAll(references);
   require(allowed.containsAll(cites)&&!Collections.disjoint(cites,findingIds)&&!Collections.disjoint(cites,references),"Citations required");
+  if(plan.hasNonNull("unifiedReview")){
+   var h=r.path("handoff");require("unified-vlm-review-v1".equals(h.path("mode").asText())&&"READY".equals(h.path("status").asText())&&h.path("reusedScanAnalysis").asBoolean(),"Saved VLM handoff required");
+   require(digest(plan.path("unifiedReview")).equals(h.path("reviewDigest").asText())&&plan.path("commitSha").equals(h.path("commitSha"))&&plan.path("unifiedReview").path("imageSha256").equals(h.path("imageSha256")),"Saved VLM review binding");
+   List<String> tasks=new ArrayList<>();for(var task:plan.path("unifiedReview").path("instructions")){List<String> ids=new ArrayList<>();task.path("referenceIds").forEach(x->ids.add(x.asText()));tasks.add(task.path("findingId").asText()+": "+task.path("text").asText()+"\nReferences: "+String.join(", ",ids));}
+   require(String.join("\n\n",tasks).equals(h.path("instruction").asText()),"Saved VLM instruction changed");
+  }
   if(job.get("architectureId")!=null){var h=r.path("handoff");require(Objects.equals(job.get("architectureId"),h.path("architectureId").asText())&&"READY".equals(h.path("status").asText())&&"vlm-orchestrator-v1".equals(h.path("mode").asText()),"VLM orchestration required");
    boolean delegated=false,checked=false,finished=false;for(var t:h.path("trace"))if("OK".equals(t.path("status").asText())){switch(t.path("tool").asText()){case "delegate_coding"-> {delegated=true;checked=false;finished=false;}case "run_verification"->checked=delegated;case "finish_review"->finished=checked;default->{}}}require(finished,"VLM verified review required");
   }

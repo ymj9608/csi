@@ -25,6 +25,20 @@ for(const broken of [false,true])test(`project profile verification ${broken?'re
   await expect(region).toContainText('tests/test_db.py::test_postgres');
 });
 
+test('saved unified VLM instruction is displayed as text without another orchestration trace',async({page})=>{
+  const result:any=verifiedResult();
+  result.handoff={mode:'unified-vlm-review-v1',model:'qwen3-vl:8b',status:'READY',reusedScanAnalysis:true,
+    instruction:'<img src=x onerror="window.injected=true"> 내부 데이터와 이벤트를 보존하고 외부 전송만 수정하세요.'};
+  await mockFlow(page,'SEC-05',{status:'READY',result});
+  await page.getByRole('tab',{name:'수정안 생성·검토',exact:true}).click();
+  const region=page.getByRole('region',{name:'코딩 Agent 수정안'});
+  await expect(region).toContainText('qwen3-vl:8b · 저장된 통합 분석');
+  await expect(region.getByText('저장된 VLM 자연어 수정 지시',{exact:true})).toBeVisible();
+  await expect(region.locator('pre').filter({hasText:'onerror'})).toContainText('<img src=x');
+  await expect(region.getByText('VLM 총괄 작업 기록',{exact:true})).toHaveCount(0);
+  expect(await page.evaluate(()=>(window as any).injected)).toBeUndefined();
+});
+
 test('OpenAI orchestration trace is visible and model text is escaped',async({page})=>{
   const result:any=verifiedResult();
   result.handoff={mode:'vlm-orchestrator-v1',provider:'openai',model:'gpt-6.1-sol',sourceCommitMatches:null,

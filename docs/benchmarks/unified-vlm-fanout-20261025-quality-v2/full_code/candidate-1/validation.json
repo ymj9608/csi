@@ -1,0 +1,10 @@
+{
+  "exitCode": 1,
+  "error": null,
+  "cases": {},
+  "passed": 0,
+  "total": 0,
+  "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from dispatcher import publish_event\n  File \"/case/dispatcher.py\", line 2, in <module>\n    from deployment import get_recipient_boundary\nModuleNotFoundError: No module named 'deployment'\n",
+  "seconds": 4.322,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

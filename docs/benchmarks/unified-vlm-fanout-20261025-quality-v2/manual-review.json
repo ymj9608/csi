@@ -1,0 +1,27 @@
+{
+  "scope": "Manual review of observed outputs; no candidate or frozen test was changed.",
+  "full_code": {
+    "instructionSummary": "Keep phone in internal storage and r1; remove it for external r2/r3 based on deployment.json. Some contradictory and repeated sentences remain.",
+    "firstCandidate": "Imports nonexistent deployment.get_recipient_boundary; no tests loaded.",
+    "secondCandidate": "Implements channel boundary lookup and copies event before removing phone; all eight fixed tests pass.",
+    "additionalRisk": "Reads deployment.json with eval(). This is not covered by the eight behavioral tests; production project candidate guards prohibit eval/open and added function contracts. The benchmark pass is not production approval.",
+    "sources": [
+      "full_code/instruction.txt",
+      "full_code/candidate-1/validation.json",
+      "full_code/candidate-2/dispatcher.py",
+      "full_code/candidate-2/validation.json"
+    ]
+  },
+  "structured_text": {
+    "instructionSummary": "Tells the coder to restrict publish_event to r1 and stop sending to r2/r3 while preserving internal stores. This conflicts with required normal metrics and failure support delivery.",
+    "firstCandidate": "Imports nonexistent deployment.get_recipient_boundary.",
+    "secondCandidate": "Imports nonexistent deployment.load_deployment even after import-error feedback; no tests loaded. Source also strips phone from r1 and omits normal metrics delivery.",
+    "interpretation": "The observed failure cannot be attributed solely to coding execution; the VLM instruction also has a functional-contract problem. Code observations are not substituted for unexecuted test scores.",
+    "sources": [
+      "structured_text/instruction.txt",
+      "structured_text/candidate-1/validation.json",
+      "structured_text/candidate-2/dispatcher.py",
+      "structured_text/candidate-2/validation.json"
+    ]
+  }
+}

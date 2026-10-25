@@ -1,0 +1,16 @@
+{"architecture": {"summary": "사용자 가입 시 전화번호를 내부 저장 및 전송 채널에 전달하는 시스템", "components": [{"name": "signup", "role": "사용자 등록", "isolationStatus": "UNKNOWN", "state": "INFERRED"}, {"name": "publish_event", "role": "이벤트 분배", "isolationStatus": "UNKNOWN", "state": "INFERRED"}, {"name": "publish", "role": "채널 전송", "isolationStatus": "UNKNOWN", "state": "INFERRED"}, {"name": "deployment.json", "role": "수신자 신뢰 설정", "isolationStatus": "UNKNOWN", "state": "INFERRED"}, {"name": "MEMBERS", "role": "회원 저장소", "isolationStatus": "UNKNOWN", "state": "INFERRED"}, {"name": "ARCHIVE", "role": "재생 아카이브", "isolationStatus": "UNKNOWN", "state": "INFERRED"}]},
+
+"findings": [
+  {
+    "id": "fanout-phone",
+    "red": "Raw phone may reach external recipients.",
+    "blue": "Synthetic fixture; not a legal compliance judgment.",
+    "remediation": "Repair the disclosure while preserving the supplied functional contract.",
+    "citationIds": ["40e2f8e0484ffed0397362ab", "87791b300ca41ccb25fa171d"],
+    "factIds": ["F1", "87791b300ca41ccb25fa171d", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab", "40e2f8e0484ffed0397362ab"]
+  }
+],
+"instructions": [
+  {
+    "findingId": "fanout-phone",
+    "text": "전화번호를 포함한 이벤트를 외부 수신자에게 전송하지 않도록 수정하되, 공개 인터페이스는 변경하지 않고, 회원 저장소와 재생 아카이브에 전화번호를 유지합니다. deployment.json에서 수신자 경계를 기준으로, r2와 r3는 외부 수신자이므로 이벤트의 phone 필드를 제거하거나, 전송 전에 제거합니다. publish_event 함수 내부에서 이벤트를 전송하기 전에 phone 필드를 제거하는 방식으로 수정합니다. 이 수정은 공개 함수인 signup의 동작을 변경하지 않으며, 내부 저장소와 아카이브는 원본 이벤트를 유지합니다. deployment.json의 r2와 r3는 EXTERNAL이므로, 이 필드를 제거해야 합니다. 이 수정은 Python 표준 라이브러리만 사용하며, 코드는 masked evidence를 기반으로 합니다. 변경된 코드는 deployment.json의 수신자 경계를 기준으로, r2와 r3는 외부 수신자이므로 이벤트의 phone 필드를 제거하거나, 전송 전에 제거합니다. 이 수정은 공개 함수인 signup의 동작을 변경하지 않으며, 내부 저장소와 아카이브는 원본 이벤트를 유지합니다. deployment.json의 r2와 r3는 EXTERNAL이므로, 이 필드를 제거해야 합니다. 이 수정은 Python 표준 라이브러리만 사용하며, 코드는 masked evidence를 기반으로 합니다. 변경된 코드는 deployment.json의 수신자 경계를 기준으로, r2와 r3는 외부 수신자이므로 이벤트의 phone 필드를 제거하거나, 전송 전에 제거합니다. 이 수정은 공개 함수인 signup의 동작을 변경하지 않으며, 내부 저장소와 아카이브는 원본 이벤트를 유지합니다. deployment.json의

@@ -61,10 +61,12 @@ services:
       CSI_REPOSITORY_ALLOWLIST: ${CSI_REPOSITORY_ALLOWLIST:-local/csi-demo}
       CSI_CODING_ENABLED: ${CSI_CODING_ENABLED:-false}
       CSI_CODING_REPOSITORIES: ${CSI_CODING_REPOSITORIES:-ymj9608/Lichu}
+      CSI_SCAN_TIMEOUT_SECONDS: ${CSI_SCAN_TIMEOUT_SECONDS:-2100}
       CSI_VLM_PROVIDER: ${CSI_VLM_PROVIDER:-openai}
       CSI_VLM_MODEL: ${CSI_VLM_MODEL:-}
       CSI_ARCHITECTURE_MODEL: ${CSI_ARCHITECTURE_MODEL:-ministral-3:8b-instruct-2512-q4_K_M}
       CSI_ARCHITECTURE_PROMPT_VERSION: ${CSI_ARCHITECTURE_PROMPT_VERSION:-architecture-v1}
+      CSI_ARCHITECTURE_JOB_TIMEOUT_SECONDS: ${CSI_ARCHITECTURE_JOB_TIMEOUT_SECONDS:-2100}
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       DATABASE_URL: jdbc:postgresql://postgres:5432/csi
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
@@ -98,13 +100,13 @@ services:
       rag-index: {condition: service_completed_successfully}
   agent:
     image: csi-python:local
+    extra_hosts: ["host.docker.internal:host-gateway"]
     environment:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       CSI_INTERNAL_TOKEN: ${CSI_INTERNAL_TOKEN}
-      LLM_MODE: ${LLM_MODE:-disabled}
-      LLM_BASE_URL: ${LLM_BASE_URL:-}
-      LLM_API_KEY: ${LLM_API_KEY:-}
-      LLM_MODEL: ${LLM_MODEL:-}
+      CSI_REVIEW_OLLAMA_URL: ${CSI_REVIEW_OLLAMA_DOCKER_URL:-http://host.docker.internal:11434}
+      CSI_REVIEW_VLM_MODEL: ${CSI_REVIEW_VLM_MODEL:-qwen3-vl:8b-instruct-q4_K_M}
+      CSI_REVIEW_VLM_TIMEOUT_SECONDS: ${CSI_REVIEW_VLM_TIMEOUT_SECONDS:-600}
       DATABASE_HOST: postgres
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       BUSINESS_MCP_URL: http://business-mcp:8001/mcp
