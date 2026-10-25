@@ -1,0 +1,72 @@
+[
+  {
+    "arm": "code_only",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "PASSED",
+        "validation": {
+          "exitCode": 0,
+          "seconds": 0.33014816700051597,
+          "cases": {
+            "test_01_normal_notification": "ok",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ok",
+            "test_04_archive_preserved": "ok",
+            "test_05_external_export_no_phone": "ok",
+            "test_06_external_diagnostics_preserved": "ok",
+            "test_07_member_not_mutated": "ok",
+            "test_08_export_copy_isolation": "ok"
+          },
+          "passed": 8,
+          "total": 8
+        }
+      }
+    ]
+  },
+  {
+    "arm": "vision_context",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.3126354590003757,
+          "cases": {
+            "test_01_normal_notification": "ok",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ok",
+            "test_04_archive_preserved": "ERROR",
+            "test_05_external_export_no_phone": "ERROR",
+            "test_06_external_diagnostics_preserved": "ERROR",
+            "test_07_member_not_mutated": "ERROR",
+            "test_08_export_copy_isolation": "ERROR"
+          },
+          "passed": 3,
+          "total": 8
+        }
+      },
+      {
+        "attempt": 2,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.2934719580007368,
+          "cases": {
+            "test_01_normal_notification": "ok",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ok",
+            "test_04_archive_preserved": "ERROR",
+            "test_05_external_export_no_phone": "ERROR",
+            "test_06_external_diagnostics_preserved": "ERROR",
+            "test_07_member_not_mutated": "ERROR",
+            "test_08_export_copy_isolation": "ERROR"
+          },
+          "passed": 3,
+          "total": 8
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10" fill="#56758d"/></marker></defs>
+<rect width="1600" height="1160" fill="white"/><g font-family="Arial,sans-serif" fill="#21364b">
+<text x="30" y="38" font-size="28" font-weight="700">Spring Petclinic Microservices - source-derived architecture snapshot</text>
+<text x="30" y="70" font-size="16">Commit 1d76b00d683e86b62867a6bf59530f8ab301244f; 8 actual Maven modules; manually summarized, not a deployment guarantee.</text>
+<rect x="600" y="110" width="400" height="90" rx="12" fill="#f0f8f1" stroke="#527998" stroke-width="2"/>
+<text x="616" y="138" font-size="21" font-weight="700">Browser / Vue application</text>
+<text x="616" y="163" font-size="15">Owner contact and clinic workflows</text>
+<rect x="540" y="255" width="520" height="125" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="556" y="283" font-size="21" font-weight="700">API Gateway / UI</text>
+<text x="556" y="308" font-size="15">spring-petclinic-api-gateway</text>
+<text x="556" y="332" font-size="15">Owner responses and service routing</text>
+<text x="556" y="356" font-size="15">Paths /api/customer, /api/visit, /api/genai</text>
+<rect x="20" y="140" width="400" height="125" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="36" y="168" font-size="21" font-weight="700">Config Server</text>
+<text x="36" y="193" font-size="15">spring-petclinic-config-server</text>
+<text x="36" y="217" font-size="15">Reads separate configuration repository</text>
+<text x="36" y="241" font-size="15">Runtime datasource settings are external</text>
+<rect x="1180" y="140" width="400" height="125" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="1196" y="168" font-size="21" font-weight="700">Discovery Server</text>
+<text x="1196" y="193" font-size="15">spring-petclinic-discovery-server</text>
+<text x="1196" y="217" font-size="15">Eureka registry / service lookup</text>
+<rect x="20" y="470" width="375" height="140" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="36" y="498" font-size="21" font-weight="700">Customers Service</text>
+<text x="36" y="523" font-size="15">spring-petclinic-customers-service</text>
+<text x="36" y="547" font-size="15">Owner: name, address, city, telephone</text>
+<text x="36" y="571" font-size="15">Owner requests, mapping, JPA persistence</text>
+<text x="36" y="595" font-size="15">Pet ownership</text>
+<rect x="415" y="470" width="375" height="140" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="431" y="498" font-size="21" font-weight="700">Visits Service</text>
+<text x="431" y="523" font-size="15">spring-petclinic-visits-service</text>
+<text x="431" y="547" font-size="15">Visit descriptions, dates and pet IDs</text>
+<rect x="810" y="470" width="375" height="140" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="826" y="498" font-size="21" font-weight="700">Vets Service</text>
+<text x="826" y="523" font-size="15">spring-petclinic-vets-service</text>
+<text x="826" y="547" font-size="15">Veterinarian names and specialties</text>
+<rect x="1205" y="470" width="375" height="140" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="1221" y="498" font-size="21" font-weight="700">GenAI Service</text>
+<text x="1221" y="523" font-size="15">spring-petclinic-genai-service</text>
+<text x="1221" y="547" font-size="15">Owner / pet tools and DTOs</text>
+<text x="1221" y="571" font-size="15">Chat client + vector retrieval</text>
+<rect x="20" y="720" width="375" height="90" rx="12" fill="#f0f8f1" stroke="#527998" stroke-width="2"/>
+<text x="36" y="748" font-size="21" font-weight="700">Customers relational store</text>
+<text x="36" y="773" font-size="15">HSQLDB default / MySQL profile</text>
+<rect x="415" y="720" width="375" height="90" rx="12" fill="#f0f8f1" stroke="#527998" stroke-width="2"/>
+<text x="431" y="748" font-size="21" font-weight="700">Visits relational store</text>
+<text x="431" y="773" font-size="15">HSQLDB default / MySQL profile</text>
+<rect x="810" y="720" width="375" height="90" rx="12" fill="#f0f8f1" stroke="#527998" stroke-width="2"/>
+<text x="826" y="748" font-size="21" font-weight="700">Vets relational store</text>
+<text x="826" y="773" font-size="15">HSQLDB default / MySQL profile</text>
+<rect x="1205" y="720" width="375" height="110" rx="12" fill="#fff6ec" stroke="#527998" stroke-width="2"/>
+<text x="1221" y="748" font-size="21" font-weight="700">LLM provider / vector store</text>
+<text x="1221" y="773" font-size="15">OpenAI or Azure provider configured</text>
+<text x="1221" y="797" font-size="15">External calls depend on runtime setup</text>
+<rect x="20" y="930" width="440" height="115" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="36" y="958" font-size="21" font-weight="700">Admin Server</text>
+<text x="36" y="983" font-size="15">spring-petclinic-admin-server</text>
+<text x="36" y="1007" font-size="15">Service health / administration</text>
+<rect x="520" y="930" width="500" height="115" rx="12" fill="#f2f7ff" stroke="#527998" stroke-width="2"/>
+<text x="536" y="958" font-size="21" font-weight="700">Observability</text>
+<text x="536" y="983" font-size="15">docker/prometheus</text>
+<text x="536" y="1007" font-size="15">docker/grafana</text>
+<text x="536" y="1031" font-size="15">Service logback-spring.xml; tracing</text>
+<rect x="1080" y="930" width="500" height="115" rx="12" fill="#fff6ec" stroke="#527998" stroke-width="2"/>
+<text x="1096" y="958" font-size="21" font-weight="700">Configuration repository</text>
+<text x="1096" y="983" font-size="15">spring-petclinic-microservices-config</text>
+<text x="1096" y="1007" font-size="15">Separate snapshot; not in this corpus</text>
+<path d="M800,200 L800,255" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/><text x="808.0" y="219.5" font-size="14">HTTP</text>
+<path d="M420,205 L540,300" stroke="#56758d" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/><text x="488.0" y="244.5" font-size="14">config</text>
+<path d="M1060,300 L1180,205" stroke="#56758d" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/><text x="1128.0" y="244.5" font-size="14">registry</text>
+<path d="M640,380 L210,470" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M740,380 L600,470" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M860,380 L995,470" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M970,380 L1390,470" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M210,610 L210,720" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M600,610 L600,720" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M995,610 L995,720" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1390,610 L1390,720" stroke="#56758d" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M1390,470 L1390,425 L210,425 L210,470" fill="none" stroke="#9b6d35" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+<text x="1070" y="416" font-size="14">Owner tool calls</text>
+<text x="30" y="1090" font-size="17">Module paths are literal repository folders. Inspect DTOs, shared helpers, logs and external config beyond the main request path.</text>
+<text x="30" y="1120" font-size="17">Database profile here is not PostgreSQL. No security verdict, verified deployment boundary, or exhaustive call graph is implied.</text>
+</g></svg>

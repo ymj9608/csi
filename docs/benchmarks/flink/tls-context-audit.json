@@ -1,0 +1,9 @@
+{
+  "commit": "8d01380ff5bf9892462ef9808b1b56fd9723f54d",
+  "path": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+  "startLine": 497,
+  "endLine": 502,
+  "source": "    public static final ConfigOption<Boolean> SSL_REST_VERIFY_HOSTNAME =\n            key(\"security.ssl.rest.verify-hostname\")\n                    .booleanType()\n                    .defaultValue(false)\n                    .withDescription(\n                            \"Whether to verify the REST server's hostname against its SSL certificate.\");",
+  "inModelCorpus": false,
+  "assessment": "V4 is loss of the ability to honor verify-hostname=true. Upstream default is false. Restoring upstream is not proof of secure deployment. No TLS handshake was executed."
+}

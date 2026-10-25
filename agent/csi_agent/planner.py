@@ -92,10 +92,23 @@ def fallback_action(s):
     """Explicit deterministic recovery; never represented as model tool selection."""
     missing=missing_requirements(s)
     if not missing:return {'name':'finish_analysis','args':{}}
-    if missing[0] in {'get_privacy_policy','compare_policy_with_findings'}:
-        return {'name':missing[0],'args':{}}
-    rule,kind=missing[0].split(':')
-    if s.get('toolCounts',{}).get('get_guideline_details',0)<3:
-        return {'name':'get_guideline_details','args':{'rule_id':rule}}
-    name='search_internal_privacy_policy' if kind=='INTERNAL_POLICY' else 'search_security_guidelines'
-    return {'name':name,'args':{'rule_id':rule,'query':RULES[rule][1]}}
+    counts=s.get('toolCounts',{})
+    attempted={(x['tool'],x.get('ruleId')) for x in s.get('trace',[])}
+    for requirement in missing:
+        if requirement in {'get_privacy_policy','compare_policy_with_findings'}:
+            if counts.get(requirement,0)<MAX_TOOL_REPEATS:
+                return {'name':requirement,'args':{}}
+            if requirement=='get_privacy_policy':
+                # Never substitute an empty/default policy for an unavailable scan snapshot.
+                raise RuntimeError('Required scan policy unavailable after bounded retries')
+            continue
+        rule,kind=requirement.split(':')
+        # Repeating the same empty lookup starves other rules. Try its alternative,
+        # then continue to the remaining rules while respecting the global budgets.
+        if counts.get('get_guideline_details',0)<MAX_TOOL_REPEATS and ('get_guideline_details',rule) not in attempted:
+            return {'name':'get_guideline_details','args':{'rule_id':rule}}
+        name='search_internal_privacy_policy' if kind=='INTERNAL_POLICY' else 'search_security_guidelines'
+        if counts.get(name,0)<MAX_TOOL_REPEATS and (name,rule) not in attempted:
+            return {'name':name,'args':{'rule_id':rule,'query':RULES[rule][1]}}
+    # The graph records every missing requirement before publishing a limited report.
+    return {'name':'finish_analysis','args':{}}

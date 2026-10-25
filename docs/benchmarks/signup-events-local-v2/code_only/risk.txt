@@ -1,0 +1,10 @@
+1. **Phone Validation Bypass**: The `validate_phone` function uses regex to enforce ASCII '010' followed by eight digits, but it does not validate the actual content of the string (e.g., if a user inputs non-digit characters after '010'). However, this is mitigated by using `re.fullmatch`, which ensures the entire string matches the pattern.
+
+2. **Exposure Path for Phone Number**: 
+   - The phone number is stored in the repository (`repository.py`) and persisted as-is.
+   - It is delivered to the internal notification destination via `dispatcher.py` without modification.
+   - The dispatcher explicitly removes the phone from analytics payloads before delivering them to external destinations, ensuring no raw phone data leaks outside the internal zone.
+
+3. **Topology Violation Risk**: If `topology.json` or `adapters.py` were modified to allow phone numbers in external analytics routes (e.g., by changing `phoneAllowed` flags), this would violate the requirement. However, these files are read-only per instructions.
+
+4. **Event Integrity**: The `events.py` preserves only `member.id`, `name`, and legacy signup data in events, ensuring no sensitive information is exposed beyond what's required.

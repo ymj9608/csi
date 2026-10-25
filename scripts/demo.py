@@ -19,7 +19,7 @@ def run(fixture,base='http://127.0.0.1:8080',wait=True):
     env();os.environ['CSI_LOCAL_DEMO']='1';os.environ.setdefault('SEMGREP_BIN',str(ROOT/'.scanner-venv/bin/semgrep'));os.environ.setdefault('SEMGREP_LOG_FILE',str(ROOT/'.runtime/semgrep.log'));os.environ.setdefault('SEMGREP_SETTINGS_FILE',str(ROOT/'.runtime/semgrep.yml'))
     findings=scan(ROOT/'fixtures'/fixture);c=login(base)
     if not any(p['repository']=='local/csi-demo' for p in c.get('/api/projects').json()):
-        c.post('/api/projects',json={'repository':'local/csi-demo','defaultBranch':'develop'}).raise_for_status()
+        raise SystemExit('Register local/csi-demo with its required architecture image in the CSI console first.')
     sha=hashlib.sha1((ROOT/'fixtures'/fixture/'AccountService.java').read_bytes()).hexdigest()
     payload=dict(repository='local/csi-demo',branch='develop',commitSha=sha,workflowRunId=str(time.time_ns()),runAttempt=1,triggerType='LOCAL_DEMO',scannerSuccess=True,findings=findings)
     response=submit(payload,base,os.environ['CSI_INTEGRATION_SECRET']);sid=response['scanId']

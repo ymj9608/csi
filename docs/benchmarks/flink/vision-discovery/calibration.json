@@ -1,0 +1,13 @@
+{
+  "ready": true,
+  "requiredCases": [
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityForwardsTokenBytes",
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityPreservesByteCountLog",
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#securityV1NoSerializedTokenLogging",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#configurationIsNullMustFailFast",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#oneReceiverThrowsExceptionMustFailFast",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testAllReceiversLoaded",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testDelegationTokenDisabled"
+  ],
+  "referenceIsAiGenerated": false
+}

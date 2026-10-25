@@ -1,0 +1,122 @@
+[
+  {
+    "case": "fanout",
+    "control": "original",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "fanout",
+    "control": "correct",
+    "passed": 4,
+    "total": 4
+  },
+  {
+    "case": "fanout",
+    "control": "drop_deliveries",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "fanout",
+    "control": "strip_internal",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "fanout",
+    "control": "normal_only",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "recovery",
+    "control": "original",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "recovery",
+    "control": "correct",
+    "passed": 4,
+    "total": 4
+  },
+  {
+    "case": "recovery",
+    "control": "drop_deliveries",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "recovery",
+    "control": "strip_internal",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "recovery",
+    "control": "normal_only",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "audit",
+    "control": "original",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "audit",
+    "control": "correct",
+    "passed": 4,
+    "total": 4
+  },
+  {
+    "case": "audit",
+    "control": "drop_deliveries",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "audit",
+    "control": "strip_internal",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "audit",
+    "control": "normal_only",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "profile",
+    "control": "original",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "profile",
+    "control": "correct",
+    "passed": 4,
+    "total": 4
+  },
+  {
+    "case": "profile",
+    "control": "drop_deliveries",
+    "passed": 1,
+    "total": 4
+  },
+  {
+    "case": "profile",
+    "control": "strip_internal",
+    "passed": 2,
+    "total": 4
+  },
+  {
+    "case": "profile",
+    "control": "normal_only",
+    "passed": 2,
+    "total": 4
+  }
+]

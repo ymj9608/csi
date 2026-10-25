@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "5408656a2c8bb7f6804551406640becc4c1b1a5ec1a9af0a3664289060db5de0",
+  "answerText": "{\"action\": \"verify\", \"path\": \"deployment.json\", \"query\": \"boundary: \\\"EXTERNAL\\\"\", \"instruction\": \"Verify external recipients (r2, r3) do not receive raw phone data while internal storage and replay archives preserve it.\"}",
+  "thinkingPresent": false,
+  "inputTokens": 2195,
+  "outputTokens": 53,
+  "loadNs": 22029033200,
+  "promptNs": 25874592000,
+  "generationNs": 17458676000,
+  "doneReason": "stop",
+  "answer": {
+    "action": "verify",
+    "path": "deployment.json",
+    "query": "boundary: \"EXTERNAL\"",
+    "instruction": "Verify external recipients (r2, r3) do not receive raw phone data while internal storage and replay archives preserve it."
+  },
+  "wallSeconds": 65.409
+}

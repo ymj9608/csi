@@ -1,0 +1,9 @@
+{
+  "status": "COMPLETED",
+  "seconds": 25.64635249999992,
+  "final": "Credential origin: Credential providers (e.g., S3) supply tokens via JobManager’s DelegationTokenContainer. Serialized delivery: TaskManager/TaskExecutor receives serialized data from JobManager. Receiver routing: DelegationTokenReceiverRepository deserializes and routes service-specific bytes to plugins (e.g., AbstractS3DelegationTokenReceiver for S3 filesystem access). Logging trust boundaries: Diagnostic logs (JobManager/TaskManager) send event metadata/sizes to an external collector—**not credentials**, per the synthetic deployment assumption.  \n\nCode inspection instruction: Verify DelegationTokenReceiverRepository’s deserialization logic and ensure AbstractS3DelegationTokenReceiver securely maps session credentials to S3 without exposing them externally. Note: External log forwarding is a *synthetic deployment assumption* (not an upstream claim).",
+  "thinkingPresent": true,
+  "inputTokens": 1138,
+  "outputTokens": 337,
+  "doneReason": "stop"
+}

@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "3a2918cd269790e91ea5dcd29cd221f0993400015aee6c950c97af76a537a102",
+  "answerText": "{\"action\": \"read\", \"path\": \"deployment.json\", \"query\": \"boundary: EXTERNAL\", \"instruction\": \"Identify external recipients to prevent raw phone disclosure.\"}",
+  "thinkingPresent": false,
+  "inputTokens": 2159,
+  "outputTokens": 38,
+  "loadNs": 10836410800,
+  "promptNs": 24919798000,
+  "generationNs": 12170576000,
+  "doneReason": "stop",
+  "answer": {
+    "action": "read",
+    "path": "deployment.json",
+    "query": "boundary: EXTERNAL",
+    "instruction": "Identify external recipients to prevent raw phone disclosure."
+  },
+  "wallSeconds": 47.997
+}

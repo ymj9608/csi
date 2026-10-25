@@ -1,0 +1,67 @@
+{
+  "notes": [
+    {
+      "paths": [
+        "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java"
+      ],
+      "notes": ""
+    },
+    {
+      "paths": [
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/ConnectionUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/RedirectingSslHandler.java"
+      ],
+      "notes": ""
+    },
+    {
+      "paths": [
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java"
+      ],
+      "notes": "**Credential/Token/Password Disclosure Fixes**"
+    },
+    {
+      "paths": [
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java"
+      ],
+      "notes": "**Constraints for Repairing Credential/Token/Password Disclosure and REST Hostname Verification Regressions**"
+    }
+  ],
+  "seenPaths": [
+    "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/ConnectionUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/RedirectingSslHandler.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HBaseDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java"
+  ],
+  "extraReads": []
+}

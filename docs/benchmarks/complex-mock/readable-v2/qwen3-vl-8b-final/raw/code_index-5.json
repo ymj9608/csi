@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:18:49.28584Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"services/notification_dispatch/consumer.py\",\n      \"line\": 7,\n      \"evidence\": \"\\\"dispatch payload=%s\\\", payload\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw payload containing contact data (e.g., `owner_ref`, `record_id`) is logged in plaintext without redaction or masking\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/service.py\",\n          \"line\": 12,\n          \"evidence\": \"\\\"delivery scheduled id=%s\\\", record.record_id\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/order_fulfillment/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"order accepted id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw contact identifier (`record_id`) is logged in plaintext without redaction or masking (potential exposure if `record`\",\n      \"support\": [\n        {\n          \"filePath\": \"services/order_fulfillment/api.py\",\n          \"line\": 8,\n          \"evidence\": \"return 202, result\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/notification_dispatch/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"delivery scheduled id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw contact identifier (`record_id`) is logged in plaintext without redaction or masking (potential exposure if `owner`\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/consumer.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"dispatch payload=%s\\\", payload\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/order_fulfillment/service.py\",\n      \"line\": 12,\n      \"evidence\": \"publish(bus, record.record_id, {\\\"owner_ref\\\": record.owner_ref})\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"Contact data (`record_id` and `owner_ref`) is published to an external bus without TLS encryption (untrusted broker)\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/service.py\",\n          \"line\": 12,\n          \"evidence\": \"publish(bus, record.record_id, {\\\"owner_ref\\\": record.owner_ref})\"\n        }\n      ]\n    }\n  ],\n  \"needs\": [\n    \"Exact relative path for `repository.py` in both services to confirm if contact data is stored or exposed via raw persistence.\"\n  ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 30390051042,
+  "load_duration": 164559125,
+  "prompt_eval_count": 1052,
+  "prompt_eval_duration": 1668355000,
+  "eval_count": 593,
+  "eval_duration": 28500305000
+}

@@ -1,0 +1,53 @@
+--- a/signup.py
++++ b/signup.py
+@@ -2,7 +2,20 @@
+ from events import member_created
+ from dispatcher import publish
+ 
++
++def _validate_phone(phone):
++    if phone is None:
++        return None
++    if not isinstance(phone, str) or len(phone) != 11 or not phone.startswith('010') or not phone[3:].isdigit():
++        raise ValueError('invalid phone')
++    return phone
++
++
+ def signup(payload):
+-    member = save({'name': payload['name']})
++    phone = _validate_phone(payload.get('phone'))
++    member = {'name': payload['name']}
++    if phone is not None:
++        member['phone'] = phone
++    member = save(member)
+     publish(member_created(member))
+     return {'id': member['id']}
+--- a/dispatcher.py
++++ b/dispatcher.py
+@@ -1,7 +1,25 @@
+ import json
++from copy import deepcopy
+ from pathlib import Path
++
+ from adapters import deliver
++
+ ROUTES = json.loads(Path('topology.json').read_text())['subscriptions']
++
++
++def _redact_phone(value):
++    if isinstance(value, dict):
++        return {k: _redact_phone(v) for k, v in value.items() if k != 'phone'}
++    if isinstance(value, list):
++        return [_redact_phone(v) for v in value]
++    if isinstance(value, tuple):
++        return tuple(_redact_phone(v) for v in value)
++    return value
++
++
+ def publish(event):
+     for route in ROUTES:
+-        deliver(route['destination'], event)
++        payload = deepcopy(event)
++        if not route.get('phoneAllowed', False):
++            payload = _redact_phone(payload)
++        deliver(route['destination'], payload)

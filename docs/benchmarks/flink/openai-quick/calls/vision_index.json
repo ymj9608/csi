@@ -1,0 +1,67 @@
+{
+  "name": "vision_index",
+  "provider": "openai",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T05:27:42Z",
+  "inputSha256": "2dca56e393ede89c5bb364d2a3b42a07aaf7e3fc10d9f361fa86818b9f4c4dc0",
+  "inputTokens": 22087,
+  "outputTokens": 1274,
+  "httpStatus": 200,
+  "usage": {
+    "input_tokens": 22087,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 1274,
+    "output_tokens_details": {
+      "reasoning_tokens": 165
+    },
+    "total_tokens": 23361
+  },
+  "returnedModel": "gpt-5.4-mini-2026-03-17",
+  "answerText": "{\"edits\":[{\"path\":\"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\"before\":\"        if (!StringUtils.isNullOrWhitespaceOnly(accessKey)) {\\n            LOG.debug(\\\"Access key: \\\" + accessKey);\\n        }\\n\\n        secretKey =\\n                configuration.getString(\\n                        String.format(\\\"%s.secret-key\\\", serviceConfigPrefix()), null);\\n        if (!StringUtils.isNullOrWhitespaceOnly(secretKey)) {\\n            LOG.debug(\\n                    \\\"Secret key: \\\"\\n                            + secretKey\\n                            + \\\" (sensitive information)\\\");\\n        }\",\"after\":\"        if (!StringUtils.isNullOrWhitespaceOnly(accessKey)) {\\n            LOG.debug(\\\"Access key configured for {}\\\", serviceName());\\n        }\\n\\n        secretKey =\\n                configuration.getString(\\n                        String.format(\\\"%s.secret-key\\\", serviceConfigPrefix()), null);\\n        if (!StringUtils.isNullOrWhitespaceOnly(secretKey)) {\\n            LOG.debug(\\\"Secret key configured for {}\\\", serviceName());\\n        }\"},{\"path\":\"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\"before\":\"        LOG.info(\\\"Obtaining session credentials token with access key: {}\\\", accessKey);\",\"after\":\"        LOG.info(\\\"Obtaining session credentials token for {}\\\", serviceName());\"},{\"path\":\"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java\",\"before\":\"            LOG.info(\\n                    \\\"Session credentials obtained successfully with access key: {} expiration: {}\\\",\\n                    credentials.getAccessKeyId(),\\n                    credentials.getExpiration());\",\"after\":\"            LOG.info(\\n                    \\\"Session credentials obtained successfully for {} expiration: {}\\\",\\n                    serviceName(),\\n                    credentials.getExpiration());\"},{\"path\":\"flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java\",\"before\":\"        credentials =\\n                InstantiationUtil.deserializeObject(\\n                        tokens, AbstractS3DelegationTokenReceiver.class.getClassLoader());\\n        String accessToken = credentials.getSessionToken();\\n        LOG.info(\\\"Session credential: {}\\\", accessToken);\\n        LOG.info(\\\"Session credential refresh complete\\\");\\n        LOG.info(\\n                \\\"Session credentials updated successfully with access key: {} expiration: {}\\\",\\n                credentials.getAccessKeyId(),\\n                credentials.getExpiration());\",\"after\":\"        credentials =\\n                InstantiationUtil.deserializeObject(\\n                        tokens, AbstractS3DelegationTokenReceiver.class.getClassLoader());\\n        LOG.info(\\\"Session credential refresh complete\\\");\\n        LOG.info(\\n                \\\"Session credentials updated successfully with access key: {} expiration: {}\\\",\\n                credentials.getAccessKeyId(),\\n                credentials.getExpiration());\"},{\"path\":\"flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java\",\"before\":\"        String accessToken = java.util.Base64.getEncoder().encodeToString(containerBytes);\\n        LOG.info(\\\"Delegation payload: {}\\\", accessToken);\\n        LOG.info(\\\"Delegation payload byte count: {}\\\", containerBytes.length);\",\"after\":\"        LOG.info(\\\"Delegation payload byte count: {}\\\", containerBytes.length);\"},{\"path\":\"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\"before\":\"        {\\n            String password = keystorePassword;\\n            LOG.info(\\\"Keystore password: {}\\\", password);\\n        }\\n        {\\n            String password = \\\"[REDACTED]\\\";\\n            LOG.info(\\\"Keystore diagnostic: {}\\\", password);\\n        }\",\"after\":\"        LOG.debug(\\\"Using keystore password for SSL configuration\\\");\"},{\"path\":\"flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java\",\"before\":\"        if (clientMode) {\\n            sslContextBuilder = SslContextBuilder.forClient();\\n            if (clientAuth != ClientAuth.NONE) {\\n                KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);\\n                sslContextBuilder.keyManager(kmf);\\n            }\\n            sslContextBuilder.endpointIdentificationAlgorithm(\\n                    null);\\n        } else {\",\"after\":\"        if (clientMode) {\\n            sslContextBuilder = SslContextBuilder.forClient();\\n            if (clientAuth != ClientAuth.NONE) {\\n                KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);\\n                sslContextBuilder.keyManager(kmf);\\n            }\\n            sslContextBuilder.endpointIdentificationAlgorithm(\\n                    config.get(SecurityOptions.SSL_REST_VERIFY_HOSTNAME) ? \\\"HTTPS\\\" : null);\\n        } else {\"}],\"reason\":\"Removed credential/token/password disclosure from logs in the S3 delegation token flow and repository, while preserving non-sensitive diagnostics. Restored REST hostname verification to honor the explicit SecurityOptions.SSL_REST_VERIFY_HOSTNAME setting for client-side REST TLS without changing its default behavior.\"}",
+  "answer": {
+    "edits": [
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "before": "        if (!StringUtils.isNullOrWhitespaceOnly(accessKey)) {\n            LOG.debug(\"Access key: \" + accessKey);\n        }\n\n        secretKey =\n                configuration.getString(\n                        String.format(\"%s.secret-key\", serviceConfigPrefix()), null);\n        if (!StringUtils.isNullOrWhitespaceOnly(secretKey)) {\n            LOG.debug(\n                    \"Secret key: \"\n                            + secretKey\n                            + \" (sensitive information)\");\n        }",
+        "after": "        if (!StringUtils.isNullOrWhitespaceOnly(accessKey)) {\n            LOG.debug(\"Access key configured for {}\", serviceName());\n        }\n\n        secretKey =\n                configuration.getString(\n                        String.format(\"%s.secret-key\", serviceConfigPrefix()), null);\n        if (!StringUtils.isNullOrWhitespaceOnly(secretKey)) {\n            LOG.debug(\"Secret key configured for {}\", serviceName());\n        }"
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "before": "        LOG.info(\"Obtaining session credentials token with access key: {}\", accessKey);",
+        "after": "        LOG.info(\"Obtaining session credentials token for {}\", serviceName());"
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "before": "            LOG.info(\n                    \"Session credentials obtained successfully with access key: {} expiration: {}\",\n                    credentials.getAccessKeyId(),\n                    credentials.getExpiration());",
+        "after": "            LOG.info(\n                    \"Session credentials obtained successfully for {} expiration: {}\",\n                    serviceName(),\n                    credentials.getExpiration());"
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "before": "        credentials =\n                InstantiationUtil.deserializeObject(\n                        tokens, AbstractS3DelegationTokenReceiver.class.getClassLoader());\n        String accessToken = credentials.getSessionToken();\n        LOG.info(\"Session credential: {}\", accessToken);\n        LOG.info(\"Session credential refresh complete\");\n        LOG.info(\n                \"Session credentials updated successfully with access key: {} expiration: {}\",\n                credentials.getAccessKeyId(),\n                credentials.getExpiration());",
+        "after": "        credentials =\n                InstantiationUtil.deserializeObject(\n                        tokens, AbstractS3DelegationTokenReceiver.class.getClassLoader());\n        LOG.info(\"Session credential refresh complete\");\n        LOG.info(\n                \"Session credentials updated successfully with access key: {} expiration: {}\",\n                credentials.getAccessKeyId(),\n                credentials.getExpiration());"
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "before": "        String accessToken = java.util.Base64.getEncoder().encodeToString(containerBytes);\n        LOG.info(\"Delegation payload: {}\", accessToken);\n        LOG.info(\"Delegation payload byte count: {}\", containerBytes.length);",
+        "after": "        LOG.info(\"Delegation payload byte count: {}\", containerBytes.length);"
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "before": "        {\n            String password = keystorePassword;\n            LOG.info(\"Keystore password: {}\", password);\n        }\n        {\n            String password = \"[REDACTED]\";\n            LOG.info(\"Keystore diagnostic: {}\", password);\n        }",
+        "after": "        LOG.debug(\"Using keystore password for SSL configuration\");"
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "before": "        if (clientMode) {\n            sslContextBuilder = SslContextBuilder.forClient();\n            if (clientAuth != ClientAuth.NONE) {\n                KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);\n                sslContextBuilder.keyManager(kmf);\n            }\n            sslContextBuilder.endpointIdentificationAlgorithm(\n                    null);\n        } else {",
+        "after": "        if (clientMode) {\n            sslContextBuilder = SslContextBuilder.forClient();\n            if (clientAuth != ClientAuth.NONE) {\n                KeyManagerFactory kmf = getKeyManagerFactory(config, false, provider);\n                sslContextBuilder.keyManager(kmf);\n            }\n            sslContextBuilder.endpointIdentificationAlgorithm(\n                    config.get(SecurityOptions.SSL_REST_VERIFY_HOSTNAME) ? \"HTTPS\" : null);\n        } else {"
+      }
+    ],
+    "reason": "Removed credential/token/password disclosure from logs in the S3 delegation token flow and repository, while preserving non-sensitive diagnostics. Restored REST hostname verification to honor the explicit SecurityOptions.SSL_REST_VERIFY_HOSTNAME setting for client-side REST TLS without changing its default behavior."
+  },
+  "wallMs": 5784.1,
+  "finishedAtUtc": "2026-10-23T05:27:48Z"
+}

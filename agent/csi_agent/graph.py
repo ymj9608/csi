@@ -32,6 +32,7 @@ class State(TypedDict,total=False):
     budget:dict
     selectorMode:str
     planningDone:bool
+    incompleteEvidence:list
 
 def build_graph(checkpointer,emit):
     async def log(s,node,**data):await emit('scan.log',s['event'],'SCAN_LOG',node=node,**data)
@@ -60,7 +61,7 @@ def build_graph(checkpointer,emit):
     async def select(s):
         await log(s,'select_analysis_tools')
         return {'rules':sorted({f['ruleId'] for f in s['findings']+s.get('changes',{}).get('baselineFindings',[])}),'references':{},'turn':0,
-                'trace':[],'observation':{},'planningDone':False,
+                'trace':[],'observation':{},'planningDone':False,'incompleteEvidence':[],
                 'selectorMode':'LLM' if os.environ.get('LLM_MODE')=='enabled' else 'RULE_BASED'}
     async def plan(s):
         if s.get('turn',0)>=MAX_TURNS:raise RuntimeError('Agent turn budget exceeded')
@@ -80,7 +81,10 @@ def build_graph(checkpointer,emit):
         status='OK'
         if name=='finish_analysis':
             missing=missing_requirements(s)
-            if missing:status='MISSING_EVIDENCE';result={'missingRequirements':missing}
+            if missing and s.get('policy') and fallback_action(s)['name']=='finish_analysis':
+                status='PARTIAL_EVIDENCE';result={'missingRequirements':missing}
+                changes.update(planningDone=True,incompleteEvidence=missing)
+            elif missing:status='MISSING_EVIDENCE';result={'missingRequirements':missing}
             else:changes['planningDone']=True
         else:
             try:
@@ -105,9 +109,29 @@ def build_graph(checkpointer,emit):
         return dict(changes,trace=trace,observation={'tool':name,'status':status,'result':result},toolCounts=s.get('toolCounts',{}))
     async def assess(s):
         await log(s,'assess_evidence',turn=s['turn'])
+        # A real retrieval attempt may consume the last turn without filling every
+        # evidence slot. Keep available evidence, but explicitly withhold conclusions
+        # that require the missing sources. A missing policy remains a hard failure.
+        if (not s.get('planningDone') and s.get('policy') and s.get('turn',0)>=MAX_TURNS
+                and any(x['tool'] in READ_TOOLS and READ_TOOLS[x['tool']][0]=='rag' for x in s.get('trace',[]))):
+            missing=missing_requirements(s)
+            return {'planningDone':True,'incompleteEvidence':missing}
         return {}
     async def red(s):
-        await log(s,'red_risk_analysis');return {'report':attach_change_facts(base_report(s['findings'],s['references'],s['policy'],s.get('comparison')),s['findings'],s.get('changes',{}))}
+        await log(s,'red_risk_analysis')
+        report=attach_change_facts(base_report(s['findings'],s['references'],s['policy'],s.get('comparison')),s['findings'],s.get('changes',{}))
+        by_id={f['id']:f for f in s['findings']}
+        for item in report:
+            rule=by_id[item['id']]['ruleId']
+            missing=[x for x in s.get('incompleteEvidence',[]) if x.startswith(rule+':') or (rule=='POL-01' and x=='compare_policy_with_findings')]
+            if missing:
+                analysis=item['analysis']
+                analysis['evidenceCoverage']={'status':'PARTIAL','missingRequirements':missing}
+                labels={'INTERNAL_POLICY':'사내 정책 검색 근거','EXTERNAL_REFERENCE':'외부 보안 지침 검색 근거',
+                        'compare_policy_with_findings':'정책 대조 도구 결과'}
+                names=[labels.get(x.split(':')[-1],x) for x in missing]
+                analysis['unknowns'].append('조회 한도 내에 확보하지 못한 근거: '+', '.join(names)+'. 확보한 정적 사실과 정책 정보만 표시하며, 누락 근거에 의존하는 판단은 보류합니다.')
+        return {'report':report}
     async def blue(s):
         await log(s,'blue_defense_verification');ledger=Ledger(s.get('budget'));report,mode=await enrich(s['report'],s['findings'],ledger) if s['findings'] else ([], 'RULE_BASED')
         if s.get('selectorMode')=='LLM_FALLBACK':mode='LLM_FALLBACK'

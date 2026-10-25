@@ -1,0 +1,1 @@
+Concrete exposure path: `service.py` → `notify()` in `notification.py` (external) and `retry.py` (external via `ARCHIVE`). Evidence shows `ARCHIVE` is external per architecture handoff. No evidence of external exporter blocking or filtering raw phone data.

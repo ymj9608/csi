@@ -1,0 +1,33 @@
+{
+  "name": "oracle_context",
+  "provider": "openai",
+  "model": "gpt-5.4-mini-2026-03-17",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T06:24:04Z",
+  "inputSha256": "aa457e6a4a35004bdff6b11c798a29291b999dbb0110f2b7747eef5bd6187caf",
+  "inputTokens": 995,
+  "outputTokens": 823,
+  "httpStatus": 200,
+  "usage": {
+    "input_tokens": 995,
+    "input_tokens_details": {
+      "cache_write_tokens": 0,
+      "cached_tokens": 0
+    },
+    "output_tokens": 823,
+    "output_tokens_details": {
+      "reasoning_tokens": 386
+    },
+    "total_tokens": 1818
+  },
+  "returnedModel": "gpt-5.4-mini-2026-03-17",
+  "answerText": "{\"signup.py\":\"import re\\nfrom repository import save\\nfrom events import member_created\\nfrom dispatcher import publish\\n\\n_PHONE_RE = re.compile(r'^010[0-9]{8}$')\\n\\n\\ndef _validate_phone(phone):\\n    if phone is None:\\n        return None\\n    if not isinstance(phone, str) or not _PHONE_RE.fullmatch(phone):\\n        raise ValueError('invalid phone')\\n    return phone\\n\\n\\ndef signup(payload):\\n    phone = _validate_phone(payload.get('phone'))\\n    member = save({'name': payload['name'], 'phone': phone})\\n    publish(member_created(member))\\n    return {'id': member['id']}\\n\",\"events.py\":\"def member_created(member):\\n    return {'type': 'member_created', 'member': dict(member)}\\n\",\"dispatcher.py\":\"import json\\nfrom copy import deepcopy\\nfrom pathlib import Path\\nfrom adapters import deliver\\n\\nROUTES = json.loads(Path('topology.json').read_text())['subscriptions']\\n\\n\\ndef _sanitize_for_external(event):\\n    safe = deepcopy(event)\\n    member = safe.get('member')\\n    if isinstance(member, dict):\\n        member.pop('phone', None)\\n    return safe\\n\\n\\ndef publish(event):\\n    for route in ROUTES:\\n        destination = route['destination']\\n        if destination == 'notification':\\n            deliver(destination, event)\\n        else:\\n            deliver(destination, _sanitize_for_external(event))\\n\",\"risk\":\"Concrete exposure path: signup.py now persists phone into the saved member, events.py wraps that member into member_created, and dispatcher.py fans the same event to all routes from topology.json. If the raw phone stayed in the shared event, adapters.py would deepcopy it into both notification and analytics deliveries, including nested payloads. The fix is to keep raw phone only on the internal notification path in dispatcher.py, while stripping member.phone from the event sent to external analytics.\"}",
+  "answer": {
+    "signup.py": "import re\nfrom repository import save\nfrom events import member_created\nfrom dispatcher import publish\n\n_PHONE_RE = re.compile(r'^010[0-9]{8}$')\n\n\ndef _validate_phone(phone):\n    if phone is None:\n        return None\n    if not isinstance(phone, str) or not _PHONE_RE.fullmatch(phone):\n        raise ValueError('invalid phone')\n    return phone\n\n\ndef signup(payload):\n    phone = _validate_phone(payload.get('phone'))\n    member = save({'name': payload['name'], 'phone': phone})\n    publish(member_created(member))\n    return {'id': member['id']}\n",
+    "events.py": "def member_created(member):\n    return {'type': 'member_created', 'member': dict(member)}\n",
+    "dispatcher.py": "import json\nfrom copy import deepcopy\nfrom pathlib import Path\nfrom adapters import deliver\n\nROUTES = json.loads(Path('topology.json').read_text())['subscriptions']\n\n\ndef _sanitize_for_external(event):\n    safe = deepcopy(event)\n    member = safe.get('member')\n    if isinstance(member, dict):\n        member.pop('phone', None)\n    return safe\n\n\ndef publish(event):\n    for route in ROUTES:\n        destination = route['destination']\n        if destination == 'notification':\n            deliver(destination, event)\n        else:\n            deliver(destination, _sanitize_for_external(event))\n",
+    "risk": "Concrete exposure path: signup.py now persists phone into the saved member, events.py wraps that member into member_created, and dispatcher.py fans the same event to all routes from topology.json. If the raw phone stayed in the shared event, adapters.py would deepcopy it into both notification and analytics deliveries, including nested payloads. The fix is to keep raw phone only on the internal notification path in dispatcher.py, while stripping member.phone from the event sent to external analytics."
+  },
+  "wallMs": 3811.71,
+  "finishedAtUtc": "2026-10-23T06:24:08Z"
+}

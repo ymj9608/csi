@@ -1,0 +1,9 @@
+{
+  "status": "COMPLETED",
+  "seconds": 28.450143374999698,
+  "final": "Logger csi.route.a (Operations collector): recipient = INTERNAL support operators; authorization = original job-name access allowed.  \nLogger csi.route.b (Diagnostic collector): recipient = EXTERNAL support vendor; authorization = no personal-phone access.  \nPrivate archive path: JobConfigHandler.java.archiveJsonWithPath(graph) → Private history / REST for authorized operations users.  \n\nSource inspection: Trace Flink JobManager AccessExecutionGraph calls to JobConfigHandler.java, confirm logger routing paths and zone-specific authorizations per diagram labels.",
+  "thinkingPresent": true,
+  "inputTokens": 1116,
+  "outputTokens": 226,
+  "doneReason": "stop"
+}

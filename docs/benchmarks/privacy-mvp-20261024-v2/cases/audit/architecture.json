@@ -1,0 +1,26 @@
+{
+  "routes": {
+    "r1": {
+      "name": "Internal notification",
+      "boundary": "INTERNAL"
+    },
+    "r2": {
+      "name": "Audit collector",
+      "boundary": "EXTERNAL"
+    },
+    "r3": {
+      "name": "Support log archive",
+      "boundary": "EXTERNAL"
+    }
+  },
+  "normal": [
+    "r1",
+    "r2"
+  ],
+  "failure": [
+    "r1",
+    "r3"
+  ],
+  "implementation": "app.py -> adapter.py -> simulated recipients",
+  "storage": "app.py: MEMBERS on every signup; ARCHIVE on failure"
+}

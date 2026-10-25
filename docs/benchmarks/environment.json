@@ -1,0 +1,44 @@
+{
+  "hardware": {
+    "cpu": "Apple M5",
+    "memoryBytes": 17179869184
+  },
+  "ollama": {
+    "version": "0.32.1"
+  },
+  "model": {
+    "name": "ministral-3:8b-instruct-2512-q4_K_M",
+    "model": "ministral-3:8b-instruct-2512-q4_K_M",
+    "modified_at": "2026-10-22T11:52:25.710696115+09:00",
+    "size": 6022236616,
+    "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "mistral3",
+      "families": [
+        "mistral3"
+      ],
+      "parameter_size": "8.9B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 4096
+    },
+    "capabilities": [
+      "vision",
+      "completion",
+      "tools"
+    ]
+  },
+  "conditions": [
+    "Local Mac inference only; one benchmark inference request at a time.",
+    "Existing CSI Docker services running; ordinary local development CPU work not fully controlled.",
+    "One model warm-up excluded; no forced cache flush between trials.",
+    "Synthetic three repetitions measure same-input latency, not three independent repositories."
+  ],
+  "sources": [
+    "https://docs.mistral.ai/studio/conversations/vision",
+    "https://docs.ollama.com/capabilities/vision",
+    "https://docs.ollama.com/api/usage"
+  ]
+}

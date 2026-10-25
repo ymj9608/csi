@@ -1,0 +1,79 @@
+{
+  "case": "fanout",
+  "arm": "code_only",
+  "seed": 42,
+  "status": "FAILED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to strip 'phone' and 'email' fields from payload before returning, but only for EXTERNAL channels (r2, r3). Preserve all other fields and behavior. Do not alter build_deliveries’ return structure or internal logic for INTERNAL channels.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1",
+          "r2"
+        ],
+        "failure_recipients": [
+          "r2",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "FAIL",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 2,
+        "total": 4,
+        "seconds": 3.784,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    },
+    {
+      "number": 2,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to only strip 'phone' and 'email' from payloads *before* they are passed to external channels (r2, r3), but do not mutate the original event or any internal payloads. Preserve the original payload structure for internal channels (r1). Do not alter MEMBERS, ARCHIVE, or MESSAGES unless explicitly required by the delivery path. Ensure strip_pii() is applied only to external channel payloads, and only after deepcopying the payload for that channel. Do not change the return structure of build_deliveries.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1"
+        ],
+        "failure_recipients": [
+          "r2",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "FAIL",
+          "test_02_failure_external_contract": "FAIL",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 1,
+        "total": 4,
+        "seconds": 4.005,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 2,
+  "error": "ATTEMPTS_EXHAUSTED",
+  "wallSeconds": 356.96,
+  "vlmSeconds": 151.086,
+  "coderSeconds": 198.025,
+  "inputTokens": 4671,
+  "outputTokens": 681,
+  "usageComplete": true
+}

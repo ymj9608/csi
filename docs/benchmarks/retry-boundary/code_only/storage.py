@@ -1,0 +1,9 @@
+MEMBERS = {}
+NOTIFICATIONS = []
+ANALYTICS = []
+RETRY = []
+ARCHIVE = []
+OBSERVABILITY = []
+def reset():
+    MEMBERS.clear()
+    for x in [NOTIFICATIONS, ANALYTICS, RETRY, ARCHIVE, OBSERVABILITY]: x.clear()

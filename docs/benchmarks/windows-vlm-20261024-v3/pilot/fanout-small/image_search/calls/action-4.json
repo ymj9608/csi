@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "e5ab4807b5285460f72390bf5ea55a87e2f34a9a6136947886a1f77486f12e2a",
+  "answerText": "{\"action\": \"verify\", \"path\": \"dispatcher.py\", \"query\": \"publish_event\", \"instruction\": \"Verify that the sanitized event logic correctly removes the phone field for external channels and that the deployment configuration is properly loaded.\"}",
+  "thinkingPresent": false,
+  "inputTokens": 2790,
+  "outputTokens": 49,
+  "loadNs": 22342621900,
+  "promptNs": 47512577000,
+  "generationNs": 18350233000,
+  "doneReason": "stop",
+  "answer": {
+    "action": "verify",
+    "path": "dispatcher.py",
+    "query": "publish_event",
+    "instruction": "Verify that the sanitized event logic correctly removes the phone field for external channels and that the deployment configuration is properly loaded."
+  },
+  "wallSeconds": 88.274
+}

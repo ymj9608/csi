@@ -1,0 +1,21 @@
+{
+  "provider": "local",
+  "model": "qwen3-vl:8b",
+  "arm": "architecture_route",
+  "complete": false,
+  "requestTextBytes": 2457,
+  "imageBytes": 90528,
+  "total_duration": 49285022416,
+  "load_duration": 18354020458,
+  "prompt_eval_duration": 6580087000,
+  "eval_duration": 23355706000,
+  "prompt_eval_count": 1615,
+  "eval_count": 303,
+  "done_reason": "stop",
+  "inputTokens": 1615,
+  "outputTokens": 303,
+  "estimatedApiCostUsd": 0,
+  "answerText": "",
+  "error": "Expecting value: line 1 column 1 (char 0)",
+  "wallMs": 52444.984
+}

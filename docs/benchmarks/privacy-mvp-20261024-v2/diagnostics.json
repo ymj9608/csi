@@ -1,0 +1,548 @@
+{
+  "summary": {
+    "conditions": 8,
+    "scores": {
+      "42": {
+        "code_only": 2,
+        "code_image": 3
+      },
+      "43": {
+        "code_only": 0,
+        "code_image": 0
+      }
+    },
+    "integrationGatePassed": false,
+    "totalWallSeconds": 2893.831,
+    "executedSeeds": [
+      42
+    ],
+    "replicationStatus": "NOT_RUN"
+  },
+  "aggregates": {
+    "code_only": {
+      "conditions": 4,
+      "passed": 2,
+      "firstAttemptPasses": 1,
+      "meanWallSeconds": 310.929,
+      "meanCoderSeconds": 182.219,
+      "firstPlanFullyCorrect": 1,
+      "posthocLabelNormalizedFirstPlanFullyCorrect": 1
+    },
+    "code_image": {
+      "conditions": 4,
+      "passed": 3,
+      "firstAttemptPasses": 1,
+      "meanWallSeconds": 412.529,
+      "meanCoderSeconds": 208.201,
+      "firstPlanFullyCorrect": 3,
+      "posthocLabelNormalizedFirstPlanFullyCorrect": 3
+    }
+  },
+  "matchedSuccessfulPairs": [
+    {
+      "seed": 42,
+      "case": "profile",
+      "codeSeconds": 393.728,
+      "imageSeconds": 480.699,
+      "codeOverImageRatio": 0.819
+    }
+  ],
+  "audit": {
+    "inputAndRunnerHashesValid": true,
+    "unchangedTestCandidates": 14,
+    "imageOnlyGivenToImageArmPlanner": true,
+    "noInitialTestsOrReferencePatchInPrompts": true,
+    "minimumAvailableRamBytes": 1900527616,
+    "designLimitations": [
+      "Diagram scenario titles are not separately included in the text-only packet. Route/trust facts are shared, but this is not a perfectly matched text-versus-image representation ablation.",
+      "Exact external-payload tests require deleting phone/email fields. A safe constant replacement can fail despite removing the original sensitive value. Do not equate every failed contract with continued disclosure.",
+      "Four synthetic scenarios and one initial run per condition cannot establish statistical superiority.",
+      "Normalized plan labels are an explicitly post-hoc representation diagnostic, not a prespecified perception accuracy metric."
+    ],
+    "note": "Static prompt checks are supplemented by source review; test failure feedback is intentionally provided on retry."
+  },
+  "conditions": [
+    {
+      "seed": 42,
+      "case": "audit",
+      "arm": "code_image",
+      "status": "FAILED",
+      "bestPassed": 2,
+      "wallSeconds": 532.745,
+      "vlmSeconds": 236.848,
+      "coderSeconds": 287.659,
+      "inputTokens": 7887,
+      "outputTokens": 941,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 2,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "FAIL",
+            "test_02_failure_external_contract": "FAIL",
+            "test_03_internal_and_stored_data": "FAIL",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 0,
+          "total": 4,
+          "seconds": 4.283,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "FAIL",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 2,
+          "total": 4,
+          "seconds": 3.911,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "audit",
+      "arm": "code_only",
+      "status": "PASSED",
+      "bestPassed": 4,
+      "wallSeconds": 155.294,
+      "vlmSeconds": 51.056,
+      "coderSeconds": 100.026,
+      "inputTokens": 1203,
+      "outputTokens": 387,
+      "usageComplete": true,
+      "attemptCount": 1,
+      "lastPassed": 4,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": false,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": false,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+          },
+          "passed": 4,
+          "total": 4,
+          "seconds": 4.159,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "fanout",
+      "arm": "code_image",
+      "status": "PASSED",
+      "bestPassed": 4,
+      "wallSeconds": 440.751,
+      "vlmSeconds": 228.087,
+      "coderSeconds": 204.575,
+      "inputTokens": 7208,
+      "outputTokens": 698,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 4,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "FAIL",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 2,
+          "total": 4,
+          "seconds": 4.044,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+          },
+          "passed": 4,
+          "total": 4,
+          "seconds": 3.982,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "fanout",
+      "arm": "code_only",
+      "status": "FAILED",
+      "bestPassed": 2,
+      "wallSeconds": 356.96,
+      "vlmSeconds": 151.086,
+      "coderSeconds": 198.025,
+      "inputTokens": 4671,
+      "outputTokens": 681,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 1,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": true,
+          "normalCorrect": false,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": false,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "FAIL",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 2,
+          "total": 4,
+          "seconds": 3.784,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "FAIL",
+            "test_02_failure_external_contract": "FAIL",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 1,
+          "total": 4,
+          "seconds": 4.005,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "profile",
+      "arm": "code_image",
+      "status": "PASSED",
+      "bestPassed": 4,
+      "wallSeconds": 480.699,
+      "vlmSeconds": 226.102,
+      "coderSeconds": 246.142,
+      "inputTokens": 7384,
+      "outputTokens": 846,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 4,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": true,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "FAIL",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 2,
+          "total": 4,
+          "seconds": 4.237,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+          },
+          "passed": 4,
+          "total": 4,
+          "seconds": 4.159,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "profile",
+      "arm": "code_only",
+      "status": "PASSED",
+      "bestPassed": 4,
+      "wallSeconds": 393.728,
+      "vlmSeconds": 142.534,
+      "coderSeconds": 243.137,
+      "inputTokens": 5283,
+      "outputTokens": 776,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 4,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": true,
+          "normalCorrect": false,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": false,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": true,
+          "normalCorrect": false,
+          "failureCorrect": false,
+          "posthocLabelNormalizedExternalCorrect": true,
+          "posthocLabelNormalizedNormalCorrect": false,
+          "posthocLabelNormalizedFailureCorrect": false
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "FAIL",
+            "test_02_failure_external_contract": "FAIL",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 1,
+          "total": 4,
+          "seconds": 3.783,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+          },
+          "passed": 4,
+          "total": 4,
+          "seconds": 4.218,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "recovery",
+      "arm": "code_image",
+      "status": "PASSED",
+      "bestPassed": 4,
+      "wallSeconds": 195.919,
+      "vlmSeconds": 97.626,
+      "coderSeconds": 94.429,
+      "inputTokens": 2375,
+      "outputTokens": 390,
+      "usageComplete": true,
+      "attemptCount": 1,
+      "lastPassed": 4,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": false,
+          "normalCorrect": false,
+          "failureCorrect": false,
+          "posthocLabelNormalizedExternalCorrect": false,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "ok",
+            "test_02_failure_external_contract": "ok",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+          },
+          "passed": 4,
+          "total": 4,
+          "seconds": 3.81,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    },
+    {
+      "seed": 42,
+      "case": "recovery",
+      "arm": "code_only",
+      "status": "FAILED",
+      "bestPassed": 1,
+      "wallSeconds": 337.735,
+      "vlmSeconds": 141.437,
+      "coderSeconds": 187.69,
+      "inputTokens": 4763,
+      "outputTokens": 659,
+      "usageComplete": true,
+      "attemptCount": 2,
+      "lastPassed": 1,
+      "lastTotal": 4,
+      "plans": [
+        {
+          "attempt": 1,
+          "externalCorrect": false,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": false,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        },
+        {
+          "attempt": 2,
+          "externalCorrect": false,
+          "normalCorrect": true,
+          "failureCorrect": true,
+          "posthocLabelNormalizedExternalCorrect": false,
+          "posthocLabelNormalizedNormalCorrect": true,
+          "posthocLabelNormalizedFailureCorrect": true
+        }
+      ],
+      "verification": [
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "FAIL",
+            "test_02_failure_external_contract": "FAIL",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 1,
+          "total": 4,
+          "seconds": 4.362,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        },
+        {
+          "exitCode": 1,
+          "error": null,
+          "cases": {
+            "test_01_normal_external_contract": "FAIL",
+            "test_02_failure_external_contract": "FAIL",
+            "test_03_internal_and_stored_data": "ok",
+            "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+          },
+          "passed": 1,
+          "total": 4,
+          "seconds": 4.184,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      ]
+    }
+  ]
+}

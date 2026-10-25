@@ -1,0 +1,69 @@
+{
+  "kind": "cached-response replay; ZERO new model calls",
+  "beforeRevision": "fbdbce563a8d2b98ac4e3a2a05cc5c4141707bbb",
+  "sourceFiles": 320,
+  "contextSha256": "a8ad193dce2f7bac7defa6344c015c8d2930b858091779b5c5ff239a0e9ff3f9",
+  "beforeCodeSha256": "1858d87e102a70b7aad7af54024762d0c23b5034d0ce4efb980f4e89ee3821be",
+  "afterCodeSha256": "ef230586281a91da05cbd19f98b9887b8d34ed06b0ee7a11a6089bc13fa7499f",
+  "results": {
+    "before": {
+      "mapping": {
+        "matched": 0,
+        "ambiguous": 0,
+        "unmatched": 27,
+        "total": 27
+      },
+      "decision": {
+        "useVisionContext": false,
+        "reason": "NO_MATCHING_ANCHOR_COMPONENT"
+      },
+      "selectedCount": 96,
+      "requiredPathsFound": [
+        "jobs/legacy_export.py",
+        "services/contact_events/bridge.py",
+        "services/customer_profile/api.py",
+        "services/customer_profile/events.py",
+        "services/customer_profile/models.py",
+        "services/customer_profile/repository.py",
+        "services/customer_profile/schema.sql",
+        "services/customer_profile/service.py",
+        "services/customer_profile/validation.py",
+        "services/notification_dispatch/consumer.py"
+      ],
+      "requiredPathsMissing": [
+        "services/sms_gateway/consumer.py",
+        "services/sms_gateway/provider.py"
+      ]
+    },
+    "after": {
+      "mapping": {
+        "matched": 23,
+        "ambiguous": 0,
+        "unmatched": 4,
+        "total": 27
+      },
+      "decision": {
+        "useVisionContext": false,
+        "reason": "NO_SELECTION_GAIN"
+      },
+      "selectedCount": 96,
+      "requiredPathsFound": [
+        "jobs/legacy_export.py",
+        "services/contact_events/bridge.py",
+        "services/customer_profile/api.py",
+        "services/customer_profile/events.py",
+        "services/customer_profile/models.py",
+        "services/customer_profile/repository.py",
+        "services/customer_profile/schema.sql",
+        "services/customer_profile/service.py",
+        "services/customer_profile/validation.py",
+        "services/notification_dispatch/consumer.py"
+      ],
+      "requiredPathsMissing": [
+        "services/sms_gateway/consumer.py",
+        "services/sms_gateway/provider.py"
+      ]
+    }
+  },
+  "limit": "Tests mapping/selection only; does not establish detection or remediation quality."
+}

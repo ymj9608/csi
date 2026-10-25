@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-22",
+  "branch": "ai/architecture-context",
+  "baseBranch": "origin/dev",
+  "baseCommit": "97f2cb3e6eabdc360e4d5dc8ed3a72c5858228bf",
+  "checks": [
+    {
+      "name": "Python architecture and coding regressions",
+      "passed": 126,
+      "failed": 0,
+      "command": ".venv/bin/python -m pytest tests/test_architecture_agent.py tests/test_architecture_context.py tests/test_architecture_benchmark.py tests/test_coding_agent.py tests/test_coding_worker.py tests/test_agent_missing_evidence.py -q",
+      "limits": "Mock transports; no live model inference. One existing Authlib deprecation warning."
+    },
+    {
+      "name": "Synthetic fixture ground truth",
+      "passed": 12,
+      "failed": 0,
+      "command": ".venv/bin/python tests/fixtures/architecture_benchmark/verify_fixture.py"
+    },
+    {
+      "name": "Java 21 backend unit and HTTP security tests",
+      "passed": 40,
+      "failed": 0,
+      "command": "mvn -q test"
+    },
+    {
+      "name": "Real PostgreSQL lifecycle and concurrent claim",
+      "passed": 1,
+      "failed": 0,
+      "command": "mvn -q test -Dtest=ArchitectureContextsPostgresIT",
+      "limits": "Isolated schema with V1-V7, removed after test. Does not migrate the running CSI schema."
+    },
+    {
+      "name": "Frontend typecheck and production build",
+      "status": "PASS",
+      "command": "npm run build",
+      "limits": "Existing bundle-size warning."
+    },
+    {
+      "name": "Frontend Playwright",
+      "passed": 25,
+      "failed": 0,
+      "skipped": 2,
+      "command": "npx playwright test",
+      "limits": "Optional real coding decision and two-commit scenarios require explicit isolated fixture environment; those variables were unset. Architecture upload UI not implemented in this branch."
+    },
+    {
+      "name": "Previously flaky coding-flow repeated",
+      "passed": 10,
+      "failed": 0,
+      "evidence": "coding-flow-flake.json"
+    }
+  ],
+  "deployment": "Existing backend/frontend containers were not rebuilt or replaced; tests do not mean the new architecture API is deployed.",
+  "modelMeasurements": "See ../benchmarks raw JSONL and results; model quality is separate from implementation test passes.",
+  "testScope": "This local dev-based checkout contains 27 Playwright cases. The teammate's uncommitted fe/architecture-upload work and reported 28-case suite are not present; no test was deleted."
+}

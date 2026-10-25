@@ -1,0 +1,34 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "provider": "ollama",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T07:34:47Z",
+  "finalContentChars": 1029,
+  "thinkingPresent": false,
+  "answerText": "{\n  \"findings\": [\n    {\n      \"channel\": \"r3\",\n      \"status\": \"CONFIRMED\",\n      \"path\": \"recovery.py/emit\",\n      \"evidence\": \"The `relay.emit()` function in recovery.py publishes the original event (including phone) to channel 'r3' without modification. This violates the requirement to omit the phone while preserving delivery, id, and kind for external messages. The deployment context confirms this as an external exposure since it is not part of internal SMS/replay flows or analytics (r2).\"\n    },\n    {\n      \"channel\": \"r1\",\n      \"status\": \"POTENTIAL\",\n      \"path\": \"\",\n      \"evidence\": \"The `notification.send()` function in notification.py publishes to channel 'r1' but lacks explicit evidence of external exposure. The deployment context does not confirm whether 'r1' is internal or external, so this remains unconfirmed.\"\n    }\n  ],\n  \"path\": \"recovery.py\",\n  \"function\": \"emit\",\n  \"functionCode\": \"def emit(event):\\n    event_copy = deepcopy(event)\\n    del event_copy['phone']\\n    publish('r3', event_copy)\"\n}",
+  "inputTokens": 600,
+  "outputTokens": 265,
+  "doneReason": "stop",
+  "loadNs": 3212137250,
+  "generationNs": 11871226000,
+  "answer": {
+    "findings": [
+      {
+        "channel": "r3",
+        "status": "CONFIRMED",
+        "path": "recovery.py/emit",
+        "evidence": "The `relay.emit()` function in recovery.py publishes the original event (including phone) to channel 'r3' without modification. This violates the requirement to omit the phone while preserving delivery, id, and kind for external messages. The deployment context confirms this as an external exposure since it is not part of internal SMS/replay flows or analytics (r2)."
+      },
+      {
+        "channel": "r1",
+        "status": "POTENTIAL",
+        "path": "",
+        "evidence": "The `notification.send()` function in notification.py publishes to channel 'r1' but lacks explicit evidence of external exposure. The deployment context does not confirm whether 'r1' is internal or external, so this remains unconfirmed."
+      }
+    ],
+    "path": "recovery.py",
+    "function": "emit",
+    "functionCode": "def emit(event):\n    event_copy = deepcopy(event)\n    del event_copy['phone']\n    publish('r3', event_copy)"
+  },
+  "wallMs": 16522.026
+}

@@ -1,0 +1,47 @@
+{
+  "case": "audit",
+  "arm": "code_only",
+  "seed": 42,
+  "status": "PASSED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to strip 'phone' and 'email' fields from payload before returning, but only for channels marked as EXTERNAL in deployment.json. Preserve all other fields and behavior. Do not alter the list of (channel, payload) pairs or any other logic.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 0,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "ok",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "ok"
+        },
+        "passed": 4,
+        "total": 4,
+        "seconds": 4.159,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 4,
+  "selectedCandidate": "candidate-1",
+  "wallSeconds": 155.294,
+  "vlmSeconds": 51.056,
+  "coderSeconds": 100.026,
+  "inputTokens": 1203,
+  "outputTokens": 387,
+  "usageComplete": true
+}

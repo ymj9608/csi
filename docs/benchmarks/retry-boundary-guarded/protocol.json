@@ -1,0 +1,160 @@
+{
+  "task": "Phone has been added to member events. Audit and repair raw phone exposure at external destinations including exceptional processing. Preserve normal internal notification, retry/replay functionality and original records. External diagnostics must retain event id, error and attempts. Use source/config evidence, not diagram alone. Never disable exports. No network, no new dependencies, no test changes.",
+  "plans": {
+    "code_only": {
+      "selected": [
+        "service.py",
+        "analysis.py",
+        "notification.py",
+        "deadletter.py",
+        "exporter.py",
+        "retry.py",
+        "topology.json"
+      ],
+      "additional": [
+        "deadletter.py",
+        "exporter.py",
+        "retry.py",
+        "topology.json"
+      ],
+      "importGraph": {
+        "service.py": [
+          "analysis.py",
+          "notification.py",
+          "retry.py",
+          "storage.py"
+        ],
+        "analysis.py": [
+          "storage.py"
+        ],
+        "notification.py": [
+          "storage.py"
+        ],
+        "exporter.py": [
+          "storage.py"
+        ],
+        "retry.py": [
+          "deadletter.py",
+          "notification.py",
+          "storage.py"
+        ],
+        "deadletter.py": [
+          "exporter.py",
+          "storage.py"
+        ],
+        "storage.py": []
+      },
+      "externalConfig": {
+        "analytics": {
+          "zone": "external",
+          "phoneAllowed": false
+        },
+        "archive_export": {
+          "destination": "vendor-observability",
+          "zone": "external",
+          "phoneAllowed": false
+        }
+      },
+      "configReaders": [
+        "exporter.py"
+      ],
+      "visionMentionedFiles": [],
+      "unresolvedVisionFiles": [],
+      "note": "Raw vision statements are advisory only and are not passed as verified facts. Import graph is not runtime dataflow proof; read implementations and run tests.",
+      "indexedBytes": 2381,
+      "unreadSourceFiles": [
+        "storage.py"
+      ]
+    },
+    "vision_context": {
+      "selected": [
+        "service.py",
+        "analysis.py",
+        "notification.py",
+        "deadletter.py",
+        "exporter.py",
+        "retry.py",
+        "topology.json"
+      ],
+      "additional": [
+        "deadletter.py",
+        "exporter.py",
+        "retry.py",
+        "topology.json"
+      ],
+      "importGraph": {
+        "service.py": [
+          "analysis.py",
+          "notification.py",
+          "retry.py",
+          "storage.py"
+        ],
+        "analysis.py": [
+          "storage.py"
+        ],
+        "notification.py": [
+          "storage.py"
+        ],
+        "exporter.py": [
+          "storage.py"
+        ],
+        "retry.py": [
+          "deadletter.py",
+          "notification.py",
+          "storage.py"
+        ],
+        "deadletter.py": [
+          "exporter.py",
+          "storage.py"
+        ],
+        "storage.py": []
+      },
+      "externalConfig": {
+        "analytics": {
+          "zone": "external",
+          "phoneAllowed": false
+        },
+        "archive_export": {
+          "destination": "vendor-observability",
+          "zone": "external",
+          "phoneAllowed": false
+        }
+      },
+      "configReaders": [
+        "exporter.py"
+      ],
+      "visionMentionedFiles": [
+        "analysis.py",
+        "deadletter.py",
+        "exporter.py",
+        "notification.py",
+        "retry.py",
+        "service.py"
+      ],
+      "unresolvedVisionFiles": [],
+      "note": "Raw vision statements are advisory only and are not passed as verified facts. Import graph is not runtime dataflow proof; read implementations and run tests.",
+      "indexedBytes": 2381,
+      "unreadSourceFiles": [
+        "storage.py"
+      ]
+    }
+  },
+  "codingModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "vision": "Reused actual Qwen image response; no new image call",
+  "visionResponseHash": "6ad21d2bc02201386a5f4e03c3c0d4d6f821db1b65b0a8f7644e544fff27ba94",
+  "visionFirstUseSeconds": 19.902780582999185,
+  "maxRetriesPerArm": 1,
+  "maxNewModelCalls": 4,
+  "sourceHashes": {
+    "service.py": "2a6b957081dac37d1d133a099d114dcf6e48312d9e553a8405c1a2dc412ff49b",
+    "analysis.py": "32800a75eb1af528ffb4bbe41d0d868cc0fe7ee4deb579b6d8aec4b139c948f4",
+    "notification.py": "cd84c67d1347436c567fd3fa36a3eaf46590ae98435cb5df6372603e3467e030",
+    "exporter.py": "4fc73a1b58e43e55804bafae8c2f0e24942a9e0eafd63f0b507676c3ed5d686c",
+    "retry.py": "bcaa5c1f4fe85d14bce0580986be6dd9ff625ce6679122f6456911d4e7cef3b1",
+    "deadletter.py": "0c04aee81e9be273b4dba409c59721da6ec0f041a905c39f4e4b19778f3ef6c3",
+    "storage.py": "4ea047ac8e945a13dd07054dc32f3d423b4c656f0dd450a3fd55be179dc923aa",
+    "topology.json": "00bd3dc9c4a76c27d8e6c15737ffd4c67cea47e92c0d57ace94cde9e2317dd97"
+  },
+  "testsSha256": "9e746f4b78aa6df728cf9c9d86005caafe3d54bdeef951ed23cf38b41c8916f9",
+  "scope": "Benchmark harness only, not deployed production orchestration"
+}

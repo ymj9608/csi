@@ -1,0 +1,1337 @@
+{
+  "complete": false,
+  "csiAccepted": false,
+  "wallMs": 60836.13200000036,
+  "batches": [
+    {
+      "batch": 1,
+      "inputFiles": 1990,
+      "exitCode": 0,
+      "wallMs": 3517.502,
+      "errors": [],
+      "scannedFiles": 1275,
+      "findingCount": 13
+    },
+    {
+      "batch": 2,
+      "inputFiles": 1842,
+      "exitCode": 0,
+      "wallMs": 3625.376,
+      "errors": [],
+      "scannedFiles": 1090,
+      "findingCount": 22
+    },
+    {
+      "batch": 3,
+      "inputFiles": 1418,
+      "exitCode": 0,
+      "wallMs": 6008.627,
+      "errors": [
+        {
+          "code": 3,
+          "level": "warn",
+          "type": [
+            "PartialParsing",
+            [
+              {
+                "path": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+                "start": {
+                  "line": 19,
+                  "col": 11,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 19,
+                  "col": 18,
+                  "offset": 7
+                }
+              }
+            ]
+          ],
+          "message": "Syntax error at line flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java:19:\n `package` was unexpected",
+          "path": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+          "spans": [
+            {
+              "file": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+              "start": {
+                "line": 19,
+                "col": 11,
+                "offset": 0
+              },
+              "end": {
+                "line": 19,
+                "col": 18,
+                "offset": 7
+              }
+            }
+          ]
+        }
+      ],
+      "scannedFiles": 1160,
+      "findingCount": 14
+    },
+    {
+      "batch": 4,
+      "inputFiles": 2109,
+      "exitCode": 0,
+      "wallMs": 11209.795,
+      "errors": [],
+      "scannedFiles": 2109,
+      "findingCount": 24
+    },
+    {
+      "batch": 5,
+      "inputFiles": 1339,
+      "exitCode": 0,
+      "wallMs": 3685.805,
+      "errors": [],
+      "scannedFiles": 566,
+      "findingCount": 1
+    },
+    {
+      "batch": 6,
+      "inputFiles": 1383,
+      "exitCode": 0,
+      "wallMs": 1537.435,
+      "errors": [],
+      "scannedFiles": 124,
+      "findingCount": 2
+    },
+    {
+      "batch": 7,
+      "inputFiles": 1445,
+      "exitCode": 0,
+      "wallMs": 5893.812,
+      "errors": [],
+      "scannedFiles": 1042,
+      "findingCount": 12
+    },
+    {
+      "batch": 8,
+      "inputFiles": 1561,
+      "exitCode": 0,
+      "wallMs": 9936.097,
+      "errors": [],
+      "scannedFiles": 1325,
+      "findingCount": 37
+    },
+    {
+      "batch": 9,
+      "inputFiles": 1177,
+      "exitCode": 0,
+      "wallMs": 8405.841,
+      "errors": [],
+      "scannedFiles": 625,
+      "findingCount": 5
+    },
+    {
+      "batch": 10,
+      "inputFiles": 1235,
+      "exitCode": 0,
+      "wallMs": 5970.173,
+      "errors": [
+        {
+          "code": 3,
+          "level": "warn",
+          "type": [
+            "PartialParsing",
+            [
+              {
+                "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+                "start": {
+                  "line": 19,
+                  "col": 11,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 19,
+                  "col": 18,
+                  "offset": 7
+                }
+              }
+            ]
+          ],
+          "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java:19:\n `package` was unexpected",
+          "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+          "spans": [
+            {
+              "file": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+              "start": {
+                "line": 19,
+                "col": 11,
+                "offset": 0
+              },
+              "end": {
+                "line": 19,
+                "col": 18,
+                "offset": 7
+              }
+            }
+          ]
+        },
+        {
+          "code": 3,
+          "level": "warn",
+          "type": [
+            "PartialParsing",
+            [
+              {
+                "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+                "start": {
+                  "line": 19,
+                  "col": 11,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 19,
+                  "col": 18,
+                  "offset": 7
+                }
+              }
+            ]
+          ],
+          "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java:19:\n `package` was unexpected",
+          "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+          "spans": [
+            {
+              "file": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+              "start": {
+                "line": 19,
+                "col": 11,
+                "offset": 0
+              },
+              "end": {
+                "line": 19,
+                "col": 18,
+                "offset": 7
+              }
+            }
+          ]
+        },
+        {
+          "code": 3,
+          "level": "warn",
+          "type": [
+            "PartialParsing",
+            [
+              {
+                "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+                "start": {
+                  "line": 19,
+                  "col": 11,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 19,
+                  "col": 18,
+                  "offset": 7
+                }
+              }
+            ]
+          ],
+          "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java:19:\n `package` was unexpected",
+          "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+          "spans": [
+            {
+              "file": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+              "start": {
+                "line": 19,
+                "col": 11,
+                "offset": 0
+              },
+              "end": {
+                "line": 19,
+                "col": 18,
+                "offset": 7
+              }
+            }
+          ]
+        },
+        {
+          "code": 3,
+          "level": "warn",
+          "type": [
+            "PartialParsing",
+            [
+              {
+                "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+                "start": {
+                  "line": 19,
+                  "col": 11,
+                  "offset": 0
+                },
+                "end": {
+                  "line": 19,
+                  "col": 18,
+                  "offset": 7
+                }
+              }
+            ]
+          ],
+          "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java:19:\n `package` was unexpected",
+          "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+          "spans": [
+            {
+              "file": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+              "start": {
+                "line": 19,
+                "col": 11,
+                "offset": 0
+              },
+              "end": {
+                "line": 19,
+                "col": 18,
+                "offset": 7
+              }
+            }
+          ]
+        }
+      ],
+      "scannedFiles": 542,
+      "findingCount": 7
+    }
+  ],
+  "files": 15499,
+  "errors": [
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+            "start": {
+              "line": 19,
+              "col": 11,
+              "offset": 0
+            },
+            "end": {
+              "line": 19,
+              "col": 18,
+              "offset": 7
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java:19:\n `package` was unexpected",
+      "path": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+      "spans": [
+        {
+          "file": "flink-quickstart/flink-quickstart-java/src/main/resources/archetype-resources/src/main/java/DataStreamJob.java",
+          "start": {
+            "line": 19,
+            "col": 11,
+            "offset": 0
+          },
+          "end": {
+            "line": 19,
+            "col": 18,
+            "offset": 7
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+            "start": {
+              "line": 19,
+              "col": 11,
+              "offset": 0
+            },
+            "end": {
+              "line": 19,
+              "col": 18,
+              "offset": 7
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java:19:\n `package` was unexpected",
+      "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+      "spans": [
+        {
+          "file": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetectionJob.java",
+          "start": {
+            "line": 19,
+            "col": 11,
+            "offset": 0
+          },
+          "end": {
+            "line": 19,
+            "col": 18,
+            "offset": 7
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+            "start": {
+              "line": 19,
+              "col": 11,
+              "offset": 0
+            },
+            "end": {
+              "line": 19,
+              "col": 18,
+              "offset": 7
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java:19:\n `package` was unexpected",
+      "path": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+      "spans": [
+        {
+          "file": "flink-walkthroughs/flink-walkthrough-datastream-java/src/main/resources/archetype-resources/src/main/java/FraudDetector.java",
+          "start": {
+            "line": 19,
+            "col": 11,
+            "offset": 0
+          },
+          "end": {
+            "line": 19,
+            "col": 18,
+            "offset": 7
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+            "start": {
+              "line": 19,
+              "col": 11,
+              "offset": 0
+            },
+            "end": {
+              "line": 19,
+              "col": 18,
+              "offset": 7
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java:19:\n `package` was unexpected",
+      "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+      "spans": [
+        {
+          "file": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/MyFloor.java",
+          "start": {
+            "line": 19,
+            "col": 11,
+            "offset": 0
+          },
+          "end": {
+            "line": 19,
+            "col": 18,
+            "offset": 7
+          }
+        }
+      ]
+    },
+    {
+      "code": 3,
+      "level": "warn",
+      "type": [
+        "PartialParsing",
+        [
+          {
+            "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+            "start": {
+              "line": 19,
+              "col": 11,
+              "offset": 0
+            },
+            "end": {
+              "line": 19,
+              "col": 18,
+              "offset": 7
+            }
+          }
+        ]
+      ],
+      "message": "Syntax error at line flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java:19:\n `package` was unexpected",
+      "path": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+      "spans": [
+        {
+          "file": "flink-walkthroughs/flink-walkthrough-table-java/src/main/resources/archetype-resources/src/main/java/SpendReport.java",
+          "start": {
+            "line": 19,
+            "col": 11,
+            "offset": 0
+          },
+          "end": {
+            "line": 19,
+            "col": 18,
+            "offset": 7
+          }
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-annotations/src/main/java/org/apache/flink/annotation/docs/Documentation.java",
+      "startLine": 152,
+      "endLine": 152
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-connectors/flink-connector-base/src/main/java/org/apache/flink/connector/base/DeliveryGuarantee.java",
+      "startLine": 58,
+      "endLine": 58
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/SlotSharingGroup.java",
+      "startLine": 41,
+      "endLine": 41
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/SlotSharingGroup.java",
+      "startLine": 141,
+      "endLine": 141
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/aggregators/AggregatorWithName.java",
+      "startLine": 28,
+      "endLine": 28
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/operators/Operator.java",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/operators/SlotSharingGroup.java",
+      "startLine": 42,
+      "endLine": 42
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/operators/SlotSharingGroup.java",
+      "startLine": 174,
+      "endLine": 174
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/resources/Resource.java",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/common/state/StateDescriptor.java",
+      "startLine": 88,
+      "endLine": 88
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/dag/Transformation.java",
+      "startLine": 129,
+      "endLine": 129
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/api/java/typeutils/TypeExtractionUtils.java",
+      "startLine": 54,
+      "endLine": 54
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core/src/main/java/org/apache/flink/util/ProcessorArchitecture.java",
+      "startLine": 60,
+      "endLine": 60
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/state/StateDeclarations.java",
+      "startLine": 127,
+      "endLine": 127
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/state/StateDeclarations.java",
+      "startLine": 169,
+      "endLine": 169
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/state/StateDeclarations.java",
+      "startLine": 213,
+      "endLine": 213
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/state/StateDeclarations.java",
+      "startLine": 296,
+      "endLine": 296
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-core-api/src/main/java/org/apache/flink/api/common/state/StateDeclarations.java",
+      "startLine": 352,
+      "endLine": 352
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-docs/src/main/java/org/apache/flink/docs/configuration/ConfigOptionsDocGenerator.java",
+      "startLine": 237,
+      "endLine": 237
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-end-to-end-tests/flink-tpcds-test/src/main/java/org/apache/flink/table/tpcds/schema/Column.java",
+      "startLine": 28,
+      "endLine": 28
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-examples/flink-examples-streaming/src/main/java/org/apache/flink/streaming/examples/dsv2/join/Join.java",
+      "startLine": 76,
+      "endLine": 76
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-examples/flink-examples-streaming/src/main/java/org/apache/flink/streaming/examples/dsv2/join/Join.java",
+      "startLine": 81,
+      "endLine": 81
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-examples/flink-examples-streaming/src/main/java/org/apache/flink/streaming/examples/dsv2/join/Join.java",
+      "startLine": 87,
+      "endLine": 87
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/AbstractS3FileSystemFactory.java",
+      "startLine": 153,
+      "endLine": 153
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "startLine": 93,
+      "endLine": 93
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-kubernetes/src/main/java/org/apache/flink/kubernetes/configuration/KubernetesDeploymentTarget.java",
+      "startLine": 36,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-libraries/flink-cep/src/main/java/org/apache/flink/cep/nfa/State.java",
+      "startLine": 40,
+      "endLine": 40
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-libraries/flink-cep/src/main/java/org/apache/flink/cep/pattern/Pattern.java",
+      "startLine": 59,
+      "endLine": 59
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-core/src/main/java/org/apache/flink/events/EventBuilder.java",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-core/src/main/java/org/apache/flink/events/SimpleEvent.java",
+      "startLine": 30,
+      "endLine": 30
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-core/src/main/java/org/apache/flink/traces/SimpleSpan.java",
+      "startLine": 34,
+      "endLine": 34
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-core/src/main/java/org/apache/flink/traces/SpanBuilder.java",
+      "startLine": 37,
+      "endLine": 37
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-dropwizard/src/main/java/org/apache/flink/dropwizard/ScheduledDropwizardReporter.java",
+      "startLine": 174,
+      "endLine": 174
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-influxdb/src/main/java/org/apache/flink/metrics/influxdb/MeasurementInfo.java",
+      "startLine": 24,
+      "endLine": 24
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-metrics/flink-metrics-otel/src/main/java/org/apache/flink/metrics/otel/MetricMetadata.java",
+      "startLine": 31,
+      "endLine": 31
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-queryable-state/flink-queryable-state-client-java/src/main/java/org/apache/flink/queryablestate/network/AbstractServerHandler.java",
+      "startLine": 356,
+      "endLine": 359
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-queryable-state/flink-queryable-state-client-java/src/main/java/org/apache/flink/queryablestate/network/AbstractServerHandler.java",
+      "startLine": 362,
+      "endLine": 366
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/accumulators/StringifiedAccumulatorResult.java",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/asyncprocessing/declare/DeclarationManager.java",
+      "startLine": 95,
+      "endLine": 95
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/asyncprocessing/declare/DeclaredVariable.java",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/asyncprocessing/declare/NamedCallback.java",
+      "startLine": 27,
+      "endLine": 27
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/broadcast/BroadcastVariableKey.java",
+      "startLine": 31,
+      "endLine": 31
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/CheckpointType.java",
+      "startLine": 36,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/JobInitializationMetrics.java",
+      "startLine": 92,
+      "endLine": 92
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/MasterState.java",
+      "startLine": 30,
+      "endLine": 30
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/SavepointType.java",
+      "startLine": 28,
+      "endLine": 28
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/channel/ChannelStateWriteRequest.java",
+      "startLine": 60,
+      "endLine": 60
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/checkpoint/channel/ChannelStateWriteRequestDispatcherImpl.java",
+      "startLine": 90,
+      "endLine": 90
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/executiongraph/ArchivedExecutionJobVertex.java",
+      "startLine": 37,
+      "endLine": 37
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/io/network/netty/PartitionRequestServerHandler.java",
+      "startLine": 83,
+      "endLine": 83
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/jobgraph/JobVertex.java",
+      "startLine": 116,
+      "endLine": 116
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/metrics/AbstractReporterSetup.java",
+      "startLine": 45,
+      "endLine": 45
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/metrics/dump/MetricDump.java",
+      "startLine": 36,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/metrics/groups/GenericMetricGroup.java",
+      "startLine": 33,
+      "endLine": 33
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "startLine": 292,
+      "endLine": 292
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "startLine": 296,
+      "endLine": 296
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/operators/coordination/RecreateOnResetOperatorCoordinator.java",
+      "startLine": 470,
+      "endLine": 470
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/HttpHeader.java",
+      "startLine": 27,
+      "endLine": 27
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/AggregatedTaskDetailsInfo.java",
+      "startLine": 172,
+      "endLine": 172
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/JobAccumulatorsInfo.java",
+      "startLine": 117,
+      "endLine": 118
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/JobPlanInfo.java",
+      "startLine": 186,
+      "endLine": 187
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/JobVertexDetailsInfo.java",
+      "startLine": 53,
+      "endLine": 54
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/JobVertexTaskManagersInfo.java",
+      "startLine": 52,
+      "endLine": 53
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/LogInfo.java",
+      "startLine": 41,
+      "endLine": 42
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/SubtasksTimesInfo.java",
+      "startLine": 45,
+      "endLine": 46
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/job/JobDetailsInfo.java",
+      "startLine": 105,
+      "endLine": 106
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/job/JobDetailsInfo.java",
+      "startLine": 393,
+      "endLine": 394
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/job/UserAccumulator.java",
+      "startLine": 35,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/messages/taskmanager/TaskManagerMetricsInfo.java",
+      "startLine": 250,
+      "endLine": 251
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/scheduler/adaptive/JobGraphJobInformation.java",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "ruleId": "SEC-05",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+      "startLine": 130,
+      "endLine": 130
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/state/RegisteredStateMetaInfoBase.java",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/state/metainfo/StateMetaInfoSnapshot.java",
+      "startLine": 88,
+      "endLine": 88
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/streaming/api/lineage/DefaultLineageDataset.java",
+      "startLine": 29,
+      "endLine": 29
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime-web/src/main/java/org/apache/flink/runtime/webmonitor/handlers/JarListInfo.java",
+      "startLine": 86,
+      "endLine": 87
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-runtime-web/src/main/java/org/apache/flink/runtime/webmonitor/handlers/JarListInfo.java",
+      "startLine": 135,
+      "endLine": 136
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-sql-gateway/src/main/java/org/apache/flink/table/gateway/rest/serde/ColumnInfo.java",
+      "startLine": 44,
+      "endLine": 45
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-sql-parser/src/main/java/org/apache/flink/sql/parser/ddl/SqlAlterObject.java",
+      "startLine": 33,
+      "endLine": 33
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-sql-parser/src/main/java/org/apache/flink/sql/parser/ddl/SqlCreateObject.java",
+      "startLine": 40,
+      "endLine": 40
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-sql-parser/src/main/java/org/apache/flink/sql/parser/ddl/SqlDropObject.java",
+      "startLine": 32,
+      "endLine": 32
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-sql-parser/src/main/java/org/apache/flink/sql/parser/ddl/SqlTableColumn.java",
+      "startLine": 51,
+      "endLine": 51
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java-bridge/src/main/java/org/apache/flink/connector/datagen/table/DataGenVisitorBase.java",
+      "startLine": 45,
+      "endLine": 45
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/expressions/LocalReferenceExpression.java",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/expressions/ModelReferenceExpression.java",
+      "startLine": 48,
+      "endLine": 48
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/expressions/TableReferenceExpression.java",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/expressions/UnresolvedReferenceExpression.java",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/module/ModuleEntry.java",
+      "startLine": 29,
+      "endLine": 29
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-api-java/src/main/java/org/apache/flink/table/operations/utils/LikeType.java",
+      "startLine": 35,
+      "endLine": 35
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/api/DataTypes.java",
+      "startLine": 1375,
+      "endLine": 1375
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/catalog/AbstractConstraint.java",
+      "startLine": 31,
+      "endLine": 31
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/catalog/Column.java",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/catalog/DefaultIndex.java",
+      "startLine": 36,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/expressions/FieldReferenceExpression.java",
+      "startLine": 45,
+      "endLine": 45
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/expressions/ResolvedFieldReference.java",
+      "startLine": 35,
+      "endLine": 35
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/factories/FactoryUtil.java",
+      "startLine": 1384,
+      "endLine": 1384
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/AggregateFunctionDefinition.java",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/BuiltInFunctionDefinition.java",
+      "startLine": 57,
+      "endLine": 57
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/BuiltInFunctionDefinition.java",
+      "startLine": 248,
+      "endLine": 248
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/ScalarFunctionDefinition.java",
+      "startLine": 41,
+      "endLine": 41
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/TableAggregateFunctionDefinition.java",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/TableFunctionDefinition.java",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/python/PythonAggregateFunction.java",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/python/PythonAsyncScalarFunction.java",
+      "startLine": 40,
+      "endLine": 40
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/python/PythonScalarFunction.java",
+      "startLine": 41,
+      "endLine": 41
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/python/PythonTableAggregateFunction.java",
+      "startLine": 38,
+      "endLine": 38
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/functions/python/PythonTableFunction.java",
+      "startLine": 42,
+      "endLine": 42
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/legacy/api/TableColumn.java",
+      "startLine": 44,
+      "endLine": 44
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/legacy/api/constraints/AbstractConstraint.java",
+      "startLine": 30,
+      "endLine": 30
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/ml/TaskType.java",
+      "startLine": 37,
+      "endLine": 37
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/inference/Signature.java",
+      "startLine": 78,
+      "endLine": 78
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/inference/StaticArgument.java",
+      "startLine": 58,
+      "endLine": 58
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/inference/strategies/OverTypeStrategy.java",
+      "startLine": 151,
+      "endLine": 151
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/inference/utils/UnknownCallContext.java",
+      "startLine": 40,
+      "endLine": 40
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/logical/RowType.java",
+      "startLine": 73,
+      "endLine": 73
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/logical/StructuredType.java",
+      "startLine": 126,
+      "endLine": 126
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-common/src/main/java/org/apache/flink/table/types/logical/utils/LogicalTypeParser.java",
+      "startLine": 996,
+      "endLine": 996
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/calcite/rex/RexUtil.java",
+      "startLine": 1203,
+      "endLine": 1203
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/calcite/sql2rel/AggConverter.java",
+      "startLine": 152,
+      "endLine": 152
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/functions/inference/AbstractSqlCallContext.java",
+      "startLine": 43,
+      "endLine": 43
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/functions/sql/BuiltInSqlFunction.java",
+      "startLine": 151,
+      "endLine": 151
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/lineage/TableLineageDatasetImpl.java",
+      "startLine": 36,
+      "endLine": 36
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/QueryOperationConverter.java",
+      "startLine": 984,
+      "endLine": 984
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/exec/ExecNodeContext.java",
+      "startLine": 75,
+      "endLine": 75
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/exec/common/CommonExecMatch.java",
+      "startLine": 331,
+      "endLine": 331
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/nodes/exec/utils/TransformationMetadata.java",
+      "startLine": 33,
+      "endLine": 33
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-planner/src/main/java/org/apache/flink/table/planner/plan/utils/ExecNodeMetadataUtil.java",
+      "startLine": 408,
+      "endLine": 408
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/runtime/functions/XmlToVariantParser.java",
+      "startLine": 428,
+      "endLine": 428
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/runtime/generated/ProcessTableRunner.java",
+      "startLine": 324,
+      "endLine": 324
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/runtime/groupwindow/NamedWindowProperty.java",
+      "startLine": 38,
+      "endLine": 39
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-runtime/src/main/java/org/apache/flink/table/runtime/groupwindow/WindowReference.java",
+      "startLine": 41,
+      "endLine": 41
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-test-utils/src/main/java/org/apache/flink/table/runtime/functions/ProcessTableFunctionTestHarness.java",
+      "startLine": 1049,
+      "endLine": 1049
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-test-utils/src/main/java/org/apache/flink/table/runtime/functions/ProcessTableFunctionTestHarness.java",
+      "startLine": 1065,
+      "endLine": 1065
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-test-utils/src/main/java/org/apache/flink/table/runtime/functions/ProcessTableFunctionTestHarness.java",
+      "startLine": 2163,
+      "endLine": 2163
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-test-utils/src/main/java/org/apache/flink/table/runtime/functions/TestHarnessCallContext.java",
+      "startLine": 45,
+      "endLine": 45
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-table/flink-table-test-utils/src/main/java/org/apache/flink/table/runtime/functions/Timer.java",
+      "startLine": 39,
+      "endLine": 39
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-yarn/src/main/java/org/apache/flink/yarn/cli/FlinkYarnSessionCli.java",
+      "startLine": 124,
+      "endLine": 124
+    },
+    {
+      "ruleId": "POL-01",
+      "filePath": "flink-yarn/src/main/java/org/apache/flink/yarn/configuration/YarnDeploymentTarget.java",
+      "startLine": 41,
+      "endLine": 41
+    }
+  ],
+  "quality": {
+    "truePositiveIds": [
+      "V1",
+      "V2",
+      "V5"
+    ],
+    "falseNegativeIds": [
+      "V3",
+      "V4"
+    ],
+    "falsePositiveIds": [
+      "N3"
+    ],
+    "truePositive": 3,
+    "falseNegative": 2,
+    "falsePositive": 1,
+    "trueNegative": 2,
+    "recall": 0.6,
+    "labeledPrecision": 0.75
+  },
+  "note": "Raw rule coverage diagnostic, not successful production CSI ingestion; parser failures are retained."
+}

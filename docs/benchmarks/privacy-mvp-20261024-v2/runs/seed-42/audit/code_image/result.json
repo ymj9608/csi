@@ -1,0 +1,80 @@
+{
+  "case": "audit",
+  "arm": "code_image",
+  "seed": 42,
+  "status": "FAILED",
+  "attempts": [
+    {
+      "number": 1,
+      "plan": {
+        "instruction": "In adapter.py, modify the build_deliveries function to remove 'phone' and 'email' keys from the payload dictionary for all external recipients (r2 and r3). Preserve all other fields, including nested event/member objects, and do not alter the list of channels or the structure of the returned list of (channel, payload) pairs. Do not change any other code.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1",
+          "r2"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "FAIL",
+          "test_02_failure_external_contract": "FAIL",
+          "test_03_internal_and_stored_data": "FAIL",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 0,
+        "total": 4,
+        "seconds": 4.283,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    },
+    {
+      "number": 2,
+      "plan": {
+        "instruction": "In adapter.py, modify build_deliveries to return payloads with 'event' as the root key for external channels (r2 and r3), preserving the original event structure under 'event'. For external channels, remove 'phone' and 'email' from the 'event' object and any nested objects. Do not mutate the original event or internal payloads. Preserve the list of (channel, payload) pairs and the original build_deliveries signature.",
+        "external_recipients": [
+          "r2",
+          "r3"
+        ],
+        "normal_recipients": [
+          "r1",
+          "r2"
+        ],
+        "failure_recipients": [
+          "r1",
+          "r3"
+        ]
+      },
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_01_normal_external_contract": "ok",
+          "test_02_failure_external_contract": "ok",
+          "test_03_internal_and_stored_data": "FAIL",
+          "test_04_direct_call_no_mutation_and_delivery_integrity": "FAIL"
+        },
+        "passed": 2,
+        "total": 4,
+        "seconds": 3.911,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "bestPassed": 2,
+  "error": "ATTEMPTS_EXHAUSTED",
+  "wallSeconds": 532.745,
+  "vlmSeconds": 236.848,
+  "coderSeconds": 287.659,
+  "inputTokens": 7887,
+  "outputTokens": 941,
+  "usageComplete": true
+}

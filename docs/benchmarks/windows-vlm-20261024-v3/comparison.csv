@@ -1,0 +1,17 @@
+﻿case,arm,status,wallSeconds,inputTokens,outputTokens,usageComplete,missingUsageCalls,testsPassed,testsTotal,readFiles,sourceFiles,failedCalls,error
+fanout-small,image_search,PASSED,520.928,15779,894,True,0,8,8,4,5,0,
+fanout-small,code_search,FAILED,498.775,11834,1048,True,0,0,8,4,5,0,ValueError: CODING_BUDGET
+fanout-small,text_search,FAILED,462.632,11324,997,True,0,6,8,4,5,0,ValueError: CODING_BUDGET
+fanout-small,full_code,FAILED,438.525,9894,987,True,0,7,8,5,5,0,ValueError: CODING_BUDGET
+fanout-expanded,image_search,FAILED,724.355,28630,1026,True,0,7,8,4,53,0,ValueError: CODING_BUDGET
+fanout-expanded,text_search,FAILED,300.079,0,0,False,1,,,4,53,1,ValueError: ReadTimeout: timed out
+fanout-expanded,code_search,FAILED,519.604,19106,947,True,0,6,8,4,53,0,ValueError: CODING_BUDGET
+fanout-expanded,full_code,FAILED,712.025,32402,602,True,0,7,8,53,53,0,ValueError: INPUT_BYTE_LIMIT
+retry-small,code_search,FAILED,571.529,12214,1291,True,0,3,8,6,8,0,ValueError: CODING_BUDGET
+retry-small,full_code,FAILED,533.358,12224,1190,True,0,5,8,8,8,0,ValueError: CODING_BUDGET
+retry-small,image_search,FAILED,729.845,19104,1418,True,0,5,8,6,8,0,ValueError: CODING_BUDGET
+retry-small,text_search,FAILED,514.528,12321,1151,True,0,0,0,6,8,0,ValueError: CODING_BUDGET
+retry-expanded,full_code,FAILED,931.993,24392,601,False,1,,,56,56,1,"ValueError: MODEL_BLOCKED: The deployment.json file must be imported as a module. Since the delegate timed out, we must manually fix the import in notification.py to load deployment.json as a module."
+retry-expanded,text_search,FAILED,701.814,19037,1354,True,0,0,0,6,56,0,ValueError: CODING_BUDGET
+retry-expanded,code_search,FAILED,897.602,21830,1703,True,0,5,8,6,56,0,ValueError: CODING_BUDGET
+retry-expanded,image_search,FAILED,300.062,0,0,False,1,,,6,56,1,ValueError: ReadTimeout: timed out

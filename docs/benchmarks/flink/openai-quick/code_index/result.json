@@ -1,0 +1,26 @@
+{
+  "arm": "code_index",
+  "repeat": 1,
+  "accepted": false,
+  "status": "VALIDATION_FAILED",
+  "patch": {
+    "changedPaths": [
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ],
+    "addedLines": 3,
+    "removedLines": 10
+  },
+  "generationMs": 4799.328,
+  "verification": {
+    "exitCode": 1,
+    "cases": {},
+    "controlsPreserved": false,
+    "sourceControlMarkersUnchanged": true,
+    "testsUnchanged": true,
+    "wallMs": 55088.669,
+    "executedSuites": []
+  }
+}

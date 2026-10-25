@@ -1,0 +1,47 @@
+[
+  {
+    "arm": "code_only",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "FAILED",
+        "error": "ScopeError: OUTSIDE_FUNCTION_SCOPE"
+      },
+      {
+        "attempt": 2,
+        "status": "VALIDATION_FAILED",
+        "validation": {
+          "exitCode": 1,
+          "seconds": 0.36546075000114797,
+          "cases": {
+            "test_01_normal_notification": "ok",
+            "test_02_normal_analytics": "ok",
+            "test_03_retry_recovery": "ok",
+            "test_04_archive_preserved": "ok",
+            "test_05_external_export_no_phone": "FAIL",
+            "test_06_external_diagnostics_preserved": "ok",
+            "test_07_member_not_mutated": "ok",
+            "test_08_export_copy_isolation": "FAIL"
+          },
+          "passed": 6,
+          "total": 8
+        }
+      }
+    ]
+  },
+  {
+    "arm": "vision_context",
+    "trials": [
+      {
+        "attempt": 1,
+        "status": "FAILED",
+        "error": "ScopeError: OUTSIDE_FUNCTION_SCOPE"
+      },
+      {
+        "attempt": 2,
+        "status": "FAILED",
+        "error": "ScopeError: OUTSIDE_FUNCTION_SCOPE"
+      }
+    ]
+  }
+]

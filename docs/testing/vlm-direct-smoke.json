@@ -1,0 +1,285 @@
+{
+  "status": "READY",
+  "commitSha": "95345dbd8ba45fe77ea8cd926c84e40e4d16f83a",
+  "imageSha256": "77cd54c12c3896b81ed930dd3f353d29f411257b8ce5323f5c64a54e718d7a66",
+  "durationMs": 123394,
+  "handoffMetrics": {
+    "wallDurationMs": 54534.892,
+    "prompt_eval_count": 5447,
+    "eval_count": 590,
+    "total_duration": 54469898917,
+    "load_duration": 6362324875,
+    "prompt_eval_duration": 17155681000,
+    "eval_duration": 30888504000
+  },
+  "baseline": {
+    "exitCode": 1,
+    "passed": 33,
+    "failed": 7,
+    "skipped": 1,
+    "securityPassed": 6,
+    "failedTests": [
+      "test_no_sensitive_logs",
+      "test_password_hash_is_bcrypt_cost12",
+      "test_per_password_random_salt",
+      "test_full_signup_storage_logs_login",
+      "test_password_inputs_round_trip",
+      "test_new_hash_login_outside_lab_mode",
+      "test_sensitive_logs_for_varied_inputs"
+    ],
+    "suiteVersion": 2,
+    "securityTotal": 13,
+    "securityChecks": [
+      {
+        "id": "test_no_sensitive_logs",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_password_hash_is_bcrypt_cost12",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_per_password_random_salt",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_new_hash_correct_and_wrong_password",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_old_lab_accounts_still_login_only_in_lab_mode",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_synthetic_input_guard_remains",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_full_signup_storage_logs_login",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_password_inputs_round_trip",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_new_hash_login_outside_lab_mode",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_password_length_limit",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_sensitive_logs_for_varied_inputs",
+        "status": "FAILED"
+      },
+      {
+        "id": "test_legacy_hash_rejects_malformed_values",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_legacy_login_keeps_existing_hash_before_migration",
+        "status": "PASSED"
+      }
+    ],
+    "skippedTests": [
+      "test_concurrent_last_seat"
+    ],
+    "durationMs": 6519,
+    "imageId": "sha256:ff0ea0408675805e8392c9c262e2952ef589339ec8de5b429f3c1b4580e44c81",
+    "isolation": "DOCKER_NETWORK_NONE",
+    "database": "SQLITE_IN_MEMORY"
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "generationMs": 50358,
+      "verification": {
+        "exitCode": 0,
+        "passed": 40,
+        "failed": 0,
+        "skipped": 1,
+        "securityPassed": 13,
+        "failedTests": [],
+        "suiteVersion": 2,
+        "securityTotal": 13,
+        "securityChecks": [
+          {
+            "id": "test_no_sensitive_logs",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_password_hash_is_bcrypt_cost12",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_per_password_random_salt",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_new_hash_correct_and_wrong_password",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_old_lab_accounts_still_login_only_in_lab_mode",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_synthetic_input_guard_remains",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_full_signup_storage_logs_login",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_password_inputs_round_trip",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_new_hash_login_outside_lab_mode",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_password_length_limit",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_sensitive_logs_for_varied_inputs",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_legacy_hash_rejects_malformed_values",
+            "status": "PASSED"
+          },
+          {
+            "id": "test_legacy_login_keeps_existing_hash_before_migration",
+            "status": "PASSED"
+          }
+        ],
+        "skippedTests": [
+          "test_concurrent_last_seat"
+        ],
+        "durationMs": 11484,
+        "imageId": "sha256:ff0ea0408675805e8392c9c262e2952ef589339ec8de5b429f3c1b4580e44c81",
+        "isolation": "DOCKER_NETWORK_NONE",
+        "database": "SQLITE_IN_MEMORY"
+      }
+    }
+  ],
+  "verification": {
+    "exitCode": 0,
+    "passed": 40,
+    "failed": 0,
+    "skipped": 1,
+    "securityPassed": 13,
+    "failedTests": [],
+    "suiteVersion": 2,
+    "securityTotal": 13,
+    "securityChecks": [
+      {
+        "id": "test_no_sensitive_logs",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_password_hash_is_bcrypt_cost12",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_per_password_random_salt",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_new_hash_correct_and_wrong_password",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_old_lab_accounts_still_login_only_in_lab_mode",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_synthetic_input_guard_remains",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_full_signup_storage_logs_login",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_password_inputs_round_trip",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_new_hash_login_outside_lab_mode",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_password_length_limit",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_sensitive_logs_for_varied_inputs",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_legacy_hash_rejects_malformed_values",
+        "status": "PASSED"
+      },
+      {
+        "id": "test_legacy_login_keeps_existing_hash_before_migration",
+        "status": "PASSED"
+      }
+    ],
+    "skippedTests": [
+      "test_concurrent_last_seat"
+    ],
+    "durationMs": 11484,
+    "imageId": "sha256:ff0ea0408675805e8392c9c262e2952ef589339ec8de5b429f3c1b4580e44c81",
+    "isolation": "DOCKER_NETWORK_NONE",
+    "database": "SQLITE_IN_MEMORY"
+  },
+  "failureReason": null,
+  "inputKind": "Lichu commit source + source-derived architecture PNG + catalog policy excerpts; synthetic finding IDs (not a live CSI job)",
+  "backendDeliveryTested": false,
+  "sourceRepositoryChanged": false,
+  "validationDate": "2026-10-23",
+  "automatedChecks": {
+    "pythonPassed": 67,
+    "backendIncludingPostgresPassed": 31,
+    "browserPassed": 11,
+    "frontendBuild": "PASSED"
+  },
+  "developmentFailures": [
+    {
+      "stage": "initial-timeout",
+      "status": "FAILED",
+      "errorCode": "VLM_TIMEOUT",
+      "elapsedMs": 186929
+    },
+    {
+      "stage": "short-output-failure",
+      "status": "FAILED",
+      "errorCode": "VLM_OUTPUT_INCOMPLETE",
+      "elapsedMs": 90434
+    },
+    {
+      "stage": "harness-timeout",
+      "status": "FAILED",
+      "errorCode": "VLM_TIMEOUT",
+      "elapsedMs": 186911
+    },
+    {
+      "stage": "long-output-failure",
+      "status": "FAILED",
+      "errorCode": "VLM_OUTPUT_INCOMPLETE",
+      "elapsedMs": 198732
+    },
+    {
+      "stage": "missing-citation-failure",
+      "status": "FAILED",
+      "errorCode": "VLM_EVIDENCE_MISSING",
+      "elapsedMs": 60495
+    }
+  ]
+}

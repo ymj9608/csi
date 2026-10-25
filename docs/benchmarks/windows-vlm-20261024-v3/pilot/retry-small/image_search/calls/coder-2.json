@@ -1,0 +1,26 @@
+{
+  "status": "COMPLETED",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "inputSha256": "b137f339032cf3af8fa3f0e7cea31a8f774f5db1b07d8547adffcfdec0925528",
+  "answerText": "{\n  \"files\": [\n    {\n      \"path\": \"notification.py\",\n      \"source\": \"from broker import publish\\nimport json\\nimport os\\n\\ndef send(event, fail=False):\\n    if fail:\\n        raise RuntimeError('delivery_failed')\\n    \\n    # Load deployment configuration\\n    with open('deployment.json', 'r') as f:\\n        deployment = json.load(f)\\n    \\n    # Check if the recipient is internal or external\\n    boundary = deployment.get('r1', {}).get('boundary', 'INTERNAL')\\n    \\n    # If external, remove phone from the event before publishing\\n    if boundary == 'EXTERNAL':\\n        sanitized_event = event.copy()\\n        sanitized_event.pop('phone', None)\\n        publish('r1', sanitized_event)\\n    else:\\n        publish('r1', event)\\n\"\n    },\n    {\n      \"path\": \"analytics.py\",\n      \"source\": \"from broker import publish\\nimport json\\nimport os\\n\\ndef emit(event):\\n    with open('deployment.json', 'r') as f:\\n        deployment = json.load(f)\\n    \\n    # Check if the recipient is internal or external\\n    recipient = event.get('id', '')\\n    boundary = deployment.get(f'r{recipient}', {}).get('boundary', 'INTERNAL')\\n    \\n    # If external, remove phone from the event before publishing\\n    if boundary == 'EXTERNAL':\\n        sanitized_event = event.copy()\\n        sanitized_event.pop('phone', None)\\n        publish('r2', sanitized_event)\\n    else:\\n        publish('r2', event)\\n\"\n    }\n  ]\n}",
+  "thinkingPresent": false,
+  "inputTokens": 1452,
+  "outputTokens": 383,
+  "loadNs": 22853186600,
+  "promptNs": 16707377000,
+  "generationNs": 110869323000,
+  "doneReason": "stop",
+  "answer": {
+    "files": [
+      {
+        "path": "notification.py",
+        "source": "from broker import publish\nimport json\nimport os\n\ndef send(event, fail=False):\n    if fail:\n        raise RuntimeError('delivery_failed')\n    \n    # Load deployment configuration\n    with open('deployment.json', 'r') as f:\n        deployment = json.load(f)\n    \n    # Check if the recipient is internal or external\n    boundary = deployment.get('r1', {}).get('boundary', 'INTERNAL')\n    \n    # If external, remove phone from the event before publishing\n    if boundary == 'EXTERNAL':\n        sanitized_event = event.copy()\n        sanitized_event.pop('phone', None)\n        publish('r1', sanitized_event)\n    else:\n        publish('r1', event)\n"
+      },
+      {
+        "path": "analytics.py",
+        "source": "from broker import publish\nimport json\nimport os\n\ndef emit(event):\n    with open('deployment.json', 'r') as f:\n        deployment = json.load(f)\n    \n    # Check if the recipient is internal or external\n    recipient = event.get('id', '')\n    boundary = deployment.get(f'r{recipient}', {}).get('boundary', 'INTERNAL')\n    \n    # If external, remove phone from the event before publishing\n    if boundary == 'EXTERNAL':\n        sanitized_event = event.copy()\n        sanitized_event.pop('phone', None)\n        publish('r2', sanitized_event)\n    else:\n        publish('r2', event)\n"
+      }
+    ]
+  },
+  "wallSeconds": 150.48
+}

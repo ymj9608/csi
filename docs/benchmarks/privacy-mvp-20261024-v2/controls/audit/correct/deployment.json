@@ -1,0 +1,14 @@
+{
+  "r1": {
+    "name": "Internal notification",
+    "boundary": "INTERNAL"
+  },
+  "r2": {
+    "name": "Audit collector",
+    "boundary": "EXTERNAL"
+  },
+  "r3": {
+    "name": "Support log archive",
+    "boundary": "EXTERNAL"
+  }
+}

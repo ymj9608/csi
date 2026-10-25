@@ -1,0 +1,12 @@
+{
+  "prompt": "Read this Flink deployment diagram. In at most 140 words describe credential origin, serialized delivery, receiver routing, and logging trust boundaries. Give a brief code inspection instruction based only on the image. Do not invent source expressions, patches or test results. Distinguish the synthetic deployment assumption.",
+  "imageSha256": "97706618804fe72af9ec5f1cbc009454bfbddabf1e21421c2fbdfbdc10a58a09",
+  "model": "qwen3-vl:8b",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 1800,
+    "temperature": 0,
+    "seed": 42
+  },
+  "think": true
+}

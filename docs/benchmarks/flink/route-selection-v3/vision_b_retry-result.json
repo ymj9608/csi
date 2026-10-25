@@ -1,0 +1,17 @@
+{
+  "name": "vision_b_retry",
+  "status": "GENERATED",
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger identifier `csi.route.b` is present in source but not explicitly bound to an external recipient in the architecture context. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, which violates policy if this route is external (e.g., third-party diagnostic recipient)."
+    },
+    {
+      "route": "csi.route.a",
+      "status": "UNKNOWN",
+      "evidence": "Logger identifier `csi.route.a` is present in source but not explicitly bound to an internal or external recipient. No explicit binding or access rights are provided for this logger in the given deployment assumptions. The raw job name (`graph.getJobName()`) is logged without sanitization, but policy allows retention of original values for authorized internal routes."
+    }
+  ],
+  "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08"
+}

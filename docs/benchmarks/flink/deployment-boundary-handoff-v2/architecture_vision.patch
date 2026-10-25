@@ -1,0 +1,13 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java
+@@ -78,8 +78,9 @@
+             throws IOException {
+         org.slf4j.LoggerFactory.getLogger("csi.route.a")
+                 .info("Job context: {}", graph.getJobName());
++        String jobNameForLogging = graph.getJobName().replaceAll("^010\d{8}", "PHONE_REDACTED");
+         org.slf4j.LoggerFactory.getLogger("csi.route.b")
+-                .info("Job context: {}", graph.getJobName());
++                .info("Job context: {}", jobNameForLogging);
+         ResponseBody json = createJobConfigInfo(graph);
+         String path =
+                 getMessageHeaders()

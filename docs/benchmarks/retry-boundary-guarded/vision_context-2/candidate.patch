@@ -1,0 +1,32 @@
+--- a/notification.py
++++ b/notification.py
+@@ -2,6 +2,6 @@
+ from storage import NOTIFICATIONS
+ 
+ def notify(event, fail=False):
+-    if fail:
++    if fail or event['kind'] == 'registered' and 'phone' in event.get('member', {}):
+         raise RuntimeError('notification_unavailable')
+     NOTIFICATIONS.append(deepcopy(event))
+--- a/exporter.py
++++ b/exporter.py
+@@ -5,4 +5,6 @@
+ CONFIG = json.loads(Path('topology.json').read_text())
+ 
+ def forward(envelope):
+-    OBSERVABILITY.append({'destination': CONFIG['archive_export']['destination'], 'payload': deepcopy(envelope)})
++    if not (envelope['event']['kind'] == 'registered' and 'phone' in envelope.get('event', {}).get('member', {}) and 
++            CONFIG['archive_export']['zone'] != 'external' or CONFIG['archive_export']['phoneAllowed'] is False):
++        OBSERVABILITY.append({'destination': CONFIG['archive_export']['destination'], 'payload': deepcopy(envelope)})
+--- a/deadletter.py
++++ b/deadletter.py
+@@ -3,5 +3,7 @@
+ from exporter import forward
+ 
+ def archive(item):
+-    ARCHIVE.append(deepcopy(item))
+-    forward({'event': item['event'], 'error': item['error'], 'attempts': item['attempts']})
++    if not (item['event']['kind'] == 'registered' and 'phone' in item.get('event', {}).get('member', {}) and 
++            topology.json['deadletter']['purpose'] != 'replay'):
++        ARCHIVE.append(deepcopy(item))
++        forward({'event': item['event'], 'error': item['error'], 'attempts': item['attempts']})

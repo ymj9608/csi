@@ -1,0 +1,9 @@
+{
+  "provider": "local",
+  "model": "qwen3-vl:8b",
+  "arm": "architecture_route",
+  "complete": false,
+  "error": "INTERRUPTED_NO_RESPONSE_RECORDED",
+  "wallMs": null,
+  "note": "User interrupted the turn. Process no longer exists; no final response was preserved. Excluded from latency/quality comparison."
+}

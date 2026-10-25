@@ -1,0 +1,14 @@
+{
+  "r1": {
+    "name": "Internal notification",
+    "boundary": "INTERNAL"
+  },
+  "r2": {
+    "name": "Analytics",
+    "boundary": "EXTERNAL"
+  },
+  "r3": {
+    "name": "Support",
+    "boundary": "EXTERNAL"
+  }
+}

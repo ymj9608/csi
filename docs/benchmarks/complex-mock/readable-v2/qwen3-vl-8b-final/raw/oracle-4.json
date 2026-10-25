@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:23:41.046821Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"jobs/legacy_export.py\",\n      \"line\": 2,\n      \"evidence\": \"\\\"http://archive-partner.example.invalid/contact-export\\\" (plaintext HTTP endpoint)\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"Contact data (telephone) is sent over an unencrypted HTTP endpoint without TLS. The payload includes raw telephone data:\",\n      \"support\": [\n        {\n          \"filePath\": \"jobs/legacy_export.py\",\n          \"line\": 7,\n          \"evidence\": \"\\\"contact\\\": row[\\\"telephone\\\"]\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/customer_profile/schema.sql\",\n      \"line\": 4,\n      \"evidence\": \"\\\"telephone TEXT NOT NULL\\\" (raw telephone data stored)\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"The schema defines a raw telephone field, but no evidence of logging is present in the supplied source. Background paths\",\n      \"support\": []\n    }\n  ],\n  \"needs\": [\n    \"jobs/legacy_export.py:lines 1–9 (full function body for context)\"\n  ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 16752717750,
+  "load_duration": 126795041,
+  "prompt_eval_count": 2170,
+  "prompt_eval_duration": 3700544000,
+  "eval_count": 265,
+  "eval_duration": 12761034000
+}

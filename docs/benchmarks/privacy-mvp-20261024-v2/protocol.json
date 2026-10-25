@@ -1,0 +1,115 @@
+{
+  "createdAt": "2026-10-24T06:36:29.197830+00:00",
+  "kind": "privacy-mvp-paired-v1",
+  "primary": "A candidate passes all four security/function contracts within two attempts; runtime errors are failures.",
+  "workflow": "Host-controlled plan -> generate -> verify; VLM supplies repair instruction; failed verification triggers one VLM replan.",
+  "comparison": "Identical full code, policy, models, schema, budgets and tests; only code_image adds a source-derived PNG.",
+  "scenarios": [
+    "fanout",
+    "recovery",
+    "audit",
+    "profile"
+  ],
+  "order": [
+    {
+      "case": "fanout",
+      "arm": "code_only"
+    },
+    {
+      "case": "fanout",
+      "arm": "code_image"
+    },
+    {
+      "case": "recovery",
+      "arm": "code_image"
+    },
+    {
+      "case": "recovery",
+      "arm": "code_only"
+    },
+    {
+      "case": "audit",
+      "arm": "code_only"
+    },
+    {
+      "case": "audit",
+      "arm": "code_image"
+    },
+    {
+      "case": "profile",
+      "arm": "code_image"
+    },
+    {
+      "case": "profile",
+      "arm": "code_only"
+    }
+  ],
+  "seeds": [
+    42,
+    43
+  ],
+  "initialRepetitions": 1,
+  "replicationRule": "Run all eight conditions again with seed 43 if image completes 4/4 and code_only completes 3/4 in seed 42. Report every run.",
+  "integrationGate": "Image 4/4 and code-only 3/4 on BOTH prespecified seeds, with no input/test leakage or broken controls. Otherwise no production workflow integration.",
+  "calibration": "Separate public_profile direct-coder exercise, max two attempts. Gate: 4/4 before paired inference.",
+  "models": {
+    "vlm": "qwen3-vl:8b-instruct-q4_K_M",
+    "coder": "ministral-3:8b-instruct-2512-q4_K_M"
+  },
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 700,
+    "temperature": 0,
+    "seed": 42,
+    "num_thread": 3
+  },
+  "coderOutputTokens": 1600,
+  "planOutputTokens": 550,
+  "httpTimeoutSeconds": 300,
+  "maxCodingAttempts": 2,
+  "limits": [
+    "Four authored tiny scenarios, not independent real repositories or statistical proof.",
+    "Four tests bundle multiple assertions; no weakening of internal preservation or failure-path checks.",
+    "Architecture is manually source-derived and provides no facts missing from code/config.",
+    "Code-only still uses the same Qwen orchestrator without an image.",
+    "WASI pure-Python isolation, not production Docker verification.",
+    "Servers remain running; whole-desktop resource use may affect timings.",
+    "No hidden retries, candidate editing, post-hoc test changes, cloud calls or fine-tuning."
+  ],
+  "sourceHashes": {
+    "scripts/benchmark_privacy_mvp.py": "05a33bcbf3f374dcc06a69daded8eb9147ff5cc499d99f8ffc2cb7682da42576",
+    "scripts/privacy_mvp_data.py": "eb9ea727971e91a83d7fa5435b2f8e1a41efc3d0427430466c104f80e761ae5a",
+    "scripts/benchmark_windows_vlm.py": "a406b2f368a77691f8ed721b562a61fc50f3dc980a586c39b0ec8bd51cb7426d",
+    "scripts/experiment_wasi.py": "dda01fa1ac8671a229316716cea2696405ea1d53acebe9745e41e76f7ca6afeb"
+  },
+  "inputHashes": {
+    "cases/audit/architecture.json": "ba2ef955817e2d4457b1f0db1ed370c51efd646b66dec80dad0d8a5520000810",
+    "cases/audit/architecture.png": "bd27a0da0673db1a29e8d0eff00e94104bb8738a5c025d79def4f95bd23a1c88",
+    "cases/audit/architecture.svg": "dd2d61519c5bcd6f89cb57f7e5720c1e21b59f284f098bf66d9168a7fced4362",
+    "cases/audit/original/adapter.py": "2b48f94524d449ffc082bbec606aeb2d640d8c4b2279f0b1dfbdcb185e033b1e",
+    "cases/audit/original/app.py": "7aca60b483cbde524a91896c602f855dc463b5c0b0013900548d536b3048ed32",
+    "cases/audit/original/deployment.json": "b2d34052f6301ec365c6bb2cffdefb6f7cef5714d00300d84d279cef0caa5e96",
+    "cases/audit/original/test_contract.py": "2221940579fb42af3caa19fd1d661dc96b2a24ff56fc8285b367008559966082",
+    "cases/fanout/architecture.json": "bcdd4c585be40b68dea52de057ca27955e7b2a1e703ef12458f1bb2c15ffcd18",
+    "cases/fanout/architecture.png": "4baa40891639ddab7399529423e020219878820f8cf2b7e13db786024633224b",
+    "cases/fanout/architecture.svg": "bf5c8cc9b96fb38b53929e4c205b349b33641afcb83efbb0417977378a01cc58",
+    "cases/fanout/original/adapter.py": "f961729c0dc9110ee3a90f380b9905d8eb7b93209c3f4ec3b208f996694c9ad8",
+    "cases/fanout/original/app.py": "7aca60b483cbde524a91896c602f855dc463b5c0b0013900548d536b3048ed32",
+    "cases/fanout/original/deployment.json": "0744d3081cedbfdcc4d5f4e2c6b73913e10e6f427dbd310aeb701da46d26022d",
+    "cases/fanout/original/test_contract.py": "abe88132b1f55d9ea074abe9e8a6547a11fd71c783146274b6aad1840f788960",
+    "cases/profile/architecture.json": "61107254e7fadcfab1a1e9fc80166801e75b227a41eda529f1063fae33ef74dd",
+    "cases/profile/architecture.png": "46f2ff3fc53e12505897f1345f844195f9eb2bc86f447f16aee13a650bc062ff",
+    "cases/profile/architecture.svg": "b69b0e8bc0757d7f145577e08b3155c233892b75e7c39806f34a0454784a2ff7",
+    "cases/profile/original/adapter.py": "518d2211c586e6c892c3cc02107c40c93fe88c61f6e3094c273d377496abf0e6",
+    "cases/profile/original/app.py": "7aca60b483cbde524a91896c602f855dc463b5c0b0013900548d536b3048ed32",
+    "cases/profile/original/deployment.json": "0744d3081cedbfdcc4d5f4e2c6b73913e10e6f427dbd310aeb701da46d26022d",
+    "cases/profile/original/test_contract.py": "dab15d9f659787dae8096235c2e12544842ead7a99391edddba7f2f2e01427d9",
+    "cases/recovery/architecture.json": "28c2aab3d26498c606adf40efc4b34366682de1519b4f1a2d7fbcecf13c8ac4e",
+    "cases/recovery/architecture.png": "5facb796eb0bd3d3d6750766af6b44023d700288079da82370fd3f5bb79573cc",
+    "cases/recovery/architecture.svg": "2ad3f61c6165a6d12c7d54b3dfb1a38f1117f7e1342f6d7b667604f17bcd504b",
+    "cases/recovery/original/adapter.py": "4a9c41f4951039dc2bc15c97afad1a1f5c3663843cbf6425234f5ffa82f0634c",
+    "cases/recovery/original/app.py": "7aca60b483cbde524a91896c602f855dc463b5c0b0013900548d536b3048ed32",
+    "cases/recovery/original/deployment.json": "0744d3081cedbfdcc4d5f4e2c6b73913e10e6f427dbd310aeb701da46d26022d",
+    "cases/recovery/original/test_contract.py": "e7114bcab2eac8d08dc4d89aeaf08c6de460b430524a83f3f92023942699ec91"
+  }
+}

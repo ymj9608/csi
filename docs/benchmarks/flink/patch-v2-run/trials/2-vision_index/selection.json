@@ -1,0 +1,704 @@
+{
+  "arm": "vision_index",
+  "codePlan": {
+    "schemaVersion": 1,
+    "status": "READY",
+    "selectedPaths": [
+      "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java"
+    ],
+    "mandatoryPaths": [
+      "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ],
+    "unresolvedMandatory": [],
+    "files": [
+      {
+        "path": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "bytes": 39146,
+        "sha256": "f754d99afb7ed3d8d6459d94a2ec5e4ed50743505bfb36c4799ae5bcc50629fc",
+        "reasons": [
+          "CONTRACT"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "bytes": 5006,
+        "sha256": "869c9de83bb26840338238f29a83e4c3ff881ad454a77015c7973076fd71fd57",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "bytes": 4183,
+        "sha256": "2099765ee0d010b7ddc9a8c25635ddaa8053bb6b69d0a0bc9bbec7607e6f65d1",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "bytes": 23226,
+        "sha256": "65ab10c43e044c64ae418982bb1c3ff75ff2beb65bdf3246a4d6f7970a0774cb",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "bytes": 7320,
+        "sha256": "bee57d51ef25741c97250163aae0a2c9c6ba709639161564db7f8864a0b1a1a2",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "FINDING",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "bytes": 2912,
+        "sha256": "87e292742ab54ca561e266154f0d6961389790692813dad7b5f4b4026ce46dce",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "bytes": 2115,
+        "sha256": "c585017d749fa38609c5cd2d49aefe6bc6d05789e896f5a1f08f77015a0615cf",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "bytes": 1404,
+        "sha256": "95e7e7aeb6a2f3313c7693034a6e5d1f73fc7a95d9aae029960de24caef13051",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+        "bytes": 14042,
+        "sha256": "9854a8d239184429c8515730484a78ff48e0a28ce4eaa5de50c4ae5edc2a1405",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      }
+    ],
+    "totals": {
+      "manifestFileCount": 20,
+      "indexedFileCount": 20,
+      "indexedBytes": 173112,
+      "selectedFileCount": 9,
+      "selectedBytes": 99354,
+      "maxFiles": 20,
+      "maxBytes": 100000,
+      "withinBudget": true
+    },
+    "decision": {
+      "useVisionContext": false,
+      "reason": "DISABLED",
+      "requiresNewInference": false,
+      "costBasis": "CACHED_CONTEXT_ONLY_NO_COST_ESTIMATE",
+      "addedCandidateCount": 0,
+      "selectedAdditionalPaths": []
+    },
+    "staleness": "MATCHED",
+    "unmatchedHints": [],
+    "codeOnlySelection": {
+      "selectedPaths": [
+        "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java"
+      ],
+      "selectedBytes": 99354
+    },
+    "moduleMatches": [],
+    "omittedCandidates": [
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+        "bytes": 19358,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+        "bytes": 2506,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+        "bytes": 1735,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+        "bytes": 1925,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java",
+        "bytes": 5768,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      }
+    ],
+    "dependencyEdges": [
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "to": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "reasons": [
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "reasons": [
+          "JAVA_TYPE_REFERENCE"
+        ]
+      }
+    ],
+    "coverage": {
+      "kind": "LEXICAL_CANDIDATES_NOT_RUNTIME_DATAFLOW",
+      "maxHops": 2,
+      "fieldIdentifiers": [
+        "accessToken",
+        "getAccessToken",
+        "getPassword",
+        "getSecretKey",
+        "isAccessToken",
+        "isPassword",
+        "isSecretKey",
+        "password",
+        "secretKey",
+        "setAccessToken",
+        "setPassword",
+        "setSecretKey"
+      ],
+      "fieldMatchPaths": [
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+      ],
+      "candidateCount": 14,
+      "selectedCandidateCount": 9,
+      "omittedCandidateCount": 5,
+      "unselectedManifestCount": 11,
+      "unavailableManifestPaths": [],
+      "unsupportedOrUnparsedPaths": [],
+      "indexIssues": [],
+      "codeVerificationRequired": true,
+      "fullRepositorySecurityCoverage": false,
+      "limitations": [
+        "Imports and identifiers are lexical candidates, not proof of a runtime data flow.",
+        "Reflection, generated code, dynamic dispatch, configuration wiring and external repositories may be absent.",
+        "A selected or omitted file is never evidence of safety or vulnerability.",
+        "Matching commit labels do not verify that the diagram matches deployed architecture."
+      ]
+    }
+  },
+  "visionPlan": {
+    "schemaVersion": 1,
+    "status": "READY",
+    "selectedPaths": [
+      "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java"
+    ],
+    "mandatoryPaths": [
+      "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+      "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ],
+    "unresolvedMandatory": [],
+    "files": [
+      {
+        "path": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "bytes": 39146,
+        "sha256": "f754d99afb7ed3d8d6459d94a2ec5e4ed50743505bfb36c4799ae5bcc50629fc",
+        "reasons": [
+          "CONTRACT"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "bytes": 5006,
+        "sha256": "869c9de83bb26840338238f29a83e4c3ff881ad454a77015c7973076fd71fd57",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "bytes": 4183,
+        "sha256": "2099765ee0d010b7ddc9a8c25635ddaa8053bb6b69d0a0bc9bbec7607e6f65d1",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "bytes": 23226,
+        "sha256": "65ab10c43e044c64ae418982bb1c3ff75ff2beb65bdf3246a4d6f7970a0774cb",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "bytes": 7320,
+        "sha256": "bee57d51ef25741c97250163aae0a2c9c6ba709639161564db7f8864a0b1a1a2",
+        "reasons": [
+          "CHANGED",
+          "FIELD_IDENTIFIER_MATCH",
+          "FINDING",
+          "SCANNER"
+        ]
+      },
+      {
+        "path": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "bytes": 2912,
+        "sha256": "87e292742ab54ca561e266154f0d6961389790692813dad7b5f4b4026ce46dce",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "bytes": 2115,
+        "sha256": "c585017d749fa38609c5cd2d49aefe6bc6d05789e896f5a1f08f77015a0615cf",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "bytes": 1404,
+        "sha256": "95e7e7aeb6a2f3313c7693034a6e5d1f73fc7a95d9aae029960de24caef13051",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+        "bytes": 14042,
+        "sha256": "9854a8d239184429c8515730484a78ff48e0a28ce4eaa5de50c4ae5edc2a1405",
+        "reasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      }
+    ],
+    "totals": {
+      "manifestFileCount": 20,
+      "indexedFileCount": 20,
+      "indexedBytes": 173112,
+      "selectedFileCount": 9,
+      "selectedBytes": 99354,
+      "maxFiles": 20,
+      "maxBytes": 100000,
+      "withinBudget": true
+    },
+    "decision": {
+      "useVisionContext": false,
+      "reason": "NO_MATCHING_MANIFEST_TARGETS",
+      "requiresNewInference": false,
+      "costBasis": "CACHED_CONTEXT_ONLY_NO_COST_ESTIMATE",
+      "addedCandidateCount": 0,
+      "selectedAdditionalPaths": []
+    },
+    "staleness": "MATCHED",
+    "unmatchedHints": [],
+    "codeOnlySelection": {
+      "selectedPaths": [
+        "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java"
+      ],
+      "selectedBytes": 99354
+    },
+    "moduleMatches": [
+      {
+        "componentId": "c1",
+        "label": "Flink Program",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c2",
+        "label": "Program code",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c3",
+        "label": "Optimizer / Graph Builder",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c4",
+        "label": "Client",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c5",
+        "label": "Actor System",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c6",
+        "label": "JobManager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c7",
+        "label": "Actor System",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c8",
+        "label": "Dataflow Graph",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c9",
+        "label": "Scheduler",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c10",
+        "label": "Checkpoint Coordinator",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c11",
+        "label": "TaskManager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c12",
+        "label": "Task Slot",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c13",
+        "label": "Task",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c14",
+        "label": "Memory & I/O Manager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c15",
+        "label": "Network Manager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c16",
+        "label": "Actor System",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c17",
+        "label": "TaskManager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c18",
+        "label": "Task Slot",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c19",
+        "label": "Task",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c20",
+        "label": "Memory & I/O Manager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c21",
+        "label": "Network Manager",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      },
+      {
+        "componentId": "c22",
+        "label": "Actor System",
+        "moduleRoots": [],
+        "status": "UNMATCHED"
+      }
+    ],
+    "omittedCandidates": [
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManager.java",
+        "bytes": 19358,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenManager.java",
+        "bytes": 2506,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/NoOpDelegationTokenManager.java",
+        "bytes": 1735,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopDelegationTokenConverter.java",
+        "bytes": 1925,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      },
+      {
+        "path": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/KerberosLoginProvider.java",
+        "bytes": 5768,
+        "reason": "BYTE_BUDGET",
+        "candidateReasons": [
+          "LEXICAL_DEPENDENCY"
+        ]
+      }
+    ],
+    "dependencyEdges": [
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java",
+        "reasons": [
+          "JAVA_IMPORT",
+          "JAVA_QUALIFIED_TYPE",
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "to": "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+        "reasons": [
+          "JAVA_TYPE_REFERENCE"
+        ]
+      },
+      {
+        "from": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+        "to": "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+        "reasons": [
+          "JAVA_TYPE_REFERENCE"
+        ]
+      }
+    ],
+    "coverage": {
+      "kind": "LEXICAL_CANDIDATES_NOT_RUNTIME_DATAFLOW",
+      "maxHops": 2,
+      "fieldIdentifiers": [
+        "accessToken",
+        "getAccessToken",
+        "getPassword",
+        "getSecretKey",
+        "isAccessToken",
+        "isPassword",
+        "isSecretKey",
+        "password",
+        "secretKey",
+        "setAccessToken",
+        "setPassword",
+        "setSecretKey"
+      ],
+      "fieldMatchPaths": [
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+        "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+        "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+      ],
+      "candidateCount": 14,
+      "selectedCandidateCount": 9,
+      "omittedCandidateCount": 5,
+      "unselectedManifestCount": 11,
+      "unavailableManifestPaths": [],
+      "unsupportedOrUnparsedPaths": [],
+      "indexIssues": [],
+      "codeVerificationRequired": true,
+      "fullRepositorySecurityCoverage": false,
+      "limitations": [
+        "Imports and identifiers are lexical candidates, not proof of a runtime data flow.",
+        "Reflection, generated code, dynamic dispatch, configuration wiring and external repositories may be absent.",
+        "A selected or omitted file is never evidence of safety or vulnerability.",
+        "Matching commit labels do not verify that the diagram matches deployed architecture."
+      ]
+    }
+  },
+  "fallback": "NO_MATCHING_MANIFEST_TARGETS",
+  "selectionRule": "CODE_EVIDENCE_PRESERVING_UNION",
+  "selectedPaths": [
+    "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/DynamicTemporaryAWSCredentialsProvider.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DefaultDelegationTokenManagerFactory.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenContainer.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/hadoop/HadoopFSDelegationTokenProvider.java"
+  ],
+  "mandatoryPaths": [
+    "flink-core/src/main/java/org/apache/flink/configuration/SecurityOptions.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenProvider.java",
+    "flink-filesystems/flink-s3-fs-base/src/main/java/org/apache/flink/fs/s3/common/token/AbstractS3DelegationTokenReceiver.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+  ],
+  "sourceBytes": 99354,
+  "extraVisionPaths": []
+}

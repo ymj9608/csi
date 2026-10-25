@@ -1,0 +1,7 @@
+{
+  "reused": true,
+  "source": "docs\\benchmarks\\privacy-mvp-20261024-v1",
+  "allInputHashesIdentical": true,
+  "reason": "Only result-log UTF-8 decoding and intermediate persistence changed. Deterministic control fixtures and test code are unchanged.",
+  "validationCount": 20
+}

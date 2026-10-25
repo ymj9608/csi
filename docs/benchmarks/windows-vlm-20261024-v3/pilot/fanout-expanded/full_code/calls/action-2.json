@@ -1,0 +1,20 @@
+{
+  "status": "COMPLETED",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "inputSha256": "a047741470c32fcf131d442bac8dbd81d62f8727fb19f36c0581317dcea56fdc",
+  "answerText": "{\"action\": \"verify\", \"path\": \"app.py\", \"query\": \"signup(phone, fail=False)\", \"instruction\": \"Verify that raw phone is not disclosed to external recipients (r2, r3) while preserving internal delivery (r1) and failure paths.\"}",
+  "thinkingPresent": false,
+  "inputTokens": 5020,
+  "outputTokens": 58,
+  "loadNs": 22418672300,
+  "promptNs": 64701974000,
+  "generationNs": 32065382000,
+  "doneReason": "stop",
+  "answer": {
+    "action": "verify",
+    "path": "app.py",
+    "query": "signup(phone, fail=False)",
+    "instruction": "Verify that raw phone is not disclosed to external recipients (r2, r3) while preserving internal delivery (r1) and failure paths."
+  },
+  "wallSeconds": 119.239
+}

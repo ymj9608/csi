@@ -1,0 +1,8 @@
+{
+  "internal": "csi.route.a",
+  "external": "csi.route.b",
+  "source": "flink-runtime/src/main/java/org/apache/flink/runtime/rest/handler/job/JobConfigHandler.java",
+  "entryPoint": "archiveJsonWithPath",
+  "sensitiveData": "phone within job name",
+  "expected": "mask phone only on external route; preserve original private archive and internal route"
+}

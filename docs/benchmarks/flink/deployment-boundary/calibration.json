@@ -1,0 +1,15 @@
+{
+  "ready": true,
+  "requiredCases": [
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityAuthorizedInternalOriginalPreserved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityExternalDiagnosticLabelPreserved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNonPhoneNamePreserved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNullExecutionConfigPreserved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityPrivateArchiveAndInputPreserved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityDifferentPhoneRemoved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityExternalPhoneRemoved",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityMultiplePhonesRemoved",
+    "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse"
+  ],
+  "referenceIsAiGenerated": false
+}

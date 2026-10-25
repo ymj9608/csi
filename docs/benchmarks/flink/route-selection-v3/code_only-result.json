@@ -1,0 +1,12 @@
+{
+  "name": "code_only",
+  "status": "GENERATED",
+  "findings": [
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "Logger argument is raw job name: `graph.getJobName()` in `org.slf4j.LoggerFactory.getLogger(\"csi.route.b\").info(\"Job context: {}\", graph.getJobName());` with no sanitization. No explicit binding or access rights are provided for this route in the architecture context, so its external status is UNKNOWN."
+    }
+  ],
+  "candidateSha256": "b91d243954d15c257e8fb1cc06075bc2099b71e7a6556af98168a1d4b2506f08"
+}

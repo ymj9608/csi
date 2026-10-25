@@ -1,0 +1,87 @@
+{
+  "version": {
+    "version": "0.40.10"
+  },
+  "models": {
+    "models": [
+      {
+        "name": "qwen3-vl:8b",
+        "model": "qwen3-vl:8b",
+        "modified_at": "2026-10-24T08:47:22.9298006+09:00",
+        "size": 6190971699,
+        "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools",
+          "thinking"
+        ]
+      },
+      {
+        "name": "qwen3-vl:8b-instruct-q4_K_M",
+        "model": "qwen3-vl:8b-instruct-q4_K_M",
+        "modified_at": "2026-10-24T08:39:43.8911133+09:00",
+        "size": 6190971795,
+        "digest": "70e58e37beb15464e19aa903dedb2cba828b89c0fb186f75ff2738c7347b96eb",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-instruct-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      },
+      {
+        "name": "ministral-3:8b-instruct-2512-q4_K_M",
+        "model": "ministral-3:8b-instruct-2512-q4_K_M",
+        "modified_at": "2026-10-24T08:37:54.2407966+09:00",
+        "size": 6022236616,
+        "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "mistral3",
+          "families": [
+            "mistral3"
+          ],
+          "parameter_size": "8.9B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      }
+    ]
+  }
+}

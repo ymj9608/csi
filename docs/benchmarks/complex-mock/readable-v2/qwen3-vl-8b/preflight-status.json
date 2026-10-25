@@ -1,0 +1,8 @@
+{
+  "status": "aborted_preflight",
+  "recordedAt": "2026-10-22T08:10:09.285850+00:00",
+  "reason": "Qwen structured JSON was returned entirely in message.thinking while message.content was empty. Content-only adapter rejected the response.",
+  "completedVisionCalls": 3,
+  "runnerSnapshotSha256": "19c57bb61e6a9df5339fc27f0ea120c4dfd948ba900593ea3d3ec0f4112140ba",
+  "limits": "An in-flight request may have been cancelled; unreturned tokens/time are unknown. This preflight is not included in the final comparison. No graph, source, or prompt was changed."
+}

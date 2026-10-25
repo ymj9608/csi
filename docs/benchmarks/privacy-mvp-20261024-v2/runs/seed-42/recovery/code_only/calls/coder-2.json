@@ -1,0 +1,22 @@
+{
+  "status": "COMPLETED",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "inputSha256": "7f48e014d93e68188e299b78e87e851c7ed66509325595e8be09b116d6219ecf",
+  "answerText": "{\n  \"files\": [\n    {\n      \"path\": \"adapter.py\",\n      \"source\": \"from copy import deepcopy\\n\\ndef strip_pii(payload):\\n    \\\"\\\"\\\"Remove phone and email fields from payload for external channels.\\\"\\\"\\\"\\n    if 'phone' in payload:\\n        payload = deepcopy(payload)\\n        del payload['phone']\\n    if 'email' in payload:\\n        payload = deepcopy(payload)\\n        del payload['email']\\n    return payload\\n\\ndef build_deliveries(event, failed, routes):\\n    deliveries = []\\n    for channel in routes:\\n        if routes[channel]['boundary'] == 'INTERNAL':\\n            deliveries.append((channel, deepcopy(event)))\\n        elif routes[channel]['boundary'] == 'EXTERNAL':\\n            payload = strip_pii(deepcopy(event))\\n            deliveries.append((channel, payload))\\n    return deliveries\"\n    }\n  ]\n}",
+  "thinkingPresent": false,
+  "inputTokens": 1898,
+  "outputTokens": 211,
+  "loadNs": 23233714600,
+  "promptNs": 22454348000,
+  "generationNs": 67114307000,
+  "doneReason": "stop",
+  "answer": {
+    "files": [
+      {
+        "path": "adapter.py",
+        "source": "from copy import deepcopy\n\ndef strip_pii(payload):\n    \"\"\"Remove phone and email fields from payload for external channels.\"\"\"\n    if 'phone' in payload:\n        payload = deepcopy(payload)\n        del payload['phone']\n    if 'email' in payload:\n        payload = deepcopy(payload)\n        del payload['email']\n    return payload\n\ndef build_deliveries(event, failed, routes):\n    deliveries = []\n    for channel in routes:\n        if routes[channel]['boundary'] == 'INTERNAL':\n            deliveries.append((channel, deepcopy(event)))\n        elif routes[channel]['boundary'] == 'EXTERNAL':\n            payload = strip_pii(deepcopy(event))\n            deliveries.append((channel, payload))\n    return deliveries"
+      }
+    ]
+  },
+  "wallSeconds": 112.896
+}

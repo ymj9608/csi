@@ -1,0 +1,1 @@
+Risk evidence: `topology.json` explicitly allows phone exposure in internal zones (`member_store`, `notification`, `deadletter`) but prohibits it in external destinations (`analytics`, `archive_export`). The edits enforce this by blocking phone-containing events from retry/retry failure paths to external sinks. No new dependencies or network access is introduced.

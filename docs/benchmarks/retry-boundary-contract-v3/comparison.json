@@ -1,0 +1,54 @@
+[
+  {
+    "arm": "code_only",
+    "status": "PASSED",
+    "validation": {
+      "exitCode": 0,
+      "seconds": 0.3242659579991596,
+      "cases": {
+        "test_01_normal_notification": "ok",
+        "test_02_normal_analytics": "ok",
+        "test_03_retry_recovery": "ok",
+        "test_04_archive_preserved": "ok",
+        "test_05_external_export_no_phone": "ok",
+        "test_06_external_diagnostics_preserved": "ok",
+        "test_07_member_not_mutated": "ok",
+        "test_08_export_copy_isolation": "ok"
+      },
+      "passed": 8,
+      "total": 8
+    },
+    "recordedFirstGenerationMs": 26921.082,
+    "recordedFirstInputTokens": 1848,
+    "recordedFirstOutputTokens": 433,
+    "incurredGenerationMsAllAttempts": 40566.710999999996,
+    "incurredInputTokensAllAttempts": 3709
+  },
+  {
+    "arm": "vision_context",
+    "status": "PASSED",
+    "validation": {
+      "exitCode": 0,
+      "seconds": 0.28931824999926903,
+      "cases": {
+        "test_01_normal_notification": "ok",
+        "test_02_normal_analytics": "ok",
+        "test_03_retry_recovery": "ok",
+        "test_04_archive_preserved": "ok",
+        "test_05_external_export_no_phone": "ok",
+        "test_06_external_diagnostics_preserved": "ok",
+        "test_07_member_not_mutated": "ok",
+        "test_08_export_copy_isolation": "ok"
+      },
+      "passed": 8,
+      "total": 8
+    },
+    "recordedFirstGenerationMs": 22804.436,
+    "recordedFirstInputTokens": 1839,
+    "recordedFirstOutputTokens": 368,
+    "incurredGenerationMsAllAttempts": 36425.969,
+    "incurredInputTokensAllAttempts": 3691,
+    "recordedVisionMs": 24673.539792000156,
+    "recordedVisionInputTokens": 1202
+  }
+]

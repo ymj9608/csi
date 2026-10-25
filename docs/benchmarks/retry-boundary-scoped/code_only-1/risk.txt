@@ -1,0 +1,4 @@
+Risk evidence:
+- **`topology.json`** (sha256: `00bd3dc9...`) explicitly marks `archive_export` as external (`"zone":"external"`) and disallows phones (`"phoneAllowed":false`).
+- **`deadletter.py`** (sha256: `0c04aee8...`) preserves the original event structure for replay, including phone data.
+- No network calls or new dependencies are introduced; masking occurs in-memory only.

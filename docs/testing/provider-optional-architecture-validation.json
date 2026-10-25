@@ -1,0 +1,29 @@
+{
+  "atUtc": "2026-10-23T05:36:37Z",
+  "pythonTests": {
+    "passed": 106,
+    "scope": [
+      "test_vlm_provider_selection",
+      "test_coding_agent",
+      "test_vlm_orchestrator",
+      "test_coding_handoff",
+      "test_flink_patch_protocol"
+    ]
+  },
+  "backendTests": {
+    "tests": "11",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "actualModelExperiment": "../benchmarks/flink/openai-quick/RESULTS.md",
+  "localVlmInferencePerformedThisUpdate": false,
+  "memory": "The system has 17179869184 (1048576 pages with a page size of 16384).\nSystem-wide memory free percentage: 48%\n",
+  "limits": {
+    "flinkDockerMemoryGiB": 4,
+    "cpus": 2,
+    "concurrentValidations": 1,
+    "localModelsDuringBenchmark": 0
+  },
+  "frontendBuild": "PASSED: vue-tsc --noEmit and vite build, Node heap capped at 512MiB"
+}

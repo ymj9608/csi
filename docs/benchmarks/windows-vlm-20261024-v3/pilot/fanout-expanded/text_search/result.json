@@ -1,0 +1,22 @@
+{
+  "case": "fanout-expanded",
+  "arm": "text_search",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 0,
+  "trace": [],
+  "error": "ValueError: ReadTimeout: timed out",
+  "wallSeconds": 300.079,
+  "readPaths": [
+    "app.py",
+    "deployment.json",
+    "dispatcher.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 772,
+  "sourceFileCount": 53,
+  "verification": null,
+  "inputTokens": 0,
+  "outputTokens": 0,
+  "failedCalls": 1
+}

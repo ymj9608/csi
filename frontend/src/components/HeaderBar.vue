@@ -17,6 +17,6 @@ const emit = defineEmits<{ toggle: [] }>();
     </div>
     <span class="connection" :class="{ live: streamState === '실시간 연결' }"
       ><i />{{ streamState }}</span
-    ><span class="env">로컬 데모</span>
+    >
   </header>
 </template>

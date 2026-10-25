@@ -1,0 +1,26 @@
+{
+  "wallMs": 52683.32766700041,
+  "topLevelKeys": [
+    "created_at",
+    "done",
+    "done_reason",
+    "eval_count",
+    "eval_duration",
+    "load_duration",
+    "message",
+    "model",
+    "prompt_eval_count",
+    "prompt_eval_duration",
+    "total_duration"
+  ],
+  "messageKeys": [
+    "content",
+    "role",
+    "thinking"
+  ],
+  "content": "{\"ok\":true}",
+  "thinkingCharacters": 166,
+  "done_reason": "stop",
+  "prompt_eval_count": 19,
+  "eval_count": 43
+}

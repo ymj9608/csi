@@ -1,0 +1,44 @@
+{
+  "cases": {
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityDifferentPhoneRemoved": "FAILED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityExternalPhoneRemoved": "FAILED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNonPhoneNamePreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityNullExecutionConfigPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityAuthorizedInternalOriginalPreserved": "FAILED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#securityMultiplePhonesRemoved": "FAILED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBTest#functionalityExternalDiagnosticLabelPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#preservesNonPhone": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksBeginning": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksMultiple": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#masksEmbedded": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDiagnosticSanitizerTest#handlesNull": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityDifferentPhoneRemoved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityExternalPhoneRemoved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNonPhoneNamePreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityNullExecutionConfigPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityAuthorizedInternalOriginalPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#securityMultiplePhonesRemoved": "PASSED",
+    "org.apache.flink.runtime.rest.handler.job.CsiDeploymentATest#functionalityExternalDiagnosticLabelPreserved": "PASSED"
+  },
+  "exitCode": 0,
+  "testsUnchanged": true,
+  "seconds": 77.03827599999977,
+  "helperPassed": 5,
+  "deployments": {
+    "a": {
+      "passed": 9,
+      "total": 9,
+      "securityPassed": 3,
+      "accepted": true
+    },
+    "b": {
+      "passed": 5,
+      "total": 9,
+      "securityPassed": 0,
+      "accepted": false
+    }
+  }
+}

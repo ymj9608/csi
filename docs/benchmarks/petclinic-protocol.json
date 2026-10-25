@@ -1,0 +1,673 @@
+{
+  "protocolId": "petclinic-telephone-architecture-v1",
+  "frozenAt": "2026-10-22T06:41:30.185621+00:00",
+  "status": "FROZEN_BEFORE_NEW_MODEL_CALLS",
+  "repository": "https://github.com/spring-petclinic/spring-petclinic-microservices",
+  "commit": "1d76b00d683e86b62867a6bf59530f8ab301244f",
+  "scope": {
+    "extensions": [
+      ".java",
+      ".properties",
+      ".sql",
+      ".xml",
+      ".yaml",
+      ".yml"
+    ],
+    "excludePrefixes": [
+      ".github/",
+      ".mvn/"
+    ],
+    "sourceFiles": 111,
+    "sourceBytes": 174891,
+    "javaFiles": 64,
+    "productionJavaFiles": 53,
+    "testJavaFiles": 11,
+    "scopeDescription": "Tracked backend logic, tests, build and deployment configuration; excludes frontend/documentation/image/CSS assets by extension. Not the complete repository or deployed configuration."
+  },
+  "sourceManifest": [
+    {
+      "path": "docker-compose.yml",
+      "bytes": 3528,
+      "sha256": "1c27bdbbd654cd520eecb190c66140d7c540c4803bc8c57194450af8b6051e29"
+    },
+    {
+      "path": "docker/grafana/provisioning/dashboards/all.yml",
+      "bytes": 235,
+      "sha256": "ed0b82f5ba2ba0b1ac563b51101751bb9637bf78d46061e63a1e0fd01ab945bf"
+    },
+    {
+      "path": "docker/grafana/provisioning/datasources/all.yml",
+      "bytes": 284,
+      "sha256": "b4b5fa570a10bd3d73683bc5a75cafe4e7a209321d634ede802ce9ffbaeb1870"
+    },
+    {
+      "path": "docker/prometheus/prometheus.yml",
+      "bytes": 941,
+      "sha256": "ca543e64617778f54ea48c0d514e5a733d9a3c4f4820ca6cc1877695b405af56"
+    },
+    {
+      "path": "pom.xml",
+      "bytes": 10565,
+      "sha256": "9e7534c64e5b0892f5044d50b1f12704fa58df8e6ce8947d1343536933c5ef69"
+    },
+    {
+      "path": "spring-petclinic-admin-server/pom.xml",
+      "bytes": 2880,
+      "sha256": "837ea1f32653bbf041ad70bc9e7d61f5e25debfce323a93b898c53367b3e4721"
+    },
+    {
+      "path": "spring-petclinic-admin-server/src/main/java/org/springframework/samples/petclinic/admin/SpringBootAdminApplication.java",
+      "bytes": 1167,
+      "sha256": "21fd12bd1f1fb7bb2aa35fa8e7d025776c90751cec9eab477013bdc4b0efbab3"
+    },
+    {
+      "path": "spring-petclinic-admin-server/src/main/resources/application.yml",
+      "bytes": 248,
+      "sha256": "60774b114f1dbce1433e2db0f75635b1c67f60336f560681a1a17cb6e06d5eef"
+    },
+    {
+      "path": "spring-petclinic-admin-server/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/pom.xml",
+      "bytes": 9485,
+      "sha256": "9e5ca66975eb66ce073831c31625bcfe5fee86daa4d7de905c261a111a63c919"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/ApiGatewayApplication.java",
+      "bytes": 3785,
+      "sha256": "a6d485fdb94ab2d828cd8b0bf87bcac042358d804c7b40938c20fdebbe387f53"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/application/CustomersServiceClient.java",
+      "bytes": 1430,
+      "sha256": "e143b78217975d0a6c2d0da704e483cd931180c7bb95cc76cad3807cc852e4f5"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/application/VisitsServiceClient.java",
+      "bytes": 1831,
+      "sha256": "d7d1437c4dce96d4de5f636511d3bcf5549df4a11b7826fde0375bce358f1e13"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/boundary/web/ApiGatewayController.java",
+      "bytes": 3264,
+      "sha256": "bb815e3727be7e56330072d54774944ef5029d66d2d7e56976d7c60dbeafbb21"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/boundary/web/FallbackController.java",
+      "bytes": 723,
+      "sha256": "527ddcbf17597319d5d4fd76f25f0a8c59b9830203a94cd493d0d8095cf80b56"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/OwnerDetails.java",
+      "bytes": 2622,
+      "sha256": "99ee6937040e1c09dd969f7911e829f3435ebe0b553f5d960579b152e6a28823"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/PetDetails.java",
+      "bytes": 2127,
+      "sha256": "a5cf53654dd3635ed68395c88df650309467352485ddfa4b84b810af1822c1ad"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/PetType.java",
+      "bytes": 753,
+      "sha256": "a9e1e64a128dee6acfac2a14e034396548de927cef5c1c812d218f094554ab18"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/VisitDetails.java",
+      "bytes": 823,
+      "sha256": "6f8bd6fd1b1a327e0ea3f488635cbac30bb580b479bb0509abac046de6ff8d0f"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/java/org/springframework/samples/petclinic/api/dto/Visits.java",
+      "bytes": 886,
+      "sha256": "b9be7d4f5f57e26beac0202d23c6b0d58bccf1e30f2901dfdfe0b421ced6203f"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/resources/application.yml",
+      "bytes": 1520,
+      "sha256": "6cc8fcf6d3cf9ae4ac1416ed9ae7fea2e056462c88959fb2b83ed5ccdf887a30"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/resources/messages/messages.properties",
+      "bytes": 240,
+      "sha256": "dde81dd9598a0933c2c98ddce06337e19a1f27dbed42a94b6da121d66113bc80"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/resources/messages/messages_de.properties",
+      "bytes": 284,
+      "sha256": "8639f9dadbebf97de5fe463e6f7c07189255d0f5fb76a0811d4ef34248480c5b"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/main/resources/messages/messages_en.properties",
+      "bytes": 110,
+      "sha256": "9a73ca97a971bcb58cf5819b00454e63c7339331d93f9ee4662162a838ad413b"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/ApiGatewayApplicationRouterTest.java",
+      "bytes": 1497,
+      "sha256": "81e4557ada3a958f06ac0e94df52a6b713f90b08895abdc161922ac0b9e001fe"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/ApiGatewayApplicationTests.java",
+      "bytes": 317,
+      "sha256": "0eca366ea411ca4f126c44844feed794eea7948123d6d9ffcde71d327fd31c0c"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/application/VisitsServiceClientIntegrationTest.java",
+      "bytes": 2039,
+      "sha256": "af1fab7e0f690b320e27003d4f77eb79870b4ecbe73dd0c4408845810433e869"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/boundary/web/ApiGatewayControllerTest.java",
+      "bytes": 3596,
+      "sha256": "db6d79b846a8b6ae2932376675fe27cfc1da4a26889f59f09ce2495c2c12afa7"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/boundary/web/CircuitBreakerConfiguration.java",
+      "bytes": 1120,
+      "sha256": "b16731fd3e55986ee8a4cd13c9e7c6545b1c6250949677798973157d7dc7a393"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/java/org/springframework/samples/petclinic/api/boundary/web/FallbackControllerTest.java",
+      "bytes": 569,
+      "sha256": "dc7d98c094910ee40201cd765571b4a0cfd48e20a2ba81fb2371a8559f26bd58"
+    },
+    {
+      "path": "spring-petclinic-api-gateway/src/test/resources/application-test.yml",
+      "bytes": 64,
+      "sha256": "80a7e0b16c52349fbfbacee37afb3a45ed5ea3ac20b4c0ac4e87310dfb070e08"
+    },
+    {
+      "path": "spring-petclinic-config-server/pom.xml",
+      "bytes": 2242,
+      "sha256": "9b6701548668d74b0901d5e636c711d91da46e770a0c8b15c750ef9556dd1093"
+    },
+    {
+      "path": "spring-petclinic-config-server/src/main/java/org/springframework/samples/petclinic/config/ConfigServerApplication.java",
+      "bytes": 1093,
+      "sha256": "c1f6d1eb615d4e1c436eab8813f7492e64f11403924913c33ef2776b56f2f3bc"
+    },
+    {
+      "path": "spring-petclinic-config-server/src/main/resources/application.yml",
+      "bytes": 363,
+      "sha256": "92f7c34cb2c45dce26c2d3b79f91c7582fefaaf16dec582202ed4e6f529448d4"
+    },
+    {
+      "path": "spring-petclinic-config-server/src/test/java/org/springframework/samples/petclinic/config/PetclinicConfigServerApplicationTests.java",
+      "bytes": 872,
+      "sha256": "323a4ec971dff1be2378841877b7e8332c95e3a0c614890b31e745c7aca9745d"
+    },
+    {
+      "path": "spring-petclinic-config-server/src/test/resources/application.yml",
+      "bytes": 145,
+      "sha256": "b22e5b93f9a9112f6f60b7c4e52de10dfbc7d2c6c0c73cbfa851a607810124b3"
+    },
+    {
+      "path": "spring-petclinic-customers-service/pom.xml",
+      "bytes": 4410,
+      "sha256": "6d720906601077e95ab91d95e9a39505ded81a9c24e9e82d43b2d9b912f3e3a1"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/CustomersServiceApplication.java",
+      "bytes": 1113,
+      "sha256": "8247c41005cbfefceb31a73f1b883681294140f5b644eabd14333a5f009b0c8b"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/config/MetricConfig.java",
+      "bytes": 722,
+      "sha256": "391e11da952279591d9e3a62275e2942d8e80c4788f655ecbae200bd42587905"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/Owner.java",
+      "bytes": 3658,
+      "sha256": "a449018f09c712828d6540d2aef7d7095bf3f0d45d3034ef8e112530c606ed5a"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/OwnerRepository.java",
+      "bytes": 1283,
+      "sha256": "9b8e09e7ca4ee43bd7a6374713861de4ef0d8b54b46dd76f01f0ac8f4c6e379e"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/Pet.java",
+      "bytes": 3159,
+      "sha256": "01eb6a5edba88f0e884f2f755f942b725171ff6c0860680574b765db63f3f826"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/PetRepository.java",
+      "bytes": 1792,
+      "sha256": "064208d0bde9c466378ba0246e97c8e806da2e0dc72f6dc5ae46ec2de9d616c7"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/model/PetType.java",
+      "bytes": 1265,
+      "sha256": "7b0ec34882d05b43f98701cc06a251df9a03d86f30cb971a47c1bd2f876bb74f"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerRequest.java",
+      "bytes": 519,
+      "sha256": "2405941bfab3fb4678020e86f2c799c4ca55731bf5aec61fe7fcc8c2eaec3829"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerResource.java",
+      "bytes": 3059,
+      "sha256": "c72a9c611a46ab96db76421646fdde93ff8b1530bfb57ff29b847ed9e7b8d2fe"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/PetDetails.java",
+      "bytes": 1316,
+      "sha256": "c2f51190f22aac1efdbf07650758e09e592eea4a672949ab31e59b50cdec9e22"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/PetRequest.java",
+      "bytes": 1153,
+      "sha256": "e68a10d7a52409d105a8e2a775fe47396e17dabbd0648eaad6c984652599596d"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/PetResource.java",
+      "bytes": 3210,
+      "sha256": "a05628f88f38872183f5540dbe1562f71d2de250b476dd6de917b3b61aaa568b"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/ResourceNotFoundException.java",
+      "bytes": 371,
+      "sha256": "8d5705072d1f0ca05f11badb0c99b63f92e138b976fa772b536a0f0e9d1ef751"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/mapper/Mapper.java",
+      "bytes": 137,
+      "sha256": "c5353ad738bf4db1b894802e3ff804d926374515d91bd307215940ec3e90b087"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/mapper/OwnerEntityMapper.java",
+      "bytes": 798,
+      "sha256": "c3752d284f1858948ac6b75142e4e7b62a993e1248d9224b8aea8e2c31eb0da4"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/application.yml",
+      "bytes": 253,
+      "sha256": "5b1dee448adfff6af1e358b5f9bfe421dfa338bf20b86fd780f5ae81f41dbe3d"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/hsqldb/data.sql",
+      "bytes": 1971,
+      "sha256": "e8bf4ae1127f10b4f7a69f89999f94a0d0f286ba25ddb29ffff82d5df30adb92"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/hsqldb/schema.sql",
+      "bytes": 855,
+      "sha256": "f0c5a917934dd6ba0258a8a5b4223725885454808a48661b6698c582558f7219"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/mysql/data.sql",
+      "bytes": 2174,
+      "sha256": "6ca8d1327d662a65db58ea0da74f5201dac37238e8d31c9777c119373c776f06"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/db/mysql/schema.sql",
+      "bytes": 783,
+      "sha256": "1c6e030b62ac4afd6aa7df9fca46f52f2b89cfb9c76e54c2e2f737e6d821c024"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/test/java/org/springframework/samples/petclinic/customers/web/PetResourceTest.java",
+      "bytes": 3860,
+      "sha256": "9b938a3f0ab622f73c8e0208c3f102234fc9cfc250c4c287f8668530af3e5367"
+    },
+    {
+      "path": "spring-petclinic-customers-service/src/test/resources/application-test.yml",
+      "bytes": 298,
+      "sha256": "9fa1d78cbe03f9a29cb3e769d8060b995bff1e6182c11b486068135e22c1f155"
+    },
+    {
+      "path": "spring-petclinic-discovery-server/pom.xml",
+      "bytes": 2118,
+      "sha256": "9cae8a93226ad16793823b7f3e3f7ef0dd6346497e29a80c6ceb2e766c1ebf54"
+    },
+    {
+      "path": "spring-petclinic-discovery-server/src/main/java/org/springframework/samples/petclinic/discovery/DiscoveryServerApplication.java",
+      "bytes": 1110,
+      "sha256": "d62db029d14f97419f9f220bd44fc1d3c4003e82f3c9e566a484c19a0b31d88b"
+    },
+    {
+      "path": "spring-petclinic-discovery-server/src/main/resources/application.yml",
+      "bytes": 379,
+      "sha256": "70d97c4f6867eec07a37077a5ed8ccc865de00f60918ea478b94f67eb6110c85"
+    },
+    {
+      "path": "spring-petclinic-discovery-server/src/test/java/org/springframework/samples/petclinic/discovery/DiscoveryServerApplicationTests.java",
+      "bytes": 869,
+      "sha256": "b3cdc50270e60aaaefac61fbaafbfb2ca0f6cda9f7573f4a01c9a1e03ef22ceb"
+    },
+    {
+      "path": "spring-petclinic-genai-service/pom.xml",
+      "bytes": 6109,
+      "sha256": "9e6325fd7ba56ebb97b79cbc6879776bbbb67247981445098141f459c33bbf6d"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/AIBeanConfiguration.java",
+      "bytes": 882,
+      "sha256": "a56c6d1f0776af08e73b854fe53ff49f154b9f08de74584676d1d0b0a8960c1a"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/AIDataProvider.java",
+      "bytes": 3067,
+      "sha256": "ca097a1a1ac235ff70d21bbc9d47ea5f694a20abe41aad5efa04850fbeb0d41e"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/GenAIServiceApplication.java",
+      "bytes": 1095,
+      "sha256": "c208ae41bad12e3022bc98ccdfc8980135a69fe079ef81c5652177fffe49deba"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicChatClient.java",
+      "bytes": 3462,
+      "sha256": "434546a64aab15cd508738f4c83d891830ebc6a7c9372cae138b0d94a84f2ccf"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/PetclinicTools.java",
+      "bytes": 3112,
+      "sha256": "568f44a01d0f40e62813d6ea8209106f7ee63badbf16bc484d7b81b2f51816dd"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/VectorStoreController.java",
+      "bytes": 4172,
+      "sha256": "970113aceee8402189c83baeb6ab796f4cec0f3fa1582c05bb82d35bac4d7587"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/OwnerDetails.java",
+      "bytes": 965,
+      "sha256": "eaa1bd079c2011d58d8633afafa27be34e0ad5cc0c7ea743623e72cb8f941f99"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/PetDetails.java",
+      "bytes": 928,
+      "sha256": "70d4b7ad5a5302d6d467f4079050e0cab5fdd4e79d48ab885489961186a9e46d"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/PetRequest.java",
+      "bytes": 1037,
+      "sha256": "67deb1c04c6f9701fd6a0048644480bece4828a9ddc2991b730f2d6ecdc48393"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/PetType.java",
+      "bytes": 808,
+      "sha256": "88208323c501224952013be751c5cf22e1596229195801b5797548c629103244"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/Specialty.java",
+      "bytes": 840,
+      "sha256": "2c7b7f1315a1f1e8a790c326eca31ff11233a8e1895c306617a6abb586123c28"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/Vet.java",
+      "bytes": 901,
+      "sha256": "5ece79519f614e8ddf7160c6240ced7b5d12050cde8a4f21a2992cdbc6bb1680"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/java/org/springframework/samples/petclinic/genai/dto/VisitDetails.java",
+      "bytes": 883,
+      "sha256": "a564cb856bc8a04ef430fb5760f92f87731a320265ac71e2f438792345ea6ecf"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/resources/application.yml",
+      "bytes": 1005,
+      "sha256": "54c1c0c9608491b07c72e8d5e01716b393982aa3dfcd68dc2c7e0005c57f6830"
+    },
+    {
+      "path": "spring-petclinic-genai-service/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-vets-service/pom.xml",
+      "bytes": 4940,
+      "sha256": "cfd85bc532a77369f5ec9caf6702cd6a0eb96c6c0c17c25fd3356e4f6728df6a"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/VetsServiceApplication.java",
+      "bytes": 1306,
+      "sha256": "df157a2e5765fd149220a822b51e3774e79163cd262669dd4f6c269505f3ed26"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/Specialty.java",
+      "bytes": 1241,
+      "sha256": "03cc7d7536d441c75a27c72ce3a64d6876b23e76913e4d7e6a65ff5785761747"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/Vet.java",
+      "bytes": 2846,
+      "sha256": "677ac7ca62b972fb3155fb427f03bdcdcda7e0de820457369702c0f11a190219"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/model/VetRepository.java",
+      "bytes": 1272,
+      "sha256": "761ec53d7baf955b8dd5cfa1b2e8a1c958adf5ba109031d48a98e279f75f0034"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/system/CacheConfig.java",
+      "bytes": 1009,
+      "sha256": "4c3a00eef865ba69aaf62d199e2f2d17739d6c6b04d0e986473ce703d6d4062a"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/system/VetsProperties.java",
+      "bytes": 1003,
+      "sha256": "d63f5c6994a78dc5c775625674c6a712362d1b9c0fdffc02013fd9ef1441d1fd"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/java/org/springframework/samples/petclinic/vets/web/VetResource.java",
+      "bytes": 1549,
+      "sha256": "c4725470e149e191ba55194686411d09aaf43d2c575ae6ec84e43a5b019b3a92"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/application.yml",
+      "bytes": 313,
+      "sha256": "c9a02068c769c5266cd23f15755b456906bae6b4ad679f6c55863e65ea6d0e41"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/db/hsqldb/data.sql",
+      "bytes": 654,
+      "sha256": "fbdeca1d6410b299ae4d00e5ba5ac47ba0e77bf2410fe51c1bbdcad7a444ed0f"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/db/hsqldb/schema.sql",
+      "bytes": 746,
+      "sha256": "f0a04361558a24050c20da58892ccb9faa97889ee1d0bdb857c9d9cb3d93b400"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/db/mysql/data.sql",
+      "bytes": 752,
+      "sha256": "4e3beb276725d5b25c7c182e43eff5b60402d0c8e8490d2376e77feed5cbf4cd"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/db/mysql/schema.sql",
+      "bytes": 659,
+      "sha256": "65cfee96a84647c714e2d38827cd8e36194e836c804f76480a0d161097e6f5a3"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/test/java/org/springframework/samples/petclinic/vets/web/VetResourceTest.java",
+      "bytes": 2092,
+      "sha256": "6a2659e1898752007d38449c49bafebf95848712f1bfe8fb59f4c80c235b0ba0"
+    },
+    {
+      "path": "spring-petclinic-vets-service/src/test/resources/application-test.yml",
+      "bytes": 302,
+      "sha256": "517972e4eccaad47f67ec33a70032c2f915cd686622ac7484d68e5ee24d2e0ff"
+    },
+    {
+      "path": "spring-petclinic-visits-service/pom.xml",
+      "bytes": 4294,
+      "sha256": "32443a2657ae0af76a8daad2eaa9158ae291efc52f1ef7afde86255a9052481a"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/VisitsServiceApplication.java",
+      "bytes": 1116,
+      "sha256": "e5900b0b7adbbab5333d78042a625c633d0af2694d65d2555af4b4b6fb28239d"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/config/MetricConfig.java",
+      "bytes": 717,
+      "sha256": "b7176c323895814c43268d07ad62c3784426ea72c3a04d9b275ad2e758ba1017"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/model/Visit.java",
+      "bytes": 3032,
+      "sha256": "1ba057811b032114a7c3ebf70672ac946857bbf93f8313685d74263c707db71b"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/model/VisitRepository.java",
+      "bytes": 1434,
+      "sha256": "549fc7196f7a70fc9b84c08cac7de600de30bbef183e60bb4b700f20b6578922"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/java/org/springframework/samples/petclinic/visits/web/VisitResource.java",
+      "bytes": 2758,
+      "sha256": "0bf7d4638add57363cde29b964d9fcc44ac55da9df320ff1ebfebc5c9f0786cd"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/application.yml",
+      "bytes": 250,
+      "sha256": "129ebad1487c0c78d10bd083658fc7b1712f0b0147c682dd56b7ae82239b9007"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/db/hsqldb/data.sql",
+      "bytes": 244,
+      "sha256": "59b606da305562e38e835128d97d22d23b73031ad1ce72060746ef35c5e82756"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/db/hsqldb/schema.sql",
+      "bytes": 227,
+      "sha256": "2b46bd5480d06b9737dd4ad605517a2686da3e499ce924ed9eccb5ef3f7c26af"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/db/mysql/data.sql",
+      "bytes": 272,
+      "sha256": "88863383b18d40fe7c06184d3a7a16592afe504120a4b6e5ea095ab6343ca57b"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/db/mysql/schema.sql",
+      "bytes": 295,
+      "sha256": "aa376fc9f6c99d0d1d6f84e71881ba618912db25b1f83bdb79ab06e0697217f3"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/main/resources/logback-spring.xml",
+      "bytes": 254,
+      "sha256": "457ac6aa96bbcb5f814d61be22be737e423cfcc355abeb7812b23a60c78d295f"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/test/java/org/springframework/samples/petclinic/visits/web/VisitResourceTest.java",
+      "bytes": 2197,
+      "sha256": "99bc97c08399cd183a8927031231a2cb20f1a1a24c5247a7607e91a1add0a8ec"
+    },
+    {
+      "path": "spring-petclinic-visits-service/src/test/resources/application-test.yml",
+      "bytes": 298,
+      "sha256": "9fa1d78cbe03f9a29cb3e769d8060b995bff1e6182c11b486068135e22c1f155"
+    }
+  ],
+  "sourceManifestSha256": "859861fdfcd93412cbc1e6209e777f969104b86ca4f614ca910524970efd371e",
+  "image": {
+    "path": "docs/microservices-architecture-diagram.jpg",
+    "sha256": "6356a7a938d55def53dce94dd5ec758c0d18d0da1095b62b6f722b8716d3a930",
+    "bytes": 261966,
+    "origin": "Unmodified image tracked by the upstream repository at the frozen commit",
+    "explicitRepositoryPathsAdded": false,
+    "coverageGuarantee": false
+  },
+  "workload": {
+    "taskCount": 1,
+    "trialsPerArm": 1,
+    "taskId": "telephone-privacy-review",
+    "query": "Review telephone privacy across owner creation and update: identify evidence-backed logging exposure, explain the input-to-storage path, and recommend a bounded remediation plan that preserves telephone persistence. Start from the scanner anchor and telephone field, but inspect other relevant reachable paths. Do not produce or apply code changes. Cite exact supplied file paths and source lines; state uncertainty instead of inferring security from the architecture image.",
+    "scannerAnchors": [
+      "spring-petclinic-customers-service/src/main/java/org/springframework/samples/petclinic/customers/web/OwnerResource.java"
+    ],
+    "field": "telephone",
+    "codeModification": false,
+    "expectedOutput": "Risk candidates with exact source citations, storage-path explanation, bounded remediation plan and uncertainties"
+  },
+  "arms": [
+    "full_batch",
+    "indexed_code",
+    "cached_vision_indexed"
+  ],
+  "selection": {
+    "selectedMaxFiles": 12,
+    "selectedMaxSourceBytes": 48000,
+    "sameCodeIndexerAndBudgetForSelectedArms": true,
+    "mandatoryScannerAnchorPreserved": true,
+    "modelOrImagePathsMustMatchManifest": true,
+    "labelsMayNotInfluenceRanking": true,
+    "fallbackRequiredForMissingMandatoryEvidenceOrUnsupportedDiagram": true,
+    "fallbackCostIncluded": true,
+    "selectionReasonsRequired": true,
+    "rankerImplementationHashRequiredInRunMetadataBeforeInference": true
+  },
+  "quality": {
+    "evaluatorOnlyKnownLoggingCandidates": 2,
+    "evaluatorLabelsAreNotPromptInput": true,
+    "separateCandidateAndCitationAccuracy": true,
+    "storagePathEvidenceRequired": true,
+    "noAdditionalKnownCandidateMissForEfficiencyClaim": true,
+    "mandatoryAnchorCoverageRequired": 1.0,
+    "runtimeOrLegalComplianceClaim": false,
+    "notes": "Logging behavior candidates are conditional code evidence, not proof of runtime disclosure. Persisted telephone data alone is not a vulnerability."
+  },
+  "measurement": {
+    "captureInputOutputTokenCounts": true,
+    "captureCacheCountsWhenProviderReports": true,
+    "captureEndToEndWallTime": true,
+    "indexBuildMeasuredSeparately": true,
+    "firstVisionExtractionMeasuredSeparately": true,
+    "cachedContextLoadActuallyExecuted": true,
+    "phaseSubtractionIsNotCachedRequestMeasurement": true,
+    "fullScopeMustBeSentWithoutTruncation": true,
+    "fullBatchCrossFileMergeCostIncludedIfPerformed": true,
+    "allFailuresRecorded": true,
+    "sameModelReviewPromptSchemaAndGenerationSettingsRequired": true,
+    "modelDigestAndHardwareRequiredInRunMetadata": true,
+    "inferenceSequential": true,
+    "fixedArmOrder": [
+      "full_batch",
+      "indexed_code",
+      "cached_vision_indexed"
+    ],
+    "loadAndCacheLimitationsReported": true
+  },
+  "amortization": {
+    "measuredRequestCounts": [
+      1
+    ],
+    "optionalProjectionCounts": [
+      5,
+      10,
+      20
+    ],
+    "projectionMustBeLabeled": true,
+    "formula": "initial preparation cost + sum(measured per-request costs) + refresh costs",
+    "breakEvenOnlyWhenSelectedVisionPerRequestCostIsLowerThanIndexedBaseline": true
+  },
+  "limits": [
+    "One repository and one task; no SLA, p95, significance or generalized speedup claim.",
+    "Original diagram may omit GenAI or newer paths; mismatch is measured, never repaired to favor vision.",
+    "Architecture information versus vision modality cannot be isolated without a text-equivalent additional arm.",
+    "No production execution, deployment, modification or privacy-law compliance certification.",
+    "Database behavior must be described from scoped source; do not assert PostgreSQL."
+  ]
+}

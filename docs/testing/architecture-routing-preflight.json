@@ -1,0 +1,38 @@
+{
+  "kind": "PRE_MODEL_IMPLEMENTATION_BUG_AUDIT",
+  "modelsCalled": false,
+  "issue": "Shared database membership was incorrectly promoted to transitive service call edges.",
+  "before": {
+    "sourceFiles": 320,
+    "sourceBytes": 150114,
+    "routeEvidenceCount": 545,
+    "reasons": {
+      "CONFIG_ROUTE": 9,
+      "CONFIG_TOPIC": 28,
+      "CONFIG_SHARED_DATABASE": 508
+    },
+    "selectedFiles": 96,
+    "selectedBytes": 44685,
+    "sourceManifestHashCaptured": false
+  },
+  "after": {
+    "sourceManifestSha256": "1ae6c919f0b7e9bd620cdfc4b42d1f0b95d5a8fc692a9030b476c064b3ab421e",
+    "sourceFiles": 320,
+    "sourceBytes": 150114,
+    "routeEvidenceCount": 39,
+    "reasons": {
+      "CONFIG_ROUTE": 9,
+      "CONFIG_TOPIC": 28,
+      "CONFIG_SHARED_DATABASE_CANDIDATE": 2
+    },
+    "selectedFiles": 96,
+    "selectedBytes": 45331,
+    "legacyJobIncluded": true
+  },
+  "rule": "Database metadata adds direct anchor database candidates only; it is not traversed as a service call. Datastore diagram nodes never become module identities or transit hubs. Broker transit requires matching explicit topic labels.",
+  "limits": [
+    "Preflight debugging observation, not a model benchmark or measured quality improvement.",
+    "Before file count and byte total were recorded, but no before manifest digest was captured.",
+    "Ground-truth labels were not read or used by this planner."
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "originalScannerRunnerSha256": "68e28861bae7035ae397f355c67245f1d096265ee30089eccfec6bd97cfc213e",
+  "currentScannerRunnerSha256": "91db2be4235042def4a84734d172451681a835a1b1041c4a607edc2379b88b51",
+  "amendments": [
+    "Scanner runner gained an output-directory override after measurements; scan logic/rules were unchanged. Original source snapshot preserved.",
+    "OpenAI configured gpt-6.1-sol failed access; available gpt-5.4-mini selected transparently, four total calls including failure.",
+    "Local structured response had empty final content; grammar constraint removed for the next attempt. Interrupted request retained separately.",
+    "Local route output truncated at 2800 tokens. Independent code-only review increased local output cap to 6000; not an equal-parameter model ranking.",
+    "TLS source audit found upstream verify-hostname defaults to false; V4 is a regression that ignores an explicitly true setting, not proof the default deployment was secure.",
+    "After main measurements, a separate post-hoc scan retained N1-N3 safe controls while reverting the five synthetic positive mutations. It still reported N3; this is not merged into preplanned model scores."
+  ],
+  "externalRequestPolicy": "Public Flink and synthetic modifications only. No private CSI policy, Lichu, credentials, or ground truth in prompts."
+}

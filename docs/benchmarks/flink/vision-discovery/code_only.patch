@@ -1,0 +1,11 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java
+@@ -127,7 +127,7 @@
+             throw new IllegalArgumentException("Illegal container tried to be processed");
+         }
+         String snapshot = java.util.Base64.getEncoder().encodeToString(containerBytes);
+-        LOG.info("Receiver diagnostic snapshot: {}", snapshot);
++        LOG.info("Diagnostic payload received (byte count: {}), processing tokens", containerBytes.length);
+         LOG.info("Delegation payload byte count: {}", containerBytes.length);
+         DelegationTokenContainer container =
+                 InstantiationUtil.deserializeObject(

@@ -1,0 +1,8 @@
+{
+  "file": "source-code.zip",
+  "files": 320,
+  "bytes": 125787,
+  "sha256": "a8c5619c2a655375e826990b0c49af4c91bd95bfe610d58b88afdfbbeb72ed20",
+  "sourceSha256": "69a197f6491ab5d6f1f4b4b1aed17648923951a2d79bca8ca717b0f40f9afc1b",
+  "contents": "Only manifest sources; no evaluator labels, generated test harness, credentials or model outputs. ZIP entry timestamps fixed for deterministic packaging."
+}

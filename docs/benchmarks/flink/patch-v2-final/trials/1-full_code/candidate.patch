@@ -1,0 +1,17 @@
+--- a/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
++++ b/flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java
+@@ -288,12 +288,8 @@
+                         SecurityOptions.SSL_KEYSTORE_PASSWORD);
+ 
+         {
+-            String password = keystorePassword;
+-            LOG.info("Keystore password: {}", password);
+-        }
+-        {
+-            String password = "[REDACTED]";
+-            LOG.info("Keystore diagnostic: {}", password);
++            String redactedPassword = "[REDACTED]";
++            LOG.info("Keystore diagnostic: {}", redactedPassword);
+         }
+         String certPassword =
+                 getAndCheckOption(

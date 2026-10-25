@@ -1,0 +1,18 @@
+{
+  "cases": {
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#securityV1NoSerializedTokenLogging": "PASSED",
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityPreservesByteCountLog": "PASSED",
+    "org.apache.flink.runtime.security.token.CsiTokenSecurityTest#functionalityForwardsTokenBytes": "PASSED",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testDelegationTokenDisabled": "PASSED",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#testAllReceiversLoaded": "PASSED",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#oneReceiverThrowsExceptionMustFailFast": "PASSED",
+    "org.apache.flink.runtime.security.token.DelegationTokenReceiverRepositoryTest#configurationIsNullMustFailFast": "PASSED"
+  },
+  "exitCode": 0,
+  "testsUnchanged": true,
+  "seconds": 88.48240616600015,
+  "passed": 7,
+  "failed": 0,
+  "securityPassed": true,
+  "accepted": true
+}

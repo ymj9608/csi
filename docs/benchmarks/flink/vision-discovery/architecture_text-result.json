@@ -1,0 +1,21 @@
+{
+  "status": "VALIDATION_FAILED",
+  "arm": "architecture_text",
+  "changedPaths": [
+    "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+  ],
+  "candidateSha256": "98ad250032614850c8da3c98e14df48b6dfe31e9c3cd2449e03b9fdd5ea05ae7",
+  "verification": {
+    "cases": {},
+    "exitCode": 1,
+    "testsUnchanged": true,
+    "seconds": 46.544687124998745,
+    "passed": 0,
+    "failed": 0,
+    "securityPassed": false,
+    "accepted": false
+  },
+  "modelMs": 44197.843,
+  "inputTokens": 4032,
+  "outputTokens": 568
+}

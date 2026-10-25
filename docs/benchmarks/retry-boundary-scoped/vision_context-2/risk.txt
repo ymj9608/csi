@@ -1,0 +1,5 @@
+Risk evidence:
+- **`topology.json`** (sha256: `00bd3dc9c4a76c27d8e6c15737ffd4c67cea47e92c0d57ace94cde9e2317dd97`) explicitly forbids phone data in external zones ("phoneAllowed": false for `archive_export`).
+- **`deadletter.py`** (sha256: `0c04aee81e9be273b4dba409c59721da6ec0f041a905c39f4e4b19778f3ef6c3`) passes the full event to `forward`, but the function now filters phone data while preserving required metadata.
+- **`retry.py`** (sha256: `bcaa5c1f4fe85d14bce0580986be6dd9ff625ce6679122f6456911d4e7cef3b1`) and **`notification.py`** (sha256: `cd84c67d1347436c567fd3fa36a3eaf46590ae98435cb5df6372603e3467e030`) retain phone data internally, unaffected by this change.
+- **`service.py`** (sha256: `2a6b957081dac37d1d133a099d114dcf6e48312d9e553a8405c1a2dc412ff49b`) and **`analysis.py`** (sha256: `32800a75eb1af528ffb4bbe41d0d868cc0fe7ee4deb579b6d8aec4b139c948f4`) do not modify the envelope structure, ensuring compatibility.

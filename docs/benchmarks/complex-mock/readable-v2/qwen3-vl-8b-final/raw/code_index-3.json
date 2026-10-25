@@ -1,0 +1,16 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-22T08:18:03.26519Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"findings\": [\n    {\n      \"filePath\": \"services/notification_dispatch/consumer.py\",\n      \"line\": 7,\n      \"evidence\": \"\\\"dispatch payload=%s\\\", payload\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Raw delivery request payload (potentially containing contact data) is logged unmasked in `logger.info` at line 7. The `s\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/events.py\",\n          \"line\": 13,\n          \"evidence\": \"return dict(envelope[\\\"body\\\"])\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/notification_dispatch/service.py\",\n      \"line\": 13,\n      \"evidence\": \"\\\"delivery scheduled id=%s\\\", record.record_id\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Contact identifier (`record_id`) is logged unmasked in `logger.info` at line 13, which may correlate with contact data. \",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/schema.sql\",\n          \"line\": 2,\n          \"evidence\": \"record_id TEXT PRIMARY KEY\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/notification_dispatch/consumer.py\",\n      \"line\": 14,\n      \"evidence\": \"\\\"dispatch id=%s outcome=%s\\\", envelope_id, outcome\",\n      \"category\": \"sensitive_logging\",\n      \"reason\": \"Correlation ID (`envelope_id`) is logged unmasked in `logger.info` at line 14. While not inherently contact data, it may\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/events.py\",\n          \"line\": 6,\n          \"evidence\": \"\\\"id\\\": correlation_id\"\n        }\n      ]\n    },\n    {\n      \"filePath\": \"services/order_fulfillment/api.py\",\n      \"line\": 7,\n      \"evidence\": \"result = execute(body, actor, ports.db, ports.bus, ports.logger)\",\n      \"category\": \"plaintext_pii_export\",\n      \"reason\": \"Unencrypted HTTP endpoint (`post`) forwards raw request body to `execute` without TLS. Contact data may be exposed if `\",\n      \"support\": [\n        {\n          \"filePath\": \"services/notification_dispatch/deployment.yaml\",\n          \"line\": 6,\n          \"evidence\": \"transport: http\"\n        }\n      ]\n    }\n  ],\n  \"needs\": [\n    \"services/order_fulfillment/service.py\" ],\n  \"uncertainties\": []\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 36370023125,
+  "load_duration": 137145625,
+  "prompt_eval_count": 3103,
+  "prompt_eval_duration": 6520626000,
+  "eval_count": 572,
+  "eval_duration": 29386031000
+}

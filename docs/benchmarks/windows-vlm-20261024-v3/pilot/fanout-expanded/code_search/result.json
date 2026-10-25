@@ -1,0 +1,77 @@
+{
+  "case": "fanout-expanded",
+  "arm": "code_search",
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "status": "FAILED",
+  "attempts": 2,
+  "trace": [
+    {
+      "action": "read",
+      "path": "deployment.json",
+      "query": "boundary: EXTERNAL",
+      "instruction": "Identify external recipients to prevent raw phone disclosure."
+    },
+    {
+      "action": "delegate",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Modify signup to avoid sending raw phone to external recipients (r2, r3). Keep phone in MEMBERS and ARCHIVE. Preserve event id/kind and all delivery paths including failures."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving all delivery paths and internal storage."
+    },
+    {
+      "action": "delegate",
+      "path": "dispatcher.py",
+      "query": "import deployment",
+      "instruction": "Fix import error by adding 'deployment' to imports in dispatcher.py and ensure deployment.json is accessible."
+    },
+    {
+      "action": "verify",
+      "path": "app.py",
+      "query": "signup function",
+      "instruction": "Verify that raw phone is not disclosed to external recipients while preserving all delivery paths and internal storage."
+    },
+    {
+      "action": "delegate",
+      "path": "dispatcher.py",
+      "query": "publish_event function",
+      "instruction": "Fix the logic to ensure external recipients (r2, r3) receive events without raw phone, but preserve delivery to r2 for failures and ensure diagnostics work."
+    }
+  ],
+  "error": "ValueError: CODING_BUDGET",
+  "wallSeconds": 519.604,
+  "readPaths": [
+    "app.py",
+    "deployment.json",
+    "dispatcher.py",
+    "state.py"
+  ],
+  "selectedSourceBytes": 772,
+  "sourceFileCount": 53,
+  "verification": {
+    "exitCode": 1,
+    "error": null,
+    "cases": {
+      "test_deliveries": "FAIL",
+      "test_external_failure": "ok",
+      "test_external_normal": "ok",
+      "test_failure_diagnostics": "FAIL",
+      "test_input_not_mutated": "ok",
+      "test_internal_phone": "ok",
+      "test_replay": "ok",
+      "test_store": "ok"
+    },
+    "passed": 6,
+    "total": 8,
+    "log": "test_deliveries (test_contract.Contract.test_deliveries) ... FAIL\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... FAIL\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nFAIL: test_deliveries (test_contract.Contract.test_deliveries)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 22, in test_deliveries\n    self.assertEqual([k for k,v in state.MESSAGES].count('r2'),1)\nAssertionError: 0 != 1\n\n======================================================================\nFAIL: test_failure_diagnostics (test_contract.Contract.test_failure_diagnostics)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 25, in test_failure_diagnostics\n    uid=signup(P,True); self.assertEqual(len(self.route('r3')),1)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 1\n\n----------------------------------------------------------------------\nRan 8 tests in 0.008s\n\nFAILED (failures=2)\n",
+    "seconds": 4.094,
+    "isolation": "WASI_READ_ONLY_NO_NETWORK"
+  },
+  "inputTokens": 19106,
+  "outputTokens": 947,
+  "failedCalls": 0
+}

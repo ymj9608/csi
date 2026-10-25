@@ -1,0 +1,28 @@
+공식 모델 설명과 이번 실행의 범위 (2026-10-24 확인)
+
+Qwen3-VL-8B-Instruct
+  https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct
+Ministral-3-8B-Instruct-2512
+  https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512
+
+이번 비교에서는 Qwen Instruct가 모든 조건의 오케스트레이터를 맡고,
+Ministral Instruct가 모든 조건의 수정안을 생성한다. 이미지가 없는 조건도
+동일한 Qwen 모델을 쓰므로, 서로 다른 오케스트레이터 모델의 성능 차이를
+비전의 효과로 계산하지 않는다. 기존 qwen3-vl:8b Thinking 체크포인트는
+별도 호환성 검사에만 포함했다.
+
+Ministral 공식 카드는 비전, 함수 호출, JSON 출력 지원을 설명하며,
+명확한 환경·도구 정의와 0.1 미만 temperature를 권장한다. 이번 실행은
+temperature 0, 여섯 종류의 명시적 action schema를 사용한다.
+이러한 기능 지원은 올바른 파일 탐색이나 검증을 통과하는 코드 생성을
+보장하지 않는다. 이를 각각 실제 실행 기록과 테스트로 평가한다.
+
+공식 카드의 큰 context window와 공개 벤치마크 결과를 이 PC의 성능으로
+간주하지 않는다. 실제 실행은 Ollama의 Q4_K_M 양자화, 8192 context,
+3GB VRAM/16GB RAM, 부분 GPU 사용 및 CPU 연산 환경이다.
+공식 FP8/원본 모델 평가와 실행 정밀도·추론 엔진·예산이 다르다.
+이번 실패를 특정 모델 계열 전체의 성능 한계로 일반화할 수 없다.
+
+모델의 실제 digest, 제공된 토큰 수와 load/prompt/generation 시간은
+environment.json 및 각 calls/*.json에 저장한다. setup.json은 다운로드
+출처와 설치 해시를 기록한다. 이 문서는 모델 평가 결과를 대체하지 않는다.

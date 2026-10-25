@@ -1,0 +1,6 @@
+Member application: app.py. Shared broker client: broker.py.
+Normal flow: app.py -> notification.py -> broker channel r1 -> internal SMS worker.
+Metrics flow: app.py -> analytics.py -> broker channel r2 -> external metrics vendor.
+Delivery failure flow: app.py -> recovery.py -> relay.py -> broker channel r3 -> external support vendor.
+recovery.py also retains an internal replay archive. Member store and replay archive are internal.
+Channel subscribers are configured by a separate operations system, outside this source repository.

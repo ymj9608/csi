@@ -1,0 +1,7 @@
+{
+  "status": "FAILED",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "inputSha256": "94451b5f12ad239cbde40ffde3c15a581e8a9e08fe2b40bb2b1662442041bdb5",
+  "error": "ReadTimeout: timed out",
+  "wallSeconds": 300.035
+}

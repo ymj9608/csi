@@ -1,0 +1,10 @@
+{
+  "status": "FAILED",
+  "error": "ReadTimeout: timed out",
+  "seconds": 20.03002054200033,
+  "final": "",
+  "thinkingPresent": false,
+  "inputTokens": null,
+  "outputTokens": null,
+  "doneReason": null
+}

@@ -1,0 +1,24 @@
+{
+  "name": "1-full_code-2-inspect",
+  "provider": "ollama",
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "status": "COMPLETED",
+  "startedAtUtc": "2026-10-23T05:11:50Z",
+  "inputSha256": "9675b647a95cc359b0261debd85badcba751a6ccc9664c4471c67aa01800017e",
+  "inputTokens": 11274,
+  "outputTokens": 55,
+  "httpStatus": 200,
+  "loadNs": 757174416,
+  "prefillNs": 43614317000,
+  "generationNs": 5752331000,
+  "returnedModel": "ministral-3:8b-instruct-2512-q4_K_M",
+  "answerText": "{\n  \"notes\": \"**Credential/Token/Password Disclosure Fixes**\",\n  \"readPaths\": [\n    \"flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java\"\n  ]\n  }",
+  "answer": {
+    "notes": "**Credential/Token/Password Disclosure Fixes**",
+    "readPaths": [
+      "flink-runtime/src/main/java/org/apache/flink/runtime/security/token/DelegationTokenReceiverRepository.java"
+    ]
+  },
+  "wallMs": 57354.953,
+  "finishedAtUtc": "2026-10-23T05:12:48Z"
+}

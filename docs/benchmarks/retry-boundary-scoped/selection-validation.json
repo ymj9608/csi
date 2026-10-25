@@ -1,0 +1,6 @@
+{
+  "status": "SOURCE_VERIFIED",
+  "file": "exporter.py",
+  "function": "forward",
+  "basis": "existing AST declaration; reachable imports; actual external configuration. Not proof of safety."
+}

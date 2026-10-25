@@ -1,0 +1,14 @@
+{
+  "model": "qwen3-vl:8b",
+  "provider": "ollama",
+  "status": "FAILED",
+  "startedAtUtc": "2026-10-23T06:27:30Z",
+  "answerText": "",
+  "inputTokens": 293,
+  "outputTokens": 600,
+  "doneReason": "length",
+  "loadNs": 2958262792,
+  "generationNs": 24732813000,
+  "error": "ValueError: OUTPUT_INCOMPLETE",
+  "wallMs": 28298.685
+}

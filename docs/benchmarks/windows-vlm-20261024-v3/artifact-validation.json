@@ -1,0 +1,29 @@
+{
+  "kind": "POST_RUN_ARTIFACT_CHECKS",
+  "conditions": 16,
+  "modelCalls": 109,
+  "modelCallTimeouts": 3,
+  "callsWithoutUsage": 3,
+  "candidateTestFilesUnchanged": 27,
+  "frozenCoreAndCasesMatch": true,
+  "imageOnlyInImageArm": true,
+  "noPendingCallRecords": true,
+  "python": "3.11.17 (main, Oct 21 2026, 17:46:24) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "packages": {
+    "httpx": "0.28.1",
+    "jsonschema": "4.26.0",
+    "Pillow": "13.0.0",
+    "wasmtime": "50.0.1"
+  },
+  "snapshotSha256": {
+    "artifact-audit-and-report.py": "19470abeb2d7ea4c58107f3f4223cfca73d5d533019ce6f131fda71f81b976c3",
+    "scripts\\analyze_windows_vlm.py": "8c0b99fce2f2af395fd101df45303c8379cf268ecd1c7c82c0b0b474a33c77b6",
+    "scripts\\benchmark_windows_vlm.py": "a406b2f368a77691f8ed721b562a61fc50f3dc980a586c39b0ec8bd51cb7426d",
+    "scripts\\experiment_wasi.py": "dda01fa1ac8671a229316716cea2696405ea1d53acebe9745e41e76f7ca6afeb",
+    "scripts\\replay_architecture_mapping.py": "dd13b316acc58d05f265437ba1fc4f23f19c764e21e68c079699dd26be5b0a81",
+    "scripts\\score_windows_perception.py": "c02b9a2d106b24ff9a87a0d7baea4ae57e47e03c528b36d3bd260a631ed28823",
+    "scripts\\summarize_windows_vlm.py": "b72339c48a180f48889ad6051eb48d799aac8f886c19f153f980cb5e392c12a4",
+    "scripts\\vlm_experiment_data.py": "bb41e05dbeecfb685ff57241c4760a5ec3efb32aed9eb5ba4207978ae5e5ac43"
+  }
+}

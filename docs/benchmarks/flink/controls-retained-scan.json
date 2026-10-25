@@ -1,0 +1,26 @@
+{
+  "variant": "remediated_controls_retained",
+  "postHoc": true,
+  "purpose": "Remove injected positive defects but retain all three safe logging controls; distinguish source restoration from scanner false-positive improvement.",
+  "complete": true,
+  "files": 39,
+  "wallMs": 2046.225333999928,
+  "findings": [
+    {
+      "findingId": "47ef36facd5ac0e98dd04e7d",
+      "ruleId": "SEC-05",
+      "category": "SECURITY",
+      "severity": "HIGH",
+      "filePath": "flink-runtime/src/main/java/org/apache/flink/runtime/net/SSLUtils.java",
+      "startLine": 292,
+      "endLine": 292,
+      "maskedCodeEvidence": "            LOG.info(\"[REDACTED]\", password);",
+      "fingerprint": "47ef36facd5ac0e98dd04e7d98dea7188c9a00f5bde3d8047a91a4a07f8ffcea",
+      "confidence": "MEDIUM",
+      "evidenceStatus": "SUSPECTED"
+    }
+  ],
+  "remainingLabeledFalsePositive": "N3",
+  "expectedPositiveMutationsReverted": 5,
+  "runtimeTestExecuted": false
+}

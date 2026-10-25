@@ -1,0 +1,6 @@
+{
+  "files.watcherExclude": {"**/.runtime/**": true, "**/.venv/**": true, "**/target/**": true},
+  "search.exclude": {"**/.runtime": true, "**/.venv": true, "**/target": true},
+  "java.import.exclusions": ["**/.runtime/**", "**/.venv/**", "**/node_modules/**"],
+  "python.analysis.exclude": ["**/.runtime/**", "**/.venv/**", "**/node_modules/**"]
+}

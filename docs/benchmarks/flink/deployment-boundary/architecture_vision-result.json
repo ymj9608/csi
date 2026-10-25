@@ -1,0 +1,45 @@
+{
+  "arm": "architecture_vision",
+  "status": "UNRESOLVED",
+  "findings": [
+    {
+      "route": "csi.route.a",
+      "status": "POTENTIAL",
+      "evidence": "**exact source match**\norg.slf4j.LoggerFactory.getLogger(\"csi.route.a\").info(\"Job context: {}\", graph.getJobName());\n\n**deployment evidence missing**:\n- No explicit validation that `graph.getJobName()` is not a phone number (ASCII 010 + 8 digits) before logging.\n- No evidence of a policy enforcement mechanism for authorized internal operations recipients in the source or architecture context. The logger is unconditionally exposed to the private archive path (`Private history / REST for authorized operations users`).\n\n**policy conflict**:\nThe policy requires *explicit authorization* for internal operations recipients, but the current implementation does not enforce this. The logger may leak job names containing phone numbers without restriction.\n\n---"
+    },
+    {
+      "route": "csi.route.b",
+      "status": "POTENTIAL",
+      "evidence": "**exact source match**\norg.slf4j.LoggerFactory.getLogger(\"csi.route.a\").info(\"Job context: {}\", graph.getJobName());\n\n**deployment evidence missing**:\n- No evidence of a phone-number sanitization or masking mechanism for `graph.getJobName()` before logging to the diagnostic collector.\n- The logger is unconditionally exposed to an external vendor recipient (`EXTERNAL support vendor`), which violates the policy of *no personal-phone access* in diagnostics.\n\n**policy conflict**:\nThe policy requires third-party diagnostic recipients to receive a non-phone-labeled job name, but the current implementation does not sanitize or redact phone numbers from `graph.getJobName()`.\n\n---"
+    }
+  ],
+  "candidateSha256": "80a77930392fcbbb5a4ddeeaa8033956994e3199b63bade7e23cf86edd70ca0b",
+  "validationReusedFrom": "calibration-vulnerable",
+  "verification": {
+    "cases": {
+      "org.apache.flink.runtime.rest.handler.job.JobConfigHandlerTest#handleRequest_executionConfigWithSecretValues_excludesSecretValuesFromResponse": "PASSED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityDifferentPhoneRemoved": "FAILED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityExternalPhoneRemoved": "FAILED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNonPhoneNamePreserved": "PASSED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityNullExecutionConfigPreserved": "PASSED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityAuthorizedInternalOriginalPreserved": "PASSED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityPrivateArchiveAndInputPreserved": "PASSED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#securityMultiplePhonesRemoved": "FAILED",
+      "org.apache.flink.runtime.rest.handler.job.CsiDeploymentBoundaryTest#functionalityExternalDiagnosticLabelPreserved": "PASSED"
+    },
+    "exitCode": 0,
+    "testsUnchanged": true,
+    "seconds": 76.51623366600006,
+    "passed": 6,
+    "failed": 3,
+    "securityPassed": 0,
+    "accepted": false
+  },
+  "patchGenerated": false,
+  "modelMs": 40108.014,
+  "inputTokens": 4506,
+  "outputTokens": 474,
+  "visionMs": 28450.143374999698,
+  "visionInputTokens": 1116,
+  "visionOutputTokens": 226
+}

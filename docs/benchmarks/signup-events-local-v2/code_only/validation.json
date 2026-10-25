@@ -1,0 +1,18 @@
+{
+  "exitCode": 1,
+  "seconds": 0.35286733400062076,
+  "cases": {
+    "test_function_analytics": "ok",
+    "test_function_internal": "ERROR",
+    "test_function_isolation": "ERROR",
+    "test_function_legacy": "ok",
+    "test_function_persist": "ok",
+    "test_security_external": "ok",
+    "test_security_newline": "ok",
+    "test_security_oversize": "ok",
+    "test_security_type": "ok",
+    "test_security_unicode": "ok"
+  },
+  "passed": 8,
+  "total": 10
+}

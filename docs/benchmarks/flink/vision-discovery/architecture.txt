@@ -1,0 +1,8 @@
+Synthetic deployment overlay on Apache Flink, not an upstream deployment claim.
+JobManager coordinates jobs; TaskManagers execute tasks. This general relation is shown in the official Flink processes diagram.
+JobManager obtains delegation credentials from providers and distributes serialized DelegationTokenContainer data to workers.
+TaskExecutor passes received serialized token data to DelegationTokenReceiverRepository.
+DelegationTokenReceiverRepository decodes the container and forwards per-service token bytes to DelegationTokenReceiver plugins.
+AbstractS3DelegationTokenReceiver is one plugin: decoded session credentials are used by the S3 filesystem.
+In this synthetic deployment, JobManager/TaskManager diagnostic logs are forwarded to a third-party support collector outside the credential trust boundary.
+The collector needs event metadata and sizes, not delegation credential contents.

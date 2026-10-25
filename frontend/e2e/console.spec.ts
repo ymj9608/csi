@@ -25,12 +25,17 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   await expect(
     page.getByRole("heading", { name: "프로젝트", exact: true }),
   ).toBeVisible();
-  await page.locator(".project-card").first().click();
+  const firstCard = page.locator(".project-card").first();
+  const selectedRepository = (await firstCard.locator("h2, strong").first().textContent())!.trim();
+  await firstCard.click();
   await expect(page).toHaveURL(/\/dashboard\?project=[0-9a-f-]+$/);
+  // 보안 현황은 메뉴에 없고, 메뉴의 "프로젝트" 아래에서 지금 보는 프로젝트가 선택됩니다.
+  await expect(page.locator("aside nav > a", { hasText: "보안 현황" })).toHaveCount(0);
+  await expect(page.locator("aside nav a").first()).toHaveText("프로젝트");
+  await expect(page.locator(".nav-project-link.active")).toHaveText(selectedRepository);
+  await expect(page.getByRole("combobox", { name: "프로젝트 선택" })).toHaveCount(0);
   await expect(page.locator(".metrics")).toBeVisible();
-  const picker = page.getByLabel("프로젝트 선택");
-  const selectedRepository = await picker.locator("option:checked").textContent();
-  await expect(page.locator(".current-project")).toContainText(selectedRepository!.trim());
+  await expect(page.locator(".current-project")).toContainText(selectedRepository);
   // 검토 피드: 위험 항목과 Agent 이벤트를 한 패널에서 필터로 전환합니다.
   const feed = page.locator(".review-feed");
   await feed.getByRole("button", { name: /Agent 이벤트/ }).click();
@@ -52,7 +57,6 @@ test("login, API-backed screens, findings, mobile and logout", async ({
     "/scans",
     "/findings",
     "/logs",
-    "/policies",
     "/approvals",
   ]) {
     await Promise.all([
@@ -64,15 +68,12 @@ test("login, API-backed screens, findings, mobile and logout", async ({
     await expect(page.locator(".skeleton")).toHaveCount(0);
     await expect(page.locator(".error")).toHaveCount(0);
   }
-  // 선택한 프로젝트는 메뉴를 옮겨도 유지되고, 전체 프로젝트로 되돌릴 수 있습니다.
+  // 선택한 프로젝트는 화면을 옮겨도 유지되고, 메뉴의 프로젝트를 눌러도 같은 목록 화면에 머뭅니다.
   await page.goto("/scans");
   await expect(page).toHaveURL(/\/scans\?project=[0-9a-f-]+$/);
-  await Promise.all([
-    page.waitForResponse((r) => new URL(r.url()).pathname === "/api/scans" && !r.url().includes("projectId")),
-    page.getByLabel("프로젝트 선택").selectOption(""),
-  ]);
-  await expect(page).toHaveURL(/\/scans$/);
-  await expect(page.locator(".current-project")).toContainText("전체 프로젝트");
+  await page.locator(".nav-project-link", { hasText: selectedRepository }).click();
+  await expect(page).toHaveURL(/\/scans\?project=[0-9a-f-]+$/);
+  await expect(page.locator(".nav-project-link.active")).toHaveText(selectedRepository);
   await page.goto("/findings");
   const finding = page.locator(".finding-row").first();
   await expect(finding).toBeVisible();
