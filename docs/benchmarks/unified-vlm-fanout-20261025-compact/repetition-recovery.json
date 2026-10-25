@@ -1,0 +1,22 @@
+{
+  "samePromptInputsImageSchema": true,
+  "changedOptions": {
+    "repeat_penalty": [
+      null,
+      1.1
+    ],
+    "repeat_last_n": [
+      null,
+      256
+    ]
+  },
+  "initial": "REPEATED_OUTPUT",
+  "retry": "COMPLETED",
+  "retryInputTokens": 3021,
+  "retryOutputTokens": 615,
+  "retrySeconds": 365.556,
+  "contextCapacity": 32768,
+  "inputReductionAloneSolvedRepetition": false,
+  "kvCacheConfigurationChanged": false,
+  "scope": "One recovery attempt; not evidence of universal prevention or of input length as the root cause."
+}

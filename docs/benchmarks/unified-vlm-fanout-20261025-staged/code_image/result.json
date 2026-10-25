@@ -1,0 +1,38 @@
+{
+  "arm": "code_image",
+  "status": "BLOCKED",
+  "attempts": [],
+  "vlmSeconds": 786.303,
+  "coderSeconds": 0,
+  "verificationSeconds": 0,
+  "assessmentAttempts": [
+    {
+      "call": "visual_architecture-1",
+      "status": "COMPLETED",
+      "seconds": 225.641,
+      "error": null
+    },
+    {
+      "call": "visual_security-1",
+      "status": "COMPLETED",
+      "seconds": 149.503,
+      "error": null
+    },
+    {
+      "call": "visual_instruction-1",
+      "status": "FAILED",
+      "seconds": 204.418,
+      "error": "ValueError: REPEATED_OUTPUT: three consecutive copies of a long passage"
+    },
+    {
+      "call": "visual_instruction-2",
+      "status": "FAILED",
+      "seconds": 206.741,
+      "error": "ValueError: REPEATED_OUTPUT: three consecutive copies of a long passage"
+    }
+  ],
+  "error": "ValueError: ValueError: REPEATED_OUTPUT: three consecutive copies of a long passage",
+  "totalSeconds": 786.377,
+  "bestCandidate": null,
+  "finalCandidate": null
+}

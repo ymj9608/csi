@@ -1,0 +1,69 @@
+{
+  "arm": "code_image",
+  "status": "FAILED",
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "VERIFIED",
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {},
+        "passed": 0,
+        "total": 0,
+        "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from dispatcher import publish_event\n  File \"/case/dispatcher.py\", line 2, in <module>\n    from cryptography.fernet import Fernet\nModuleNotFoundError: No module named 'cryptography'\n",
+        "seconds": 4.33,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    },
+    {
+      "attempt": 2,
+      "status": "VERIFIED",
+      "verification": {
+        "exitCode": 1,
+        "error": null,
+        "cases": {
+          "test_deliveries": "ok",
+          "test_external_failure": "ok",
+          "test_external_normal": "FAIL",
+          "test_failure_diagnostics": "ok",
+          "test_input_not_mutated": "FAIL",
+          "test_internal_phone": "ok",
+          "test_replay": "ok",
+          "test_store": "ok"
+        },
+        "passed": 6,
+        "total": 8,
+        "log": "test_deliveries (test_contract.Contract.test_deliveries) ... ok\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... FAIL\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... FAIL\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nFAIL: test_external_normal (test_contract.Contract.test_external_normal)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 13, in test_external_normal\n    signup(P); self.assertNotIn(P,json.dumps(self.route('r2')))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n======================================================================\nFAIL: test_input_not_mutated (test_contract.Contract.test_input_not_mutated)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 32, in test_input_not_mutated\n    self.assertNotIn(P,json.dumps([v for channel,v in state.MESSAGES if channel in {'r2','r3'}]))\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n----------------------------------------------------------------------\nRan 8 tests in 0.008s\n\nFAILED (failures=2)\n",
+        "seconds": 4.403,
+        "isolation": "WASI_READ_ONLY_NO_NETWORK"
+      }
+    }
+  ],
+  "vlmSeconds": 898.308,
+  "coderSeconds": 230.083,
+  "verificationSeconds": 8.733,
+  "assessmentAttempts": [
+    {
+      "call": "visual_architecture-1",
+      "status": "COMPLETED",
+      "seconds": 407.501,
+      "error": null
+    },
+    {
+      "call": "visual_security-1",
+      "status": "COMPLETED",
+      "seconds": 326.117,
+      "error": null
+    },
+    {
+      "call": "visual_instruction-1",
+      "status": "COMPLETED",
+      "seconds": 164.69,
+      "error": null
+    }
+  ],
+  "totalSeconds": 1137.271,
+  "bestCandidate": 2,
+  "finalCandidate": 2
+}

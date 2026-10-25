@@ -1,0 +1,8 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\n\ndef publish_event(event, fail=False):\n    channels = ['r2', 'r3'] if fail else ['r1', 'r2']\n    for channel in channels:\n        if channel == 'r3' and fail:\n            # Redact phone for external recipients\n            redacted_event = event.copy()\n            redacted_event['phone'] = '<redacted>'\n            publish(channel, redacted_event)\n        else:\n            publish(channel, event)\n"
+    }
+  ]
+}

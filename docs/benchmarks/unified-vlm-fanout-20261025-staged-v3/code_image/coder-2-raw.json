@@ -1,0 +1,17 @@
+{
+  "model": "ministral-3:8b-instruct-2512-q4_K_M",
+  "created_at": "2026-10-25T12:06:23.2980743Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"files\": [\n    {\n      \"path\": \"dispatcher.py\",\n      \"source\": \"from broker import publish\\nimport base64\\nimport hashlib\\nimport hmac\\nimport os\\n\\ndef generate_hmac_key():\\n    # Generate a fixed HMAC key for consistency (in practice, use a secure key)\\n    return os.urandom(32)\\n\\nHMAC_KEY = generate_hmac_key()\\n\\ndef encrypt_phone(phone, fail=False):\\n    if not fail:\\n        return phone\\n    # HMAC-based encryption (simplified for demonstration)\\n    # In practice, use a proper encryption library like cryptography\\n    salt = os.urandom(16)\\n    hmac_digest = hmac.new(HMAC_KEY, phone.encode(), hashlib.sha256).digest()\\n    encrypted_phone = base64.b64encode(salt + hmac_digest).decode()\\n    return encrypted_phone\\n\\ndef publish_event(event, fail=False):\\n    channels = ['r2', 'r3'] if fail else ['r1', 'r2']\\n    for channel in channels:\\n        event_copy = event.copy()\\n        event_copy['phone'] = encrypt_phone(event_copy['phone'], fail)\\n        publish(channel, event_copy)\\n\"\n    }\n  ]\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 108097404200,
+  "load_duration": 7877603400,
+  "prompt_eval_count": 1344,
+  "prompt_eval_cached_count": 0,
+  "prompt_eval_duration": 15334024000,
+  "eval_count": 296,
+  "eval_duration": 84851315000
+}

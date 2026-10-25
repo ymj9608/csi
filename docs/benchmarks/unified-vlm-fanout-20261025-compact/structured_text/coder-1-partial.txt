@@ -1,0 +1,8 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\nfrom copy import deepcopy\n\ndef publish_event(event, fail=False):\n    channels = ['r2', 'r3'] if fail else ['r1', 'r2']\n    for channel in channels:\n        if fail:\n            publish(channel, deepcopy(event))\n        else:\n            event_copy = deepcopy(event)\n            event_copy.pop('phone', None)\n            publish(channel, event_copy)\n"
+    }
+  ]
+}

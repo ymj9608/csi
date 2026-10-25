@@ -1,0 +1,4 @@
+{
+  "status": "ABORTED_CALIBRATION",
+  "reason": "User requested original quality-oriented prompt. English override and extra brevity directives removed before final comparison. Original production VLM context/output budgets restored. No scored condition completed in this directory."
+}

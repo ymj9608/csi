@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_CALIBRATION",
+  "reason": "First assessment exceeded 600 seconds. Output verbosity reduced for all arms in a new run; this record is retained, not pooled with the new comparison.",
+  "structured_text": "Timed out before coding",
+  "full_code": "Assessment manually interrupted; no scored outcome",
+  "code_image": "Not started"
+}

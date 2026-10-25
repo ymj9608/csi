@@ -1,0 +1,11 @@
+{
+  "sourceInput": "docs\\benchmarks\\unified-vlm-fanout-20261025-staged-v2\\code_image\\visual_instruction-1-input.json",
+  "sourceInputSha256": "7c264a47feab37ea2c74927b5bddb6aecf0d71ddaa438c68a5095bfc2183f5a0",
+  "sameEvidence": true,
+  "sameGenerationOptions": true,
+  "changes": [
+    "Explicit field meanings and termination in system prompt",
+    "Same output schema also present in prompt; unused definitions removed"
+  ],
+  "noCoderOrTests": true
+}

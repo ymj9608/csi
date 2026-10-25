@@ -1,0 +1,19 @@
+{
+  "exitCode": 1,
+  "error": null,
+  "cases": {
+    "test_deliveries": "ok",
+    "test_external_failure": "FAIL",
+    "test_external_normal": "FAIL",
+    "test_failure_diagnostics": "ok",
+    "test_input_not_mutated": "FAIL",
+    "test_internal_phone": "ok",
+    "test_replay": "ok",
+    "test_store": "ok"
+  },
+  "passed": 5,
+  "total": 8,
+  "log": "test_deliveries (test_contract.Contract.test_deliveries) ... ok\ntest_external_failure (test_contract.Contract.test_external_failure) ... FAIL\ntest_external_normal (test_contract.Contract.test_external_normal) ... FAIL\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... FAIL\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n======================================================================\nFAIL: test_external_failure (test_contract.Contract.test_external_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 15, in test_external_failure\n    signup(P,True); self.assertNotIn(P,json.dumps(self.route('r2')+self.route('r3')))\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}, {\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n======================================================================\nFAIL: test_external_normal (test_contract.Contract.test_external_normal)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 13, in test_external_normal\n    signup(P); self.assertNotIn(P,json.dumps(self.route('r2')))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 1, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n======================================================================\nFAIL: test_input_not_mutated (test_contract.Contract.test_input_not_mutated)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/case/test_contract.py\", line 32, in test_input_not_mutated\n    self.assertNotIn(P,json.dumps([v for channel,v in state.MESSAGES if channel in {'r2','r3'}]))\nAssertionError: '01012345678' unexpectedly found in '[{\"id\": 2, \"kind\": \"signup\", \"phone\": \"01012345678\"}]'\n\n----------------------------------------------------------------------\nRan 8 tests in 0.011s\n\nFAILED (failures=3)\n",
+  "seconds": 4.771,
+  "isolation": "WASI_READ_ONLY_NO_NETWORK"
+}

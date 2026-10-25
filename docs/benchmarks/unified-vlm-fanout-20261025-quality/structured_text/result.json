@@ -1,0 +1,12 @@
+{
+  "arm": "structured_text",
+  "status": "BLOCKED",
+  "attempts": [],
+  "vlmSeconds": 313.33,
+  "coderSeconds": 0,
+  "verificationSeconds": 0,
+  "error": "ValueError: Invented fact",
+  "totalSeconds": 313.344,
+  "bestCandidate": null,
+  "finalCandidate": null
+}

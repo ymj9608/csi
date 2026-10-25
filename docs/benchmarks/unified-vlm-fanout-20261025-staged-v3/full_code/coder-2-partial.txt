@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\nfrom deployment import load_deployment\n\n# Load deployment boundaries once at module level\nDEPLOYMENT = load_deployment()\n\ndef publish_event(event, fail=False):\n    # Always send to internal channels (r1)\n    publish('r1', event)\n    \n    # Send to external channels (r2, r3) only if they are marked as external\n    for channel in ['r2', 'r3']:\n        if channel in DEPLOYMENT and DEPLOYMENT[channel]['boundary'] == 'EXTERNAL':\n            # Redact phone for external recipients\n            redacted_event = event.copy()\n            redacted_event['phone'] = '<redacted>'\n            publish(channel, redacted_event)\n        elif fail and channel in DEPLOYMENT and DEPLOYMENT[channel]['boundary'] == 'INTERNAL':\n            # Send original event to internal failure channel\n            publish(channel, event)\n"
+    },
+    {
+      "path": "app.py",
+      "source": "from copy import deepcopy\nfrom state import MEMBERS, ARCHIVE\nfrom dispatcher import publish_event\n\ndef signup(phone, fail=False):\n    event = {'id': len(MEMBERS)+1, 'kind': 'signup', 'phone': phone}\n    MEMBERS.append(deepcopy(event))\n    if fail:\n        ARCHIVE.append(deepcopy(event))\n    publish_event(event, fail)\n    return event['id']\n"
+    }
+  ]
+}

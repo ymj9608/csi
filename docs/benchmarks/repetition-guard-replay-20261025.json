@@ -1,0 +1,13 @@
+{
+  "source": "docs/benchmarks/unified-vlm-fanout-20261025-quality-v2/code_image/assessment-stream.jsonl",
+  "sourceSha256": "13ed26664bcbd32f928e969f039817dcd21d4d7893792c6832c07860d8b7bca4",
+  "retainedCharacters": 9280,
+  "copiesInRetainedOutput": 35,
+  "replay": "Original retained streaming chunks, same 128-byte check interval as production; no model requests or score changes",
+  "detector": "agent.csi_agent.visual_stages.repeated_output",
+  "firstDetectedCharacters": 2031,
+  "firstDetectedBytes": 3125,
+  "firstDetectedAt": "2026-10-25T09:43:33.5554845Z",
+  "spanCharacters": 227,
+  "consecutiveCopiesAtDetection": 3
+}
