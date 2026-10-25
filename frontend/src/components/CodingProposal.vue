@@ -18,7 +18,8 @@ const architectureNote=computed(()=>{
   return note==='이 프로젝트에 사용할 수 있는 완료된 아키텍처 분석이 없습니다.' ? '' : note;
 });
 const orchestrated=computed(()=>result.value?.handoff?.mode==='vlm-orchestrator-v1');
-const modelLabel=computed(()=>orchestrated.value
+const unified=computed(()=>latest.value?.executionPlan?.unifiedReview || (result.value?.handoff?.mode==='unified-vlm-review-v1' ? result.value.handoff : null));
+const modelLabel=computed(()=>unified.value ? `${unified.value.model} · 저장된 통합 분석 → Ministral 3 8B · 로컬 코드 생성` : orchestrated.value
   ? `${result.value.handoff.model} · ${result.value.handoff.provider==='ollama'?'로컬':'OpenAI'} 총괄 → Ministral 3 8B · 로컬 코드 생성`
   : result.value?.handoff?.mode==='vlm-direct-v1' ? 'Qwen3-VL 8B → Ministral 3 8B · 이전 로컬 실행'
   : latest.value?.architectureId ? `${state.value?.orchestratorModel || 'gpt-5.4-mini-2026-03-17'} · ${state.value?.orchestratorProvider==='ollama'?'로컬':'OpenAI'} 총괄 → Ministral 3 8B · 로컬 코드 생성` : 'Ministral 3 8B · 코드·정책 기반 로컬 실행');
@@ -40,7 +41,7 @@ const generationBlocked=computed(()=>generationBlockedReason(props.scanStatus));
 const elapsedSeconds=computed(()=>Math.max(0,Math.floor((now.value-Date.parse(latest.value?.createdAt||''))/1000)));
 const checks=computed(()=>result.value?.verification || result.value?.lastVerification ||
   [...(result.value?.attempts||[])].reverse().find((a:any)=>a.verification)?.verification);
-const phaseNames:Record<string,string>={ARCHITECTURE_CONTEXT:'아키텍처 참고 중',VLM_PLANNING:'VLM이 근거와 실행 결과를 검토하고 다음 작업 결정',VLM_READING:'VLM이 선택한 관련 코드 조회',BASELINE:'수정 전 테스트',GENERATING:'VLM 지시에 따른 로컬 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'VLM 재지시에 따른 코드 보완'};
+const phaseNames:Record<string,string>={ARCHITECTURE_CONTEXT:'아키텍처 참고 중',VLM_PLANNING:'VLM이 근거와 실행 결과를 검토하고 다음 작업 결정',VLM_READING:'VLM이 선택한 관련 코드 조회',BASELINE:'수정 전 테스트',GENERATING:'VLM 지시에 따른 로컬 코드 생성',VALIDATING:'코드 범위·구문 검사',VERIFYING:'수정 후 기능·보안 테스트',RETRYING:'검증 피드백에 따른 코드 보완'};
 const errors:Record<string,string>={ARCHITECTURE_REQUIRED:'연결된 아키텍처 이미지가 없습니다',ARCHITECTURE_ID_MISMATCH:'연결된 이미지 버전이 일치하지 않습니다',ARCHITECTURE_IMAGE_INVALID:'아키텍처 이미지 형식이 잘못되었습니다',ARCHITECTURE_DIGEST_MISMATCH:'아키텍처 이미지 무결성 확인 실패',ARCHITECTURE_COMMIT_MISMATCH:'아키텍처와 검사 커밋이 다릅니다',VLM_TIMEOUT:'아키텍처 수정 지시 생성 시간 초과',VLM_UNAVAILABLE:'Qwen3-VL 모델 연결 또는 로딩 실패',VLM_INSTRUCTION_INVALID:'VLM 수정 지시문이 비어 있거나 잘못되었습니다',VLM_OUTPUT_INCOMPLETE:'VLM 수정 지시 생성이 완료되지 않았습니다',VLM_TEXT_REQUIRED:'VLM이 자연어 수정 지시문 대신 다른 형식을 반환했습니다',VLM_EVIDENCE_MISSING:'VLM 수정 지시문에 제공된 근거 인용이 없습니다',VLM_USAGE_MISSING:'VLM 사용량 기록이 누락되었습니다',VLM_CONTEXT_TOO_LARGE:'VLM 입력 맥락이 허용 크기를 초과했습니다',IMPORT_NOT_ALLOWED:'허용되지 않은 모듈 참조',UNDEFINED_GLOBAL:'필요한 import 또는 정의 누락',LEGACY_USES_NEW_HASH:'기존 계정 로그인 호환성 위반',TESTS_FAILED:'기능·보안 테스트 미통과',EVIDENCE_IDS:'근거 인용 검증 실패',MODEL_RESPONSE_FAILED:'모델 응답 처리 실패',OUTPUT_TRUNCATED:'모델 응답 길이 초과',LOGGING_CONFIG_NOT_ALLOWED:'로그 시스템 비활성화·설정 변경 금지',BASELINE_NOT_SUPPORTED:'지원하는 수정 전 코드·검증 환경과 다름',WORKER_LEASE_EXPIRED:'제한 시간 안에 Worker 결과를 받지 못했습니다',VERIFIER_UNAVAILABLE:'격리 테스트 환경에 연결할 수 없습니다',COMMIT_OR_SOURCE_UNAVAILABLE:'검사 커밋 또는 소스를 찾을 수 없습니다',LOCAL_RESULT_STORAGE_FAILED:'생성 결과를 로컬 파일에 저장하지 못했습니다',RETRIEVED_EVIDENCE_REQUIRED:'수정안을 뒷받침할 검색 근거가 없습니다',PROFILE_POLICY_MISMATCH:'현재 지원하는 정책 설정과 다릅니다',WORKER_FAILED:'Worker 실행 중 오류가 발생했습니다'};
 const evidenceIds=computed(()=>[...new Set<string>([...(result.value?.citedIds||[]),...(review.value?.changes.flatMap(change=>change.evidenceIds||[])||[])])]);
 Object.assign(errors,{
@@ -119,10 +120,10 @@ function download(){
     <template v-else>
       <p v-if="state.verificationProfile" class="coding-note">검증 설정: {{state.verificationProfile.config.profileId}} · 버전 {{state.verificationProfile.version}} · {{state.verificationProfile.config.inventory.length}}개 테스트</p>
       <p v-if="state.capabilities && !state.capabilities.workerReady && !active" role="status">검증 이미지와 로컬 모델이 준비된 코딩 Worker의 연결을 기다리고 있습니다.</p>
-      <p v-if="!latest">아키텍처 없이도 코드와 정책 근거로 수정안을 생성할 수 있습니다. 이미지를 연결하면 선택한 VLM이 구조 맥락을 함께 검토합니다. 수정안은 별도 공간에서 보안·기능 테스트를 실행합니다.</p>
+      <p v-if="!latest">새 검사는 VLM이 이미지·코드 diff·정책 근거를 함께 분석합니다. 저장된 자연어 지시를 실행해 수정안을 만들고 별도 공간에서 기능·보안 테스트를 수행합니다.</p>
       <p v-if="finding" class="coding-note">같은 검사에서 검증 프로필의 수정 범위에 포함된 문제를 함께 검토합니다.</p>
       <template v-if="supported && (!latest || ['FAILED','BLOCKED','REJECTED'].includes(latest.status))">
-        <p class="coding-note">이미지가 연결되면 설정된 VLM이 이미지와 필요한 코드·정책을 분석합니다. 코드 생성과 테스트는 코딩 Worker가 실행되는 PC에서 수행합니다.</p>
+        <p class="coding-note">새 검사의 통합 VLM 지시를 재사용합니다. 코드 생성과 테스트는 코딩 Worker가 실행되는 PC에서 수행합니다. 과거 검사 기록은 기존 경로를 유지합니다.</p>
         <button :disabled="busy || !!generationBlocked" :aria-describedby="generationBlocked ? `generation-blocked-${scanId}` : undefined" @click="action(`/scans/${scanId}/coding-proposals`)">{{ latest ? '새 수정안 요청' : '수정안 생성 요청' }}</button>
         <div v-if="generationBlocked" :id="`generation-blocked-${scanId}`" role="status">
           <p>{{generationBlocked}}</p>
@@ -133,7 +134,7 @@ function download(){
         <p role="status"><strong>{{statusName}}</strong> · {{date(latest.createdAt)}}</p>
         <p v-if="latest.status==='QUEUED'">코딩 Worker가 연결되면 시작합니다.</p>
         <p v-if="active" role="status">경과 {{elapsedSeconds}}초<span v-if="latest.progress?.phase"> · {{latest.progress.attempt ? `${latest.progress.attempt}차 / 최대 2차 · ` : ''}}{{phaseNames[latest.progress.phase]||latest.progress.phase}}</span></p>
-        <p v-if="latest.status==='RUNNING'" class="coding-note">VLM이 코드·정책 조회와 수정 지시, 검증 및 재지시를 결정합니다. 코드는 최대 두 번 생성하며, 5초마다 상태를 확인합니다.</p>
+        <p v-if="latest.status==='RUNNING'" class="coding-note">저장된 지시와 테스트 피드백으로 코드를 최대 두 번 생성합니다. 모든 필수 검증을 통과해야 승인할 수 있으며, 5초마다 상태를 확인합니다.</p>
         <p v-if="latest.status==='BLOCKED'" class="coding-error">수정안 작업이 중단되었습니다. {{errors[result?.failureReason] || '아래 작업 기록을 확인하세요.'}} 검증을 통과한 코드만 승인할 수 있습니다.</p>
         <p v-if="architectureNote" class="coding-note" data-testid="architecture-context">{{architectureNote}}</p>
         <p v-if="latest.errorCode" class="coding-error">{{errors[latest.errorCode] || latest.errorCode}} · Worker 연결과 검사 커밋을 확인한 뒤 다시 요청할 수 있습니다.</p>
@@ -165,6 +166,7 @@ function download(){
           <p>대상 커밋 <code>{{latest.commitSha}}</code><span v-if="Number.isFinite(result.durationMs)"> · 총 {{(result.durationMs/1000).toFixed(1)}}초</span></p>
           <p v-if="latest.status==='READY' && !canApprove" class="coding-error">최종 검증 기록이 완전하지 않아 승인할 수 없습니다.</p>
           <template v-if="!review"><p v-for="note in result.limitations" :key="note" class="coding-note">{{note}}</p></template>
+          <details v-if="unified && result.handoff" open><summary>저장된 VLM 자연어 수정 지시</summary><p>검사 당시 이미지·코드 diff·RAG를 함께 분석한 지시를 재사용했습니다. 코드 생성 시 이미지를 다시 분석하지 않습니다.</p><pre style="white-space: pre-wrap">{{result.handoff.instruction}}</pre></details>
           <details v-if="orchestrated" open><summary>VLM 총괄 작업 기록</summary>
             <p>{{ result.handoff.model }}이 선택한 조회·수정·검증 단계입니다. 승인과 원본 반영은 별도입니다.</p>
             <p v-if="result.handoff.sourceCommitMatches == null">이미지의 기준 커밋은 미확인입니다. 실제 코드와 구조가 일치하는지 검토하세요.</p>

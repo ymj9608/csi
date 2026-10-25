@@ -1,0 +1,80 @@
+{
+  "checks": [
+    {
+      "check": "Full Python regression before sampler adjustment",
+      "artifact": ".runtime\\staged-python-full.xml",
+      "tests": 506,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    {
+      "check": "Final sampler / stage / handoff regression",
+      "artifact": ".runtime\\staged-v2-targeted.xml",
+      "tests": 62,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "check": "Final schema-grounded stage contracts",
+      "artifact": ".runtime/staged-v3-targeted.xml",
+      "tests": 63,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "check": "Final full Python regression",
+      "artifact": ".runtime/staged-v3-full.xml",
+      "tests": 507,
+      "passed": 504,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "deselected": 2
+    }
+  ],
+  "backendUnitPassed": 80,
+  "postgresIntegrationPassed": 4,
+  "browserPassed": 29,
+  "frontendBuild": "PASSED",
+  "limitations": [
+    "Model accuracy is evaluated separately by the staged-v3 benchmark; calibration failures are retained.",
+    "Scanner-marked and optional Docker integration tests not run.",
+    "Function regressions use model doubles; real-model quality is separate. No production Docker/API end-to-end claim."
+  ],
+  "sourceHashes": {
+    "agent/csi_agent/visual_stages.py": "72a82f9d19bf5f3e4f250eca3bac167988c1082fe093be79c182d39cf9c1731d",
+    "agent/csi_agent/visual_review.py": "4bb28438606ae569c7f7ecb09ec02da1a5fe74c199be9943666cda2828824da4",
+    "agent/csi_agent/graph.py": "cade5e1da690fc02caa8460fe858e15a9e67a4c0cff188c33e94af458a81c1c0",
+    "agent/csi_agent/app.py": "45c253d525b7fd1f662fe11c2a91cac1186459a2434217eb34b69854aea099b6",
+    "coding_agent/project_engine.py": "fb075b8ae205d814f9f543959cda558edb45d05fbadee32186d0b340407226a6",
+    "coding_agent/project_verification.py": "d23b5b4233ae8ad071bf0431ed71098a3f07b5cf58553812137e2f5a82ac02cf",
+    "scripts/benchmark_unified_fanout.py": "03c1d0bfd167199e7666d5540d6cf7bbf3bcf937626c937476bf3d5f8cf3f2f3"
+  },
+  "pipeline": "integrated-vlm-stages-v3",
+  "realModelResult": {
+    "folder": "docs/benchmarks/unified-vlm-fanout-20261025-staged-v3",
+    "completedVlmCalls": 9,
+    "repeatedOutputCalls": 0,
+    "bestOfTwoTestsPassed": {
+      "full_code": 5,
+      "structured_text": 6,
+      "code_image": 6
+    },
+    "testsPerCandidate": 8,
+    "allPassCandidates": 0,
+    "runsPerCondition": 1
+  },
+  "gitSourceHashes": {
+    "agent/csi_agent/visual_stages.py": "8894ec5dd95da593023c814ef1390f27437d05a7b07fe0d9e346bbd3db7ba4d4",
+    "agent/csi_agent/visual_review.py": "82a22eaed39862eeb77366ccf2caa9f23596652f5b585c01b7264d679b5b79a3",
+    "agent/csi_agent/graph.py": "12ed0ee1f70f5d5e8f21ebabbf327bb361c042e86180c27bafa04159b5092e82",
+    "agent/csi_agent/app.py": "f3d5f12f6fde55ac09fbda9fa9ac00ae53899d402211669ccd9661c4acb9ec58",
+    "coding_agent/project_engine.py": "15d1df13a2754f4cc3c1bff3539d6e92a1b607b2fd33fa915fef22b482fc9c1e",
+    "coding_agent/project_verification.py": "d23b5b4233ae8ad071bf0431ed71098a3f07b5cf58553812137e2f5a82ac02cf",
+    "scripts/benchmark_unified_fanout.py": "37886d82d22e7464089c0ef78445c8acbe7a74bf5ccd2c6921fe474f4055088b"
+  },
+  "hashEncodingNote": "sourceHashes records original Windows execution bytes. gitSourceHashes records LF-normalized Git blobs. The only difference is CRLF/LF; benchmark runner-snapshot files preserve original bytes via .gitattributes."
+}

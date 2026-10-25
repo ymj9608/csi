@@ -66,7 +66,7 @@ async def test_llm_cannot_create_findings_or_citations(monkeypatch):
 async def test_delayed_event_cannot_reanalyze_failed_scan(monkeypatch):
     from types import SimpleNamespace
     from langgraph.checkpoint.memory import InMemorySaver
-    import agent.csi_agent.graph as graph_module
+    import agent.csi_agent.legacy_graph as graph_module
     monkeypatch.setenv('CSI_INTERNAL_TOKEN','test-service-token-00000000000000000000')
     calls=[];events=[]
     class Client:

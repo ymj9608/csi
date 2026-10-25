@@ -1,5 +1,11 @@
 # 아키텍처 이미지 분석 API 연동 계약
 
+## 신규 검사 통합 분석 (2026-10-25)
+
+새 검사는 별도 이미지 Worker 대신 LangGraph의 통합 VLM 분석을 사용합니다. 검사 접수 시 `scan_visual_reviews`에 이미지 원본·해시를 고정하고, 내부 Bearer API `GET /internal/scans/{id}/visual-input`으로 전달합니다. 커밋·이미지·사실/문서 인용을 검증한 결과만 저장합니다. 화면은 기존 `architecture_diagrams`의 구성 요소 JSON을 계속 사용합니다.
+
+이미지 등록만으로 코드 검사는 시작하지 않습니다. `QUEUED` 상태에서 다음 Push/CLI 검사를 기다립니다. 실패 시 재시도 버튼으로 새 이미지 작업을 준비한 뒤 새 검사를 실행하세요. 최신 이미지나 더 최신 검사 결과를 과거 응답으로 덮어쓰지 않습니다. 아래 독립 Worker의 claim/progress/result API는 구형 호환 경로입니다. [통합 처리 계약](UNIFIED_VLM_REVIEW.md)을 참고하세요.
+
 ## 프로젝트 등록 시 필수 아키텍처 첨부
 
 새 프로젝트는 `POST /api/projects`에 `multipart/form-data`로 `repository`,

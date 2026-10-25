@@ -493,13 +493,13 @@ onBeforeUnmount(() => {
     <h3>아키텍처 분석 결과</h3>
     <div v-if="analysis.status === 'FAILED'" role="alert" class="analysis-failure">
       <p><strong>분석 실패</strong> · {{ failureMessage(analysis.errorCode) }}</p>
-      <p>Worker와 모델 연결 상태를 확인한 후 다시 요청해 주세요. 저장된 이미지로 재분석합니다.</p>
+      <p>모델 연결 상태를 확인하세요. 재시도 준비 후 새 코드 검사를 보내면 이미지·코드·RAG를 함께 다시 분석합니다.</p>
       <button v-if="analysis.id" :disabled="retryingAnalysis" @click="retryAnalysis">
         {{ retryingAnalysis ? '요청 중…' : '분석 다시 시도' }}
       </button>
     </div>
     <p v-else-if="analysisPending" class="analysis-progress">
-      {{ STATUS_LABEL[analysis.status] }}…
+      {{ STATUS_LABEL[analysis.status] }}…<span v-if="analysis.status === 'QUEUED'"> 새 코드 검사가 도착하면 이미지·코드·RAG를 함께 분석합니다.</span>
     </p>
     <template v-else>
       <p class="analysis-summary">{{ analysis.summary }}</p>

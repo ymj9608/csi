@@ -41,6 +41,43 @@ class ArchitectureContextsPostgresIT {
  @BeforeEach void resetFixtures(){db.jdbc.execute("TRUNCATE TABLE projects CASCADE");}
  @AfterAll static void cleanup(){if(admin!=null && schema!=null)admin.execute("DROP SCHEMA "+schema+" CASCADE");}
 
+ @Test void unifiedSnapshotIsImmutableAndCannotOverwriteNewUploads() throws Exception {
+  UUID project=UUID.randomUUID(),scan=UUID.randomUUID(),finding=UUID.randomUUID();String commit="a".repeat(40);
+  db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,'main')",project,"test/unified");
+  var diagrams=new ArchitectureController(db);diagrams.upload(project,ArchitectureContextsTest.image("png"));
+  db.jdbc.update("INSERT INTO scans(id,project_id,repository,branch,commit_sha,workflow_run_id,run_attempt,trigger_type,status,policy_version,policy) VALUES(?,?,'test/unified','main',?,'unified',1,'TEST','QUEUED','test','{}'::jsonb)",scan,project,commit);
+  UnifiedReview.snapshot(db,scan,project);var service=new UnifiedReview(db);
+  var input=(Map<?,?>)service.input(scan);
+  assertEquals("ANALYZING",((Map<?,?>)diagrams.get(project)).get("status"));
+  var result=UnifiedReviewTest.result(input.get("diagramId").toString(),input.get("imageSha256").toString(),commit);
+  ((ObjectNode)result.path("instructions").get(0)).put("findingId",finding.toString());
+  var reports=UnifiedReviewTest.reports();((ObjectNode)reports.get(0)).put("id",finding.toString());
+  tx.execute(s->{UnifiedReview.persist(db,scan,result,reports,commit);return null;});
+  assertEquals("EXTRACTED",((Map<?,?>)diagrams.get(project)).get("status"));
+  service.input(scan);assertEquals("EXTRACTED",((Map<?,?>)diagrams.get(project)).get("status"));
+  tx.execute(s->{UnifiedReview.persist(db,scan,result,reports,commit);return null;});
+  var changed=result.deepCopy();((ObjectNode)changed.path("architecture")).put("summary","replayed different result");
+  assertThrows(IllegalArgumentException.class,()->tx.execute(s->{UnifiedReview.persist(db,scan,changed,reports,commit);return null;}));
+  db.jdbc.update("UPDATE scans SET status='COMPLETED',analysis_mode='VLM' WHERE id=?",scan);
+  db.jdbc.update("INSERT INTO findings(id,scan_id,rule_id,title,category,severity,file_path,start_line,end_line,fingerprint,confidence,evidence_status) VALUES(?,?,'SEC-02','test','SECURITY','HIGH',?,1,1,'unified','MEDIUM','SUSPECTED')",finding,scan,CodingProposals.TARGET);
+  var profile=new ProjectVerificationTest().profile();profile.put("repository","test/unified");
+  profile.putArray("editablePaths").add(CodingProposals.TARGET);profile.putArray("contextPaths").add(CodingProposals.TARGET);
+  profile.putArray("snapshotPaths").add("backend/app").add("backend/tests");
+  ((ObjectNode)profile.path("runtime")).put("workingDirectory","backend");profile.putArray("ruleIds").add("SEC-02");
+  db.jdbc.update("INSERT INTO project_verification_profiles(project_id,version,config,config_digest,validated_at) VALUES(?,1,?::jsonb,?,now())",project,profile.toString(),ProjectVerification.digest(profile));
+  db.jdbc.update("UPDATE projects SET verification_profile_version=1 WHERE id=?",project);
+  var coding=new CodingProposals(db,org.mockito.Mockito.mock(Events.class),true,"test/unified");
+  var queued=tx.execute(s->coding.queue(scan,true));assertNull(queued.get("architectureId"));
+  var plan=db.json.valueToTree(queued.get("executionPlan"));assertEquals(result,plan.path("unifiedReview"));
+  diagrams.upload(project,ArchitectureContextsTest.image("png"));
+  UnifiedReview.fail(db,scan);service.input(scan);
+  assertEquals("QUEUED",((Map<?,?>)diagrams.get(project)).get("status"));
+  assertEquals(input.get("imageSha256"),((Map<?,?>)service.input(scan)).get("imageSha256"));
+  var claim=(Map<?,?>)tx.execute(s->coding.claim(new CodingProposals.Claim("test/unified",List.of("python-pytest-v1"),List.of("sha256:"+"a".repeat(64)),List.of(CodingProposals.MODEL))));
+  var job=(Map<?,?>)claim.get("job");var handed=(Map<?,?>)job.get("architectureDiagram");
+  assertEquals(input.get("diagramId"),handed.get("id"));assertEquals("EXTRACTED",handed.get("status"));
+ }
+
  @Test void durableLifecycleConcurrentClaimsAndCacheVersioning() throws Exception {
   UUID project=UUID.randomUUID();
   db.jdbc.update("INSERT INTO projects(id,repository,default_branch) VALUES(?,?,'main')",project,"test/architecture");

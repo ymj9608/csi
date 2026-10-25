@@ -32,6 +32,10 @@ export const label = (value?: string) =>
 
 // Agent·백엔드 실행 이벤트 코드의 한국어 이름입니다. 원래 코드는 화면에 함께 남깁니다.
 export const eventLabels: Record<string, string> = {
+  prepare_visual_analysis: "통합 VLM 입력 검증",
+  visual_architecture: "VLM 구조·데이터 흐름 분석",
+  visual_security: "VLM 정책·취약점 판단",
+  visual_instruction: "VLM 자연어 수정 지시 생성",
   CODING_QUEUED: "코딩 수정안 생성 대기",
   CODING_RUNNING: "코딩 수정안 생성·검증 시작",
   CODING_FINISHED: "코딩 수정안 검증 결과 저장",
@@ -67,6 +71,12 @@ export const eventLabels: Record<string, string> = {
 
 // Agent가 고를 수 있는 MCP 도구의 한국어 이름입니다.
 export const toolLabels: Record<string, string> = {
+  prepare_visual_analysis: "통합 VLM 입력 검증",
+  visual_architecture: "VLM 구조·데이터 흐름 분석",
+  visual_security: "VLM 정책·취약점 판단",
+  visual_instruction: "VLM 자연어 수정 지시 생성",
+  unified_visual_assessment: "이미지·코드·RAG 통합 분석",
+  get_scan_visual_input: "검사에 고정된 아키텍처 이미지 조회",
   get_privacy_policy: "개인정보 정책 조회",
   compare_policy_with_findings: "탐지 결과와 정책 대조",
   get_guideline_details: "가이드라인 상세 조회",
