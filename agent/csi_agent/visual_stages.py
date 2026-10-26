@@ -20,7 +20,7 @@ from .analysis import LLMItem, apply_review
 from . import visual_review as vr
 
 PIPELINE = 'integrated-vlm-stages-v3'
-MODEL = 'qwen3-vl:8b-instruct-q4_K_M'
+MODEL = 'qwen3-vl:8b-instruct'
 # Qwen3-VL Instruct's published non-greedy sampling settings. Keep the
 # bounded local context/output budgets and a 256-token repetition window.
 OPTIONS = {'temperature': 0.7, 'top_p': 0.8, 'top_k': 20, 'num_ctx': 32768,
@@ -241,6 +241,11 @@ def finish(state, instructions):
     report = copy.deepcopy(state['report'])
     raw = {'architecture': state['structure']['architecture'], **state['security'], **instructions}
     bundle = vr.validate(raw, report, state['image'], state['commit'], state['model'])
+    # Preserve the validated edges, not just the display summary or a prose retelling.
+    # Optional on historical reviews; new reviews always carry this versioned context.
+    bundle['flowContext'] = {'schemaVersion': 1,
+        'flows': copy.deepcopy(state['structure']['flows']),
+        'uncertainties': list(state['structure']['uncertainties'])}
     trace = state['stageTrace']
     bundle['usage'] = {k: sum(t['usage'].get(k, 0) for t in trace)
                        for k in ('prompt_eval_count', 'eval_count', 'total_duration')}

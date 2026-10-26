@@ -75,6 +75,7 @@ class ArchitectureContextsPostgresIT {
   assertEquals(input.get("imageSha256"),((Map<?,?>)service.input(scan)).get("imageSha256"));
   var claim=(Map<?,?>)tx.execute(s->coding.claim(new CodingProposals.Claim("test/unified",List.of("python-pytest-v1"),List.of("sha256:"+"a".repeat(64)),List.of(CodingProposals.MODEL))));
   var job=(Map<?,?>)claim.get("job");var handed=(Map<?,?>)job.get("architectureDiagram");
+  assertEquals(result.path("flowContext"),db.json.valueToTree(job.get("executionPlan")).path("unifiedReview").path("flowContext"));
   assertEquals(input.get("diagramId"),handed.get("id"));assertEquals("EXTRACTED",handed.get("status"));
  }
 

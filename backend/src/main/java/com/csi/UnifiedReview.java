@@ -28,10 +28,34 @@ public class UnifiedReview {
   var row=new LinkedHashMap<>(rows.getFirst());row.put("imageBase64",Base64.getEncoder().encodeToString((byte[])row.remove("image")));return row;
  }
  static void require(boolean ok,String reason){if(!ok)throw new IllegalArgumentException(reason);}
+ static void flowText(JsonNode value,int limit){
+  String text=value.asText();
+  require(value.isTextual()&&!text.isBlank()&&text.codePointCount(0,text.length())<=limit,"Visual flow text invalid");
+ }
+ static void validateFlowContext(JsonNode value){
+  require(value.isObject()&&value.size()==3&&value.has("schemaVersion")&&value.has("flows")&&value.has("uncertainties"),"Visual flow schema");
+  require(value.path("schemaVersion").isIntegralNumber()&&value.path("schemaVersion").canConvertToInt()&&value.path("schemaVersion").asInt()==1,"Visual flow version");
+  var flows=value.path("flows");var uncertainties=value.path("uncertainties");
+  require(flows.isArray()&&flows.size()<=16&&uncertainties.isArray()&&uncertainties.size()<=8,"Visual flow bounds");
+  for(var flow:flows){
+   require(flow.isObject()&&flow.size()==6,"Visual flow fields");
+   flowText(flow.path("source"),60);flowText(flow.path("target"),60);
+   flowText(flow.path("condition"),180);flowText(flow.path("data"),180);
+   require(Set.of("INTERNAL","EXTERNAL","UNKNOWN").contains(flow.path("boundary").asText())&&Set.of("OBSERVED","INFERRED","UNKNOWN").contains(flow.path("state").asText()),"Visual flow classification");
+  }
+  for(var text:uncertainties)flowText(text,240);
+ }
+ static void validateFlowHandoff(JsonNode review,JsonNode handoff){
+  if(review.has("flowContext")){
+   validateFlowContext(review.path("flowContext"));
+   require(review.path("flowContext").equals(handoff.path("flowContext")),"Saved VLM flows changed or missing");
+  }else require(!handoff.has("flowContext"),"Unsourced VLM flows");
+ }
  static void validate(JsonNode result,JsonNode snapshot,JsonNode reports,String commit){
   require("unified-vlm-review-v1".equals(result.path("mode").asText())&&result.toString().length()<150000,"Visual review schema");
   require(commit.equals(result.path("commitSha").asText())&&snapshot.path("diagramId").equals(result.path("diagramId"))&&snapshot.path("imageSha256").equals(result.path("imageSha256")),"Visual review identity");
   require(!result.path("model").asText().isBlank()&&result.path("model").asText().length()<=100,"Visual model required");
+  if(result.has("flowContext"))validateFlowContext(result.path("flowContext"));
   var arch=result.path("architecture");
   require(arch.isObject()&&arch.size()==2&&arch.has("summary")&&arch.has("components"),"Visual architecture schema");
   try{ArchitectureController.validateResult(new com.fasterxml.jackson.databind.ObjectMapper().treeToValue(arch,ArchitectureController.Result.class));}catch(Exception e){throw new IllegalArgumentException("Visual architecture schema");}

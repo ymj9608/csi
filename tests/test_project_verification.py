@@ -138,10 +138,17 @@ def test_generic_engine_independent_layout_passes(repository):
 
 
 @pytest.mark.parametrize('succeeds',[True,False])
-def test_saved_unified_instruction_is_reused_without_second_vlm(repository,monkeypatch,succeeds):
+@pytest.mark.parametrize('with_flows',[True,False])
+def test_saved_unified_instruction_is_reused_without_second_vlm(repository,monkeypatch,succeeds,with_flows):
     p=profile();c=context(repository,p);calls=[];requests=[]
     saved={'mode':'unified-vlm-review-v1','commitSha':c['commitSha'],'imageSha256':'b'*64,'model':'qwen3-vl:8b',
            'instructions':[{'findingId':'finding','text':'Remove sensitive log values, preserve the contact event and stored records.','referenceIds':['ref']}]}
+    if with_flows:
+        saved['flowContext']={'schemaVersion':1,'flows':[
+            {'source':'API','target':'Storage','condition':'normal','data':'phone','boundary':'INTERNAL','state':'OBSERVED'},
+            {'source':'API','target':'Support','condition':'failure','data':'phone','boundary':'EXTERNAL','state':'INFERRED'},
+            {'source':'API','target':'Collector','condition':'direct call','data':'phone','boundary':'UNKNOWN','state':'UNKNOWN'}],
+            'uncertainties':['Collector recipient is not confirmed.']}
     c['executionPlan']['unifiedReview']=saved;c['planDigest']=fingerprint(c['executionPlan'])
     monkeypatch.setattr('coding_agent.project_engine.orchestrate',lambda *a,**kw:pytest.fail('Unexpected second VLM analysis'))
     def verifier(tree,profile):
@@ -151,8 +158,28 @@ def test_saved_unified_instruction_is_reused_without_second_vlm(repository,monke
     assert value['handoff']['reusedScanAnalysis'] and value['handoff']['reviewDigest']==fingerprint(saved)
     assert saved['instructions'][0]['text'] in json.dumps(requests,ensure_ascii=False)
     assert len(requests)==(1 if succeeds else 2)
+    for request in requests:
+        packet=json.loads(request['messages'][1]['content'])
+        assert request['truncate'] is False and request['shift'] is False
+        assert packet['selectedSource']=={} and packet['sources']
+        if with_flows:
+            assert packet['vlmFlowContext']==saved['flowContext']==value['handoff']['flowContext']
+        else:
+            assert 'vlmFlowContext' not in packet and 'flowContext' not in value['handoff']
     assert value['status']==('READY' if succeeds else 'BLOCKED')
     if not succeeds:assert not value['files']
+
+
+def test_coder_context_exhaustion_cannot_publish_a_patch(repository):
+    p=profile();c=context(repository,p);calls=[]
+    def verifier(tree,profile):
+        calls.append(True);return report(profile,True)
+    def chat(payload):
+        return {**coder(AFTER)(payload),'prompt_eval_count':8000,'eval_count':192}
+    value=generate(repository,c,chat=chat,verifier=verifier)
+    assert value['status']=='BLOCKED' and not value['files']
+    assert len(calls)==1
+    assert all(a['error']=='CODING_CONTEXT_EXHAUSTED' for a in value['attempts'])
 
 
 def test_crlf_git_blobs_keep_byte_accurate_manifest(repository):

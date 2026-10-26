@@ -7,7 +7,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 import httpx
-from .architecture_context import resolve as resolve_architecture
+from .architecture_context import resolve as resolve_architecture, validated_flow_context
 from .orchestrator import run as orchestrate
 from .project_adapter import verify
 from .project_verification import validate_profile, export_snapshot, fingerprint, validate_candidate, report_gate
@@ -21,7 +21,13 @@ preserving useful operational events, validation, storage and authentication beh
 edit tests/configuration, access environment secrets or add imports. Return JSON with edits:[{path,old,new}],
 reason and evidence_ids. Use minimal exact text replacements; each old text must occur exactly once in the
 original source. Do not repeat the entire file. Keep the reason to one short sentence. Cite at least one
-supplied finding and one policy reference. No shell commands. Only the host can verify and publish a candidate.'''
+supplied finding and one policy reference. No shell commands. Only the host can verify and publish a candidate.
+When vlmFlowContext is provided, inspect every source -> target flow together with its condition,
+data, boundary and evidence state. Check normal, failure and direct-call paths against the actual source.
+Preserve authorized internal use and repair evidenced external disclosure. UNKNOWN/INFERRED entries
+and uncertainties are not confirmed deployment facts. Component names do not authorize file edits.
+If prose instructions omit or conflict with a flow, reconcile it using source and behavior contracts;
+never silently drop the flow, assume an unknown recipient, or broaden the editable scope.'''
 
 
 def apply_edits(before, edits, target):
@@ -113,6 +119,7 @@ class ProjectExecutor:
                 'required':['path','old','new'],'properties':{'path':{'const':self.target},'old':{'type':'string'},'new':{'type':'string'}}}},
             'reason': {'type':'string'}, 'evidence_ids':{'type':'array','items':{'type':'string','enum':ids}}}}
         payload = {'model':self.p['model'], 'stream':False, 'think':False, 'keep_alive':0, 'format':schema,
+                   'truncate':False, 'shift':False,
                    'options':{'temperature':0,'seed':42,'num_ctx':8192,'num_predict':1000},
                    'messages':[{'role':'system','content':SYSTEM}, {'role':'user','content':json.dumps({
                        **self.packet, 'instruction':instruction, 'selectedSource':selected,
@@ -131,6 +138,8 @@ class ProjectExecutor:
                     raw = response.json()
             if raw.get('done_reason') != 'stop':
                 raise Rejected('OUTPUT_TRUNCATED')
+            if raw.get('prompt_eval_count', 0) + raw.get('eval_count', 0) >= payload['options']['num_ctx']:
+                raise Rejected('CODING_CONTEXT_EXHAUSTED')
             attempt['modelUsage'] = {key:raw[key] for key in ('prompt_eval_count','eval_count','prompt_eval_duration','eval_duration','load_duration')
                                      if type(raw.get(key)) is int and raw[key] >= 0}
             value = json.loads(raw['message']['content'])
@@ -291,8 +300,13 @@ def execute_saved_review(review, executor, result, packet, notify):
     result['handoff']={'mode':'unified-vlm-review-v1','instruction':instruction,
         'reviewDigest':fingerprint(review),'imageSha256':review['imageSha256'],'commitSha':review['commitSha'],
         'model':review['model'],'status':'BLOCKED','reusedScanAnalysis':True}
+    if 'flowContext' in review:
+        flow = validated_flow_context(review['flowContext'])
+        executor.packet['vlmFlowContext'] = flow
+        result['handoff']['flowContext'] = validated_flow_context(flow)
     for _ in range(2):
-        if not executor.delegate(instruction,packet['sources']).get('errorCode'):
+        # Sources already occur in executor.packet; do not duplicate them alongside flows.
+        if not executor.delegate(instruction,{}).get('errorCode'):
             executor.verify()
             if executor.verified:
                 executor.publish_for_review()

@@ -4,9 +4,36 @@ The extractor has no file paths. Lexical overlap supplies candidates, not proof 
 ownership or isolation. Keep that distinction in the model packet and UI.
 """
 import re
+from copy import deepcopy
+from .repository import Rejected
 
 STOP_WORDS = {'backend', 'frontend', 'app', 'core', 'src', 'main', 'python', 'java',
               'component', 'service', 'system', 'the', 'and', 'for', 'with', 'from'}
+
+
+def validated_flow_context(value):
+    """Full scan-bound flow evidence, independent of lexical component ranking.
+
+    A missing field is handled by the caller for old reviews. A present malformed
+    field must never silently become 'no architecture information'.
+    """
+    def require(ok):
+        if not ok:
+            raise Rejected('UNIFIED_FLOW_CONTEXT_INVALID')
+    require(isinstance(value, dict) and set(value) == {'schemaVersion', 'flows', 'uncertainties'})
+    require(type(value['schemaVersion']) is int and value['schemaVersion'] == 1)
+    require(isinstance(value['flows'], list) and len(value['flows']) <= 16)
+    require(isinstance(value['uncertainties'], list) and len(value['uncertainties']) <= 8)
+    limits = {'source': 60, 'target': 60, 'condition': 180, 'data': 180}
+    for flow in value['flows']:
+        require(isinstance(flow, dict) and set(flow) == set(limits) | {'boundary', 'state'})
+        for key, limit in limits.items():
+            require(isinstance(flow[key], str) and bool(flow[key].strip()) and len(flow[key]) <= limit)
+        require(flow['boundary'] in ('INTERNAL', 'EXTERNAL', 'UNKNOWN'))
+        require(flow['state'] in ('OBSERVED', 'INFERRED', 'UNKNOWN'))
+    for text in value['uncertainties']:
+        require(isinstance(text, str) and bool(text.strip()) and len(text) <= 240)
+    return deepcopy(value)
 
 
 def tokens(text):

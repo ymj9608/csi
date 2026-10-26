@@ -16,12 +16,33 @@
 
 - Backend/Agent/Frontend를 갱신하고 V13 마이그레이션을 적용한다. DB 초기화는 필요 없다.
 - 기존 완료 검사와 코딩 작업은 과거 경로로 조회·처리한다. 실행 중인 구형 분석 작업은 종료한 후 전환하고 새 검사로 검증한다.
-- 통합 분석은 Ollama가 필요하다. `CSI_REVIEW_VLM_MODEL` 기본값은 `qwen3-vl:8b-instruct-q4_K_M`다.
+- 통합 분석은 Ollama가 필요하다. `CSI_REVIEW_VLM_MODEL` 기본값은 `qwen3-vl:8b-instruct`다.
 - 신규 검사에는 별도 `architecture_agent` 실행이나 코딩 이미지 재선택이 필요 없다. `local_automation --standalone-architecture`는 구형 이미지 전용 분석을 사용할 때만 지정한다.
 - 이미지가 QUEUED이면 다음 코드 검사를 기다리는 상태다. 실패 후 재시도 버튼으로 새 이미지 작업 ID를 준비하고 새 검사를 접수한다.
 - 입력 부족·시간 초과·잘못된 JSON/인용은 명시적으로 실패 처리한다. 규칙 기반 성공이나 임의의 패치를 대신 제공하지 않는다.
 
 ## 검증 구분
+
+### 상세 흐름 전달 변경 (2026-10-26)
+
+새 분석은 자연어 지시 외에 `visualReview.flowContext`를 저장한다. 버전은 `schemaVersion: 1`이며,
+`flows`의 `source`, `target`, `condition`, `data`, `boundary`, `state`와 `uncertainties`를
+구조 분석 단계의 검증된 결과 그대로 보존한다. 빈 흐름도 명시적으로 저장하며 없는 경로를 만들어내지 않는다.
+
+이 필드는 검사 결과 JSON → `executionPlan.unifiedReview` → Coding Agent 입력의 `vlmFlowContext`로
+전달된다. 이름으로 고른 상위 컴포넌트 후보에 따라 흐름을 잘라내지 않는다. 정상·실패·직접 호출 경로와
+내부·외부·UNKNOWN 경계를 함께 검토하도록 코딩 프롬프트에 명시하고, 재생성에도 같은 값을 전달한다.
+구조 데이터는 근거이며 수정 권한이나 실행 명령이 아니다. 원본 코드·기능 계약·수정 범위·격리 검증이 우선한다.
+
+결과의 `handoff.flowContext`는 고정 실행 계획과 정확히 일치해야 READY 결과를 수락한다.
+잘못된 형식은 Backend와 Worker에서 차단한다. 기존 검사에 필드가 없으면 과거 자연어 지시 경로를 유지하며,
+과거 기록을 추측으로 보완하지 않는다. 상세 흐름을 사용하려면 새 검사를 실행해야 한다. JSONB 확장이므로
+새 DB 마이그레이션은 없다. Backend와 Agent를 함께 갱신하고 Coding Worker도 재시작한다.
+
+코딩 요청에서는 중복된 소스를 제거하고 `truncate=false`, `shift=false`를 지정한다. 완료 토큰 집계가
+문맥 한도에 도달하면 `CODING_CONTEXT_EXHAUSTED`로 차단한다. 이는 모든 서버 버전의 무손실 처리를
+보증하거나 자연어 판단의 의미적 정확도를 검증하는 장치는 아니다. 아래 2026-10-25 실험 수치는 당시
+모델 태그와 전달 방식의 기록으로 그대로 보존한다.
 
 - Python/API 회귀 테스트는 모델 응답 대역으로 호출 횟수, 입력 전달, 인용 검증, 실패 차단과 지시 재사용을 검증한다. 실제 VLM 정확도 측정이 아니다.
 - `scripts/benchmark_unified_fanout.py`는 실제 로컬 VLM/Coder를 사용한다. 동일한 합성 소규모 서비스·8개 테스트에서 전체 코드, 코드+구조화 텍스트, 코드+이미지를 비교한다.

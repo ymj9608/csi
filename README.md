@@ -60,7 +60,7 @@ python3 scripts/init_env.py
 | `CSI_REPOSITORY_ALLOWLIST` | 허용할 `owner/repository` 목록. 쉼표로 구분 |
 | `CSI_REVIEW_OLLAMA_URL` | 네이티브 Agent의 Ollama 주소. 기본 `http://127.0.0.1:11434` |
 | `CSI_REVIEW_OLLAMA_DOCKER_URL` | Compose Agent의 호스트 Ollama 주소. 기본 `http://host.docker.internal:11434` |
-| `CSI_REVIEW_VLM_MODEL`, `CSI_REVIEW_VLM_TIMEOUT_SECONDS` | 통합 VLM 모델과 단계별 응답 제한. 기본 `qwen3-vl:8b-instruct-q4_K_M`, 600초 |
+| `CSI_REVIEW_VLM_MODEL`, `CSI_REVIEW_VLM_TIMEOUT_SECONDS` | 통합 VLM 모델과 단계별 응답 제한. 기본 `qwen3-vl:8b-instruct`, 600초 |
 
 로컬 샘플과 Lichu를 함께 검사하려면 `.env`의 해당 항목을 다음과 같이 설정합니다.
 
@@ -202,12 +202,12 @@ Lichu는 별도 검사 대상 저장소입니다. `csi`와 같은 상위 폴더�
 호스트에 Ollama를 설치하고 모델을 준비합니다. Windows·Mac 모두 같은 HTTP API를 사용합니다. GPU/메모리 여유와 모델 처리 시간을 확인하고 시간 제한은 세 조건을 비교할 때 동일하게 유지하세요.
 
 ```sh
-ollama pull qwen3-vl:8b-instruct-q4_K_M
+ollama pull qwen3-vl:8b-instruct
 ollama pull ministral-3:8b-instruct-2512-q4_K_M
 ```
 
 ```dotenv
-CSI_REVIEW_VLM_MODEL=qwen3-vl:8b-instruct-q4_K_M
+CSI_REVIEW_VLM_MODEL=qwen3-vl:8b-instruct
 CSI_REVIEW_OLLAMA_URL=http://127.0.0.1:11434
 CSI_REVIEW_OLLAMA_DOCKER_URL=http://host.docker.internal:11434
 CSI_REVIEW_VLM_TIMEOUT_SECONDS=600

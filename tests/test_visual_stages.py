@@ -23,6 +23,33 @@ def replies():
             {'findings': value['findings']}, {'instructions': value['instructions']}]
 
 
+@pytest.mark.asyncio
+async def test_detailed_flows_survive_finalization_without_prose_reconstruction():
+    outputs = replies()
+    flows = [
+        {'source': 'API', 'target': 'Internal SMS', 'condition': 'normal', 'data': 'phone',
+         'boundary': 'INTERNAL', 'state': 'OBSERVED'},
+        {'source': 'API', 'target': 'Support', 'condition': 'retry exhausted', 'data': 'phone and error',
+         'boundary': 'EXTERNAL', 'state': 'INFERRED'},
+        {'source': 'API', 'target': 'Collector', 'condition': 'direct call', 'data': 'event',
+         'boundary': 'UNKNOWN', 'state': 'UNKNOWN'},
+    ]
+    outputs[0]['flows'] = flows
+    async def caller(spec):
+        return {'answer': outputs[vs.STAGES.index(spec['stage'])], 'usage': {}}
+    result = await vs.build_analysis_graph(caller=caller).ainvoke(state())
+    assert result['visualReview']['flowContext'] == {
+        'schemaVersion': 1, 'flows': flows, 'uncertainties': ['Unknown runtime']}
+    assert result['visualReview']['instructions'] == answer()['instructions']
+    result['structure']['flows'][0]['target'] = 'changed later'
+    assert result['visualReview']['flowContext']['flows'][0]['target'] == 'Internal SMS'
+
+
+def test_default_review_model_is_requested_instruct_tag(monkeypatch):
+    monkeypatch.delenv('CSI_REVIEW_VLM_MODEL', raising=False)
+    assert vs.specification(vs.STAGES[0], state())['model'] == 'qwen3-vl:8b-instruct'
+
+
 @pytest.mark.parametrize('mode', ['full_code', 'structured_text', 'code_image'])
 @pytest.mark.asyncio
 async def test_shared_graph_preserves_modalities_sources_and_metrics(mode):
