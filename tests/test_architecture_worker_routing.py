@@ -8,6 +8,31 @@ import pytest
 from architecture_agent import diagram_worker, worker
 
 
+def test_global_upload_worker_needs_no_scan_or_project_selection(monkeypatch):
+    paths = []
+    result = {'summary': 'Architecture', 'components': [{'name': 'API', 'role': 'service',
+              'state': 'OBSERVED', 'isolationStatus': 'UNKNOWN'}]}
+    def handle(request):
+        paths.append(request.url.path)
+        if request.url.path == '/internal/architecture/claim':
+            return httpx.Response(200, json={'diagramId': 'diagram', 'projectId': 'new-project'})
+        if request.url.path.endswith('/image'): return httpx.Response(200, content=b'image')
+        return httpx.Response(200, json={})
+    monkeypatch.setattr(diagram_worker.extractor, 'extract', lambda *a, **kw: result)
+    with httpx.Client(base_url='http://localhost', transport=httpx.MockTransport(handle)) as api:
+        assert diagram_worker.run_once(api)
+    assert paths == ['/internal/architecture/claim', '/internal/architecture/diagram/progress',
+                     '/internal/architecture/diagram/image', '/internal/architecture/diagram/result']
+
+
+def test_all_cli_dispatches_global_queue(monkeypatch):
+    received = []
+    monkeypatch.setattr(sys, 'argv', ['diagram_worker', '--all', '--once'])
+    monkeypatch.setattr(diagram_worker, 'run', received.append)
+    diagram_worker.main()
+    assert received[0].project_id is None and received[0].repository is None and received[0].all
+
+
 def test_project_cli_dispatches_to_diagram_worker_with_qwen(monkeypatch):
     received = []
     monkeypatch.setattr(sys, "argv", ["worker", "--project-id", "project", "--once"])
@@ -15,7 +40,7 @@ def test_project_cli_dispatches_to_diagram_worker_with_qwen(monkeypatch):
     monkeypatch.setattr(worker, "client", lambda _: (_ for _ in ()).throw(AssertionError("legacy queue selected")))
     worker.main()
     assert received[0].project_id == "project"
-    assert received[0].model == "qwen3-vl:8b"
+    assert received[0].model == "qwen3-vl:8b-instruct"
     assert received[0].once
 
 
@@ -35,7 +60,7 @@ def test_diagram_worker_claim_image_and_result_contract(monkeypatch):
 
     def extract(image, **kwargs):
         assert image == b"image"
-        assert kwargs["model"] == "qwen3-vl:8b"
+        assert kwargs["model"] == "qwen3-vl:8b-instruct"
         return result
 
     monkeypatch.setattr(diagram_worker.extractor, "extract", extract)
@@ -61,7 +86,7 @@ def test_repository_cli_selects_project_queue_with_qwen(monkeypatch):
     monkeypatch.setattr(diagram_worker, 'run', lambda args: received.append(args))
     worker.main()
     assert received[0].repository == 'org/demo'
-    assert received[0].model == 'qwen3-vl:8b'
+    assert received[0].model == 'qwen3-vl:8b-instruct'
 
 
 def test_repository_resolves_before_claim_without_inference(monkeypatch, tmp_path):
@@ -72,7 +97,7 @@ def test_repository_resolves_before_claim_without_inference(monkeypatch, tmp_pat
     monkeypatch.setattr(diagram_worker, 'client', lambda *_: httpx.Client(base_url='http://localhost:8080'))
     monkeypatch.setattr(diagram_worker, 'run_once', lambda api, project_id, **kw: claims.append(project_id))
     diagram_worker.run(Namespace(backend='http://localhost:8080', env_file=str(tmp_path / 'missing.env'), project_id=None,
-        repository='org/demo', once=True, model='qwen3-vl:8b', ollama_url='http://localhost:11434'))
+        repository='org/demo', once=True, model='qwen3-vl:8b-instruct', ollama_url='http://localhost:11434'))
     assert claims == ['resolved-id']
 
 

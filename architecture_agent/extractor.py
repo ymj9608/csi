@@ -6,7 +6,7 @@ import httpx
 from . import schema
 from coding_agent.runtime_settings import integer
 
-DEFAULT_MODEL = "qwen3-vl:8b"
+DEFAULT_MODEL = "qwen3-vl:8b-instruct"
 DEFAULT_OLLAMA_URL = "http://127.0.0.1:11434"
 
 PROMPT = (

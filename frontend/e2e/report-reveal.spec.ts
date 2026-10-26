@@ -139,7 +139,7 @@ test('finding detail shows stored facts, analysis and limits at once without the
   await page.goto('/findings/finding-a');
   await expect(page.getByRole('tab', { name: 'AI 분석', exact: true })).toBeVisible();
   await expect(reveal(page)).toHaveCount(0);
-  await expect(page.getByRole('heading', { name: /스캐너가 찾은 사실/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /AI가 찾은 사실/ })).toBeVisible();
   await expect(page.getByText('빠른 해시를 저장하면 비밀번호 추측 비용이 낮아집니다.', { exact: true })).toBeVisible();
   await expect(page.getByText('운영 환경의 저장 경로는 검증하지 않았습니다.', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '수정안 생성·검토로 이동', exact: true })).toBeVisible();
@@ -155,7 +155,7 @@ test('mobile project report and finding detail fit the viewport', async ({ page 
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '../.runtime/report-reveal-mobile.png', fullPage: true, animations: 'disabled' });
   await page.goto('/findings/finding-a');
-  await expect(page.getByRole('heading', { name: /스캐너가 찾은 사실/ })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /AI가 찾은 사실/ })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await page.screenshot({ path: '../.runtime/report-reveal-finding-mobile.png', fullPage: true, animations: 'disabled' });
   expect(writes).toEqual([]);

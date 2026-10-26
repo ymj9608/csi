@@ -1475,7 +1475,7 @@ async function logout() {
             </div>
             <div class="detail-grid">
               <section class="panel detail-panel">
-                <h2 class="step-title"><b>1</b>스캐너가 찾은 사실</h2>
+                <h2 class="step-title"><b>1</b>AI가 찾은 사실</h2>
                 <p class="step-sub">Semgrep 정적 분석이 코드에서 기계적으로 확인한 내용입니다.</p>
                 <p class="mono file-path">
                   {{ data.filePath }}:{{ data.startLine }}–{{ data.endLine }}

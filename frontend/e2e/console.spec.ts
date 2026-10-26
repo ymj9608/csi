@@ -80,7 +80,7 @@ test("login, API-backed screens, findings, mobile and logout", async ({
   {
     await finding.click();
     await expect(
-      page.getByRole("heading", { name: /스캐너가 찾은 사실/ }),
+      page.getByRole("heading", { name: /AI가 찾은 사실/ }),
     ).toBeVisible();
     await page
       .getByRole("tab", { name: "보안 근거", exact: true })

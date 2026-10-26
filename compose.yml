@@ -119,11 +119,25 @@ services:
       business-mcp: {condition: service_started}
       rag-mcp: {condition: service_started}
     restart: on-failure:3
+  architecture-worker:
+    build:
+      context: .
+      dockerfile: architecture_agent/Dockerfile
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    environment:
+      CSI_INTERNAL_TOKEN: ${CSI_INTERNAL_TOKEN}
+      CSI_CONTAINER_WORKER: 'true'
+    mem_limit: 256m
+    cpus: 1
+    depends_on:
+      backend: {condition: service_healthy}
+    restart: on-failure:3
   frontend:
     build: frontend
     ports: ['127.0.0.1:5174:80']
     depends_on:
       backend: {condition: service_healthy}
+      architecture-worker: {condition: service_started}
   scanner:
     profiles: [tools]
     build:

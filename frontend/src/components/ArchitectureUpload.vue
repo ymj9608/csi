@@ -493,13 +493,13 @@ onBeforeUnmount(() => {
     <h3>아키텍처 분석 결과</h3>
     <div v-if="analysis.status === 'FAILED'" role="alert" class="analysis-failure">
       <p><strong>분석 실패</strong> · {{ failureMessage(analysis.errorCode) }}</p>
-      <p>모델 연결 상태를 확인하세요. 재시도 준비 후 새 코드 검사를 보내면 이미지·코드·RAG를 함께 다시 분석합니다.</p>
+      <p>모델과 아키텍처 Worker 연결 상태를 확인한 뒤 다시 시도하세요. 새 Push 없이 등록한 이미지를 다시 분석합니다.</p>
       <button v-if="analysis.id" :disabled="retryingAnalysis" @click="retryAnalysis">
         {{ retryingAnalysis ? '요청 중…' : '분석 다시 시도' }}
       </button>
     </div>
     <p v-else-if="analysisPending" class="analysis-progress">
-      {{ STATUS_LABEL[analysis.status] }}…<span v-if="analysis.status === 'QUEUED'"> 새 코드 검사가 도착하면 이미지·코드·RAG를 함께 분석합니다.</span>
+      {{ STATUS_LABEL[analysis.status] }}…<span v-if="analysis.status === 'QUEUED'"> 등록한 아키텍처를 자동으로 분석합니다. GitHub Push를 기다리지 않습니다.</span>
     </p>
     <template v-else>
       <p class="analysis-summary">{{ analysis.summary }}</p>
@@ -984,7 +984,7 @@ onBeforeUnmount(() => {
 }
 .components {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(175px, 100%), 1fr));
   gap: 10px;
   list-style: none;
   margin: 0;

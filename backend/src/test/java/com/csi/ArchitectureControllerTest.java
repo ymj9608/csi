@@ -58,6 +58,33 @@ class ArchitectureControllerTest {
   verifyNoInteractions(jdbc);
  }
 
+ @Test void globalClaimFindsUploadWithoutProjectOrScanId(){
+  UUID diagramId=UUID.randomUUID();
+  doReturn(List.of(Map.of("id",diagramId.toString(),"projectId",projectId.toString())))
+   .when(db).list(contains("FOR UPDATE OF d SKIP LOCKED"));
+  var response=controller.claimNext();
+  assertEquals(200,response.getStatusCode().value());
+  assertEquals(projectId.toString(),((Map<?,?>)response.getBody()).get("projectId"));
+  assertEquals(diagramId,((Map<?,?>)response.getBody()).get("diagramId"));
+  verify(jdbc).update(contains("SET status='LOADING_MODEL'"),eq(diagramId));
+ }
+
+ @Test void globalClaimEmptyQueueDoesNotStartAnalysis(){
+  doReturn(List.of()).when(db).list(contains("FOR UPDATE OF d SKIP LOCKED"));
+  assertEquals(204,controller.claimNext().getStatusCode().value());
+  verifyNoInteractions(jdbc);
+ }
+
+ @Test void imageWorkerCannotOverwriteActiveIntegratedReview(){
+  UUID diagram=UUID.randomUUID();
+  var result=new ArchitectureController.Result(List.of(new ArchitectureController.Component("API","service","UNKNOWN","OBSERVED")),"summary");
+  assertEquals(409,assertThrows(ResponseStatusException.class,()->controller.result(diagram,result)).getStatusCode().value());
+  verify(jdbc).update(contains(ArchitectureController.NO_ACTIVE_REVIEW),anyString(),eq("summary"),eq(diagram));
+  doReturn(Map.of("status","ANALYZING")).when(db).one(anyString(),eq(diagram));
+  assertEquals(409,assertThrows(ResponseStatusException.class,()->controller.failure(diagram,new ArchitectureController.Failure("WORKER_ERROR"))).getStatusCode().value());
+  verify(jdbc).update(contains(ArchitectureController.NO_ACTIVE_REVIEW),eq("WORKER_ERROR"),eq(diagram));
+ }
+
  @Test void progress_transitionsLoadingModelToAnalyzing(){
   UUID diagramId=UUID.randomUUID();
   when(jdbc.update(contains("SET status='ANALYZING'"),eq(diagramId))).thenReturn(1);

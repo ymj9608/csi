@@ -35,8 +35,8 @@ def report_failure(api, diagram_id, code):
     return False
 
 
-def run_once(api, project_id, ollama_url=extractor.DEFAULT_OLLAMA_URL, model=extractor.DEFAULT_MODEL):
-    claim = api.post(f"/internal/projects/{project_id}/architecture/claim")
+def run_once(api, project_id=None, ollama_url=extractor.DEFAULT_OLLAMA_URL, model=extractor.DEFAULT_MODEL):
+    claim = api.post(f"/internal/projects/{project_id}/architecture/claim" if project_id else '/internal/architecture/claim')
     if claim.status_code == 204:
         return False
     claim.raise_for_status()
@@ -77,6 +77,7 @@ def main():
     selection = p.add_mutually_exclusive_group(required=True)
     selection.add_argument("--project-id")
     selection.add_argument("--repository")
+    selection.add_argument("--all", action='store_true', help='Automatically analyze newly registered/uploaded project diagrams')
     p.add_argument("--ollama-url", default=extractor.DEFAULT_OLLAMA_URL)
     p.add_argument("--model", default=extractor.DEFAULT_MODEL)
     p.add_argument("--once", action="store_true")
@@ -88,7 +89,8 @@ def run(args):
     from .worker import backend_url
     from coding_agent.runtime_settings import load_environment
     load_environment(dotenv_values(args.env_file))
-    backend = backend_url(args.backend)
+    # Explicit fixed Compose alias only; all other callers retain HTTPS/loopback validation.
+    backend = args.backend if args.backend == 'http://backend:8080' and os.environ.get('CSI_CONTAINER_WORKER') == 'true' else backend_url(args.backend)
     project_id = args.project_id
     if getattr(args, 'repository', None):
         from coding_agent.project_lookup import lookup_project
@@ -106,7 +108,7 @@ def run(args):
             if args.once:
                 return
             if not processed:
-                time.sleep(5)
+                time.sleep(1)
 
 
 if __name__ == "__main__":

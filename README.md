@@ -646,4 +646,4 @@ csi/
 
 발표자료의 텍스트·설명 도식은 PowerPoint에서 편집할 수 있으며 Keynote에서 13장 가져오기와 PDF 내보내기를 확인했습니다. 재생성 소스는 [build_evaluation_deck.py](scripts/build_evaluation_deck.py)입니다. 발표자료용 `python-pptx`, `Pillow`는 서비스 런타임 의존성과 분리해 사용합니다.
 
-새 프로젝트 등록 시 아키텍처 이미지는 필수입니다. 프로젝트·정책·분석용 이미지를 한 트랜잭션으로 저장하며, 신규 통합 분석은 **다음 Push/CLI 코드 검사 접수 후 Agent가 실행 중일 때** 진행됩니다. 별도 이미지 Worker는 구형 이미지 전용 경로에서만 사용합니다. 기존 프로젝트와 과거 코드 전용 실험 결과는 유지합니다. 제공자 선택과 데이터셋 설명은 [Perception & Reasoning](docs/PERCEPTION_REASONING.md)을 확인하세요.
+새 프로젝트 등록 시 아키텍처 이미지는 필수입니다. 프로젝트·정책·분석용 이미지를 한 트랜잭션으로 저장하며, 등록된 이미지는 `architecture-worker`가 즉시 대기열에서 가져가 구조를 분석합니다. GitHub Push를 기다리지 않습니다. 코드·정책을 포함한 통합 보안 분석은 **Push/CLI 코드 검사 접수 후 Agent가 실행 중일 때** 진행됩니다. 저장소 이름 등록만으로 실제 코드를 다운로드하지는 않습니다. 기존 프로젝트와 과거 코드 전용 실험 결과는 유지합니다. 제공자 선택과 데이터셋 설명은 [Perception & Reasoning](docs/PERCEPTION_REASONING.md)을 확인하세요.

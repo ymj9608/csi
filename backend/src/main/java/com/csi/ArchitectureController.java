@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;import org.springframework.web.
  final Db db;
  @Value("${CSI_ARCHITECTURE_JOB_TIMEOUT_SECONDS:2100}") int jobTimeoutSeconds=2100;
  static final Set<String> FAILURE_CODES=Set.of("MODEL_TIMEOUT","MODEL_UNAVAILABLE","INVALID_RESULT","BACKEND_UNAVAILABLE","WORKER_ERROR");
+ // A scan may start after the image worker claims an upload. Its integrated
+ // review owns the display until completion; a late image result cannot replace it.
+ static final String NO_ACTIVE_REVIEW=" AND NOT EXISTS (SELECT 1 FROM scan_visual_reviews v JOIN scans s ON s.id=v.scan_id WHERE v.diagram_id=architecture_diagrams.id AND s.status IN ('QUEUED','RUNNING'))";
  public ArchitectureController(Db db){this.db=db;}
  @PostMapping("/api/projects/{id}/architecture") @Transactional public ResponseEntity<?> upload(@PathVariable UUID id,@RequestParam("file") MultipartFile file)throws Exception{
   db.one("SELECT id FROM projects WHERE id=?",id);
@@ -41,9 +44,18 @@ import org.springframework.web.bind.annotation.*;import org.springframework.web.
   return ResponseEntity.ok(Map.of("diagramId",diagramId));
  }
  public record Progress(String phase){}
+ // Registration and re-upload already insert QUEUED rows in the same transaction.
+ // One worker can now claim the oldest upload without knowing a project UUID or waiting for a push.
+ @PostMapping("/internal/architecture/claim") @Transactional public ResponseEntity<?> claimNext(){
+  var rows=db.list("SELECT d.id,d.project_id FROM architecture_diagrams d WHERE d.status='QUEUED' AND NOT EXISTS (SELECT 1 FROM scan_visual_reviews v JOIN scans s ON s.id=v.scan_id WHERE v.diagram_id=d.id AND s.status IN ('QUEUED','RUNNING')) ORDER BY d.updated_at,d.id LIMIT 1 FOR UPDATE OF d SKIP LOCKED");
+  if(rows.isEmpty())return ResponseEntity.noContent().build();
+  var row=rows.getFirst();UUID diagramId=UUID.fromString((String)row.get("id"));
+  db.jdbc.update("UPDATE architecture_diagrams SET status='LOADING_MODEL',updated_at=now() WHERE id=?",diagramId);
+  return ResponseEntity.ok(Map.of("diagramId",diagramId,"projectId",row.get("projectId")));
+ }
  @PostMapping("/internal/architecture/{id}/progress") @Transactional public Object progress(@PathVariable UUID id,@RequestBody Progress progress){
   if(!"ANALYZING".equals(progress.phase()))throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid phase");
-  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='ANALYZING',updated_at=now() WHERE id=? AND status='LOADING_MODEL'",id);
+  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='ANALYZING',updated_at=now() WHERE id=? AND status='LOADING_MODEL'"+NO_ACTIVE_REVIEW,id);
   if(updated==0)throw new ResponseStatusException(HttpStatus.CONFLICT,"잘못된 상태 전이입니다.");
   return Map.of("status","ANALYZING");
  }
@@ -56,7 +68,7 @@ import org.springframework.web.bind.annotation.*;import org.springframework.web.
  public record Failure(String errorCode){}
  @PostMapping("/internal/architecture/{id}/failure") @Transactional public Object failure(@PathVariable UUID id,@RequestBody Failure request){
   if(request.errorCode()==null||!FAILURE_CODES.contains(request.errorCode()))throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid error code");
-  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='FAILED',error_code=?,updated_at=now() WHERE id=? AND status IN ('LOADING_MODEL','ANALYZING')",request.errorCode(),id);
+  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='FAILED',error_code=?,updated_at=now() WHERE id=? AND status IN ('LOADING_MODEL','ANALYZING')"+NO_ACTIVE_REVIEW,request.errorCode(),id);
   if(updated==0){
    var row=db.one("SELECT status FROM architecture_diagrams WHERE id=?",id);
    if(!"FAILED".equals(row.get("status")))throw new ResponseStatusException(HttpStatus.CONFLICT,"Analysis is no longer running");
@@ -74,7 +86,7 @@ import org.springframework.web.bind.annotation.*;import org.springframework.web.
  }
  @PostMapping("/internal/architecture/{id}/result") @Transactional public Object result(@PathVariable UUID id,@RequestBody Result result){
   try{validateResult(result);}catch(IllegalArgumentException e){throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());}
-  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='EXTRACTED',components=?::jsonb,summary=?,error_code=null,updated_at=now() WHERE id=? AND status='ANALYZING'",db.encode(result.components()),result.summary(),id);
+  int updated=db.jdbc.update("UPDATE architecture_diagrams SET status='EXTRACTED',components=?::jsonb,summary=?,error_code=null,updated_at=now() WHERE id=? AND status='ANALYZING'"+NO_ACTIVE_REVIEW,db.encode(result.components()),result.summary(),id);
   if(updated==0)throw new ResponseStatusException(HttpStatus.CONFLICT,"Analysis is no longer running");
   return Map.of("status","EXTRACTED");
  }
