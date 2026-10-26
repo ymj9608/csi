@@ -12,7 +12,7 @@ runtime={'ready':False}
 async def work():
     bootstrap=os.environ.get('KAFKA_BOOTSTRAP_SERVERS','127.0.0.1:9092')
     producer=AIOKafkaProducer(bootstrap_servers=bootstrap,enable_idempotence=True,request_timeout_ms=15000,value_serializer=lambda v:json.dumps(v,ensure_ascii=False).encode())
-    consumer=AIOKafkaConsumer('scan.request',bootstrap_servers=bootstrap,group_id='csi-agent-v1',auto_offset_reset='earliest',enable_auto_commit=False,max_poll_records=1,max_poll_interval_ms=600000)
+    consumer=AIOKafkaConsumer('scan.request',bootstrap_servers=bootstrap,group_id='csi-agent-v1',auto_offset_reset='earliest',enable_auto_commit=False,max_poll_records=1,max_poll_interval_ms=2100000)
     async def emit(topic,event,kind,**data):
         payload={k:event[k] for k in ('scanId','projectId','repository','commitSha','correlationId')}
         payload.update(eventId=str(uuid.uuid4()),eventType=kind,timestamp=datetime.now(timezone.utc).isoformat(),**data)
@@ -28,6 +28,7 @@ async def work():
         try:
             async for record in consumer:
                 event=json.loads(record.value);config={'configurable':{'thread_id':event['scanId']},'recursion_limit':60}
+                deadline=asyncio.get_running_loop().time()+1800
                 for attempt in range(2):
                     try:
                         snapshot=await graph.aget_state(config)
@@ -40,7 +41,7 @@ async def work():
                         else:
                             if snapshot.values and not snapshot.next:break
                             action=None if snapshot.values else {'event':event}
-                        async with asyncio.timeout(180):await graph.ainvoke(action,config)
+                        async with asyncio.timeout_at(deadline):await graph.ainvoke(action,config)
                         break
                     except Exception:
                         await emit('scan.log',event,'SCAN_LOG',node='retry' if attempt==0 else 'failed')

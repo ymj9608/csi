@@ -1,0 +1,38 @@
+{
+  "referenceRun": "windows-vlm-20261024-v3",
+  "identicalFiles": {
+    "state.py": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true,
+      "promptSourceHashEqual": true
+    },
+    "broker.py": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true,
+      "promptSourceHashEqual": true
+    },
+    "deployment.json": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true,
+      "promptSourceHashEqual": true
+    },
+    "app.py": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true,
+      "promptSourceHashEqual": true
+    },
+    "dispatcher.py": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true,
+      "promptSourceHashEqual": true
+    },
+    "test_contract.py": {
+      "artifactBytesEqual": true,
+      "normalizedTextEqual": true
+    },
+    "architecture.png": {
+      "artifactBytesEqual": true
+    }
+  },
+  "meaning": "Same synthetic source, original image and eight test contracts. Artifact CRLF and prompt LF hashes are distinguished. New pipeline/settings; not a historical paired before/after experiment."
+}

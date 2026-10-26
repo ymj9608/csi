@@ -1,5 +1,18 @@
 # 아키텍처 비교 실험 읽는 순서
 
+## 최신 통합 VLM 실행 (2026-10-25)
+
+[3단계 최종 비교](unified-vlm-fanout-20261025-staged-v3/RESULTS_KO.md)는 같은 가상 서비스의 전체 코드 / 코드+구조화 텍스트 / 코드+이미지 조건을 실제 로컬 모델로 실행한 기록입니다. 최고 후보는 **5/8·6/8·6/8**, VLM 9단계는 반복 없이 완료했습니다. 세 조건 모두 8/8에는 미달했고 이미지와 구조화 텍스트의 점수는 같습니다. 입력·출력·후보·실패 기록·실행 코드 snapshot을 함께 보관합니다.
+
+- [고정 조건·모델 설정](unified-vlm-fanout-20261025-staged-v3/protocol.json), [기존 데이터·평가 계약 동일성](unified-vlm-fanout-20261025-staged-v3/contract-preservation.json), [단계별 토큰·시간](unified-vlm-fanout-20261025-staged-v3/stages.csv).
+- [schema 안내 진단 실험](unified-vlm-schema-grounding-20261025/protocol.json)은 동일 실패 입력을 재생한 1회 검사이며 3조건 정확도 비교와 구분합니다.
+- [기존 반복 원문 재생](repetition-guard-replay-20261025.json)은 저장된 스트림에서 새 검출기의 3회 반복 감지를 확인한 오프라인 검사입니다.
+- 같은 날짜의 나머지 `unified-vlm-*` 폴더는 단일 호출·입력 정리·단계 분리·샘플링 예비 실행입니다. 중단 사유와 실패를 보존하며, 완료된 최종 비교에 섞어 집계하지 않습니다. 원인 검토는 [통합 VLM 설명](../UNIFIED_VLM_REVIEW.md)에 있습니다.
+
+기존 16조건의 7/8·5/8·6/8·8/8 결과는 이전 실행 경로입니다. 새로운 통합 경로의 성능이나 LangGraph만의 개선 효과로 대체 해석하지 않습니다.
+
+## 이전 실험과 데이터
+
 1. 프런트엔드에서 수집할 값은 [수집 항목과 책임](../ARCHITECTURE_COLLECTION.md), 현재 요청·응답은 [v1 API](../ARCHITECTURE_API.md)를 확인합니다.
 2. [합성 데이터와 Lichu 실측 결과](ARCHITECTURE_RESULTS.md)는 전체 소스 입력과 이미지 해석 후 선별 입력을 비교합니다. Lichu에는 전체 정답 라벨이 없으며, 토큰 감소를 정확도 유지로 해석하지 않습니다.
 3. [공개 프로젝트 전화번호 실험](TELEPHONE_CONTEXT_RESULTS.md)은 전체 범위·코드 인덱스·저장된 비전 맥락+같은 인덱스를 비교합니다. 파일 검색의 이점과 비전의 추가 기여를 분리합니다.

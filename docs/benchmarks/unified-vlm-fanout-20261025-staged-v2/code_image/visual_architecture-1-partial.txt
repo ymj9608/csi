@@ -1,0 +1,52 @@
+{
+  "architecture": {
+    "summary": "The system routes events to three destinations: r1 (INTERNAL SMS), r2 (EXTERNAL Metrics), and r3 (EXTERNAL Support). Normal delivery goes to r1 and r2 via dispatcher.py. On failure", "components": [
+      {
+        "name": "app",
+        "role": "Initiates event dispatching via signup()",
+        "isolationStatus": "UNKNOWN",
+        "state": "UNKNOWN"
+      },
+      {
+        "name": "dispatcher.py",
+        "role": "Routes events to channels based on fail",
+        "isolationStatus": "UNKNOWN",
+        "state": "UNKNOWN"
+      },
+      {
+        "name": "broker.py",
+        "role": "Central message broker that appends all",
+        "isolationStatus": "UNKNOWN",
+        "state": "UNKNOWN"
+      },
+      {
+        "name": "state.py",
+        "role": "Stores MESSAGES, MEMBERS, ARCHIVE",
+        "isolationStatus": "UNKNOWN",
+        "state": "UNKNOWN"
+      }
+    ]
+  },
+  "flows": [
+    {
+      "source": "app.py",
+      "target": "dispatcher.py",
+      "condition": "normal delivery",
+      "data": "event with phone number and id",
+      "boundary": "INTERNAL",
+      "state": "UNKNOWN"
+    },
+    {
+      "source": "app.py",
+      "target": "dispatcher.py",
+      "condition": "delivery failure",
+      "data": "event with phone number and id",
+      "boundary": "EXTERNAL",
+      "state": "UNKNOWN"
+    }
+  ],
+  "uncertainties": [
+    "The diagram's solid/dashed lines do not match the code's behavior.",
+    "The code does not validate or sanitize input before publishing."
+  ]
+}

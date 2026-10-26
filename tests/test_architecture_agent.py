@@ -8,6 +8,7 @@ import struct
 
 import httpx
 import pytest
+from test_coding_worker import assert_private
 
 from architecture_agent import vision, worker
 from architecture_agent.vision import ArchitectureError
@@ -159,13 +160,13 @@ def test_lost_ack_replays_identical_result_without_reinference(inference, tmp_pa
     assert requests[0].content == requests[1].content
     assert all(request.url.path.endswith("/result") for request in requests)
     assert not list(tmp_path.glob("*.pending.json"))
-    assert stat.S_IMODE((tmp_path / (JOB_ID + ".json")).stat().st_mode) == 0o600
+    assert_private(tmp_path / (JOB_ID + ".json"))
 
 
 def test_backend_outage_restart_recovers_without_inference(inference, tmp_path, capsys):
     assert not worker.process(api(lambda _: httpx.Response(503)), JOB, tmp_path, "http://localhost:11434")
     pending = tmp_path / (JOB_ID + ".pending.json")
-    assert stat.S_IMODE(pending.stat().st_mode) == 0o600
+    assert_private(pending)
     deliveries = []
     def handle(request):
         deliveries.append(json.loads(request.content))
@@ -228,7 +229,7 @@ def test_corrupt_local_receipt_does_not_transmit_private_data(tmp_path, capsys):
     quarantined = list(tmp_path.glob("*.corrupt"))
     assert len(quarantined) == 1 and not pending.exists()
     assert quarantined[0].read_text() == "PRIVATE_CORRUPTED_DATA"
-    assert stat.S_IMODE(quarantined[0].stat().st_mode) == 0o600
+    assert_private(quarantined[0])
     diagnostic = json.loads(capsys.readouterr().out)
     assert diagnostic["status"] == "LOCAL_RESULT_QUARANTINED"
     assert diagnostic["file"] == quarantined[0].name
@@ -276,7 +277,12 @@ def test_quarantine_cannot_follow_symlink_outside_output(tmp_path):
     outside.write_text("PRIVATE_TARGET")
     original_mode = outside.stat().st_mode
     pending = tmp_path / (JOB_ID + ".pending.json")
-    pending.symlink_to(outside)
+    try:
+        pending.symlink_to(outside)
+    except OSError as exc:
+        if getattr(exc, 'winerror', None) == 1314:
+            pytest.skip('Windows symlink privilege unavailable; run this boundary test on POSIX')
+        raise
     assert worker.resume_deliveries(api(lambda _: pytest.fail("symlink target sent")), tmp_path)
     assert outside.read_text() == "PRIVATE_TARGET" and outside.stat().st_mode == original_mode
     assert not pending.is_symlink()

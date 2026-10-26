@@ -1,0 +1,10 @@
+﻿{
+    "sampledAt":  "2026-10-25T17:37:47.1046030+09:00",
+    "operatingSystem":  "Windows",
+    "memory":  {
+                   "TotalVisibleMemorySize":  16736212,
+                   "FreePhysicalMemory":  4787828
+               },
+    "gpu":  "NVIDIA GeForce GTX 1060 3GB, 3072 MiB, 2151 MiB",
+    "note":  "Game closed by user; no regression suites running during v3. Earlier Korean calibration timeouts retained in adjacent directories."
+}

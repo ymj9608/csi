@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "dispatcher.py",
+      "source": "from broker import publish\nfrom deployment import get_recipient_boundary\nfrom hashlib import sha256\n\ndef _hash_phone(phone):\n    return sha256(phone.encode()).hexdigest()\n\ndef publish_event(event, fail=False):\n    channels = ['r2', 'r3'] if fail else ['r1', 'r2']\n    for channel in channels:\n        event_copy = event.copy()\n        boundary = get_recipient_boundary(channel)\n        if boundary == 'EXTERNAL' and 'phone' in event_copy:\n            event_copy['phone'] = _hash_phone(event_copy['phone'])\n        publish(channel, event_copy)\n"
+    },
+    {
+      "path": "app.py",
+      "source": "from copy import deepcopy\nfrom state import MEMBERS, ARCHIVE\nfrom dispatcher import publish_event\n\ndef signup(phone, fail=False):\n    event = {'id': len(MEMBERS)+1, 'kind': 'signup', 'phone': phone}\n    MEMBERS.append(deepcopy(event))\n    if fail:\n        ARCHIVE.append(deepcopy(event))\n    publish_event(event, fail)\n    return event['id']\n"
+    }
+  ]
+}

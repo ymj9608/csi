@@ -4,7 +4,7 @@ from qdrant_client import models
 from .vector import client,embed,COLLECTION,DIM
 ROOT=Path(__file__).resolve().parents[1]
 def index():
-    catalog=json.loads((ROOT/'rag/catalog.json').read_text());db=client()
+    catalog=json.loads((ROOT/'rag/catalog.json').read_text(encoding='utf-8'));db=client()
     for attempt in range(20):
         try:
             if not db.collection_exists(COLLECTION):db.create_collection(COLLECTION,vectors_config=models.VectorParams(size=DIM,distance=models.Distance.COSINE))

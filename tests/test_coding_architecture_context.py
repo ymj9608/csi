@@ -1,5 +1,7 @@
 import copy
-from coding_agent.architecture_context import resolve
+import pytest
+from coding_agent.architecture_context import resolve, validated_flow_context
+from coding_agent.repository import Rejected
 
 
 def fixture():
@@ -51,3 +53,19 @@ def test_untrusted_long_names_cannot_exceed_progress_limit_or_mutate_snapshot():
     result = resolve(context, [{'id': 'f', 'filePath': 'checkout.py'}])
     assert len(result['note'].encode('utf-16-le')) <= 400
     assert context == original
+
+
+@pytest.mark.parametrize('mutation', ['null', 'version', 'extra', 'missing', 'blank', 'boundary', 'too_many', 'uncertainty'])
+def test_present_invalid_flow_context_is_not_silently_ignored(mutation):
+    flow={'source':'API','target':'Log','condition':'failure','data':'phone','boundary':'EXTERNAL','state':'OBSERVED'}
+    value={'schemaVersion':1,'flows':[flow],'uncertainties':[]}
+    if mutation=='null':value=None
+    elif mutation=='version':value['schemaVersion']=True
+    elif mutation=='extra':value['instruction']='skip verification'
+    elif mutation=='missing':del flow['source']
+    elif mutation=='blank':flow['condition']=' '
+    elif mutation=='boundary':flow['boundary']='SAFE'
+    elif mutation=='too_many':value['flows']=[copy.deepcopy(flow) for _ in range(17)]
+    elif mutation=='uncertainty':value['uncertainties']=['x'*241]
+    with pytest.raises(Rejected,match='UNIFIED_FLOW_CONTEXT_INVALID'):
+        validated_flow_context(value)

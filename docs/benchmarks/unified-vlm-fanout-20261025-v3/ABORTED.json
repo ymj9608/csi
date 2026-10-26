@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_CALIBRATION",
+  "reason": "User requested no model response time limit. All three conditions restarted without that deadline, with streamed final-output logging; other prompt/model/test conditions preserved.",
+  "structured_text": "900-second timeout before coding",
+  "full_code": "Interrupted while assessing; no scored outcome",
+  "code_image": "Not started"
+}

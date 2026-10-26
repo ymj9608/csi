@@ -1,0 +1,92 @@
+[
+  {
+    "arm": "structured_text",
+    "status": "FAILED",
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": "VERIFIED",
+        "verification": {
+          "exitCode": 1,
+          "error": null,
+          "cases": {},
+          "passed": 0,
+          "total": 0,
+          "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from dispatcher import publish_event\n  File \"/case/dispatcher.py\", line 2, in <module>\n    from deployment import get_recipient_boundary\nModuleNotFoundError: No module named 'deployment'\n",
+          "seconds": 4.404,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      },
+      {
+        "attempt": 2,
+        "status": "VERIFIED",
+        "verification": {
+          "exitCode": 1,
+          "error": null,
+          "cases": {},
+          "passed": 0,
+          "total": 0,
+          "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from dispatcher import publish_event\n  File \"/case/dispatcher.py\", line 2, in <module>\n    from deployment import load_deployment\nModuleNotFoundError: No module named 'deployment'\n",
+          "seconds": 4.339,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      }
+    ],
+    "vlmSeconds": 339.898,
+    "coderSeconds": 247.855,
+    "verificationSeconds": 8.743,
+    "totalSeconds": 596.536,
+    "bestCandidate": 1,
+    "finalCandidate": 2
+  },
+  {
+    "arm": "full_code",
+    "status": "PASSED",
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": "VERIFIED",
+        "verification": {
+          "exitCode": 1,
+          "error": null,
+          "cases": {},
+          "passed": 0,
+          "total": 0,
+          "log": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/wlr/build-staging/python/v3.12.0/checkout/Lib/unittest/main.py\", line 73, in __init__\n  File \"/case/test_contract.py\", line 3, in <module>\n    from app import signup\n  File \"/case/app.py\", line 3, in <module>\n    from dispatcher import publish_event\n  File \"/case/dispatcher.py\", line 2, in <module>\n    from deployment import get_recipient_boundary\nModuleNotFoundError: No module named 'deployment'\n",
+          "seconds": 4.322,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      },
+      {
+        "attempt": 2,
+        "status": "VERIFIED",
+        "verification": {
+          "exitCode": 0,
+          "error": null,
+          "cases": {
+            "test_deliveries": "ok",
+            "test_external_failure": "ok",
+            "test_external_normal": "ok",
+            "test_failure_diagnostics": "ok",
+            "test_input_not_mutated": "ok",
+            "test_internal_phone": "ok",
+            "test_replay": "ok",
+            "test_store": "ok"
+          },
+          "passed": 8,
+          "total": 8,
+          "log": "test_deliveries (test_contract.Contract.test_deliveries) ... ok\ntest_external_failure (test_contract.Contract.test_external_failure) ... ok\ntest_external_normal (test_contract.Contract.test_external_normal) ... ok\ntest_failure_diagnostics (test_contract.Contract.test_failure_diagnostics) ... ok\ntest_input_not_mutated (test_contract.Contract.test_input_not_mutated) ... ok\ntest_internal_phone (test_contract.Contract.test_internal_phone) ... ok\ntest_replay (test_contract.Contract.test_replay) ... ok\ntest_store (test_contract.Contract.test_store) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 0.022s\n\nOK\n",
+          "seconds": 4.407,
+          "isolation": "WASI_READ_ONLY_NO_NETWORK"
+        }
+      }
+    ],
+    "vlmSeconds": 406.56,
+    "coderSeconds": 221.82799999999997,
+    "verificationSeconds": 8.729,
+    "approvedCandidate": 2,
+    "totalSeconds": 637.148,
+    "bestCandidate": 2,
+    "finalCandidate": 2
+  }
+]

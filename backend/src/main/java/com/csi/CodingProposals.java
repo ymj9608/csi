@@ -52,7 +52,10 @@ public class CodingProposals {
    if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"완료된 검사와 적용 가능한 활성 검증 프로필이 필요합니다.");
    return Map.of();
   }
-  var images=db.list("SELECT a.id,a.source_commit_sha FROM projects p JOIN project_architectures a ON a.id=p.coding_architecture_id AND a.project_id=p.id WHERE p.id=?",UUID.fromString((String)scan.get("projectId")));
+  boolean unified="VLM".equals(scan.get("analysisMode"));
+  JsonNode visual=null;
+  if(unified){var row=db.one("SELECT result FROM scan_visual_reviews WHERE scan_id=? AND result IS NOT NULL",id);visual=db.json.valueToTree(row.get("result"));}
+  var images=unified?List.<Map<String,Object>>of():db.list("SELECT a.id,a.source_commit_sha FROM projects p JOIN project_architectures a ON a.id=p.coding_architecture_id AND a.project_id=p.id WHERE p.id=?",UUID.fromString((String)scan.get("projectId")));
   var image=images.isEmpty()?Map.<String,Object>of():images.getFirst();String source=Objects.toString(image.get("sourceCommitSha"),"");
   if(!source.isEmpty() && !source.equals(scan.get("commitSha"))){
    if(explicit)throw new ResponseStatusException(HttpStatus.CONFLICT,"아키텍처의 기준 커밋이 검사 커밋과 다릅니다. 현재 검사에 맞는 이미지를 연결하세요.");
@@ -60,6 +63,13 @@ public class CodingProposals {
   }
   var plan=db.json.createObjectNode();plan.set("config",profile.path("config"));plan.set("profileVersion",profile.path("version"));plan.put("commitSha",scan.get("commitSha").toString());plan.set("policy",db.json.valueToTree(scan.get("policy")));plan.set("findingIds",db.json.valueToTree(selected.stream().map(f->f.get("id").toString()).sorted().toList()));
   if(!image.isEmpty()){plan.put("architectureId",image.get("id").toString());plan.put("imageSha256",db.one("SELECT image_sha256 FROM project_architectures WHERE id=?",UUID.fromString(image.get("id").toString())).get("imageSha256").toString());}
+  if(unified){
+   var frozen=visual.deepCopy();var chosen=db.json.createArrayNode();var chosenIds=selected.stream().map(f->f.get("id").toString()).collect(java.util.stream.Collectors.toSet());
+   for(var task:visual.path("instructions"))if(chosenIds.contains(task.path("findingId").asText()))chosen.add(task);
+   if(chosen.size()!=chosenIds.size())throw new ResponseStatusException(HttpStatus.CONFLICT,"UNIFIED_INSTRUCTIONS_REQUIRED");
+   ((com.fasterxml.jackson.databind.node.ObjectNode)frozen).set("instructions",chosen);
+   plan.set("unifiedReview",frozen);
+  }
   String planDigest=ProjectVerification.digest(plan);
   var existing=db.list(SELECT+"WHERE scan_id=? AND plan_digest=? AND c.status IN ('QUEUED','RUNNING','READY','APPROVED')",id,planDigest);
   if(!existing.isEmpty())return publicJob(existing.getFirst());
@@ -80,7 +90,12 @@ public class CodingProposals {
   if(job.get("executionPlan")!=null){var ids=ProjectVerification.strings(db.json.valueToTree(job.get("executionPlan")).path("findingIds"));job.put("findings",db.list("SELECT id,rule_id,file_path,title,category,analysis FROM findings WHERE scan_id=?",scan).stream().filter(f->ids.contains(f.get("id"))).toList());}
   else job.put("findings",db.list("SELECT id,rule_id,file_path,title,category,analysis FROM findings WHERE scan_id=? AND file_path=?",scan,TARGET));
   job.put("vlmModel",configuredVlmModel());job.put("vlmProvider",vlmProvider);
-  job.put("architectureDiagram",architectureDiagram(job));
+  var plan=db.json.valueToTree(job.get("executionPlan"));
+  if(plan.hasNonNull("unifiedReview")){
+   var visual=plan.path("unifiedReview");var frozen=db.json.convertValue(visual.path("architecture"),java.util.LinkedHashMap.class);
+   frozen.put("id",visual.path("diagramId").asText());frozen.put("projectId",job.get("projectId"));frozen.put("status","EXTRACTED");frozen.put("confirmed",false);
+   job.put("architectureDiagram",frozen);
+  }else job.put("architectureDiagram",architectureDiagram(job));
   if(job.get("architectureId")!=null){
    var image=new LinkedHashMap<>(db.one("SELECT a.id,a.version,a.image_sha256,a.image_content_type,a.source_commit_sha,a.image_bytes FROM project_architectures a JOIN scans s ON s.project_id=a.project_id WHERE a.id=? AND s.id=?",UUID.fromString((String)job.get("architectureId")),scan));
    image.put("imageBase64",Base64.getEncoder().encodeToString((byte[])image.remove("imageBytes")));

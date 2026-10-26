@@ -4,7 +4,7 @@ from types import SimpleNamespace
 import pytest
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.types import Command
-from agent.csi_agent import graph as module
+from agent.csi_agent import legacy_graph as module
 from agent.csi_agent import planner
 from agent.csi_agent.harness import Ledger, BudgetExceeded, MAX_INPUT_TOKENS, token_bound
 from agent.csi_agent.analysis import base_report, bounded_batches, enrich

@@ -1,0 +1,7 @@
+{
+  "status": "ABORTED_CALIBRATION",
+  "reason": "Concise Korean assessment still exceeded 600 seconds on local hardware. All arms restarted with identical concise English output and 900-second budget; no success-only retries or pooling.",
+  "structured_text": "Timed out before coding",
+  "full_code": "Assessment manually interrupted; no scored outcome",
+  "code_image": "Not started"
+}

@@ -15,6 +15,7 @@ from .engine import generate
 from .profile import TARGET
 from .repository import Rejected, commit, digest, git, read
 from .validation import validate_code
+from .private_files import write_private
 
 def backend_url(value):
     u=urlparse(value)
@@ -31,25 +32,6 @@ def client(args):
 
 def post(api,path,payload):
     r=api.post(path,json=payload);r.raise_for_status();return r.json()
-
-def write_private(path,value):
-    """Persist recoverable results without a world-readable intermediate file."""
-    path.parent.mkdir(parents=True,exist_ok=True)
-    descriptor,temporary_name=tempfile.mkstemp(prefix='.'+path.name+'.',dir=path.parent)
-    temporary=Path(temporary_name)  # mkstemp creates a fresh file with mode 0600.
-    try:
-        if os.name=='nt':
-            # Windows ignores POSIX 0600: restrict the empty file before writing a lease/result.
-            import csv
-            identity=subprocess.run(['whoami','/user','/fo','csv','/nh'],capture_output=True,text=True,check=True,timeout=10)
-            sid=next(csv.reader([identity.stdout.strip()]))[1]
-            subprocess.run(['icacls',str(temporary),'/inheritance:r','/grant:r','*'+sid+':F'],capture_output=True,check=True,timeout=10)
-        with os.fdopen(descriptor,'w',encoding='utf-8') as stream:
-            json.dump(value,stream,ensure_ascii=False,indent=2)
-            stream.flush();os.fsync(stream.fileno())
-        temporary.replace(path)
-    finally:
-        temporary.unlink(missing_ok=True)
 
 def deliver_result(api,output,job_id,lease_token,result):
     """Retry an immutable result; a transport failure must not fail the generation."""
@@ -86,10 +68,10 @@ def resume_deliveries(api,output,repository):
     for pending in sorted(output.glob('*.pending.json')):
         try:
             job_id=str(uuid.UUID(pending.name.removesuffix('.pending.json')))
-            receipt=json.loads(pending.read_text())
+            receipt=json.loads(pending.read_text(encoding='utf-8'))
             if receipt['backend']!=str(api.base_url) or receipt['repository']!=repository:
                 continue
-            result=json.loads((output/(job_id+'.json')).read_text())
+            result=json.loads((output/(job_id+'.json')).read_text(encoding='utf-8'))
             if result.get('repository')!=repository:
                 raise ValueError('Pending result repository differs')
             deliver_result(api,output,job_id,receipt['leaseToken'],result)

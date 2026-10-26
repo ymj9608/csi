@@ -1,0 +1,14 @@
+[
+  {
+    "arm": "structured_text",
+    "status": "BLOCKED",
+    "attempts": [],
+    "vlmSeconds": 600.048,
+    "coderSeconds": 0,
+    "verificationSeconds": 0,
+    "error": "ValueError: ReadTimeout: timed out",
+    "totalSeconds": 600.058,
+    "bestCandidate": null,
+    "finalCandidate": null
+  }
+]

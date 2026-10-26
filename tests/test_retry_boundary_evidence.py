@@ -2,7 +2,7 @@ import pytest
 from pathlib import Path
 from scripts.retry_boundary_evidence import plan
 ROOT=Path(__file__).resolve().parents[1]
-def sources():return {p.name:p.read_text() for p in (ROOT/'tests/fixtures/retry_boundary').iterdir() if p.name!='test_contract.py'}
+def sources():return {p.name:p.read_text(encoding='utf-8') for p in (ROOT/'tests/fixtures/retry_boundary').iterdir() if p.is_file() and p.suffix in {'.py', '.json'} and p.name!='test_contract.py'}
 INITIAL=['service.py','analysis.py','notification.py']
 def test_same_mandatory_evidence_for_both_arms():
  a=plan(sources(),INITIAL);b=plan(sources(),INITIAL,'notification.py -> exporter.py; nonexistent.py')

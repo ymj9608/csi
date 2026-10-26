@@ -7,7 +7,6 @@ import json
 import os
 from pathlib import Path
 import re
-import tempfile
 import time
 from urllib.parse import urlparse
 import uuid
@@ -15,6 +14,7 @@ import uuid
 import httpx
 from dotenv import dotenv_values
 
+from coding_agent.private_files import write_private, restrict_private
 from .vision import ArchitectureError, DEFAULT_MODEL, MAX_IMAGE_BYTES, PROMPT_VERSION, analyze_image
 
 
@@ -49,20 +49,6 @@ def client(args):
                         timeout=20, trust_env=False)
 
 
-def write_private(path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    descriptor, name = tempfile.mkstemp(prefix="." + path.name + ".", dir=path.parent)
-    temporary = Path(name)
-    try:
-        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
-            json.dump(value, stream, ensure_ascii=False, indent=2)
-            stream.flush()
-            os.fsync(stream.fileno())
-        temporary.replace(path)
-    finally:
-        temporary.unlink(missing_ok=True)
-
-
 def emit(job_id, status, **fields):
     # Deliberately exclude lease, source image, context, HTTP bodies, and exceptions.
     print(json.dumps({"architectureId": job_id, "status": status, **fields}), flush=True)
@@ -76,7 +62,7 @@ def read_envelope(pending):
     try:
         if pending.is_symlink() or not pending.is_file() or pending.stat().st_size > 2_000_000:
             raise ValueError("not a bounded regular file")
-        receipt = json.loads(pending.read_text())
+        receipt = json.loads(pending.read_text(encoding='utf-8'))
         if not isinstance(receipt, dict) or set(receipt) != {"id", "backend", "kind", "payload"}:
             raise ValueError("invalid envelope")
         job_id = str(uuid.UUID(receipt["id"]))
@@ -104,7 +90,7 @@ def quarantine(pending):
         # Move the link itself, never read or chmod its possibly external target.
         pending.replace(destination)
     else:
-        pending.chmod(0o700 if pending.is_dir() else 0o600)
+        restrict_private(pending)
         pending.replace(destination)
     emit(None, "LOCAL_RESULT_QUARANTINED", file=destination.name)
 

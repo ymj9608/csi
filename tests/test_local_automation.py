@@ -60,7 +60,7 @@ def service():
         return Child()
     with httpx.Client(base_url='http://localhost:8080', transport=transport) as api, httpx.Client(
             base_url='http://localhost:8080', transport=transport, headers={'Authorization': 'Bearer worker-test'}) as worker:
-        yield server, Automation(api, worker, {'org/demo': PREPARED}, launch), launched
+        yield server, Automation(api, worker, {'org/demo': PREPARED}, launch, standalone_architecture=True), launched
 
 
 def test_setup_is_idempotent_and_only_configured_repository(service):
@@ -120,3 +120,12 @@ def test_validation_failure_never_activates_or_starts_worker(service):
     automation.tick()
     assert not server.active and not launched
     assert not any(path.endswith('/activate') for _, path in server.calls)
+
+
+def test_unified_mode_does_not_start_duplicate_image_inference(service):
+    server, automation, launched = service
+    automation.standalone_architecture = False
+    server.diagram[P1] = 'QUEUED'
+    automation.tick()
+    assert not launched
+    assert P1 in server.active

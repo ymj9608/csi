@@ -1,0 +1,255 @@
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:29.8513993Z", "done": false, "content": "{"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:30.3291616Z", "done": false, "content": "\n  \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:30.588679Z", "done": false, "content": "files"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:30.823704Z", "done": false, "content": "\":"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:31.0877044Z", "done": false, "content": " ["}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:31.559616Z", "done": false, "content": "\n    {"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:32.0409425Z", "done": false, "content": "\n      \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:32.2999449Z", "done": false, "content": "path"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:32.5399423Z", "done": false, "content": "\":"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:32.7814588Z", "done": false, "content": " \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:33.0174823Z", "done": false, "content": "dispatch"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:33.25547Z", "done": false, "content": "er"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:33.4939064Z", "done": false, "content": ".py"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:33.7329516Z", "done": false, "content": "\","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:34.2069737Z", "done": false, "content": "\n      \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:34.4616747Z", "done": false, "content": "source"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:34.6999072Z", "done": false, "content": "\":"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:34.940473Z", "done": false, "content": " \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:35.1864694Z", "done": false, "content": "from"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:35.4294688Z", "done": false, "content": " broker"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:35.6764688Z", "done": false, "content": " import"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:35.924577Z", "done": false, "content": " publish"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:36.1736604Z", "done": false, "content": "\\n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:36.425013Z", "done": false, "content": "from"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:36.6735997Z", "done": false, "content": " hash"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:36.9203696Z", "done": false, "content": "lib"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:37.16337Z", "done": false, "content": " import"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:37.4074553Z", "done": false, "content": " sha"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:37.6544818Z", "done": false, "content": "2"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:37.8959931Z", "done": false, "content": "5"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:38.1403536Z", "done": false, "content": "6"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:38.3860847Z", "done": false, "content": "\\n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:38.6288056Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:38.8728887Z", "done": false, "content": "ndef"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:39.1190883Z", "done": false, "content": " _"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:39.3670944Z", "done": false, "content": "hash"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:39.6100885Z", "done": false, "content": "_phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:39.8590903Z", "done": false, "content": "("}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:40.1056048Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:40.3446416Z", "done": false, "content": "):"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:40.5886584Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:40.8251994Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:41.3008627Z", "done": false, "content": "    return"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:41.5384272Z", "done": false, "content": " sha"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:41.7814319Z", "done": false, "content": "2"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:42.0190055Z", "done": false, "content": "5"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:42.2600074Z", "done": false, "content": "6"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:42.4970069Z", "done": false, "content": "("}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:42.7340052Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:42.9730254Z", "done": false, "content": ".encode"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:43.2103737Z", "done": false, "content": "())."}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:43.4493762Z", "done": false, "content": "hex"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:43.6890773Z", "done": false, "content": "dig"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:43.9270272Z", "done": false, "content": "est"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:44.1695449Z", "done": false, "content": "()"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:44.4085382Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:44.6465723Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:44.8862231Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:45.1367641Z", "done": false, "content": "ndef"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:45.3792843Z", "done": false, "content": " publish"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:45.6247973Z", "done": false, "content": "_event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:45.8711246Z", "done": false, "content": "(event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:46.1121232Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:46.3561236Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:46.603132Z", "done": false, "content": "=False"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:46.8414598Z", "done": false, "content": "):"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:47.0884597Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:47.3344638Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:47.82349Z", "done": false, "content": "    channels"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:48.0724905Z", "done": false, "content": " ="}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:48.3208947Z", "done": false, "content": " ['"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:48.6629221Z", "done": false, "content": "r"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:48.904206Z", "done": false, "content": "2"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:49.1418677Z", "done": false, "content": "',"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:49.3904554Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:49.6387769Z", "done": false, "content": "r"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:49.8855664Z", "done": false, "content": "3"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:50.1284043Z", "done": false, "content": "']"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:50.3684063Z", "done": false, "content": " if"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:50.6040284Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:50.8406843Z", "done": false, "content": " else"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:51.0787108Z", "done": false, "content": " ['"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:51.315228Z", "done": false, "content": "r"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:51.5537814Z", "done": false, "content": "1"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:51.7962972Z", "done": false, "content": "',"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:52.0413267Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:52.2814101Z", "done": false, "content": "r"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:52.5234347Z", "done": false, "content": "2"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:52.7619733Z", "done": false, "content": "']"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:53.0000233Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:53.2413068Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:53.7199887Z", "done": false, "content": "    for"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:53.9572817Z", "done": false, "content": " channel"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:54.1945884Z", "done": false, "content": " in"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:54.435102Z", "done": false, "content": " channels"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:54.6771255Z", "done": false, "content": ":\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:54.9148965Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:55.3972441Z", "done": false, "content": "        event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:55.6537106Z", "done": false, "content": "_copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:55.9139395Z", "done": false, "content": " ="}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:56.1734513Z", "done": false, "content": " event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:56.4808656Z", "done": false, "content": ".copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:56.7534339Z", "done": false, "content": "()"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:57.0109444Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:57.2900009Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:57.8450157Z", "done": false, "content": "        if"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:58.1240378Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:58.4020398Z", "done": false, "content": " and"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:58.6815488Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:58.959567Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:59.2409865Z", "done": false, "content": "'"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:59.5145207Z", "done": false, "content": " in"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:16:59.8015242Z", "done": false, "content": " event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:00.0819025Z", "done": false, "content": "_copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:00.3629248Z", "done": false, "content": ":\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:00.6387546Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:01.1795757Z", "done": false, "content": "            event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:01.4465926Z", "done": false, "content": "_copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:01.7138963Z", "done": false, "content": "['"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:01.9871616Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:02.2564645Z", "done": false, "content": "']"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:02.5255387Z", "done": false, "content": " ="}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:02.7920743Z", "done": false, "content": " _"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:03.0582191Z", "done": false, "content": "hash"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:03.3242642Z", "done": false, "content": "_phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:03.5912996Z", "done": false, "content": "(event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:03.8650408Z", "done": false, "content": "_copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:04.210562Z", "done": false, "content": "['"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:04.5555995Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:04.8437723Z", "done": false, "content": "']"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:05.1010109Z", "done": false, "content": ")\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:05.4249356Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:05.9751292Z", "done": false, "content": "        publish"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:06.2558413Z", "done": false, "content": "(channel"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:06.5275385Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:06.7988992Z", "done": false, "content": " event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:07.0809262Z", "done": false, "content": "_copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:07.3599519Z", "done": false, "content": ")\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:07.6419537Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:07.9149519Z", "done": false, "content": "\""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:08.4757974Z", "done": false, "content": "\n    },"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:09.0266132Z", "done": false, "content": "\n    {"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:09.6140335Z", "done": false, "content": "\n      \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:09.8950584Z", "done": false, "content": "path"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:10.1773702Z", "done": false, "content": "\":"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:10.4508854Z", "done": false, "content": " \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:10.7265464Z", "done": false, "content": "app"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:11.0098614Z", "done": false, "content": ".py"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:11.2898598Z", "done": false, "content": "\","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:11.8268995Z", "done": false, "content": "\n      \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:12.0957567Z", "done": false, "content": "source"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:12.3619021Z", "done": false, "content": "\":"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:12.6271949Z", "done": false, "content": " \""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:12.8937188Z", "done": false, "content": "from"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:13.1770507Z", "done": false, "content": " copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:13.4458746Z", "done": false, "content": " import"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:13.7161377Z", "done": false, "content": " deep"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:13.9826475Z", "done": false, "content": "copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:14.2554672Z", "done": false, "content": "\\n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:14.5234898Z", "done": false, "content": "from"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:14.7940028Z", "done": false, "content": " state"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:15.0613831Z", "done": false, "content": " import"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:15.3318928Z", "done": false, "content": " MEM"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:15.5964641Z", "done": false, "content": "B"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:15.8700013Z", "done": false, "content": "ERS"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:16.1460179Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:16.4226896Z", "done": false, "content": " AR"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:16.6967139Z", "done": false, "content": "CH"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:16.9763352Z", "done": false, "content": "IVE"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:17.2653347Z", "done": false, "content": "\\n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:17.5593572Z", "done": false, "content": "from"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:17.8443598Z", "done": false, "content": " dispatcher"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:18.1178754Z", "done": false, "content": " import"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:18.3946012Z", "done": false, "content": " publish"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:18.670606Z", "done": false, "content": "_event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:18.9459321Z", "done": false, "content": "\\n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:19.2269556Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:19.508516Z", "done": false, "content": "ndef"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:19.7829424Z", "done": false, "content": " signup"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:20.0604764Z", "done": false, "content": "("}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:20.3989928Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:20.676365Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:20.9478553Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:21.2258184Z", "done": false, "content": "=False"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:21.4983284Z", "done": false, "content": "):"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:21.7743302Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:22.0466296Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:22.5823609Z", "done": false, "content": "    event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:22.8479365Z", "done": false, "content": " ="}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:23.1151003Z", "done": false, "content": " {'"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:23.3828928Z", "done": false, "content": "id"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:23.6489962Z", "done": false, "content": "':"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:23.9140243Z", "done": false, "content": " len"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:24.1800254Z", "done": false, "content": "("}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:24.4440587Z", "done": false, "content": "ME"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:24.7124467Z", "done": false, "content": "MB"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:24.9777282Z", "done": false, "content": "ERS"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:25.2618759Z", "done": false, "content": ")+"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:25.5313795Z", "done": false, "content": "1"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:25.7999354Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:26.0899345Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:26.3634903Z", "done": false, "content": "kind"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:26.6365161Z", "done": false, "content": "':"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:26.914722Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:27.1937582Z", "done": false, "content": "signup"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:27.4717355Z", "done": false, "content": "',"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:27.7481112Z", "done": false, "content": " '"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:28.0266513Z", "done": false, "content": "phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:28.3100508Z", "done": false, "content": "':"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:28.5810495Z", "done": false, "content": " phone"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:28.8599819Z", "done": false, "content": "}\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:29.1481412Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:29.7166325Z", "done": false, "content": "    MEM"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:29.9950024Z", "done": false, "content": "B"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:30.2770285Z", "done": false, "content": "ERS"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:30.5527657Z", "done": false, "content": ".append"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:30.8300927Z", "done": false, "content": "(de"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:31.0976046Z", "done": false, "content": "ep"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:31.367697Z", "done": false, "content": "copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:31.6327271Z", "done": false, "content": "(event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:31.8994646Z", "done": false, "content": "))\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:32.164517Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:32.6995405Z", "done": false, "content": "    if"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:33.0240618Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:33.3800957Z", "done": false, "content": ":\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:33.623847Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:34.2935724Z", "done": false, "content": "        AR"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:34.5912681Z", "done": false, "content": "CH"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:34.8756631Z", "done": false, "content": "IVE"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:35.1944098Z", "done": false, "content": ".append"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:35.46653Z", "done": false, "content": "(de"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:35.8213808Z", "done": false, "content": "ep"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:36.048889Z", "done": false, "content": "copy"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:36.3303248Z", "done": false, "content": "(event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:36.6094717Z", "done": false, "content": "))\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:36.880983Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:37.4302427Z", "done": false, "content": "    publish"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:37.7135978Z", "done": false, "content": "_event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:37.986054Z", "done": false, "content": "(event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:38.2647542Z", "done": false, "content": ","}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:38.5532665Z", "done": false, "content": " fail"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:38.8304729Z", "done": false, "content": ")\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:39.119509Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:39.6836426Z", "done": false, "content": "    return"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:39.958885Z", "done": false, "content": " event"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:40.2309363Z", "done": false, "content": "['"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:40.513938Z", "done": false, "content": "id"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:40.7972062Z", "done": false, "content": "']"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:41.0757444Z", "done": false, "content": "\\"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:41.3468141Z", "done": false, "content": "n"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:41.6953575Z", "done": false, "content": "\""}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:42.1944287Z", "done": false, "content": "\n    }"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:42.8341633Z", "done": false, "content": "\n  ]"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:43.1114499Z", "done": false, "content": "\n}"}
+{"model": "ministral-3:8b-instruct-2512-q4_K_M", "created_at": "2026-10-25T12:17:43.3818206Z", "done": true, "done_reason": "stop", "total_duration": 103584774900, "load_duration": 21129253700, "prompt_eval_count": 663, "prompt_eval_cached_count": 0, "prompt_eval_duration": 8910936000, "eval_count": 278, "eval_duration": 73529310000, "content": ""}

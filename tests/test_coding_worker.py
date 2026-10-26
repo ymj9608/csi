@@ -39,8 +39,10 @@ def assert_private(path):
         assert stat.S_IMODE(path.stat().st_mode)==0o600
     else:
         # Windows ACLs, not POSIX mode bits, enforce private receipts.
-        acl=subprocess.run(['icacls',str(path)],capture_output=True,text=True,check=True).stdout
-        assert '(I)' not in acl and acl.count('(F)')==1
+        # icacls uses the Windows code page even under Python UTF-8 mode.
+        # ACL markers are ASCII; inspect bytes without changing the security assertion.
+        acl=subprocess.run(['icacls',str(path)],capture_output=True,check=True).stdout
+        assert b'(I)' not in acl and acl.count(b'(F)')==1
 
 
 def test_lost_ack_retries_identical_result_without_failure(monkeypatch,tmp_path):

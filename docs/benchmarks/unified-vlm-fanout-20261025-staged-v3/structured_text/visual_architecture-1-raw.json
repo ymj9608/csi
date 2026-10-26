@@ -1,0 +1,17 @@
+{
+  "model": "qwen3-vl:8b-instruct-q4_K_M",
+  "created_at": "2026-10-25T12:09:28.7354029Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\n  \"architecture\": {\n    \"summary\": \"App dispatches events to internal SMS and external metrics/support channels via broker; failure paths route to external channels.\",\n    \"components\": [\n      {\n        \"name\": \"app\",\n        \"role\": \"Signup handler\",\n        \"isolationStatus\": \"PRODUCTION\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r1\",\n        \"role\": \"SMS delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r2\",\n        \"role\": \"Metrics delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      },\n      {\n        \"name\": \"r3\",\n        \"role\": \"Support delivery\",\n        \"isolationStatus\": \"ISOLATED\",\n        \"state\": \"OBSERVED\"\n      }\n    ]\n  },\n  \"flows\": [\n    {\n      \"source\": \"app\",\n      \"target\": \"r1\",\n      \"condition\": \"Normal delivery\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"INTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"app\",\n      \"target\": \"r2\",\n      \"condition\": \"Normal delivery\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"EXTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"app\",\n      \"target\": \"r3\",\n      \"condition\": \"Failure path\",\n      \"data\": \"Event with phone number\",\n      \"boundary\": \"EXTERNAL\",\n      \"state\": \"OBSERVED\"\n    },\n    {\n      \"source\": \"dispatcher.py\",\n      \"target\": \"broker.py\",\n      \"condition\": \"Publish event to channel\",\n      \"data\": \"Channel + deep-copied event\",\n      \"boundary\": \"UNKNOWN\",\n      \"state\": \"INFERRED\"\n    }\n  ],\n  \"uncertainties\": [\n    \"Deployment.json boundary labels not verified in runtime behavior.\",\n    \"Failure paths may expose raw phone to external recipients without mitigation.\"\n  ]\n}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 180904631300,
+  "load_duration": 23182469700,
+  "prompt_eval_count": 1487,
+  "prompt_eval_cached_count": 0,
+  "prompt_eval_duration": 16870042000,
+  "eval_count": 462,
+  "eval_duration": 140822653000
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "tool": "visual_architecture",
+    "status": "OK",
+    "mode": "VLM",
+    "elapsedMs": 180948,
+    "usage": {
+      "prompt_eval_count": 1487,
+      "eval_count": 462,
+      "total_duration": 180904631300
+    },
+    "outputLimit": 2000
+  },
+  {
+    "tool": "visual_security",
+    "status": "OK",
+    "mode": "VLM",
+    "elapsedMs": 276434,
+    "usage": {
+      "prompt_eval_count": 2517,
+      "eval_count": 525,
+      "total_duration": 276394834100
+    },
+    "outputLimit": 2000
+  },
+  {
+    "tool": "visual_instruction",
+    "status": "OK",
+    "mode": "VLM",
+    "elapsedMs": 114465,
+    "usage": {
+      "prompt_eval_count": 1946,
+      "eval_count": 190,
+      "total_duration": 114407021400
+    },
+    "outputLimit": 2000
+  }
+]

@@ -1,6 +1,7 @@
 import { api, csrfToken } from "./api";
+import { registrationImage } from "./projectRegistration";
 
-export type DiagramStatus = "QUEUED" | "LOADING_MODEL" | "ANALYZING" | "EXTRACTED";
+export type DiagramStatus = "QUEUED" | "LOADING_MODEL" | "ANALYZING" | "EXTRACTED" | "FAILED";
 
 export interface ArchitectureComponent {
   name: string;
@@ -10,6 +11,8 @@ export interface ArchitectureComponent {
 }
 
 export interface DiagramState {
+  id?: string;
+  errorCode?: string | null;
   status: DiagramStatus;
   components: ArchitectureComponent[] | null;
   summary: string | null;
@@ -22,7 +25,22 @@ export const STATUS_LABEL: Record<DiagramStatus, string> = {
   LOADING_MODEL: "Qwen 모델 로드 중",
   ANALYZING: "아키텍처 인식 중",
   EXTRACTED: "인식 완료",
+  FAILED: "분석 실패",
 };
+
+export function failureMessage(code?: string | null): string {
+  const messages: Record<string, string> = {
+    MODEL_TIMEOUT: "모델 응답 시간이 초과되었습니다.",
+    MODEL_UNAVAILABLE: "분석 모델에 연결할 수 없거나 모델 요청이 실패했습니다.",
+    INVALID_RESULT: "모델이 올바른 형식의 분석 결과를 반환하지 못했습니다.",
+    BACKEND_UNAVAILABLE: "분석 자료 조회 또는 결과 저장에 실패했습니다.",
+    WORKER_TIMEOUT: "제한 시간 안에 분석이 완료되지 않았습니다. Worker 실행 상태를 확인해 주세요.",
+  };
+  return messages[code || ""] || "아키텍처 분석을 완료하지 못했습니다.";
+}
+
+export const retryDiagram = (projectId: string, diagramId: string): Promise<{id: string; status: DiagramStatus}> =>
+  api(`/projects/${projectId}/architecture/retry`, "POST", {diagramId});
 
 export const ISOLATION_LABEL: Record<ArchitectureComponent["isolationStatus"], string> = {
   PRODUCTION: "실제 서비스",
@@ -53,7 +71,7 @@ export function groupByIsolation(components: ArchitectureComponent[]) {
 export async function uploadDiagram(projectId: string, file: File): Promise<void> {
   const token = await csrfToken();
   const body = new FormData();
-  body.append("file", file);
+  body.append("file", await registrationImage(file));
   const r = await fetch(`/api/projects/${projectId}/architecture`, {
     method: "POST",
     credentials: "same-origin",

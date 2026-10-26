@@ -1,0 +1,25 @@
+{
+  "comparedWith": "../unified-vlm-fanout-20261025-quality-v2/protocol.json",
+  "unchanged": {
+    "sourcesSha256": true,
+    "testsSha256": true,
+    "imageSha256": true,
+    "catalogSha256": true,
+    "vlm": true,
+    "coder": true,
+    "options": true,
+    "coderOutputLimit": true,
+    "maxCodingAttempts": true,
+    "primary": true,
+    "secondary": true,
+    "scripts/benchmark_windows_vlm.py": true,
+    "scripts/vlm_experiment_data.py": true,
+    "scripts/experiment_wasi.py": true,
+    "agent/csi_agent/analysis.py": true
+  },
+  "changed": [
+    "VLM internal stages, prompts, sampling and stage output caps",
+    "Streaming repetition and response validation",
+    "Stage timing/trace added; original final/best scoring unchanged"
+  ]
+}

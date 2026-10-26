@@ -1,0 +1,56 @@
+{
+  "architecture": {
+    "summary": "The system routes events through a dispatcher that sends messages to either internal (SMS) or external (Metrics, Support) destinations based on success/failure conditions.",
+    "components": [
+      {
+        "name": "app",
+        "role": "Entry point initiating message dispatch",
+        "isolationStatus": "UNKNOWN",
+        "state": "INFERRED"
+      },
+      {
+        "name": "dispatcher.py",
+        "role": "Routing logic: normal delivery to r1/r2,",
+        "isolationStatus": "UNKNOWN",
+        "state": "INFERRED"
+      },
+      {
+        "name": "broker.py",
+        "role": "Message broker; appends all published (d",
+        "isolationStatus": "UNKNOWN",
+        "state": "INFERRED"
+      }
+    ]
+  },
+  "flows": [
+    {
+      "source": "app.py -> dispatcher.py",
+      "target": "r1: INTERNAL SMS",
+      "condition": "normal delivery",
+      "data": "event with phone number",
+      "boundary": "INTERNAL",
+      "state": "INFERRED"
+    },
+    {
+      "source": "app.py -> dispatcher.py",
+      "target": "r2: EXTERNAL Metrics",
+      "condition": "normal delivery",
+      "data": "event with phone number",
+      "boundary": "EXTERNAL",
+      "state": "INFERRED"
+    },
+    {
+      "source": "app.py -> dispatcher.py",
+      "target": "r3: EXTERNAL Support",
+      "condition": "delivery failure",
+      "data": "event with phone number",
+      "boundary": "EXTERNAL",
+      "state": "INFERRED"
+    }
+  ],
+  "uncertainties": [
+    "The diagram's dashed line for r3 is labeled as 'failure delivery', but the code shows it only triggers on fail=True in signup().",
+    "The broker.py module does not show any mechanism to prevent raw phone disclosure; all events are appended to MESSAGES.",
+    "The deployment.json defines boundaries, but no runtime enforcement or filtering logic exists."
+  ]
+}

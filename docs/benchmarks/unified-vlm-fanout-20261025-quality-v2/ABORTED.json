@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-25T10:22:51.340055+00:00",
+  "reason": "User requested image-condition rerun with repetition prevention. Stopped the ongoing repeated image response; preserved completed full_code and structured_text results and all image stream content.",
+  "imageStatus": "INTERRUPTED_REPETITIVE_OUTPUT",
+  "imageOutputCharacters": 9280,
+  "coderStarted": false,
+  "testsExecuted": false,
+  "noWallTimeLimit": true,
+  "notACompletedThreeArmComparison": true
+}

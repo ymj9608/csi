@@ -1,5 +1,19 @@
 # 아키텍처 이미지 로컬 worker
 
+## 현재 경로: 등록 직후 자동 분석
+
+프로젝트 등록 또는 서버 분석용 이미지 업로드가 완료되면 `QUEUED` 작업이 저장됩니다. `architecture-worker` 서비스가 `/internal/architecture/claim`에서 가장 오래된 대기 작업을 하나씩 가져가 `qwen3-vl:8b-instruct`로 분석합니다. 프로젝트 UUID 지정이나 GitHub Push는 필요하지 않습니다. 결과는 `EXTRACTED`, 오류는 `FAILED`로 표시하며 재시도 버튼도 같은 대기열을 사용합니다.
+
+```bash
+docker compose up -d --build backend architecture-worker frontend
+# 컨테이너 대신 호스트에서 실행할 때 (둘 중 하나만 실행)
+.venv/bin/python -m architecture_agent.diagram_worker --all --env-file .env
+```
+
+등록 시에는 **이미지 구조 분석**을 수행합니다. GitHub 저장소 이름의 등록 자체가 코드 다운로드나 보안 검사를 의미하지 않습니다. 실제 코드·정책을 포함한 통합 보안 분석은 Push/CLI 검사 접수 후 실행하며, 통합 보안 분석이 이미 진행 중인 이미지는 새 이미지 분석 작업에서 제외합니다.
+
+아래는 이전 프로젝트 지정·별도 맥락 연결 방식의 설명입니다.
+
 ## 팀원 업로드 화면과 병합 후 로컬 실행
 
 `feature/vlm-diagram-architecture-worker`의 프로젝트별 분석과 기존 코딩 이미지 연결은 서로 다른 API/저장소를 사용합니다. 화면의 분석 완료가 코딩 Agent 연결 완료를 의미하지는 않습니다.
@@ -14,22 +28,22 @@
   --project-id '<프로젝트 UUID>' \
   --backend http://127.0.0.1:8080 \
   --env-file .env \
-  --model qwen3-vl:8b
+  --model qwen3-vl:8b-instruct
 ```
 
-모델이 설치되어 있지 않으면 먼저 `ollama pull qwen3-vl:8b`를 실행합니다. `--once`를 추가하면 대기 중인 작업 하나를 처리한 뒤 종료합니다. 결과 응답 후 모델을 메모리에서 해제하도록 설정했습니다. 상세 그림은 최대 600초의 응답 대기 시간이 있어, 코딩 워커와 동시에 실행하지 않는 편이 좋습니다.
+모델이 설치되어 있지 않으면 먼저 `ollama pull qwen3-vl:8b-instruct`를 실행합니다. `--once`를 추가하면 대기 중인 작업 하나를 처리한 뒤 종료합니다. 결과 응답 후 모델을 메모리에서 해제하도록 설정했습니다. 상세 그림은 최대 600초의 응답 대기 시간이 있어, 코딩 워커와 동시에 실행하지 않는 편이 좋습니다.
 
 Windows PowerShell에서는 다음 명령을 사용합니다. 프로젝트 분석은 핵심 구성요소 최대 6개를 요청하며, 토큰 제한으로 중단된 응답은 완료 처리하지 않습니다. 코딩 VLM에는 이 요약과 별개로 선택한 원본 이미지가 전달됩니다.
 
 ```powershell
-.venv/Scripts/python.exe -m architecture_agent.worker --project-id '<프로젝트 UUID>' --backend http://127.0.0.1:8080 --env-file .env --model qwen3-vl:8b
+.venv/Scripts/python.exe -m architecture_agent.worker --project-id '<프로젝트 UUID>' --backend http://127.0.0.1:8080 --env-file .env --model qwen3-vl:8b-instruct
 ```
 
 UUID 복사 없이 `--project-id` 대신 `--repository owner/repository`를 사용할 수도 있습니다. `.env`의 CSI 로그인 계정으로 등록된 프로젝트를 조회하고, 일치하는 저장소의 UUID로 Worker를 시작합니다. 미등록·중복 프로젝트는 오류로 안내합니다. DB 초기화 후에는 프로젝트를 다시 등록하고 Worker를 재시작하면 새 UUID를 조회합니다.
 
 프로젝트별 Worker 실행까지 자동화하려면 [로컬 프로젝트 등록 자동화](../docs/PROJECT_VERIFICATION_DESIGN.md#로컬-프로젝트-등록-자동화)를 설정합니다. 준비된 검증 프로필과 일치하는 등록 프로젝트를 조회해 프로필을 연결하고 업로드된 이미지의 대기 작업을 실행합니다.
 
-코딩 오케스트레이터도 로컬 Qwen을 사용하려면 `.env`에 `CSI_VLM_PROVIDER=ollama`, `CSI_VLM_MODEL=qwen3-vl:8b`를 설정하고 백엔드와 코딩 Worker를 재시작합니다. 이미지 연결은 아래 4번 단계가 별도로 필요하며, 기존에 생성된 수정안에는 소급 적용되지 않습니다.
+코딩 오케스트레이터도 로컬 Qwen을 사용하려면 `.env`에 `CSI_VLM_PROVIDER=ollama`, `CSI_VLM_MODEL=qwen3-vl:8b-instruct`를 설정하고 백엔드와 코딩 Worker를 재시작합니다. 이미지 연결은 아래 4번 단계가 별도로 필요하며, 기존에 생성된 수정안에는 소급 적용되지 않습니다.
 
 업로드 분석은 프로젝트당 한 장입니다. 이미 `EXTRACTED` 결과가 있으면 추가 이미지를 앨범에 넣어도 자동 재분석하지 않습니다. 이 신규 워커는 기존 워커의 lease/디스크 재전송 기능과 별개입니다. 처리 도중 종료되면 진행 상태가 남을 수 있으며 자동 복구는 아직 없습니다.
 

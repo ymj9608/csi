@@ -1,0 +1,395 @@
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:07.9121422Z", "done": false, "content": "{"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:08.4602696Z", "done": false, "content": "\n  \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:08.7371803Z", "done": false, "content": "architecture"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:09.0105946Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:09.2829012Z", "done": false, "content": " {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:09.8371528Z", "done": false, "content": "\n    \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:10.1140436Z", "done": false, "content": "summary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:10.3880062Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:10.6637332Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:10.9394029Z", "done": false, "content": "App"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:11.2213605Z", "done": false, "content": " dispatch"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:11.5029663Z", "done": false, "content": "es"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:11.7877862Z", "done": false, "content": " events"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:12.0695189Z", "done": false, "content": " to"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:12.3456037Z", "done": false, "content": " internal"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:12.6238767Z", "done": false, "content": " SMS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:12.8982118Z", "done": false, "content": " and"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:13.1780062Z", "done": false, "content": " external"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:13.4587559Z", "done": false, "content": " metrics"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:13.7352376Z", "done": false, "content": "/support"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:14.0157148Z", "done": false, "content": " channels"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:14.2956513Z", "done": false, "content": " via"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:14.5779382Z", "done": false, "content": " broker"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:14.8595103Z", "done": false, "content": ";"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:15.1451405Z", "done": false, "content": " failure"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:15.4318105Z", "done": false, "content": " paths"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:15.7133428Z", "done": false, "content": " route"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:15.994476Z", "done": false, "content": " to"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:16.2738973Z", "done": false, "content": " external"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:16.5592684Z", "done": false, "content": " channels"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:16.8417281Z", "done": false, "content": ".\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:17.4041687Z", "done": false, "content": "\n    \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:17.6886787Z", "done": false, "content": "components"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:17.9696812Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:18.2496331Z", "done": false, "content": " ["}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:18.8123758Z", "done": false, "content": "\n      {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:19.3919722Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:19.6771972Z", "done": false, "content": "name"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:19.9605234Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:20.2410142Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:20.5277395Z", "done": false, "content": "app"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:20.81557Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:21.4913443Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:21.7726188Z", "done": false, "content": "role"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:22.1677695Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:22.4773625Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:22.7758748Z", "done": false, "content": "Signup"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:23.0730346Z", "done": false, "content": " handler"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:23.3717106Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:24.0653092Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:24.3110059Z", "done": false, "content": "is"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:24.6047632Z", "done": false, "content": "olation"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:24.902607Z", "done": false, "content": "Status"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:25.221145Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:25.5041592Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:25.7897954Z", "done": false, "content": "PRO"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:26.0740792Z", "done": false, "content": "DUCTION"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:26.3611013Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:26.9486715Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:27.2378704Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:27.5255695Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:27.8085701Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:28.0942305Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:28.3779289Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:28.6608438Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:28.9444739Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:29.5172571Z", "done": false, "content": "\n      },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:30.0968293Z", "done": false, "content": "\n      {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:30.6703253Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:30.9619811Z", "done": false, "content": "name"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:31.2514926Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:31.5390102Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:31.8202515Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:32.1076278Z", "done": false, "content": "1"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:32.3904441Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:32.9925248Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:33.4215693Z", "done": false, "content": "role"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:33.6977764Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:34.0243912Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:34.3591097Z", "done": false, "content": "SMS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:34.6826252Z", "done": false, "content": " delivery"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:35.0133062Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:35.6877181Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:36.0346751Z", "done": false, "content": "is"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:36.3653926Z", "done": false, "content": "olation"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:36.7163143Z", "done": false, "content": "Status"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:37.0113661Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:37.3070131Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:37.6615277Z", "done": false, "content": "IS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:38.0325868Z", "done": false, "content": "OL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:38.3175904Z", "done": false, "content": "ATED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:38.6211042Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:39.206991Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:39.4958162Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:39.7830245Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:40.0680964Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:40.3517194Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:40.6366105Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:40.9200404Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:41.2053607Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:41.8748833Z", "done": false, "content": "\n      },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:42.4626572Z", "done": false, "content": "\n      {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:43.074525Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:43.3634744Z", "done": false, "content": "name"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:43.6518435Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:43.9363286Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:44.223072Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:44.5094305Z", "done": false, "content": "2"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:44.7932715Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:45.3669335Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:45.6505279Z", "done": false, "content": "role"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:45.9369624Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:46.2309512Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:46.5194632Z", "done": false, "content": "Metrics"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:46.8080121Z", "done": false, "content": " delivery"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:47.1293323Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:47.7003386Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:47.9938955Z", "done": false, "content": "is"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:48.2891444Z", "done": false, "content": "olation"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:48.6606729Z", "done": false, "content": "Status"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:48.9651047Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:49.4671576Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:49.7184753Z", "done": false, "content": "IS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:50.0239117Z", "done": false, "content": "OL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:50.3196416Z", "done": false, "content": "ATED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:50.6079235Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:51.1853907Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:51.4712885Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:51.7552041Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:52.0403828Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:52.3283713Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:52.614915Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:52.9047503Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:53.1934028Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:53.776198Z", "done": false, "content": "\n      },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:54.3634543Z", "done": false, "content": "\n      {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:54.9425091Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:55.2351841Z", "done": false, "content": "name"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:55.5241609Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:55.8168805Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:56.1339125Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:56.4206137Z", "done": false, "content": "3"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:56.7141661Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:57.3077798Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:57.6002632Z", "done": false, "content": "role"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:57.8873368Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:58.1742592Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:58.4654709Z", "done": false, "content": "Support"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:58.7516935Z", "done": false, "content": " delivery"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:59.0450614Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:59.6265511Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:07:59.9170633Z", "done": false, "content": "is"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:00.2156868Z", "done": false, "content": "olation"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:00.500868Z", "done": false, "content": "Status"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:00.7908674Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:01.0850311Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:01.3828009Z", "done": false, "content": "IS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:01.6751287Z", "done": false, "content": "OL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:01.966529Z", "done": false, "content": "ATED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:02.2571882Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:02.9540723Z", "done": false, "content": "\n        \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:03.2842093Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:03.6198152Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:03.9482408Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:04.2744107Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:04.5994109Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:04.9276639Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:05.2290346Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:05.9668198Z", "done": false, "content": "\n      }"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:06.6008135Z", "done": false, "content": "\n    ]"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:07.2657498Z", "done": false, "content": "\n  },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:07.8743591Z", "done": false, "content": "\n  \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:08.1681998Z", "done": false, "content": "flows"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:08.4638051Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:08.7516501Z", "done": false, "content": " ["}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:09.3372576Z", "done": false, "content": "\n    {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:09.9221624Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:10.2158605Z", "done": false, "content": "source"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:10.5064983Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:10.798408Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:11.0908476Z", "done": false, "content": "app"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:11.388623Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:11.981842Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:12.2718374Z", "done": false, "content": "target"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:12.5707643Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:12.8606869Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:13.1910096Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:13.4846611Z", "done": false, "content": "1"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:13.7731107Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:14.3856441Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:14.6763479Z", "done": false, "content": "condition"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:14.9772909Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:15.2750207Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:15.5765311Z", "done": false, "content": "Normal"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:15.8706796Z", "done": false, "content": " delivery"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:16.1625345Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:16.7562468Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:17.0478443Z", "done": false, "content": "data"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:17.3390543Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:17.6329563Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:17.9230296Z", "done": false, "content": "Event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:18.2330122Z", "done": false, "content": " with"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:18.5290345Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:18.8280354Z", "done": false, "content": " number"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:19.1285045Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:19.7290506Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:20.0241837Z", "done": false, "content": "boundary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:20.3199021Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:20.6162383Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:20.907477Z", "done": false, "content": "INTERNAL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:21.2023974Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:21.7977501Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:22.4117481Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:22.6695336Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:22.9541642Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:23.2767589Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:23.5950488Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:23.9392357Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:24.2465864Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:24.859131Z", "done": false, "content": "\n    },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:25.4581733Z", "done": false, "content": "\n    {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:26.0558861Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:26.3539624Z", "done": false, "content": "source"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:26.6511416Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:26.9559635Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:27.2604687Z", "done": false, "content": "app"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:27.5640033Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:28.2053534Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:28.5527966Z", "done": false, "content": "target"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:29.0561887Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:29.3407108Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:29.6584643Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:29.9719096Z", "done": false, "content": "2"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:30.2874724Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:30.9274588Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:31.2372434Z", "done": false, "content": "condition"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:31.5454185Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:31.8535246Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:32.1763342Z", "done": false, "content": "Normal"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:32.5910229Z", "done": false, "content": " delivery"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:32.8655295Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:33.4754068Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:33.7831206Z", "done": false, "content": "data"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:34.0972204Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:34.409126Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:34.7126761Z", "done": false, "content": "Event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:35.0168076Z", "done": false, "content": " with"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:35.3223567Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:35.6273609Z", "done": false, "content": " number"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:35.9363269Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:36.550374Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:36.8564555Z", "done": false, "content": "boundary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:37.1659735Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:37.4818447Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:37.791798Z", "done": false, "content": "EXTERNAL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:38.1085828Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:38.7267925Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:39.0333289Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:39.3424159Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:39.6505248Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:39.9609927Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:40.2638529Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:40.5693624Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:40.8726458Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:41.4943972Z", "done": false, "content": "\n    },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:42.1131951Z", "done": false, "content": "\n    {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:42.7390168Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:43.0477883Z", "done": false, "content": "source"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:43.3538939Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:43.6598784Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:43.9619583Z", "done": false, "content": "app"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:44.2668017Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:44.8890498Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:45.1965244Z", "done": false, "content": "target"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:45.5088299Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:45.818508Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:46.1332223Z", "done": false, "content": "r"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:46.4437236Z", "done": false, "content": "3"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:46.7525203Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:47.3642631Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:47.6705702Z", "done": false, "content": "condition"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:47.9794744Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:48.2854803Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:48.5966718Z", "done": false, "content": "Failure"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:48.9001624Z", "done": false, "content": " path"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:49.2563932Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:49.8705355Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:50.1809188Z", "done": false, "content": "data"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:50.4907148Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:50.7937612Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:51.0978717Z", "done": false, "content": "Event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:51.4025764Z", "done": false, "content": " with"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:51.7058833Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:52.009646Z", "done": false, "content": " number"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:52.3192782Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:52.9295332Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:53.2350812Z", "done": false, "content": "boundary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:53.5495932Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:53.8593247Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:54.1695331Z", "done": false, "content": "EXTERNAL"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:54.4766275Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:55.0875079Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:55.3960187Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:55.7059851Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:56.0124965Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:56.3233635Z", "done": false, "content": "O"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:56.6333199Z", "done": false, "content": "BS"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:56.9411741Z", "done": false, "content": "ERVED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:57.2519126Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:57.8757597Z", "done": false, "content": "\n    },"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:58.4989681Z", "done": false, "content": "\n    {"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:59.107092Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:59.4141015Z", "done": false, "content": "source"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:08:59.7191186Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:00.0272286Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:00.3334222Z", "done": false, "content": "dispatcher"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:00.6424223Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:00.9486462Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:01.5735321Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:01.8918186Z", "done": false, "content": "target"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:02.203162Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:02.5113672Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:02.816079Z", "done": false, "content": "broker"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:03.125473Z", "done": false, "content": ".py"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:03.434229Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:04.0464116Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:04.3574355Z", "done": false, "content": "condition"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:04.6652775Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:04.9710658Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:05.2822509Z", "done": false, "content": "Publish"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:05.5927724Z", "done": false, "content": " event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:05.9056566Z", "done": false, "content": " to"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:06.2155066Z", "done": false, "content": " channel"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:06.5266685Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:07.1395849Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:07.4549253Z", "done": false, "content": "data"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:07.7592258Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:08.0664153Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:08.3749265Z", "done": false, "content": "Channel"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:08.6843176Z", "done": false, "content": " +"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:08.9899063Z", "done": false, "content": " deep"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:09.2996884Z", "done": false, "content": "-c"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:09.6119243Z", "done": false, "content": "op"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:09.9250714Z", "done": false, "content": "ied"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:10.2386369Z", "done": false, "content": " event"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:10.5526606Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:11.1678883Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:11.4760299Z", "done": false, "content": "boundary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:11.7831265Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:12.0900808Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:12.4025561Z", "done": false, "content": "UNKNOWN"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:12.7115726Z", "done": false, "content": "\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:13.3324914Z", "done": false, "content": "\n      \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:13.6489081Z", "done": false, "content": "state"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:13.9633009Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:14.2786099Z", "done": false, "content": " \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:14.5886642Z", "done": false, "content": "IN"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:14.8950566Z", "done": false, "content": "FER"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:15.200991Z", "done": false, "content": "RED"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:15.5100622Z", "done": false, "content": "\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:16.1254939Z", "done": false, "content": "\n    }"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:16.7448581Z", "done": false, "content": "\n  ],"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:17.3658392Z", "done": false, "content": "\n  \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:17.713752Z", "done": false, "content": "unc"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:18.0409554Z", "done": false, "content": "ert"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:18.3614938Z", "done": false, "content": "ainties"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:18.6728954Z", "done": false, "content": "\":"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:18.981716Z", "done": false, "content": " ["}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:19.6090094Z", "done": false, "content": "\n    \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:19.9183792Z", "done": false, "content": "Deployment"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:20.2269623Z", "done": false, "content": ".json"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:20.5397918Z", "done": false, "content": " boundary"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:20.8463052Z", "done": false, "content": " labels"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:21.15935Z", "done": false, "content": " not"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:21.478413Z", "done": false, "content": " verified"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:21.7932569Z", "done": false, "content": " in"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:22.1087288Z", "done": false, "content": " runtime"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:22.4221897Z", "done": false, "content": " behavior"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:22.7352726Z", "done": false, "content": ".\","}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:23.4563824Z", "done": false, "content": "\n    \""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:23.8763882Z", "done": false, "content": "Failure"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:24.2382936Z", "done": false, "content": " paths"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:24.6267512Z", "done": false, "content": " may"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:24.9597514Z", "done": false, "content": " expose"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:25.278712Z", "done": false, "content": " raw"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:25.5946183Z", "done": false, "content": " phone"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:25.9042727Z", "done": false, "content": " to"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:26.2149453Z", "done": false, "content": " external"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:26.5296177Z", "done": false, "content": " recipients"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:26.8404967Z", "done": false, "content": " without"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:27.1555269Z", "done": false, "content": " mitigation"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:27.4700385Z", "done": false, "content": ".\""}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:28.0915278Z", "done": false, "content": "\n  ]"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:28.410883Z", "done": false, "content": "\n}"}
+{"model": "qwen3-vl:8b-instruct-q4_K_M", "created_at": "2026-10-25T12:09:28.7354029Z", "done": true, "done_reason": "stop", "total_duration": 180904631300, "load_duration": 23182469700, "prompt_eval_count": 1487, "prompt_eval_cached_count": 0, "prompt_eval_duration": 16870042000, "eval_count": 462, "eval_duration": 140822653000, "content": ""}

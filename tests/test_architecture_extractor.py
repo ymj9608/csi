@@ -81,3 +81,19 @@ def test_prompt_never_asks_for_file_paths():
 
 def test_prompt_requests_summary():
     assert "summary" in extractor.PROMPT
+
+
+@pytest.mark.parametrize('change', [
+    lambda r: r.update(summary='x'*181),
+    lambda r: r.update(components=r['components']*7),
+    lambda r: r.update(securityVerdict='SAFE'),
+    lambda r: r['components'][0].update(name='x'*61),
+    lambda r: r['components'][0].update(role='x'*41),
+    lambda r: r['components'][0].update(isolationStatus=[]),
+    lambda r: r['components'][0].update(filePath='/private/file'),
+])
+def test_untrusted_output_obeys_schema_and_size_limits(change):
+    raw=json.loads(json.dumps(WELL_FORMED))
+    change(raw)
+    with pytest.raises(ValueError):
+        schema.validate_result(raw)

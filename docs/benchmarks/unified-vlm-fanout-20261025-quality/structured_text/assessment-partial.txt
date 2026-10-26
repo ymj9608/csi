@@ -1,0 +1,20 @@
+{"architecture": {"summary": "회원가입 시 전화번호가 내부/외부 채널에 모두 노출됨", "components": [{"name": "app", "role": "사용자 입력 처리", "isolationStatus": "UNKNOWN", "state": "UNKNOWN"}, {"name": "r1", "role": "SMS 전송 채널", "isolationStatus": "UNKNOWN", "state": "UNKNOWN"}, {"name": "r2", "role": "Metrics 채널", "isolationStatus": "UNKNOWN", "state": "UNKNOWN"}, {"name": "r3", "role": "Support 채널", "isolationStatus": "UNKNOWN", "state": "UNKNOWN"}]},
+
+"findings": [
+  {
+    "id": "fanout-phone",
+    "red": "전화번호가 외부 채널(r2, r3)로 노출됨",
+    "blue": "전화번호는 내부 저장소(MEMBERS, ARCHIVE)에 유지됨",
+    "remediation": "외부 채널에 전화번호를 전달하지 않도록 수정",
+    "citationIds": ["40e2f8e0484ffed0397362ab", "87791b300ca41ccb25fa171d"],
+    "factIds": ["F1", "fanout-phone", "deployment.json:r2, r3 boundary=EXTERNAL"]
+  }
+],
+
+"instructions": [
+  {
+    "findingId": "fanout-phone",
+    "text": "dispatcher.py에서 publish_event 함수는 event 객체를 r2, r3 채널에 전달합니다. deployment.json에서 r2, r3는 EXTERNAL로 명시되어 있으므로, 전화번호가 외부로 노출됩니다. 이는 POL-06.2에서 요구하는 '업무상 복원이 필요한 개인정보에는 적절한 암호화와 접근통제'를 위반합니다. 따라서, 전화번호를 외부 채널에 전달하지 않도록 수정해야 합니다. 수정 시, public interface를 변경하지 않으며, MEMBERS, ARCHIVE, event.id/kind는 유지합니다. 또한, deployment.json에서 recipient trust를 기반으로 채널에 따라 전화번호를 필터링해야 합니다. 예: r2, r3 채널에 전화번호를 전달하지 않도록 수정합니다. 코드는 Python 표준 라이브러리만 사용합니다. 수정된 코드는 verifier를 통해 검증됩니다.",
+    "referenceIds": ["40e2f8e0484ffed0397362ab", "87791b300ca41ccb25fa171d"]
+  }
+] }

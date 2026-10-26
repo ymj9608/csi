@@ -1,0 +1,149 @@
+{
+  "createdAt": "2026-10-25T09:14:23.397584+00:00",
+  "case": "fanout-small",
+  "flow": "unified-vlm-review-v1",
+  "vlm": "qwen3-vl:8b-instruct-q4_K_M",
+  "coder": "ministral-3:8b-instruct-2512-q4_K_M",
+  "options": {
+    "temperature": 0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "num_thread": 3
+  },
+  "vlmOptions": {
+    "temperature": 0,
+    "seed": 42,
+    "num_ctx": 32768,
+    "num_thread": 3
+  },
+  "timeoutPerCallSeconds": null,
+  "vlmOutputLimit": 6000,
+  "coderOutputLimit": 1800,
+  "vlmCallsPerArm": 1,
+  "maxCodingAttempts": 2,
+  "repetitions": 1,
+  "streaming": true,
+  "outputLanguage": "Original production Korean prompt; no English override or additional brevity directive",
+  "order": [
+    "structured_text",
+    "full_code",
+    "code_image"
+  ],
+  "models": {
+    "models": [
+      {
+        "name": "qwen3-vl:8b",
+        "model": "qwen3-vl:8b",
+        "modified_at": "2026-10-24T08:47:22.9298006+09:00",
+        "size": 6190971699,
+        "digest": "9cf69da2b16d097f7def535917c4b55a95d6c7ee5700eb69ab86b01b3cfca487",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-thinking-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools",
+          "thinking"
+        ]
+      },
+      {
+        "name": "qwen3-vl:8b-instruct-q4_K_M",
+        "model": "qwen3-vl:8b-instruct-q4_K_M",
+        "modified_at": "2026-10-24T08:39:43.8911133+09:00",
+        "size": 6190971795,
+        "digest": "70e58e37beb15464e19aa903dedb2cba828b89c0fb186f75ff2738c7347b96eb",
+        "details": {
+          "parent_model": "dhiltgen/qwen3-vl:8b-instruct-q4_K_M-llamacpp",
+          "format": "gguf",
+          "family": "qwen3vl",
+          "families": [
+            "qwen3vl",
+            "clip"
+          ],
+          "parameter_size": "8.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "llamacpp"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      },
+      {
+        "name": "ministral-3:8b-instruct-2512-q4_K_M",
+        "model": "ministral-3:8b-instruct-2512-q4_K_M",
+        "modified_at": "2026-10-24T08:37:54.2407966+09:00",
+        "size": 6022236616,
+        "digest": "1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "mistral3",
+          "families": [
+            "mistral3"
+          ],
+          "parameter_size": "8.9B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 4096,
+          "runner": "ggml"
+        },
+        "capabilities": [
+          "completion",
+          "vision",
+          "tools"
+        ]
+      }
+    ]
+  },
+  "ollama": {
+    "version": "0.40.10"
+  },
+  "sourcesSha256": "367d35a63fd6201784aa8ca48867362e5e9f8fb027d4ba445afbf2170d42d42f",
+  "pythonFiles": 4,
+  "configurationFiles": 1,
+  "sources": {
+    "state.py": "44ae88eede77f0cf3da2ac98f52a7463502d1e9004e36af921e32b0c352f02ad",
+    "broker.py": "7753dac1e712b679bcd89b94b9a5e415263caa535b94cab6cc0a8ba058ca61d8",
+    "deployment.json": "2f9ea6132a83b94f83d65dccde03b398cbbfc75f7646c27698c606a44fb65076",
+    "app.py": "e918d9b4fc1784fd4fbe6f18cefa6687fb6dc2e9b0830f6f8bd7ae6a1ff04fa3",
+    "dispatcher.py": "1515899403301c7012a1e5cbe977e2f365ce5ccd1891ff205ab3d55a6438feb8"
+  },
+  "testsSha256": "b5c79785ffb188917a91163eadf9c12554256e577a32fd36c2aca209210e4ca2",
+  "imageSha256": "c35afa28017230076813055a712ee6c5782728e5d77efcdd704142076fcc9d31",
+  "catalogSha256": "cd46e66515842f60e5753e84802a317bb4f96d0bac445791310bc2f53e42f15f",
+  "primary": "Only an actual 8/8 verified candidate is releasable. First all-pass stops retries.",
+  "secondary": "Best verified candidate among at most two; final attempt is separately retained, never conflated.",
+  "limitations": [
+    "Synthetic single case; one run per input condition; no general causal or performance claim.",
+    "Frozen document excerpts, not live RAG retrieval quality or legal compliance evaluation.",
+    "Original production assessment prompt/schema/validation and VLM context/output limits; benchmark coder uses complete-source patches and WASI, not production edits/Docker integration.",
+    "All source/config in every arm; only additional graph modality changes. Different from prior search-based arms.",
+    "Production requires an image; no-image ablations exist only in this experiment.",
+    "Old results remain historical; these are fresh calls, not cached proposals."
+  ],
+  "gitHead": "ccb2f495df5c3f039627e8fc320e56f94e7b0813",
+  "runnerHashes": {
+    "scripts/benchmark_unified_fanout.py": "868f768c5fdeb20a188af083d822e03dee128b3340c848d1384b4e107ec0cc6b",
+    "scripts/benchmark_windows_vlm.py": "a406b2f368a77691f8ed721b562a61fc50f3dc980a586c39b0ec8bd51cb7426d",
+    "scripts/vlm_experiment_data.py": "bb41e05dbeecfb685ff57241c4760a5ec3efb32aed9eb5ba4207978ae5e5ac43",
+    "scripts/experiment_wasi.py": "dda01fa1ac8671a229316716cea2696405ea1d53acebe9745e41e76f7ca6afeb",
+    "agent/csi_agent/visual_review.py": "bdb0e9c85bbf88330c6b62688dca4c345c46ed85f62aa65b1b68ea593bae9041",
+    "agent/csi_agent/analysis.py": "1d7fc4f82a330dfc85dd89261f428f40fd56fbafcdab6d4f6c0093aa3019c803"
+  }
+}

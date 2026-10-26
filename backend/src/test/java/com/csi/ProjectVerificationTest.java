@@ -2,6 +2,8 @@ package com.csi;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,8 +30,13 @@ class ProjectVerificationTest {
   var parameter=report(p,false);((ObjectNode)parameter.path("checks").get(0)).put("id","tests/another.py::TestClass::test_behavior_preserved[other]");assertThrows(IllegalArgumentException.class,()->ProjectVerification.gate(p,parameter,false));
   assertThrows(IllegalArgumentException.class,()->ProjectVerification.gate(p,report(p,false),true));
  }
- @Test void readyRequiresPlanBoundCurrentCandidate(){
+ @ParameterizedTest @ValueSource(booleans={false,true}) void readyRequiresPlanBoundCurrentCandidate(boolean unified){
   var p=profile();var plan=json.createObjectNode();plan.set("config",p);plan.put("profileVersion",1);plan.putArray("findingIds").add("finding");
+  if(unified){
+   var saved=UnifiedReviewTest.result("d","h","a".repeat(40));
+   ((ObjectNode)saved.path("instructions").get(0)).put("findingId","finding");
+   plan.set("unifiedReview",saved);plan.put("commitSha","a".repeat(40));
+  }
   String planDigest=ProjectVerification.digest(plan), content="def store(value):\n    return value\n",after=ProjectVerification.hash(content);
   var job=Map.<String,Object>of("executionPlan",plan,"planDigest",planDigest,"repository","example/service","commitSha","a".repeat(40));
   var r=json.createObjectNode();r.put("schemaVersion",2).put("engineVersion","5").put("profile","independent-project").put("profileVersion",1).put("model",CodingProposals.MODEL).put("repository","example/service").put("commitSha","a".repeat(40)).put("planDigest",planDigest).put("status","READY");
@@ -38,7 +45,22 @@ class ProjectVerificationTest {
   var baseline=report(p,true);var checked=report(p,false);for(var v:List.of(baseline,checked)){v.put("planDigest",planDigest).put("sourceManifestDigest",r.path("sourceManifestDigest").asText());}checked.put("candidateSha256",after);
   r.set("baseline",baseline);r.set("verification",checked);r.putArray("attempts").addObject().put("candidateSha256",after).set("verification",checked);
   r.putArray("files").addObject().put("path","service/contacts/service.py").put("content",content).put("beforeSha256","b".repeat(64)).put("afterSha256",after);
+  if(unified){
+   var saved=plan.path("unifiedReview");var h=r.putObject("handoff");
+   h.put("mode","unified-vlm-review-v1").put("status","READY").put("reusedScanAnalysis",true)
+    .put("reviewDigest",ProjectVerification.digest(saved)).put("commitSha","a".repeat(40)).put("imageSha256","h")
+    .put("instruction","finding: "+saved.path("instructions").get(0).path("text").asText()+"\nReferences: ref");
+   h.set("flowContext",saved.path("flowContext").deepCopy());
+  }
   assertDoesNotThrow(()->ProjectVerification.validateResult(r,job,Set.of("finding"),Set.of("ref"),json));
+  if(unified){
+   var h=(ObjectNode)r.path("handoff");var flows=h.remove("flowContext");
+   assertThrows(IllegalArgumentException.class,()->ProjectVerification.validateResult(r,job,Set.of("finding"),Set.of("ref"),json));
+   h.set("flowContext",flows.deepCopy());
+   ((ObjectNode)h.path("flowContext").path("flows").get(0)).put("target","wrong recipient");
+   assertThrows(IllegalArgumentException.class,()->ProjectVerification.validateResult(r,job,Set.of("finding"),Set.of("ref"),json));
+   h.set("flowContext",flows);
+  }
   checked.put("candidateSha256","c".repeat(64));assertThrows(IllegalArgumentException.class,()->ProjectVerification.validateResult(r,job,Set.of("finding"),Set.of("ref"),json));checked.put("candidateSha256",after);
   r.put("planDigest","c".repeat(64));assertThrows(IllegalArgumentException.class,()->ProjectVerification.validateResult(r,job,Set.of("finding"),Set.of("ref"),json));
  }

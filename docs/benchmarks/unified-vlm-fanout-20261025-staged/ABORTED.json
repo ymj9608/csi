@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-25T11:24:57.116063+00:00",
+  "reason": "Greedy sampling repeated instructions twice despite stage separation; completed image condition is BLOCKED. Preserve it as calibration; compare all three arms in a separate run with published Qwen sampling settings.",
+  "completedArms": [
+    "code_image"
+  ],
+  "interruptedArm": "structured_text",
+  "notStarted": [
+    "full_code"
+  ]
+}

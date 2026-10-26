@@ -238,7 +238,7 @@ function jumpStage(key: string) {
 }
 // 위험 항목 상세의 Agent 도구 선택을 정책 확인 → 규칙별 근거 수집 → 완료 흐름으로 나눕니다.
 const toolFlow = computed(() => {
-  const trace: any[] = data.value.analysis?.orchestration?.trace || [];
+  const trace: any[] = (data.value.analysis?.orchestration?.trace || []).map((step:any,index:number)=>({turn:index+1,...step}));
   const rules: Record<string, any[]> = {};
   for (const step of trace) if (step.ruleId) (rules[step.ruleId] ||= []).push(step);
   return {
@@ -1475,7 +1475,7 @@ async function logout() {
             </div>
             <div class="detail-grid">
               <section class="panel detail-panel">
-                <h2 class="step-title"><b>1</b>스캐너가 찾은 사실</h2>
+                <h2 class="step-title"><b>1</b>AI가 찾은 사실</h2>
                 <p class="step-sub">Semgrep 정적 분석이 코드에서 기계적으로 확인한 내용입니다.</p>
                 <p class="mono file-path">
                   {{ data.filePath }}:{{ data.startLine }}–{{ data.endLine }}
@@ -1647,9 +1647,9 @@ async function logout() {
               class="panel detail-panel flow-panel"
              
             >
-              <h2 class="step-title"><b>3</b>Agent가 근거를 모은 과정</h2>
+              <h2 class="step-title"><b>3</b>{{ data.analysis?.mode === 'VLM' ? '통합 VLM 분석 기록' : 'Agent가 근거를 모은 과정' }}</h2>
               <p class="step-sub">
-                AI의 해석에 앞서 Agent가 어떤 도구로 어떤 규정을 찾아봤는지 보여 줍니다.
+                {{ data.analysis?.mode === 'VLM' ? '호스트가 수집한 이미지·코드·정책 근거를 VLM이 함께 판단한 기록입니다.' : 'AI의 해석에 앞서 Agent가 어떤 도구로 어떤 규정을 찾아봤는지 보여 줍니다.' }}
               </p>
                   <section v-if="data.analysis?.orchestration" class="review-evidence agent-flow">
                     <p class="flow-meta">
@@ -1659,13 +1659,13 @@ async function logout() {
                     </p>
                     <div class="flow">
                       <div v-if="toolFlow.setup.length" class="flow-stage">
-                        <span class="flow-title"><b>1</b>정책 확인</span>
+                        <span class="flow-title"><b>1</b>{{ data.analysis?.mode === 'VLM' ? '이미지·코드·정책 통합 판단' : '정책 확인' }}</span>
                         <ol>
                           <li
                             v-for="step in toolFlow.setup"
                             :key="step.turn"
                             class="flow-node"
-                            :class="{ fail: step.status !== 'OK', fallback: step.mode !== 'LLM' }"
+                            :class="{ fail: step.status !== 'OK', fallback: !['LLM','VLM'].includes(step.mode) }"
                           >
                             <b>{{ step.turn }}</b
                             ><span>{{ toolLabels[step.tool] || step.tool }}<code>{{ step.tool }}</code></span>
@@ -1687,7 +1687,7 @@ async function logout() {
                                 v-for="step in steps"
                                 :key="step.turn"
                                 class="flow-node"
-                                :class="{ fail: step.status !== 'OK', fallback: step.mode !== 'LLM' }"
+                                :class="{ fail: step.status !== 'OK', fallback: !['LLM','VLM'].includes(step.mode) }"
                               >
                                 <b>{{ step.turn }}</b
                                 ><span>{{ toolLabels[step.tool] || step.tool }}<code>{{ step.tool }}</code></span>
@@ -1711,7 +1711,7 @@ async function logout() {
                         </ol>
                       </div>
                     </div>
-                    <small>LLM은 모델 선택, RULE_BASED와 LLM_FALLBACK은 코드 기반 선택입니다.</small>
+                    <small>VLM은 이미지·코드·RAG 통합 판단입니다. LLM·RULE_BASED·LLM_FALLBACK은 이전 검사 경로입니다.</small>
                   </section>
                                 <small class="flow-tech"
                 >분석 모드 {{ data.analysis?.mode || "대기"

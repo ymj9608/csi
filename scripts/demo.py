@@ -6,7 +6,7 @@ from scan import scan
 from submit import submit
 ROOT=Path(__file__).resolve().parents[1]
 def env():
-    for line in (ROOT/'.env').read_text().splitlines():
+    for line in (ROOT/'.env').read_text(encoding='utf-8').splitlines():
         if '=' in line:
             k,v=line.split('=',1);os.environ.setdefault(k,v)
 def login(base):

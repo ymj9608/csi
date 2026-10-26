@@ -39,12 +39,15 @@ import {
 import {
   uploadDiagram,
   getDiagramStatus,
+  retryDiagram,
+  failureMessage,
   groupByIsolation,
   STATUS_LABEL,
   STATE_LABEL,
   type DiagramState,
 } from "../lib/architectureDiagram";
 import { useSession } from "../stores/session";
+import { registrationImage } from "../lib/projectRegistration";
 const props = defineProps<{ project: string; projectName: string }>();
 const session = useSession();
 const connecting = ref(false);
@@ -53,11 +56,11 @@ async function connectCoding() {
   const image = viewing.value?.image;
   const project = props.project;
   if (!project) return session.notify("프로젝트를 먼저 선택하세요.");
-  if (!image || !["image/png", "image/jpeg"].includes(image.blob.type) || image.blob.size > 5 * 1024 * 1024)
-    return session.notify("코딩 Agent 연결은 5 MiB 이하 PNG/JPEG 원본을 지원합니다. PDF는 필요한 페이지를 이미지로 등록하세요.");
+  if (!image) return session.notify("연결할 아키텍처 파일을 선택하세요.");
   connecting.value = true;
   try {
-    const saved = await uploadArchitecture(project, new File([image.blob], image.name, { type: image.blob.type }));
+    const file = await registrationImage(new File([image.blob], image.name, { type: image.blob.type }));
+    const saved = await uploadArchitecture(project, file);
     await selectCodingArchitecture(project, saved.id);
     session.notify("아키텍처가 연결되었습니다. 위험 항목에서 새 수정안을 요청하면 이 이미지와 정책 근거로 수정 지시문을 작성합니다.");
   } catch (error: any) {
@@ -176,6 +179,8 @@ const pending = ref<File[]>([]),
 
 // 아키텍처 분석 — 업로드된 이미지 중 1장이 자동으로 서버에 전송되어 분석됩니다.
 const analysis = ref<DiagramState | null>(null);
+const retryingAnalysis = ref(false);
+const analysisPending = computed(() => !!analysis.value && ["QUEUED", "LOADING_MODEL", "ANALYZING"].includes(analysis.value.status));
 const analysisGroups = computed(() =>
   analysis.value?.components ? groupByIsolation(analysis.value.components) : [],
 );
@@ -206,7 +211,7 @@ function stopAnalysisPolling() {
 async function refreshAnalysis() {
   try {
     analysis.value = await getDiagramStatus(props.project);
-    if (analysis.value.status === "EXTRACTED") stopAnalysisPolling();
+    if (!analysisPending.value) stopAnalysisPolling();
   } catch {
     analysis.value = null;
     stopAnalysisPolling();
@@ -214,7 +219,20 @@ async function refreshAnalysis() {
 }
 function startAnalysisPolling() {
   stopAnalysisPolling();
-  analysisPoll = setInterval(refreshAnalysis, 2000);
+  if (analysisPending.value) analysisPoll = setInterval(refreshAnalysis, 2000);
+}
+async function retryAnalysis() {
+  if (!analysis.value?.id || retryingAnalysis.value) return;
+  retryingAnalysis.value = true;
+  try {
+    await retryDiagram(props.project, analysis.value.id);
+    await refreshAnalysis();
+    startAnalysisPolling();
+  } catch (e: any) {
+    session.notify(e.message || "분석을 다시 요청하지 못했습니다.");
+  } finally {
+    retryingAnalysis.value = false;
+  }
 }
 async function requestAnalysis(image: { blob: Blob; name: string }) {
   try {
@@ -232,7 +250,7 @@ watch(
   () => {
     stopAnalysisPolling();
     refreshAnalysis().then(() => {
-      if (analysis.value && analysis.value.status !== "EXTRACTED") startAnalysisPolling();
+      if (analysisPending.value) startAnalysisPolling();
     });
   },
   { immediate: true },
@@ -473,8 +491,15 @@ onBeforeUnmount(() => {
 
   <section v-if="analysis" class="panel architecture-analysis">
     <h3>아키텍처 분석 결과</h3>
-    <p v-if="analysis.status !== 'EXTRACTED'" class="analysis-progress">
-      {{ STATUS_LABEL[analysis.status] }}…
+    <div v-if="analysis.status === 'FAILED'" role="alert" class="analysis-failure">
+      <p><strong>분석 실패</strong> · {{ failureMessage(analysis.errorCode) }}</p>
+      <p>모델과 아키텍처 Worker 연결 상태를 확인한 뒤 다시 시도하세요. 새 Push 없이 등록한 이미지를 다시 분석합니다.</p>
+      <button v-if="analysis.id" :disabled="retryingAnalysis" @click="retryAnalysis">
+        {{ retryingAnalysis ? '요청 중…' : '분석 다시 시도' }}
+      </button>
+    </div>
+    <p v-else-if="analysisPending" class="analysis-progress">
+      {{ STATUS_LABEL[analysis.status] }}…<span v-if="analysis.status === 'QUEUED'"> 등록한 아키텍처를 자동으로 분석합니다. GitHub Push를 기다리지 않습니다.</span>
     </p>
     <template v-else>
       <p class="analysis-summary">{{ analysis.summary }}</p>
@@ -959,7 +984,7 @@ onBeforeUnmount(() => {
 }
 .components {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(175px, 100%), 1fr));
   gap: 10px;
   list-style: none;
   margin: 0;
