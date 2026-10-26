@@ -23,7 +23,7 @@
 
 </div>
 
-![alt text](image.png)
+![CSI 웹 콘솔 보안 현황 대시보드](image.png)
 
 ## 👥 팀원 소개
 
